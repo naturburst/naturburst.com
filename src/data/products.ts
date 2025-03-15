@@ -6,13 +6,17 @@ export interface Product {
   description: string;
   shortDescription: string;
   benefits: string[];
-  imageUrl: string;
+  // Updated structure for multiple images
+  images: {
+    main: string;     // Main product image (thumbnail/card view)
+    gallery: string[] // Additional product images for gallery view
+  };
   ingredientsTags: string[];
   weight: string;
   inStock: boolean;
 }
 
-// Placeholder product data - replace with actual products
+// Updated product data with multiple images
 export const products: Product[] = [
   {
     id: "tropi-mix",
@@ -27,7 +31,12 @@ export const products: Product[] = [
       "Rich in vitamins A & C",
       "Perfect healthy snack"
     ],
-    imageUrl: "/images/products/product1.jpg",
+    images: {
+      main: "/images/products/custard-apple-detail1.jpg",
+      gallery: [
+        "/images/products/custard-apple-detail2.jpg"
+      ]
+    },
     ingredientsTags: ["Pineapple", "Mango", "Banana"],
     weight: "60g",
     inStock: true
@@ -45,7 +54,12 @@ export const products: Product[] = [
       "Rich in fiber",
       "Great for smoothie bowls"
     ],
-    imageUrl: "/images/products/product2.jpg",
+    images: {
+      main: "/images/products/jamun-detail1.jpg",
+      gallery: [
+        "/images/products/jamun-detail2.jpg"
+      ]
+    },
     ingredientsTags: ["Strawberry", "Blueberry", "Raspberry"],
     weight: "50g",
     inStock: true
@@ -63,7 +77,12 @@ export const products: Product[] = [
       "Refreshing citrus flavor",
       "Perfect for baking and garnishes"
     ],
-    imageUrl: "/images/products/product3.jpg",
+    images: {
+      main: "/images/products/jackfruit-detail1.jpg",
+      gallery: [
+        "/images/products/jackfruit-detail2.jpg"
+      ]
+    },
     ingredientsTags: ["Orange", "Lemon", "Lime"],
     weight: "55g",
     inStock: true

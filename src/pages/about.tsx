@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
-import styles from '@/styles/About.module.css';
+import styles from '@/styles/components/About.module.css';
 
 const About: React.FC = () => {
-  // Animation variants
+  // Animation variants for staggered element appearance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

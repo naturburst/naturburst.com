@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <Link href={`/shop/${product.slug}`} className={styles.cardLink}>
         <div className={styles.imageContainer}>
           <img
-            src={product.imageUrl}
+            src={product.images.main}
             alt={product.name}
             className={styles.productImage}
           />

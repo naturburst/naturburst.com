@@ -181,7 +181,7 @@
 }
 
 .testimonialText::before {
-  content: """;
+  content: "\201C"; /* Fixed: Using Unicode for opening double quote */
   font-size: 4rem;
   color: rgba(126, 179, 86, 0.1);
   position: absolute;

@@ -3,17 +3,21 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
-import { Product, getProductBySlug, getAllProductSlugs } from '@/data/products';
+import { Product, getProductBySlug, getAllProductSlugs, products } from '@/data/products';
 import { FiShoppingCart, FiHeart, FiShare2, FiChevronRight } from 'react-icons/fi';
 import styles from '@/styles/ProductDetail.module.css';
 
 interface ProductDetailProps {
   product: Product;
+  relatedProducts: Product[];
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({ product, relatedProducts }) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+
+  // State to track selected image for the main display
+  const [selectedImage, setSelectedImage] = useState(product.images.main);
 
   // Handle quantity changes
   const decreaseQuantity = () => {
@@ -26,10 +30,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
     setQuantity(quantity + 1);
   };
 
+  // Handler for thumbnail click
+  const handleThumbnailClick = (imageSrc: string) => {
+    setSelectedImage(imageSrc);
+  };
+
   // If page is still generating via SSG
   if (router.isFallback) {
     return <div className={styles.loading}>Loading...</div>;
   }
+
+  // Combine main image and gallery images for the thumbnails
+  const allImages = [product.images.main, ...product.images.gallery];
 
   return (
     <Layout
@@ -48,7 +60,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           </div>
 
           <div className={styles.productContent}>
-            {/* Product Images */}
+            {/* Product Images with Gallery */}
             <motion.div
               className={styles.productImages}
               initial={{ opacity: 0, x: -20 }}
@@ -56,18 +68,21 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
               transition={{ duration: 0.5 }}
             >
               <div className={styles.mainImage}>
-                <img src={product.imageUrl} alt={product.name} />
+                {/* Display the currently selected image */}
+                <img src={selectedImage} alt={product.name} />
               </div>
+
               <div className={styles.thumbnails}>
-                <div className={styles.thumbnailItem}>
-                  <img src={product.imageUrl} alt={product.name} />
-                </div>
-                <div className={styles.thumbnailItem}>
-                  <img src="/images/products/detail1.jpg" alt={`${product.name} detail`} />
-                </div>
-                <div className={styles.thumbnailItem}>
-                  <img src="/images/products/detail2.jpg" alt={`${product.name} packaging`} />
-                </div>
+                {/* Map through all images to create thumbnails */}
+                {allImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.thumbnailItem} ${selectedImage === image ? styles.active : ''}`}
+                    onClick={() => handleThumbnailClick(image)}
+                  >
+                    <img src={image} alt={`${product.name} - view ${index + 1}`} />
+                  </div>
+                ))}
               </div>
             </motion.div>
 
@@ -179,24 +194,17 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
           <div className={styles.relatedProducts}>
             <h2>You Might Also Like</h2>
             <div className={styles.relatedProductsGrid}>
-              {/* This would be dynamically generated based on related products */}
-              <div className={styles.relatedProductCard}>
-                <img src="/images/products/product2.jpg" alt="Related Product" />
-                <h3>Berry Burst</h3>
-                <span className={styles.relatedProductPrice}>$14.99</span>
-              </div>
-
-              <div className={styles.relatedProductCard}>
-                <img src="/images/products/product3.jpg" alt="Related Product" />
-                <h3>Citrus Delight</h3>
-                <span className={styles.relatedProductPrice}>$13.99</span>
-              </div>
-
-              <div className={styles.relatedProductCard}>
-                <img src="/images/products/product1.jpg" alt="Related Product" />
-                <h3>Tropical Paradise Pack</h3>
-                <span className={styles.relatedProductPrice}>$19.99</span>
-              </div>
+              {relatedProducts.map((relatedProduct) => (
+                <a
+                  key={relatedProduct.id}
+                  href={`/shop/${relatedProduct.slug}`}
+                  className={styles.relatedProductCard}
+                >
+                  <img src={relatedProduct.images.main} alt={relatedProduct.name} />
+                  <h3>{relatedProduct.name}</h3>
+                  <span className={styles.relatedProductPrice}>${relatedProduct.price.toFixed(2)}</span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -231,9 +239,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
+  // Get related products (simple implementation - excluding current product)
+  const relatedProducts = products
+    .filter(p => p.id !== product.id)
+    .slice(0, 3);
+
   return {
     props: {
-      product
+      product,
+      relatedProducts
     },
     // Revalidate every hour
     revalidate: 3600
