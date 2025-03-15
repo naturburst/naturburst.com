@@ -1,22 +1,62 @@
 import React from 'react'
 import { useFilterContext } from '../../context/filter_context'
 import styled from 'styled-components'
-import { SortMenu } from './SortMenu'
-import { SortButtons } from './SortButtons'
+import { BsFillGridFill, BsList } from 'react-icons/bs'
+
 const Sort = () => {
-  const { filteredProducts } = useFilterContext()
+  const {
+    filteredProducts,
+    gridView,
+    setGridView,
+    setListView,
+    sort,
+    updateSort
+  } = useFilterContext()
 
   return (
     <Wrapper>
-      <SortButtons />
+      {/* View toggle buttons */}
+      <div className='btn-container'>
+        <button
+          type='button'
+          className={gridView ? 'active' : undefined}
+          onClick={setGridView}
+        >
+          <BsFillGridFill />
+        </button>
+        <button
+          type='button'
+          className={!gridView ? 'active' : undefined}
+          onClick={setListView}
+        >
+          <BsList />
+        </button>
+      </div>
+
+      {/* Product count */}
       <p>{filteredProducts.length} products found</p>
+
       <hr />
-      <SortMenu />
+
+      {/* Sort dropdown */}
+      <form>
+        <label htmlFor='sort'>sort by</label>
+        <select
+          name='sort'
+          id='sort'
+          className='sort-input'
+          value={sort}
+          onChange={updateSort}
+        >
+          <option value='price-lowest'>price (lowest)</option>
+          <option value='price-highest'>price (highest)</option>
+          <option value='name-a'>name (a-z)</option>
+          <option value='name-z'>name (z-a)</option>
+        </select>
+      </form>
     </Wrapper>
   )
 }
-
-export default Sort
 
 const Wrapper = styled.section`
   display: grid;
@@ -24,6 +64,7 @@ const Wrapper = styled.section`
   align-items: center;
   margin-bottom: 2rem;
   column-gap: 2rem;
+
   @media (max-width: 576px) {
     display: grid;
     grid-template-columns: 1fr;
@@ -36,9 +77,11 @@ const Wrapper = styled.section`
       margin-right: 0.5rem;
     }
   }
+
   @media (min-width: 768px) {
     column-gap: 2rem;
   }
+
   p {
     text-transform: capitalize;
     margin-bottom: 0;
@@ -75,11 +118,11 @@ const Wrapper = styled.section`
     text-transform: capitalize;
     padding: 0.25rem 0.5rem;
   }
+
   label {
     font-size: 1rem;
     text-transform: capitalize;
   }
-  select {
-    text-transform: capitalize;
-  }
 `
+
+export default Sort

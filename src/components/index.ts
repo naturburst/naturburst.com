@@ -11,7 +11,6 @@ import Loading from './Loading'
 import ProductImages from './ProductImages'
 import AddToCart from './AddToCart'
 import AmountButtons from './AmountButtons'
-import Filters from './Filters/Filters'
 import ProductList from './ProductList'
 import Sort from './Sort/Sort'
 import CartContent from './CartContent'
@@ -30,7 +29,6 @@ export {
   ProductImages,
   AddToCart,
   AmountButtons,
-  Filters,
   ProductList,
   Sort,
   CartContent,

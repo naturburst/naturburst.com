@@ -5,14 +5,11 @@ import {
   SIDEBAR_CLOSE,
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_SUCCESS,
-  // GET_PRODUCTS_ERROR removed as it's unused
   GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from '../actions'
 import { productDataType, sampleProducts } from '../utils/productData'
-import { API_ENDPOINT, QUERY } from '../utils/constants'
-import axios from 'axios'
 
 export type initialStateType = {
   isSidebarOpen: boolean
@@ -50,6 +47,7 @@ export const ProductsProvider: React.FC = ({ children }) => {
   const openSidebar = () => {
     dispatch({ type: SIDEBAR_OPEN })
   }
+
   const closeSidebar = () => {
     dispatch({ type: SIDEBAR_CLOSE })
   }
@@ -60,9 +58,11 @@ export const ProductsProvider: React.FC = ({ children }) => {
       const singleProduct: productDataType = state.allProducts.filter(
         (product: productDataType) => product.slug === slug
       )[0]
-      // Guard against filtering on empty allProducts array
+
       if (singleProduct) {
         dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct })
+      } else {
+        throw new Error('Product not found')
       }
     } catch (error) {
       console.log(error)
@@ -70,27 +70,13 @@ export const ProductsProvider: React.FC = ({ children }) => {
     }
   }
 
+  // Load products on initial mount
   useEffect(() => {
-    const fetchProducts = async () => {
-      dispatch({ type: GET_PRODUCTS_BEGIN })
-      try {
-        // Try to fetch from Sanity API
-        const queryResult = await axios.post(API_ENDPOINT, { query: QUERY })
-          .catch(error => {
-            // API call failure triggers fallback to sample data
-            console.log('Falling back to sample data:', error.message)
-            throw new Error('API unavailable')
-          })
+    dispatch({ type: GET_PRODUCTS_BEGIN })
 
-        const result = queryResult.data.data.allProduct
-        dispatch({ type: GET_PRODUCTS_SUCCESS, payload: result })
-      } catch (error) {
-        console.log('Using sample product data instead')
-        // Fallback to sample product data when API is unavailable
-        dispatch({ type: GET_PRODUCTS_SUCCESS, payload: sampleProducts })
-      }
-    }
-    fetchProducts()
+    // Using sample product data directly since we have only 3 products
+    dispatch({ type: GET_PRODUCTS_SUCCESS, payload: sampleProducts })
+
   }, [])
 
   return (

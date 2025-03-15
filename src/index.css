@@ -5,7 +5,7 @@ Variables
 */
 
 :root {
-  /* Primary color: Vibrant tropical green */
+  /* Primary color: Vibrant tropical green - based on Custard Apple packaging */
   --clr-primary-1: hsl(145, 63%, 20%);  /* Dark green */
   --clr-primary-2: hsl(145, 63%, 30%);
   --clr-primary-3: hsl(145, 63%, 40%);
@@ -17,12 +17,12 @@ Variables
   --clr-primary-9: hsl(145, 63%, 92%);
   --clr-primary-10: hsl(145, 63%, 97%);
 
-  /* Accent colors: Tropical fruit colors */
-  --clr-accent-1: hsl(120, 33%, 35%);  /* Custard Apple green */
-  --clr-accent-2: hsl(270, 50%, 40%);  /* Jamun purple */
-  --clr-accent-3: hsl(45, 80%, 50%);   /* Jackfruit yellow */
+  /* Product accent colors - matching packaging */
+  --clr-jackfruit: hsl(45, 80%, 50%);  /* Jackfruit yellow */
+  --clr-jamun: hsl(270, 50%, 40%);     /* Jamun purple */
+  --clr-custard-apple: hsl(145, 63%, 40%); /* Custard apple green */
 
-  /* Grey scale remains for text and UI */
+  /* Grey scale for text and UI */
   --clr-grey-1: hsl(209, 61%, 16%);
   --clr-grey-2: hsl(211, 39%, 23%);
   --clr-grey-3: hsl(209, 34%, 30%);
@@ -41,9 +41,16 @@ Variables
   --clr-red-light: hsl(360, 71%, 66%);
   --clr-green-dark: hsl(125, 67%, 44%);
   --clr-green-light: hsl(125, 71%, 66%);
+
+  /* Spacing and other variables */
+  --transition: all 0.3s linear;
+  --spacing: 0.1rem;
+  --radius: 0.5rem;
+  --max-width: 1170px;
 }
+
 /*
-=============== 
+===============
 Global Styles
 ===============
 */
@@ -168,21 +175,23 @@ p {
 .btn {
   text-transform: uppercase;
   background: var(--clr-primary-5);
-  color: var(--clr-primary-10);
+  color: var(--clr-white);
   padding: 0.375rem 0.75rem;
   letter-spacing: var(--spacing);
   display: inline-block;
-  font-weight: 400;
+  font-weight: 500;
   transition: var(--transition);
   font-size: 0.875rem;
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius);
-  border-color: transparent;
+  border-radius: 25px; /* More rounded buttons */
+  border: none;
 }
 .btn:hover {
-  color: var(--clr-primary-1);
-  background: var(--clr-primary-7);
+  color: var(--clr-white);
+  background: var(--clr-primary-3);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 .title {
   text-align: center;
@@ -190,7 +199,6 @@ p {
 .title .underline {
   width: 6rem;
   height: 0.25rem;
-  background: #49a6e9;
   background: var(--clr-primary-5);
   margin-left: auto;
   margin-right: auto;

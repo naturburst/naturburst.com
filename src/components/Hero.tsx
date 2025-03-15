@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import heroImage from '../assets/hero.jpg' // Will need a new hero image
 import { Link } from 'react-router-dom'
+import { FaLeaf } from 'react-icons/fa'
 
 const Hero = () => {
   return (
@@ -12,97 +12,144 @@ const Hero = () => {
           in Every Bite
         </h1>
         <p>
-          Experience the pure taste of nature with our premium freeze-dried fruits. 
-          Tropi Treats preserves all the natural goodness and flavor without any 
+          Experience the pure taste of nature with our premium freeze-dried fruits.
+          NaturBurst preserves all the natural goodness and flavor without any
           additives or preservatives.
         </p>
+
+        <div className='features'>
+          <div className='feature'>
+            <FaLeaf className='icon' />
+            <span>100% Natural</span>
+          </div>
+          <div className='feature'>
+            <FaLeaf className='icon' />
+            <span>No Added Sugar</span>
+          </div>
+          <div className='feature'>
+            <FaLeaf className='icon' />
+            <span>No Preservatives</span>
+          </div>
+        </div>
+
         <Link to='/products' className='btn hero-btn'>
-          shop now
+          Shop Now
         </Link>
       </article>
+
       <article className='img-container'>
-        <img src={heroImage} alt='Assorted freeze-dried fruits' className='main-img' />
+        <div className='product-images'>
+          <img src='/images/custard-apple-detail1.jpg' alt='Custard Apple' className='product-img custard-apple' />
+          <img src='/images/jackfruit-detail.jpg' alt='Jackfruit' className='product-img jackfruit' />
+          <img src='/images/jamun-detail1.jpg' alt='Jamun' className='product-img jamun' />
+        </div>
       </article>
     </Wrapper>
   )
 }
 
-export default Hero
-
 const Wrapper = styled.section`
   min-height: 60vh;
   display: grid;
   place-items: center;
+  padding-top: 2rem;
+
+  .content {
+    max-width: 550px;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--clr-primary-1), var(--clr-primary-5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+  }
+
+  p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--clr-grey-5);
+    margin-bottom: 2rem;
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      .icon {
+        color: var(--clr-primary-5);
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .hero-btn {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+
   .img-container {
     display: none;
   }
 
-  p {
-    line-height: 2;
-    max-width: 45em;
-    margin-bottom: 1rem;
-    color: var(--clr-grey-5);
-    font-size: 1rem;
-  }
-  
   @media (min-width: 992px) {
     height: calc(100vh - 5rem);
     grid-template-columns: 1fr 1fr;
-    gap: 8rem;
-    h1 {
-      margin-bottom: 2rem;
-      font-size: 3.5rem;
-      background: linear-gradient(to right, var(--clr-primary-3), var(--clr-accent-1));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    p {
-      font-size: 1.25rem;
-    }
-    .hero-btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background: var(--clr-primary-5);
-      border-radius: 25px;
-    }
-    .hero-btn:hover {
-      background: var(--clr-primary-3);
-      color: var(--clr-white);
-    }
+    gap: 4rem;
+
     .img-container {
       display: block;
       position: relative;
-    }
-    .main-img {
-      width: 100%;
-      height: 550px;
-      position: relative;
-      border-radius: var(--radius);
-      display: block;
-      object-fit: cover;
-      box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .img-container::before {
-      content: '';
-      position: absolute;
-      width: 10%;
-      height: 80%;
-      background: var(--clr-accent-1);
-      bottom: 0%;
-      left: -8%;
-      border-radius: var(--radius);
-      opacity: 0.7;
-    }
-    .img-container::after {
-      content: '';
-      position: absolute;
-      width: 15%;
-      height: 60%;
-      background: var(--clr-primary-6);
-      top: 10%;
-      right: -8%;
-      border-radius: var(--radius);
-      opacity: 0.7;
+
+      .product-images {
+        position: relative;
+        height: 500px;
+        width: 100%;
+      }
+
+      .product-img {
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: var(--radius);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .custard-apple {
+        top: 0;
+        left: 50px;
+        z-index: 1;
+        border: 5px solid var(--clr-custard-apple);
+      }
+
+      .jackfruit {
+        top: 150px;
+        right: 0;
+        z-index: 2;
+        border: 5px solid var(--clr-jackfruit);
+      }
+
+      .jamun {
+        bottom: 0;
+        left: 100px;
+        z-index: 3;
+        border: 5px solid var(--clr-jamun);
+      }
     }
   }
 `
+
+export default Hero

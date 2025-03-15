@@ -1,10 +1,9 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { useFilterContext } from '../../context/filter_context'
 import { services } from '../../utils/constants'
 
+// Simplified ServicesCards component that doesn't rely on filters
 export const ServicesCards = () => {
-  const { updateFilters, handleClickFromServices, clearFilters } =
-    useFilterContext()
   return (
     <div className='services-center'>
       {services.map(({ id, icon, title }) => {
@@ -16,15 +15,8 @@ export const ServicesCards = () => {
               <button
                 className='btn'
                 type='button'
-                name='home-page-category'
-                value={title}
-                onClick={e => {
-                  clearFilters()
-                  handleClickFromServices()
-                  updateFilters(e)
-                }}
               >
-                click here for {title}
+                shop now
               </button>
             </Link>
           </article>
