@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Layout from '@/components/layout/Layout';
 import { Product, getProductBySlug, getAllProductSlugs, products } from '@/data/products';
-import { FiShoppingCart, FiHeart, FiShare2, FiChevronRight } from 'react-icons/fi';
+import { FaHome, FaShareAlt, FaRegHeart, FaFacebookF, FaTwitter, FaPinterestP, FaInstagram } from 'react-icons/fa';
+import { RiFileListLine } from 'react-icons/ri';
 import styles from '@/styles/ProductDetail.module.css';
 
 interface ProductDetailProps {
@@ -12,68 +13,46 @@ interface ProductDetailProps {
   relatedProducts: Product[];
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ product, relatedProducts }) => {
-  const router = useRouter();
-  const [quantity, setQuantity] = useState(1);
-
-  // State to track selected image for the main display
+const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
+  // State for selected image, quantity, and options
   const [selectedImage, setSelectedImage] = useState(product.images.main);
-
-  // Handle quantity changes
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
-  };
+  const [quantity, setQuantity] = useState(1);
+  const [size, setSize] = useState('M');
+  const [color, setColor] = useState('white');
 
   // Handler for thumbnail click
   const handleThumbnailClick = (imageSrc: string) => {
     setSelectedImage(imageSrc);
   };
 
-  // If page is still generating via SSG
-  if (router.isFallback) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
-
-  // Combine main image and gallery images for the thumbnails
+  // Combine main image and gallery images for thumbnails
   const allImages = [product.images.main, ...product.images.gallery];
 
   return (
-    <Layout
-      title={`${product.name} | NatureBurst`}
-      description={product.shortDescription}
-    >
+    <Layout>
       <div className={styles.productDetailContainer}>
-        <div className="container">
-          {/* Breadcrumb navigation */}
-          <div className={styles.breadcrumbs}>
-            <a href="/">Home</a>
-            <FiChevronRight />
-            <a href="/shop">Shop</a>
-            <FiChevronRight />
-            <span>{product.name}</span>
+        {/* Product page header with title and breadcrumbs */}
+        <div className={styles.productHeader}>
+          <div className="container">
+            <h1>{product.name}</h1>
+            <div className={styles.breadcrumbs}>
+              <Link href="/">
+                <span className={styles.breadcrumbLink}>
+                  <FaHome /> Home
+                </span>
+              </Link>
+              <span className={styles.breadcrumbSeparator}>&gt;</span>
+              <span className={styles.currentPage}>{product.name}</span>
+            </div>
           </div>
+        </div>
 
+        <div className="container">
           <div className={styles.productContent}>
-            {/* Product Images with Gallery */}
-            <motion.div
-              className={styles.productImages}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className={styles.mainImage}>
-                {/* Display the currently selected image */}
-                <img src={selectedImage} alt={product.name} />
-              </div>
-
-              <div className={styles.thumbnails}>
-                {/* Map through all images to create thumbnails */}
+            {/* Left side: Product image gallery */}
+            <div className={styles.productGallery}>
+              {/* Vertical thumbnails */}
+              <div className={styles.thumbnailsVertical}>
                 {allImages.map((image, index) => (
                   <div
                     key={index}
@@ -84,127 +63,116 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, relatedProducts 
                   </div>
                 ))}
               </div>
-            </motion.div>
 
-            {/* Product Info */}
-            <motion.div
-              className={styles.productInfo}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className={styles.productName}>{product.name}</h1>
+              {/* Main image */}
+              <div className={styles.mainImageContainer}>
+                <img src={selectedImage} alt={product.name} />
+              </div>
+            </div>
+
+            {/* Right side: Product details */}
+            <div className={styles.productInfo}>
+              <h1>{product.name}</h1>
+              <p className={styles.productDescription}>{product.description}</p>
+
+              <div className={styles.productReview}>
+                <Link href="#reviews">
+                  <span className={styles.reviewLink}>
+                    <RiFileListLine /> Write a review
+                  </span>
+                </Link>
+              </div>
 
               <div className={styles.productPrice}>
                 ${product.price.toFixed(2)}
-                <span className={styles.productWeight}>{product.weight}</span>
               </div>
 
-              <div className={styles.tags}>
-                {product.ingredientsTags.map((tag, index) => (
-                  <span key={index} className={styles.tag}>
-                    {tag}
+              <div className={styles.productMeta}>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaLabel}>Brand :</span>
+                  <span className={styles.metaValue}>Printed</span>
+                </div>
+                <div className={styles.metaItem}>
+                  <span className={styles.metaLabel}>Availability :</span>
+                  <span className={styles.metaValue}>
+                    {product.inStock ? 'In Stock' : 'Out Of Stock'}
                   </span>
-                ))}
+                </div>
               </div>
 
-              <p className={styles.productDescription}>{product.description}</p>
-
-              <div className={styles.productBenefits}>
-                <h3>Benefits</h3>
-                <ul>
-                  {product.benefits.map((benefit, index) => (
-                    <li key={index}>{benefit}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className={styles.addToCartSection}>
-                <div className={styles.quantityControl}>
-                  <button onClick={decreaseQuantity}>-</button>
-                  <span>{quantity}</span>
-                  <button onClick={increaseQuantity}>+</button>
+              {/* Product options */}
+              <div className={styles.productOptions}>
+                <div className={styles.optionGroup}>
+                  <label>Size</label>
+                  <select
+                    value={size}
+                    onChange={(e) => setSize(e.target.value)}
+                    className={styles.optionSelect}
+                  >
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </select>
                 </div>
 
-                <button className={styles.addToCartButton}>
-                  <FiShoppingCart size={18} />
-                  Add to Cart
+                <div className={styles.optionGroup}>
+                  <label>Color</label>
+                  <select
+                    value={color}
+                    onChange={(e) => setColor(e.target.value)}
+                    className={styles.optionSelect}
+                  >
+                    <option value="white">white</option>
+                    <option value="black">black</option>
+                    <option value="green">green</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div className={styles.productActions}>
+                <button className={styles.shareButton}>
+                  <FaShareAlt /> Share
                 </button>
 
+                {product.inStock ? (
+                  <button className={styles.addToCartButton}>
+                    Add to Cart
+                  </button>
+                ) : (
+                  <button className={styles.soldOutButton} disabled>
+                    Sold Out
+                  </button>
+                )}
+
+                <button className={styles.notifyButton}>
+                  Notify Me
+                </button>
+              </div>
+
+              {/* Additional actions */}
+              <div className={styles.additionalActions}>
                 <button className={styles.wishlistButton}>
-                  <FiHeart size={18} />
+                  <FaRegHeart /> Wishlist
+                </button>
+                <button className={styles.compareButton}>
+                  Compare
+                </button>
+                <button className={styles.sizeGuideButton}>
+                  Size Guide
+                </button>
+                <button className={styles.printButton}>
+                  Print
                 </button>
               </div>
 
-              {product.inStock ? (
-                <div className={styles.inStock}>In Stock & Ready to Ship</div>
-              ) : (
-                <div className={styles.outOfStock}>Out of Stock</div>
-              )}
-
-              <div className={styles.shareProduct}>
-                <FiShare2 size={18} />
-                <span>Share this product</span>
-                <div className={styles.socialIcons}>
-                  <a href="#" aria-label="Share on Facebook">F</a>
-                  <a href="#" aria-label="Share on Twitter">T</a>
-                  <a href="#" aria-label="Share on Pinterest">P</a>
-                </div>
+              {/* Social sharing */}
+              <div className={styles.socialSharing}>
+                <Link href="#" className={styles.socialIcon}><FaFacebookF /></Link>
+                <Link href="#" className={styles.socialIcon}><FaTwitter /></Link>
+                <Link href="#" className={styles.socialIcon}><FaPinterestP /></Link>
+                <Link href="#" className={styles.socialIcon}><FaInstagram /></Link>
               </div>
-            </motion.div>
-          </div>
-
-          {/* Additional Product Details Tabs */}
-          <div className={styles.productTabs}>
-            <div className={styles.tabHeaders}>
-              <button className={styles.activeTab}>Description</button>
-              <button>Nutrition Facts</button>
-              <button>How to Use</button>
-              <button>Reviews</button>
-            </div>
-
-            <div className={styles.tabContent}>
-              <div className={styles.descriptionTab}>
-                <h3>Product Description</h3>
-                <p>
-                  {product.description}
-                </p>
-                <p>
-                  Our freeze-drying process locks in the flavors and nutrients of fresh fruits
-                  at their peak ripeness. Unlike conventional drying methods, freeze-drying
-                  preserves the cellular structure of the fruit, maintaining its natural
-                  appearance and nutritional value.
-                </p>
-                <h4>What makes our process special?</h4>
-                <ul>
-                  <li>We freeze the fresh fruit to -40°F (-40°C)</li>
-                  <li>The frozen water is removed through sublimation under vacuum</li>
-                  <li>This gentle process preserves the fruit's structure, flavor, and nutrients</li>
-                  <li>No need for additives, preservatives, or added sugar</li>
-                  <li>Results in a lightweight, shelf-stable product that retains up to 97% of nutrients</li>
-                </ul>
-                <p>
-                  Each batch is carefully inspected to ensure only the highest quality product reaches our customers.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Related Products */}
-          <div className={styles.relatedProducts}>
-            <h2>You Might Also Like</h2>
-            <div className={styles.relatedProductsGrid}>
-              {relatedProducts.map((relatedProduct) => (
-                <a
-                  key={relatedProduct.id}
-                  href={`/shop/${relatedProduct.slug}`}
-                  className={styles.relatedProductCard}
-                >
-                  <img src={relatedProduct.images.main} alt={relatedProduct.name} />
-                  <h3>{relatedProduct.name}</h3>
-                  <span className={styles.relatedProductPrice}>${relatedProduct.price.toFixed(2)}</span>
-                </a>
-              ))}
             </div>
           </div>
         </div>
