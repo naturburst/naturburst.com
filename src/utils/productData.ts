@@ -1,3 +1,4 @@
+// src/utils/productData.ts
 export type productDataType = {
   id: string
   name: string
@@ -31,6 +32,12 @@ export type productDataType = {
 
 export type productDataTypeKey = keyof productDataType
 
+// Handle image paths with process.env.PUBLIC_URL for proper Vercel deployment
+const getImagePath = (path: string) => {
+  // Use PUBLIC_URL if available (best practice), otherwise fallback to the path
+  return `${process.env.PUBLIC_URL || ''}${path}`;
+};
+
 // Sample product data with location-based pricing
 export const sampleProducts: productDataType[] = [
   {
@@ -61,7 +68,10 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet and aromatic with subtle vanilla notes. The crisp texture transforms into a creamy mouthfeel, delivering the authentic custard apple experience.',
     storageInstructions: 'Keep in a cool, dry place away from direct sunlight. Reseal properly after opening to maintain freshness.',
     featured: true,
-    images: ['/images/custard-apple-detail1.jpg', '/images/custard-apple-detail2.jpg']
+    images: [
+      getImagePath('/images/custard-apple-detail1.jpg'),
+      getImagePath('/images/custard-apple-detail2.jpg')
+    ]
   },
   {
     id: '2',
@@ -91,7 +101,10 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet and fruity with notes of banana, pineapple, and mango. The crunchy texture gives way to a burst of tropical flavor.',
     storageInstructions: 'Keep in a cool, dry place away from direct sunlight. Reseal properly after opening to maintain freshness.',
     featured: true,
-    images: ['/images/jackfruit-detail.jpg', '/images/jackfruit-detail1.jpg']
+    images: [
+      getImagePath('/images/jackfruit-detail1.jpg'),
+      getImagePath('/images/jackfruit-detail2.jpg')
+    ]
   },
   {
     id: '3',
@@ -121,6 +134,9 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet-tart flavor with a pleasant astringency and subtle grape-like notes. The crisp texture provides an intense flavor release before melting away.',
     storageInstructions: 'Keep in a cool, dry place away from direct sunlight. Reseal properly after opening to maintain freshness.',
     featured: true,
-    images: ['/images/jamun-detail1.jpg', '/images/jamun-detail2.jpg']
+    images: [
+      getImagePath('/images/jamun-detail1.jpg'),
+      getImagePath('/images/jamun-detail2.jpg')
+    ]
   }
 ]

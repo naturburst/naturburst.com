@@ -28,7 +28,7 @@ const NavContainer = styled.nav`
   align-items: center;
   justify-content: center;
   background: linear-gradient(to right, var(--clr-primary-3), var(--clr-primary-5));
-  
+
   .nav-center {
     width: 90vw;
     margin: 0 auto;

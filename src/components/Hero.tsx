@@ -3,6 +3,11 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { FaLeaf } from 'react-icons/fa'
 
+// Helper function to handle image paths
+const getImagePath = (path: string) => {
+  return `${process.env.PUBLIC_URL || ''}${path}`;
+};
+
 const Hero = () => {
   return (
     <Wrapper className='section-center'>
@@ -39,9 +44,9 @@ const Hero = () => {
 
       <article className='img-container'>
         <div className='product-images'>
-          <img src='/images/custard-apple-detail1.jpg' alt='Custard Apple' className='product-img custard-apple' />
-          <img src='/images/jackfruit-detail.jpg' alt='Jackfruit' className='product-img jackfruit' />
-          <img src='/images/jamun-detail1.jpg' alt='Jamun' className='product-img jamun' />
+          <img src={getImagePath('/images/custard-apple-detail1.jpg')} alt='Custard Apple' className='product-img custard-apple' />
+          <img src={getImagePath('/images/jackfruit-detail1.jpg')} alt='Jackfruit' className='product-img jackfruit' />
+          <img src={getImagePath('/images/jamun-detail1.jpg')} alt='Jamun' className='product-img jamun' />
         </div>
       </article>
     </Wrapper>
