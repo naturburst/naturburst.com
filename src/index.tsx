@@ -1,20 +1,20 @@
-// src/pages/index.ts
-import Error from './ErrorPage'
-import Home from './HomePage'
-import Contact from './ContactPage'
-import Checkout from './CheckoutPage'
-import SingleProduct from './SingleProductPage/SingleProductPage'
-import Products from './ProductsPage'
-import Cart from './CartPage'
-import SuccessfulPayment from './SuccessfulPaymentPage'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import { ProductsProvider } from './context/products_context';
+import { FilterProvider } from './context/filter_context';
+import { CartProvider } from './context/cart_context';
 
-export {
-  Error,
-  Home,
-  Contact,
-  Checkout,
-  SingleProduct,
-  Products,
-  Cart,
-  SuccessfulPayment,
-}
+ReactDOM.render(
+  <React.StrictMode>
+    <ProductsProvider>
+      <FilterProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </FilterProvider>
+    </ProductsProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);

@@ -17,11 +17,6 @@ export const links = [
   },
   {
     id: 3,
-    text: 'about',
-    url: '/about',
-  },
-  {
-    id: 4,
     text: 'contact',
     url: '/contact',
   },
@@ -36,7 +31,7 @@ export const services = [
   },
   {
     id: 2,
-    icon: <GiNaturalFood />,
+    icon: <GiFruitBowl />,
     title: 'nutrient-rich',
     text: 'Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants.',
   },
@@ -61,7 +56,7 @@ export const services = [
 ];
 
 // If using Sanity, these would be the API endpoints and queries
-export const API_ENDPOINT = 'https://YOUR_SANITY_PROJECT_ID.api.sanity.io/v1/graphql/production/default';
+export const API_ENDPOINT = 'https://your-sanity-project-id.api.sanity.io/v1/graphql/production/default';
 
 export const QUERY = `
 {

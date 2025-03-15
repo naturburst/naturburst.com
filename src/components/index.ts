@@ -1,3 +1,4 @@
+// src/components/index.ts
 import Navbar from './Navbar/Navbar'
 import Footer from './Footer'
 import Sidebar from './Sidebar/Sidebar'
@@ -14,13 +15,8 @@ import Filters from './Filters/Filters'
 import ProductList from './ProductList'
 import Sort from './Sort/Sort'
 import CartContent from './CartContent'
-import StripeCheckout from './StripeCheckout'
 import ScrollToTop from './ScrollToTop'
 
-
-// import CartButtons from './CartButtons'
-// import Error from './Error'
-// import Stars from './Stars'
 export {
   Navbar,
   Footer,
@@ -38,10 +34,5 @@ export {
   ProductList,
   Sort,
   CartContent,
-  StripeCheckout,
   ScrollToTop,
-
-  // CartButtons,
-  // Error,
-  // Stars,
 }

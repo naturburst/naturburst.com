@@ -10,8 +10,7 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from '../actions'
-// import { featuredProducts, productData } from '../utils/productData'
-import { productDataType } from '../utils/productData'
+import { productDataType, sampleProducts } from '../utils/productData'
 import { API_ENDPOINT, QUERY } from '../utils/constants'
 import axios from 'axios'
 
@@ -76,12 +75,20 @@ export const ProductsProvider: React.FC = ({ children }) => {
     const fetchProducts = async () => {
       dispatch({ type: GET_PRODUCTS_BEGIN })
       try {
+        // Try to fetch from Sanity API
         const queryResult = await axios.post(API_ENDPOINT, { query: QUERY })
+          .catch(error => {
+            // If API call fails, we'll throw an error to trigger the fallback
+            console.log('Falling back to sample data:', error.message)
+            throw new Error('API unavailable')
+          })
+
         const result = queryResult.data.data.allProduct
         dispatch({ type: GET_PRODUCTS_SUCCESS, payload: result })
       } catch (error) {
-        console.log(error)
-        dispatch({ type: GET_PRODUCTS_ERROR })
+        console.log('Using sample product data instead')
+        // Fall back to sample product data when API is unavailable
+        dispatch({ type: GET_PRODUCTS_SUCCESS, payload: sampleProducts })
       }
     }
     fetchProducts()
