@@ -4,8 +4,14 @@ export type productDataType = {
   slug: string
   brand: string  // Always "Tropi Treats" for now
   categories: string  // Type of fruit
+  clothingCategories?: string  // Optional clothing category
   price: number
   stock: number
+  forWhom?: string  // Target demographic
+  height?: string[]  // Height ranges
+  heightDescription?: string  // Description of height ranges
+  age?: string[]  // Age ranges - required for filters
+  ageDescription?: string  // Description of age ranges
   weight: string  // Weight in grams
   ingredients: string[]  // List of ingredients
   nutritionalInfo?: {
@@ -47,7 +53,9 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet and aromatic with subtle vanilla notes. The crisp texture transforms into a creamy mouthfeel, delivering the authentic custard apple experience.',
     storageInstructions: 'Keep in cool & dry place, away from sunlight. Do not buy if seal is broken or tempered. Please reseal properly once opened.',
     featured: true,
-    images: ['/images/custard-apple-1.jpg', '/images/custard-apple-2.jpg', '/images/custard-apple-3.jpg']
+    images: ['/images/custard-apple-1.jpg', '/images/custard-apple-2.jpg', '/images/custard-apple-3.jpg'],
+    // Adding age property to sample data
+    age: ['all ages']
   },
   {
     id: '2',
@@ -69,7 +77,9 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet and fruity with notes of banana, pineapple, and mango. The crunchy texture gives way to a burst of tropical flavor.',
     storageInstructions: 'Keep in cool & dry place, away from sunlight. Do not buy if seal is broken or tempered. Please reseal properly once opened.',
     featured: true,
-    images: ['/images/jackfruit-1.jpg', '/images/jackfruit-2.jpg', '/images/jackfruit-3.jpg']
+    images: ['/images/jackfruit-1.jpg', '/images/jackfruit-2.jpg', '/images/jackfruit-3.jpg'],
+    // Adding age property to sample data
+    age: ['all ages']
   },
   {
     id: '3',
@@ -91,7 +101,9 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Sweet-tart flavor with a pleasant astringency and subtle grape-like notes. The crisp texture provides an intense flavor release before melting away.',
     storageInstructions: 'Keep in cool & dry place, away from sunlight. Do not buy if seal is broken or tempered. Please reseal properly once opened.',
     featured: true,
-    images: ['/images/jamun-1.jpg', '/images/jamun-2.jpg', '/images/jamun-3.jpg']
+    images: ['/images/jamun-1.jpg', '/images/jamun-2.jpg', '/images/jamun-3.jpg'],
+    // Adding age property to sample data
+    age: ['all ages']
   },
   {
     id: '4',
@@ -113,6 +125,8 @@ export const sampleProducts: productDataType[] = [
     tastingNotes: 'Intensely sweet with custard-like notes and subtle hints of vanilla. The crisp texture dissolves into a creamy mouthfeel, delivering the authentic sitaphal experience.',
     storageInstructions: 'Keep in cool & dry place, away from sunlight. Do not buy if seal is broken or tempered. Please reseal properly once opened.',
     featured: true,
-    images: ['/images/sitaphal-1.jpg', '/images/sitaphal-2.jpg', '/images/sitaphal-3.jpg']
+    images: ['/images/sitaphal-1.jpg', '/images/sitaphal-2.jpg', '/images/sitaphal-3.jpg'],
+    // Adding age property to sample data
+    age: ['all ages']
   }
 ]

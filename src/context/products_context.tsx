@@ -5,7 +5,7 @@ import {
   SIDEBAR_CLOSE,
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_SUCCESS,
-  GET_PRODUCTS_ERROR,
+  // GET_PRODUCTS_ERROR removed as it's unused
   GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
@@ -60,8 +60,7 @@ export const ProductsProvider: React.FC = ({ children }) => {
       const singleProduct: productDataType = state.allProducts.filter(
         (product: productDataType) => product.slug === slug
       )[0]
-      // running filter() on empty allProducts [] will result in undefined
-      // this if clause guard against such case
+      // Guard against filtering on empty allProducts array
       if (singleProduct) {
         dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct })
       }
@@ -78,7 +77,7 @@ export const ProductsProvider: React.FC = ({ children }) => {
         // Try to fetch from Sanity API
         const queryResult = await axios.post(API_ENDPOINT, { query: QUERY })
           .catch(error => {
-            // If API call fails, we'll throw an error to trigger the fallback
+            // API call failure triggers fallback to sample data
             console.log('Falling back to sample data:', error.message)
             throw new Error('API unavailable')
           })
@@ -87,7 +86,7 @@ export const ProductsProvider: React.FC = ({ children }) => {
         dispatch({ type: GET_PRODUCTS_SUCCESS, payload: result })
       } catch (error) {
         console.log('Using sample product data instead')
-        // Fall back to sample product data when API is unavailable
+        // Fallback to sample product data when API is unavailable
         dispatch({ type: GET_PRODUCTS_SUCCESS, payload: sampleProducts })
       }
     }

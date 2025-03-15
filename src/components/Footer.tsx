@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { FaFacebookF, FaTwitter, FaInstagram, FaPinterest } from 'react-icons/fa'
-import logoWhite from '../assets/logo-white.png' // Will need a white version of your logo
+import logoWhite from '../assets/logo-white.jpg' // Will need a white version of your logo
 
 const Footer = () => {
   return (

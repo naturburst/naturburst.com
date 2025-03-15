@@ -1,7 +1,7 @@
 // src/utils/constants.tsx
 import React from 'react';
 import { FaLeaf, FaRegSun, FaShippingFast } from 'react-icons/fa';
-import { GiNaturalFood } from 'react-icons/gi';
+import { GiFruitBowl } from 'react-icons/gi';
 import { RiHealthBookLine } from 'react-icons/ri';
 
 export const links = [
@@ -55,8 +55,9 @@ export const services = [
   },
 ];
 
-// If using Sanity, these would be the API endpoints and queries
-export const API_ENDPOINT = 'https://your-sanity-project-id.api.sanity.io/v1/graphql/production/default';
+// Use a dummy local URL to avoid CORS issues during development
+// When you have a proper Sanity project, replace this with your real endpoint
+export const API_ENDPOINT = 'http://localhost:3001/api/dummy'; // This will intentionally fail and use sample data
 
 export const QUERY = `
 {

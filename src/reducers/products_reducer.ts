@@ -26,54 +26,112 @@ const products_reducer = (state: initialStateType, action: any) => {
   if (action.type === GET_PRODUCTS_SUCCESS) {
     // data retrieved from API doesn't fit productDataType shape
     const allProducts = action.payload.map((product: any) => {
-      let {
-        _id: id,
-        name,
-        slug: {current: slug},
-        brand,
-        categories: { categories },
-        clothingCategories, // might be null, need to flatten
-        price,
-        forWhom: { forWhom },
-        height, //need to flatten
-        heightDescription,
-        age, //need to flatten
-        ageDescription,
-        stock,
-        itemDescription,
-        featured,
-        images, //need to flatten
+      // Use optional chaining and nullish coalescing to prevent undefined errors
+      const {
+        _id: id = '',
+        name = '',
+        slug = {},
+        brand = '',
+        categories = {},
+        clothingCategories = null, // might be null, need to flatten
+        price = 0,
+        forWhom = { forWhom: 'all' },
+        height = [], //need to flatten
+        heightDescription = '',
+        age = [], //need to flatten
+        ageDescription = '',
+        stock = 0,
+        itemDescription = '',
+        featured = false,
+        images = [], //need to flatten
+        weight = '',
+        ingredients = [],
+        nutritionalInfo = null,
+        tastingNotes = '',
+        storageInstructions = ''
       } = product
 
-      if (clothingCategories) {
-        clothingCategories = clothingCategories.clothingCategories
+      // Safely handle slug extraction
+      const extractedSlug = typeof slug === 'object' && slug !== null && 'current' in slug
+        ? slug.current
+        : (typeof slug === 'string' ? slug : '')
+
+      // Safely handle categories extraction
+      const extractedCategories = typeof categories === 'object' && categories !== null && 'categories' in categories
+        ? categories.categories
+        : (typeof categories === 'string' ? categories : 'other')
+
+      // Safe handling for clothingCategories
+      let extractedClothingCategories = null
+      if (clothingCategories && typeof clothingCategories === 'object' && 'clothingCategories' in clothingCategories) {
+        extractedClothingCategories = clothingCategories.clothingCategories
       }
-      if (height) {
-        height = height.map((item: any) => item.height)
+
+      // Safe handling for forWhom
+      const extractedForWhom = typeof forWhom === 'object' && forWhom !== null && 'forWhom' in forWhom
+        ? forWhom.forWhom
+        : (typeof forWhom === 'string' ? forWhom : 'all')
+
+      // Safe handling for arrays that need to be flattened
+      let flattenedHeight = []
+      if (Array.isArray(height)) {
+        flattenedHeight = height.map((item) => {
+          if (item && typeof item === 'object' && 'height' in item) {
+            return item.height
+          }
+          return typeof item === 'string' ? item : ''
+        }).filter(Boolean)
       }
-      if (age) {
-        age = age.map((item: any) => item.age)
+
+      let flattenedAge = []
+      if (Array.isArray(age)) {
+        flattenedAge = age.map((item) => {
+          if (item && typeof item === 'object' && 'age' in item) {
+            return item.age
+          }
+          return typeof item === 'string' ? item : ''
+        }).filter(Boolean)
       }
-      // images not optional so no if clause to check
-      images = images.map((item: any) => item.asset.url)
+
+      // Safe handling for images
+      let processedImages = []
+      if (Array.isArray(images)) {
+        processedImages = images.map((item) => {
+          if (item && typeof item === 'object' && 'asset' in item &&
+              item.asset && typeof item.asset === 'object' && 'url' in item.asset) {
+            return item.asset.url
+          }
+          return typeof item === 'string' ? item : ''
+        }).filter(Boolean)
+      }
+
+      // If images is empty, provide a fallback
+      if (processedImages.length === 0) {
+        processedImages = ['/images/custard-apple-1.jpg']
+      }
 
       return {
-        id,
+        id: id || `fallback-${Math.random().toString(36).substr(2, 9)}`,
         name,
-        slug,
+        slug: extractedSlug,
         brand,
-        categories,
-        clothingCategories,
+        categories: extractedCategories,
+        clothingCategories: extractedClothingCategories,
         price,
         stock,
-        forWhom,
-        height,
+        forWhom: extractedForWhom,
+        height: flattenedHeight,
         heightDescription,
-        age,
+        age: flattenedAge,
         ageDescription,
         itemDescription,
         featured,
-        images,
+        images: processedImages,
+        weight,
+        ingredients,
+        nutritionalInfo,
+        tastingNotes,
+        storageInstructions
       }
     })
 

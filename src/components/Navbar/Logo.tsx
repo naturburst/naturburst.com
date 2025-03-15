@@ -1,5 +1,5 @@
 import React from 'react'
-import whiteLogo from '../../assets/logo_white.png'
+import whiteLogo from '../../assets/logo_white.jpg'
 import { Link } from 'react-router-dom'
 
 export const Logo = () => {
