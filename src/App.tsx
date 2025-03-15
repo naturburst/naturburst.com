@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Navbar, Sidebar, Footer, ScrollToTop } from './components'
@@ -5,7 +6,7 @@ import { Navbar, Sidebar, Footer, ScrollToTop } from './components'
 import {
   Home,
   Error,
-  Shipping,
+  Contact,
   SingleProduct,
   Checkout,
   Products,
@@ -21,8 +22,8 @@ function App() {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route exact path='/shipping'>
-            <Shipping />
+          <Route exact path='/contact'>
+            <Contact />
           </Route>
           <Route exact path='/cart'>
             <Cart />

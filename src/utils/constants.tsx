@@ -1,6 +1,8 @@
-import { GiClothes } from 'react-icons/gi'
-import { MdOutlineSmartToy } from 'react-icons/md'
-import { FaBaby } from 'react-icons/fa'
+// src/utils/constants.tsx
+import React from 'react';
+import { FaLeaf, FaRegSun, FaShippingFast } from 'react-icons/fa';
+import { GiNaturalFood } from 'react-icons/gi';
+import { RiHealthBookLine } from 'react-icons/ri';
 
 export const links = [
   {
@@ -10,39 +12,56 @@ export const links = [
   },
   {
     id: 2,
-    text: 'shipping',
-    url: '/shipping',
+    text: 'shop',
+    url: '/products',
   },
   {
     id: 3,
-    text: 'products',
-    url: '/products',
+    text: 'about',
+    url: '/about',
   },
-]
+  {
+    id: 4,
+    text: 'contact',
+    url: '/contact',
+  },
+];
 
 export const services = [
   {
     id: 1,
-    icon: <MdOutlineSmartToy />,
-    title: 'toy',
-    text: 'toy text',
+    icon: <FaLeaf />,
+    title: '100% natural',
+    text: 'Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended.',
   },
   {
     id: 2,
-    icon: <GiClothes />,
-    title: 'clothing',
-    text: 'clothing text',
+    icon: <GiNaturalFood />,
+    title: 'nutrient-rich',
+    text: 'Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants.',
   },
   {
     id: 3,
-    icon: <FaBaby />,
-    title: 'accessories',
-    text: 'accessories text',
+    icon: <RiHealthBookLine />,
+    title: 'lifestyle friendly',
+    text: 'Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices.',
   },
-]
+  {
+    id: 4,
+    icon: <FaRegSun />,
+    title: 'sustainably sourced',
+    text: 'We partner with sustainable farms to source the highest quality fruits while supporting responsible agricultural practices.',
+  },
+  {
+    id: 5,
+    icon: <FaShippingFast />,
+    title: 'free shipping',
+    text: 'Enjoy free shipping on all orders above $50. We use eco-friendly packaging to minimize environmental impact.',
+  },
+];
 
-export const API_ENDPOINT =
-  'https://bqk6gkzk.api.sanity.io/v1/graphql/production/default'
+// If using Sanity, these would be the API endpoints and queries
+export const API_ENDPOINT = 'https://YOUR_SANITY_PROJECT_ID.api.sanity.io/v1/graphql/production/default';
 
 export const QUERY = `
 {
@@ -56,23 +75,21 @@ export const QUERY = `
     categories {
       categories
     }
-    clothingCategories {
-      clothingCategories
-    }
     price
     stock
-    forWhom {
-      forWhom
+    weight
+    ingredients
+    nutritionalInfo {
+      calories
+      fat
+      carbs
+      protein
+      fiber
+      sugar
     }
-    height {
-      height
-    }
-    heightDescription
-    age {
-      age
-    }
-    ageDescription
     itemDescription
+    tastingNotes
+    storageInstructions
     featured
     images {
       asset {
@@ -81,5 +98,4 @@ export const QUERY = `
     }
   }
 }
-
-`
+`;
