@@ -1,18 +1,21 @@
+// src/utils/helpers.ts
 import { productDataType } from './productData'
 import { CurrencyCode } from '../context/currency_context'
 
 // Helper function to format prices with selected currency
-export const formatPrice = (number: number, product?: productDataType, currency?: CurrencyCode) => {
-  // If no currency is provided, use USD as default
-  const currencyToUse = currency || 'USD';
-
-  // Use currency-specific pricing when available in the product data
-  if (product?.prices?.[currencyToUse]) {
-    number = product.prices[currencyToUse];
+export const formatPrice = (
+  number: number,
+  product?: productDataType | { prices?: Record<CurrencyCode, number> },
+  currency: CurrencyCode = 'USD'
+) => {
+  // First check if we should use a currency-specific price
+  if (product && product.prices && currency in product.prices) {
+    // This directly accesses the price for the selected currency
+    number = product.prices[currency as keyof typeof product.prices];
   }
 
   // Format according to locale conventions
-  switch(currencyToUse) {
+  switch(currency) {
     case 'INR':
       return new Intl.NumberFormat('en-IN', {
         style: 'currency',
@@ -41,12 +44,37 @@ export const formatPrice = (number: number, product?: productDataType, currency?
 }
 
 // Function to get price value in a specific currency (without formatting)
-export const getPriceValue = (basePrice: number, product?: productDataType, currency?: CurrencyCode): number => {
-  const currencyToUse = currency || 'USD';
-
-  if (product?.prices?.[currencyToUse]) {
-    return product.prices[currencyToUse];
+export const getPriceValue = (
+  basePrice: number,
+  product?: productDataType | { prices?: Record<CurrencyCode, number> },
+  currency: CurrencyCode = 'USD'
+): number => {
+  if (product && product.prices && currency in product.prices) {
+    return product.prices[currency as keyof typeof product.prices];
   }
-
   return basePrice;
+}
+
+// Helper to calculate totals from cart in correct currency
+export const calculateTotalInCurrency = (
+  cart: Array<{
+    price: number,
+    amount: number,
+    productReference?: { prices?: Record<CurrencyCode, number> }
+  }>,
+  currency: CurrencyCode = 'USD'
+): number => {
+  return cart.reduce((total, item) => {
+    // Get the correct price in the selected currency
+    let priceInCurrency = item.price; // Default to the stored price
+
+    if (item.productReference &&
+        item.productReference.prices &&
+        currency in item.productReference.prices) {
+      // Use the currency-specific price if available
+      priceInCurrency = item.productReference.prices[currency as keyof typeof item.productReference.prices];
+    }
+
+    return total + (priceInCurrency * item.amount);
+  }, 0);
 }

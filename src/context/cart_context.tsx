@@ -1,6 +1,9 @@
+// src/context/cart_context.tsx
 import React, { useEffect, useContext, useReducer } from 'react'
 import reducer from '../reducers/cart_reducer'
 import { productDataType } from '../utils/productData'
+import { useCurrencyContext, CurrencyCode } from './currency_context'
+import { calculateTotalInCurrency } from '../utils/helpers'
 import {
   ADD_TO_CART,
   REMOVE_CART_ITEM,
@@ -16,12 +19,16 @@ export type cartType = {
   amount: number
   image: string
   price: number
+  productReference: {
+    prices?: Record<CurrencyCode, number>
+  }
 }
 
 export type initialStateType = {
   cart: cartType[]
   totalItems: number
   totalAmount: number
+  totalInSelectedCurrency: number
   addToCart: (
     id: string | undefined,
     slug: string | undefined,
@@ -46,6 +53,7 @@ const initialState = {
   cart: getLocalStorage(),
   totalItems: 0,
   totalAmount: 0,
+  totalInSelectedCurrency: 0,
   addToCart: () => {},
   removeItem: () => {},
   toggleAmount: () => {},
@@ -56,6 +64,7 @@ const CartContext = React.createContext<initialStateType>(initialState)
 
 export const CartProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { currency } = useCurrencyContext()
 
   const addToCart = (
     id: string | undefined,
@@ -81,7 +90,17 @@ export const CartProvider: React.FC = ({ children }) => {
     dispatch({ type: CLEAR_CART })
   }
 
-  // when the cart changes, store the changes to localStorage + re-calculate total amount in cart
+  // Calculate total in selected currency whenever cart or currency changes
+  useEffect(() => {
+    const totalInSelectedCurrency = calculateTotalInCurrency(state.cart, currency)
+    // Store in state for components to access
+    dispatch({ 
+      type: 'UPDATE_CURRENCY_TOTAL',
+      payload: totalInSelectedCurrency 
+    })
+  }, [state.cart, currency])
+
+  // When the cart changes, store the changes to localStorage + re-calculate total amount in cart
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(state.cart))
     dispatch({type: COUNT_CART_TOTALS})
@@ -95,6 +114,7 @@ export const CartProvider: React.FC = ({ children }) => {
     </CartContext.Provider>
   )
 }
+
 // make sure use
 export const useCartContext = () => {
   return useContext(CartContext)

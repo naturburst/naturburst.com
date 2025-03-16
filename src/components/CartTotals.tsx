@@ -1,14 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useCartContext } from '../context/cart_context'
-import { formatPrice } from '../utils/helpers'
+import { formatPrice, calculateTotalInCurrency } from '../utils/helpers'
 import { Link } from 'react-router-dom'
 import { useCurrencyContext } from '../context/currency_context'
 
 const CartTotals = () => {
-  const { totalAmount } = useCartContext()
+  const { cart, totalInSelectedCurrency } = useCartContext()
   // Access currency context to ensure consistent pricing across checkout flow
   const { currency } = useCurrencyContext()
+
+  // If totalInSelectedCurrency is not available (backward compatibility),
+  // calculate it on the fly
+  const totalAmount = totalInSelectedCurrency || calculateTotalInCurrency(cart, currency)
 
   return (
     <Wrapper>
@@ -33,8 +37,8 @@ const CartTotals = () => {
 
 const CheckoutButton = () => {
   return (
-    <Link to='#' className='btn coming-soon-btn'>
-      coming soon
+    <Link to='/checkout' className='btn'>
+      proceed to checkout
     </Link>
   )
 }
