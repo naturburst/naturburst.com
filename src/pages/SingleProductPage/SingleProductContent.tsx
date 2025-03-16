@@ -22,13 +22,8 @@ export const SingleProductContent = () => {
     ingredients,
     nutritionalInfo,
     tastingNotes,
-    storageInstructions,
-    prices
+    storageInstructions
   } = { ...singleProduct }
-
-  // Debug logging to verify prices exist
-  console.log("SingleProduct prices:", prices);
-  console.log("Current currency:", currency);
 
   return (
     <Wrapper>

@@ -6,7 +6,7 @@ export type productDataType = {
   brand: string
   categories: string
   price: number
-  prices: {
+  prices?: {
     USD: number
     INR: number
     GBP: number
@@ -32,10 +32,11 @@ export type productDataTypeKey = keyof productDataType
 
 // Handle image paths with process.env.PUBLIC_URL for proper Vercel deployment
 const getImagePath = (path: string) => {
+  // Use PUBLIC_URL if available (best practice), otherwise fallback to the path
   return `${process.env.PUBLIC_URL || ''}${path}`;
 };
 
-// Sample product data with location-based pricing - prices property is now required, not optional
+// Sample product data with location-based pricing
 export const sampleProducts: productDataType[] = [
   {
     id: '1',
@@ -46,7 +47,7 @@ export const sampleProducts: productDataType[] = [
     price: 4.99, // Default price in USD
     prices: {
       USD: 4.99,
-      INR: 140.00,
+      INR: 140,
       GBP: 3.99,
       EUR: 4.49
     },
@@ -77,7 +78,7 @@ export const sampleProducts: productDataType[] = [
     price: 4.99,
     prices: {
       USD: 4.99,
-      INR: 140.00,
+      INR: 140,
       GBP: 3.99,
       EUR: 4.49
     },
@@ -108,7 +109,7 @@ export const sampleProducts: productDataType[] = [
     price: 4.99,
     prices: {
       USD: 4.99,
-      INR: 140.00,
+      INR: 140,
       GBP: 3.99,
       EUR: 4.49
     },

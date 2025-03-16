@@ -1,4 +1,3 @@
-// src/components/Product.tsx
 import React from 'react'
 import styled from 'styled-components'
 import { formatPrice } from '../utils/helpers'
@@ -14,9 +13,6 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const { currency } = useCurrencyContext()
   const { id, images, name, price, slug, categories } = product
   const image = images[0]
-
-  // Directly access the price in the selected currency
-  const priceInSelectedCurrency = product.prices ? product.prices[currency] : price;
 
   // Determine background color based on product category
   const getProductColor = (category: string) => {
@@ -39,8 +35,8 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <img src={image} alt={name} />
           <div className="info-overlay">
             <h5>{name}</h5>
-            {/* Pass the full product to formatPrice to access currency-specific pricing */}
-            <p>{formatPrice(priceInSelectedCurrency, product, currency)}</p>
+            {/* Pass the currency to formatPrice to display correct currency price */}
+            <p>{formatPrice(price, product, currency)}</p>
           </div>
         </Link>
         <div className="card-footer">

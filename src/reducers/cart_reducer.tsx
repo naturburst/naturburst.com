@@ -1,4 +1,3 @@
-// src/reducers/cart_reducer.tsx
 import {
   ADD_TO_CART,
   CLEAR_CART,
@@ -28,7 +27,6 @@ const cart_reducer = (
 
       return { ...state, cart: tempCart }
     } else {
-      // Create a new cart item with product reference for currency conversion
       const newItem: cartType = {
         id,
         slug,
@@ -36,25 +34,19 @@ const cart_reducer = (
         amount,
         image: singleProduct.images[0],
         price: singleProduct.price,
-        productReference: {
-          prices: singleProduct.prices || undefined
-        }
       }
       return { ...state, cart: [...state.cart, newItem] }
     }
   }
-  
   if (action.type === CLEAR_CART) {
     return { ...state, cart: [] }
   }
-  
   if (action.type === REMOVE_CART_ITEM) {
     const tempCart = state.cart.filter(
       cartItem => cartItem.id !== action.payload
     )
     return { ...state, cart: tempCart }
   }
-  
   if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
     const { id, value } = action.payload
     const tempCart = state.cart.map(cartItem => {
@@ -75,7 +67,6 @@ const cart_reducer = (
 
     return { ...state, cart: tempCart }
   }
-  
   if (action.type === COUNT_CART_TOTALS) {
     const { totalItems, totalAmount } = state.cart.reduce(
       (total, cartItem) => {
@@ -90,15 +81,6 @@ const cart_reducer = (
     )
     return { ...state, totalItems, totalAmount }
   }
-  
-  // Handle the new action to update the currency-converted total
-  if (action.type === 'UPDATE_CURRENCY_TOTAL') {
-    return { 
-      ...state, 
-      totalInSelectedCurrency: action.payload 
-    }
-  }
-  
   throw new Error(`No Matching "${action.type}" - action type`)
 }
 
