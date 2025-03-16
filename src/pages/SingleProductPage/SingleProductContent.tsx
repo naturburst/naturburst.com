@@ -1,4 +1,3 @@
-// src/pages/SingleProductPage/SingleProductContent.tsx
 import React from 'react'
 import styled from 'styled-components'
 import { useProductsContext } from '../../context/products_context'
@@ -24,21 +23,24 @@ export const SingleProductContent = () => {
     nutritionalInfo,
     tastingNotes,
     storageInstructions,
+    prices
   } = { ...singleProduct }
+
+  // Debug logging to verify prices exist
+  console.log("SingleProduct prices:", prices);
+  console.log("Current currency:", currency);
 
   return (
     <Wrapper>
       <div className='product-info'>
         <h2>{name}</h2>
         <p className='brand'>{brand}</p>
-        {/* Fix: Consistent approach using the base price and full product for currency conversion */}
+        {/* Format price using selected currency to respect regional pricing */}
         <h5 className='price'>
-          {price && formatPrice(
-            price,
-            // Only pass singleProduct if it has required properties
+          {price && formatPrice(price,
+            // Only pass singleProduct if it has the required properties
             Object.keys(singleProduct).length > 0 ? singleProduct as productDataType : undefined,
-            currency
-          )}
+            currency)}
         </h5>
         <p className='desc'>{itemDescription}</p>
 

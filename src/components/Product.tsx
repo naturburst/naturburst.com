@@ -15,6 +15,9 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const { id, images, name, price, slug, categories } = product
   const image = images[0]
 
+  // Directly access the price in the selected currency
+  const priceInSelectedCurrency = product.prices ? product.prices[currency] : price;
+
   // Determine background color based on product category
   const getProductColor = (category: string) => {
     switch(category) {
@@ -36,13 +39,13 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <img src={image} alt={name} />
           <div className="info-overlay">
             <h5>{name}</h5>
-            {/* Fix: Use consistent approach by passing base price and product */}
-            <p>{formatPrice(price, product, currency)}</p>
+            {/* Pass the full product to formatPrice to access currency-specific pricing */}
+            <p>{formatPrice(priceInSelectedCurrency, product, currency)}</p>
           </div>
         </Link>
         <div className="card-footer">
           <h5>{name}</h5>
-          {/* Same approach for consistency */}
+          {/* Ensure consistent currency display throughout the component */}
           <p>{formatPrice(price, product, currency)}</p>
           <div className="actions">
             <Link to={`/products/${slug}`} className="btn details-btn">

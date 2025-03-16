@@ -15,9 +15,7 @@ const CurrencySelector = () => {
   ]
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newCurrency = e.target.value as CurrencyCode
-    console.log('Currency selection changed to:', newCurrency) // Debug log
-    setCurrency(newCurrency)
+    setCurrency(e.target.value as CurrencyCode)
   }
 
   return (
