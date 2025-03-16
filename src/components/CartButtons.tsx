@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useProductsContext } from '../context/products_context'
 import { useCartContext } from '../context/cart_context'
+import CurrencySelector from './CurrencySelector'
 
 const CartButtons = () => {
   const { closeSidebar } = useProductsContext()
   const { totalItems } = useCartContext()
   return (
     <Wrapper className='cart-btn-wrapper'>
+      <CurrencySelector />
       <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
         Cart
         <span className='cart-container'>
@@ -23,7 +25,7 @@ const CartButtons = () => {
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: auto 1fr;
   align-items: center;
   width: 225px;
 

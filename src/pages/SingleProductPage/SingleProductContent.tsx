@@ -4,9 +4,13 @@ import { useProductsContext } from '../../context/products_context'
 import { formatPrice } from '../../utils/helpers'
 import { AddToCart } from '../../components'
 import { FaLeaf, FaCheck } from 'react-icons/fa'
+import { useCurrencyContext } from '../../context/currency_context'
+import { productDataType } from '../../utils/productData'
 
 export const SingleProductContent = () => {
   const { singleProduct } = useProductsContext()
+  // Extract currency preference for price localization
+  const { currency } = useCurrencyContext()
 
   const {
     name,
@@ -26,7 +30,13 @@ export const SingleProductContent = () => {
       <div className='product-info'>
         <h2>{name}</h2>
         <p className='brand'>{brand}</p>
-        <h5 className='price'>{price && formatPrice(price)}</h5>
+        {/* Format price using selected currency to respect regional pricing */}
+        <h5 className='price'>
+          {price && formatPrice(price,
+            // Only pass singleProduct if it has the required properties
+            Object.keys(singleProduct).length > 0 ? singleProduct as productDataType : undefined,
+            currency)}
+        </h5>
         <p className='desc'>{itemDescription}</p>
 
         {/* Product details */}
@@ -40,7 +50,7 @@ export const SingleProductContent = () => {
           <span>{stock && stock > 0 ? 'In stock' : 'Out of stock'}</span>
         </div>
 
-        {/* Ingredients section */}
+        {/* Ingredients section - conditionally rendered */}
         {ingredients && ingredients.length > 0 && (
           <div className='ingredients'>
             <span className='label'>Ingredients</span>
@@ -54,7 +64,7 @@ export const SingleProductContent = () => {
           </div>
         )}
 
-        {/* Tasting notes section */}
+        {/* Tasting notes section - conditionally rendered */}
         {tastingNotes && (
           <div className='tasting-notes'>
             <span className='label'>Tasting Notes</span>
@@ -63,7 +73,7 @@ export const SingleProductContent = () => {
         )}
       </div>
 
-      {/* Nutritional information */}
+      {/* Nutritional information - conditionally rendered */}
       {nutritionalInfo && (
         <div className='nutrition-section'>
           <h3>Nutritional Information</h3>
@@ -110,7 +120,7 @@ export const SingleProductContent = () => {
         </div>
       </div>
 
-      {/* Storage instructions */}
+      {/* Storage instructions - conditionally rendered */}
       {storageInstructions && (
         <div className='storage'>
           <h3>Storage Instructions</h3>
@@ -118,7 +128,7 @@ export const SingleProductContent = () => {
         </div>
       )}
 
-      {/* Add to cart section */}
+      {/* Add to cart section - only shown when product is in stock */}
       {stock && stock > 0 && (
         <div className='add-to-cart-section'>
           <AddToCart singleProduct={singleProduct} />

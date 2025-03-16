@@ -5,9 +5,12 @@ import { FaShoppingCart } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { productDataType } from '../utils/productData'
 import { useCartContext } from '../context/cart_context'
+import { useCurrencyContext } from '../context/currency_context'
 
 const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const { addToCart } = useCartContext()
+  // Access the currency context to get the currently selected currency
+  const { currency } = useCurrencyContext()
   const { id, images, name, price, slug, categories } = product
   const image = images[0]
 
@@ -32,12 +35,14 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <img src={image} alt={name} />
           <div className="info-overlay">
             <h5>{name}</h5>
-            <p>{formatPrice(price, product)}</p>
+            {/* Pass the currency to formatPrice to display correct currency price */}
+            <p>{formatPrice(price, product, currency)}</p>
           </div>
         </Link>
         <div className="card-footer">
           <h5>{name}</h5>
-          <p>{formatPrice(price, product)}</p>
+          {/* Ensure consistent currency display throughout the component */}
+          <p>{formatPrice(price, product, currency)}</p>
           <div className="actions">
             <Link to={`/products/${slug}`} className="btn details-btn">
               Details

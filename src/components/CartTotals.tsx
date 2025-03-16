@@ -1,27 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useCartContext } from '../context/cart_context'
-// import { useUserContext } from '../context/user_context'
 import { formatPrice } from '../utils/helpers'
 import { Link } from 'react-router-dom'
+import { useCurrencyContext } from '../context/currency_context'
 
 const CartTotals = () => {
   const { totalAmount } = useCartContext()
+  // Access currency context to ensure consistent pricing across checkout flow
+  const { currency } = useCurrencyContext()
 
   return (
     <Wrapper>
       <div>
         <article>
           <h5>
-            subtotal : <span>{formatPrice(totalAmount)}</span>
+            subtotal : <span>{formatPrice(totalAmount, undefined, currency)}</span>
           </h5>
           <p>
             shipping fee: <span>FREE!</span>
           </p>
           <hr />
-          {/* Supposed to be totalAmount + shipping fee, but there's no shipping fee at the moment */}
           <h4>
-            order total: <span>{formatPrice(totalAmount)}</span>
+            order total: <span>{formatPrice(totalAmount, undefined, currency)}</span>
           </h4>
         </article>
         <CheckoutButton />
