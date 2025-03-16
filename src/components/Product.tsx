@@ -32,12 +32,12 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <img src={image} alt={name} />
           <div className="info-overlay">
             <h5>{name}</h5>
-            <p>{formatPrice(price, product)}</p>
+            <p>{formatPrice(price)}</p>
           </div>
         </Link>
         <div className="card-footer">
           <h5>{name}</h5>
-          <p>{formatPrice(price, product)}</p>
+          <p>{formatPrice(price)}</p>
           <div className="actions">
             <Link to={`/products/${slug}`} className="btn details-btn">
               Details

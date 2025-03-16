@@ -6,12 +6,6 @@ export type productDataType = {
   brand: string
   categories: string
   price: number
-  prices?: {
-    USD: number
-    INR: number
-    GBP: number
-    EUR: number
-  }
   stock: number
   weight: string
   ingredients: string[]
@@ -45,12 +39,6 @@ export const sampleProducts: productDataType[] = [
     brand: 'NaturBurst',
     categories: 'custard-apple',
     price: 4.99, // Default price in USD
-    prices: {
-      USD: 4.99,
-      INR: 140,
-      GBP: 3.99,
-      EUR: 4.49
-    },
     stock: 40,
     weight: '20g',
     ingredients: ['100% Natural Custard Apple'],
@@ -76,12 +64,6 @@ export const sampleProducts: productDataType[] = [
     brand: 'NaturBurst',
     categories: 'jackfruit',
     price: 4.99,
-    prices: {
-      USD: 4.99,
-      INR: 140,
-      GBP: 3.99,
-      EUR: 4.49
-    },
     stock: 35,
     weight: '20g',
     ingredients: ['100% Natural Jackfruit'],
@@ -107,12 +89,6 @@ export const sampleProducts: productDataType[] = [
     brand: 'NaturBurst',
     categories: 'jamun',
     price: 4.99,
-    prices: {
-      USD: 4.99,
-      INR: 140,
-      GBP: 3.99,
-      EUR: 4.49
-    },
     stock: 30,
     weight: '15g',
     ingredients: ['100% Natural Jamun'],

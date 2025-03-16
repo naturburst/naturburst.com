@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useCartContext } from '../context/cart_context'
-// import { useUserContext } from '../context/user_context'
 import { formatPrice } from '../utils/helpers'
 import { Link } from 'react-router-dom'
 
@@ -32,8 +31,8 @@ const CartTotals = () => {
 
 const CheckoutButton = () => {
   return (
-    <Link to='#' className='btn coming-soon-btn'>
-      coming soon
+    <Link to='/checkout' className='btn'>
+      proceed to checkout
     </Link>
   )
 }
