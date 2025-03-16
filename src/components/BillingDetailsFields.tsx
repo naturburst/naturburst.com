@@ -7,7 +7,7 @@ const BillingDetailsFields = () => {
         name="name"
         label="Name"
         type="text"
-        placeholder="Cute Buddy"
+        placeholder="Natureburst"
         required
       />
       <FormField

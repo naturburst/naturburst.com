@@ -9,7 +9,7 @@ export const SidebarHeader = () => {
   return (
     <div className='sidebar-header'>
       <Link to='/' onClick={closeSidebar}>
-        <img src={logo} className='logo' alt='cute buddy' />
+        <img src={logo} className='logo' alt='natureburst' />
       </Link>
       <button type='button' className='close-btn' onClick={closeSidebar}>
         <FaTimes />
