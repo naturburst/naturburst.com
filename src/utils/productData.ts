@@ -20,8 +20,6 @@ export type productDataType = {
     fat: number
     carbs: number
     protein: number
-    fiber?: number
-    sugar?: number
   }
   itemDescription: string
   tastingNotes: string
@@ -60,9 +58,7 @@ export const sampleProducts: productDataType[] = [
       calories: 72,
       fat: 0.23,
       carbs: 16.92,
-      protein: 1.62,
-      fiber: 3.8,
-      sugar: 10.2
+      protein: 1.62
     },
     itemDescription: 'Our freeze-dried custard apple captures the delicate sweetness and creamy texture of this exotic fruit. Each piece delivers the authentic taste of perfectly ripened custard apple with a light, crispy texture that melts in your mouth. No additives, no preservatives, and no added sugar – just pure fruit goodness.',
     tastingNotes: 'Sweet and aromatic with subtle vanilla notes. The crisp texture transforms into a creamy mouthfeel, delivering the authentic custard apple experience.',
@@ -93,9 +89,7 @@ export const sampleProducts: productDataType[] = [
       calories: 95,
       fat: 0.64,
       carbs: 23.25,
-      protein: 1.72,
-      fiber: 1.5,
-      sugar: 19.1
+      protein: 1.72
     },
     itemDescription: 'Our freeze-dried jackfruit preserves all the tropical sweetness and unique texture of fresh jackfruit. Each piece delivers an explosion of flavor with a satisfying crisp texture. Free from additives, preservatives, and added sugars – just pure fruit in its most convenient form.',
     tastingNotes: 'Sweet and fruity with notes of banana, pineapple, and mango. The crunchy texture gives way to a burst of tropical flavor.',
@@ -126,9 +120,7 @@ export const sampleProducts: productDataType[] = [
       calories: 47,
       fat: 0.15,
       carbs: 12.90,
-      protein: 1.03,
-      fiber: 0.9,
-      sugar: 8.4
+      protein: 1.03
     },
     itemDescription: 'Our freeze-dried jamun captures the unique sweet-tart flavor profile of this distinctive Indian fruit. Each piece delivers the authentic taste of perfectly ripened jamun with a light, crispy texture. Rich in antioxidants and completely free from additives, preservatives, and added sugars.',
     tastingNotes: 'Sweet-tart flavor with a pleasant astringency and subtle grape-like notes. The crisp texture provides an intense flavor release before melting away.',

@@ -6,6 +6,7 @@ import SingleProduct from './SingleProductPage/SingleProductPage'
 import Products from './ProductsPage'
 import Cart from './CartPage'
 import SuccessfulPayment from './SuccessfulPaymentPage'
+import HowToUsePage from './HowToUsePage'
 
 export {
   Error,
@@ -16,4 +17,5 @@ export {
   Products,
   Cart,
   SuccessfulPayment,
+  HowToUsePage
 }

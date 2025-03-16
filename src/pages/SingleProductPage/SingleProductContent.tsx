@@ -84,14 +84,6 @@ export const SingleProductContent = () => {
               <span className='nutrient'>Protein</span>
               <span className='value'>{nutritionalInfo.protein}g</span>
             </div>
-            <div className='nutrition-item'>
-              <span className='nutrient'>Fiber</span>
-              <span className='value'>{nutritionalInfo.fiber}g</span>
-            </div>
-            <div className='nutrition-item'>
-              <span className='nutrient'>Sugar</span>
-              <span className='value'>{nutritionalInfo.sugar}g</span>
-            </div>
           </div>
         </div>
       )}

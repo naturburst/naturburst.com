@@ -40,6 +40,10 @@ const Hero = () => {
         <Link to='/products' className='btn hero-btn'>
           Shop Now
         </Link>
+
+        <Link to="/how-to-use" className="btn hero-btn secondary">
+            Learn How to Use
+        </Link>
       </article>
 
       <article className='img-container'>
