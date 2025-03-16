@@ -1,3 +1,4 @@
+// src/components/CartItem.tsx
 import React from 'react'
 import styled from 'styled-components'
 import { formatPrice } from '../utils/helpers'
@@ -5,9 +6,12 @@ import AmountButtons from './AmountButtons'
 import { FaTrash } from 'react-icons/fa'
 import { cartType, useCartContext } from '../context/cart_context'
 import { Link } from 'react-router-dom'
+import { useCurrencyContext } from '../context/currency_context'
 
 const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
-  const { id, image, name, price, amount, slug } = cartItem
+  const { id, image, name, price, amount, slug, productReference } = cartItem
+  // Extract current currency selection
+  const { currency } = useCurrencyContext()
   const { removeItem, toggleAmount } = useCartContext()
 
   const increase: () => void = () => {
@@ -26,15 +30,16 @@ const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
         </Link>
         <div>
           <h5 className='name'>{name}</h5>
-          <h5 className='price-small'>{formatPrice(price)}</h5>
+          {/* Fix: Consistent approach for price formatting, using productReference for currency conversion */}
+          <h5 className='price-small'>{formatPrice(price, productReference, currency)}</h5>
         </div>
       </div>
       {/* price column */}
-      <div className='price'>{formatPrice(price)}</div>
+      <div className='price'>{formatPrice(price, productReference, currency)}</div>
       {/* quantity column */}
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-      {/* subtotal column */}
-      <h5 className='subtotal'>{formatPrice(price * amount)}</h5>
+      {/* subtotal column - calculate using the formatted price */}
+      <h5 className='subtotal'>{formatPrice(price * amount, productReference, currency)}</h5>
       {/* remove icon */}
       <button
         type='button'

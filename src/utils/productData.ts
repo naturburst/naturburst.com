@@ -1,10 +1,17 @@
+// src/utils/productData.ts
 export type productDataType = {
   id: string
   name: string
   slug: string
   brand: string
   categories: string
-  price: number  // Only USD price
+  price: number
+  prices: {
+    USD: number
+    INR: number
+    GBP: number
+    EUR: number
+  }
   stock: number
   weight: string
   ingredients: string[]
@@ -21,11 +28,14 @@ export type productDataType = {
   images: string[]
 }
 
+export type productDataTypeKey = keyof productDataType
+
+// Handle image paths with process.env.PUBLIC_URL for proper Vercel deployment
 const getImagePath = (path: string) => {
   return `${process.env.PUBLIC_URL || ''}${path}`;
 };
 
-// Update sample products to remove the prices object
+// Sample product data with location-based pricing - prices property is now required, not optional
 export const sampleProducts: productDataType[] = [
   {
     id: '1',
@@ -33,7 +43,13 @@ export const sampleProducts: productDataType[] = [
     slug: 'freeze-dried-custard-apple',
     brand: 'NaturBurst',
     categories: 'custard-apple',
-    price: 4.99,  // Only USD price
+    price: 4.99, // Default price in USD
+    prices: {
+      USD: 4.99,
+      INR: 140.00,
+      GBP: 3.99,
+      EUR: 4.49
+    },
     stock: 40,
     weight: '20g',
     ingredients: ['100% Natural Custard Apple'],
@@ -59,6 +75,12 @@ export const sampleProducts: productDataType[] = [
     brand: 'NaturBurst',
     categories: 'jackfruit',
     price: 4.99,
+    prices: {
+      USD: 4.99,
+      INR: 140.00,
+      GBP: 3.99,
+      EUR: 4.49
+    },
     stock: 35,
     weight: '20g',
     ingredients: ['100% Natural Jackfruit'],
@@ -84,6 +106,12 @@ export const sampleProducts: productDataType[] = [
     brand: 'NaturBurst',
     categories: 'jamun',
     price: 4.99,
+    prices: {
+      USD: 4.99,
+      INR: 140.00,
+      GBP: 3.99,
+      EUR: 4.49
+    },
     stock: 30,
     weight: '15g',
     ingredients: ['100% Natural Jamun'],
