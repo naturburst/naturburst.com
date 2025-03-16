@@ -5,12 +5,10 @@ import AmountButtons from './AmountButtons'
 import { FaTrash } from 'react-icons/fa'
 import { cartType, useCartContext } from '../context/cart_context'
 import { Link } from 'react-router-dom'
-import { useCurrencyContext } from '../context/currency_context'
 
 const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
   const { id, image, name, price, amount, slug } = cartItem
-  // Extract current currency selection to ensure consistent pricing display
-  const { currency } = useCurrencyContext()
+
   const { removeItem, toggleAmount } = useCartContext()
 
   const increase: () => void = () => {
@@ -29,16 +27,17 @@ const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
         </Link>
         <div>
           <h5 className='name'>{name}</h5>
-          {/* Display price in user's selected currency */}
-          <h5 className='price-small'>{formatPrice(price, undefined, currency)}</h5>
+
+
+          <h5 className='price-small'>{formatPrice(price)}</h5>
         </div>
       </div>
       {/* price column */}
-      <div className='price'>{formatPrice(price, undefined, currency)}</div>
+      <div className='price'>{formatPrice(price)}</div>
       {/* quantity column */}
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-      {/* subtotal column - apply currency formatting to calculated value */}
-      <h5 className='subtotal'>{formatPrice(price * amount, undefined, currency)}</h5>
+      {/* subtotal column */}
+      <h5 className='subtotal'>{formatPrice(price * amount)}</h5>
       {/* remove icon */}
       <button
         type='button'

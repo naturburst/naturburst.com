@@ -1,22 +1,36 @@
 import { productDataType } from './productData'
-import { CurrencyCode } from '../context/currency_context'
 
-// Helper function to format prices with selected currency
-export const formatPrice = (number: number, product?: productDataType, currency?: CurrencyCode) => {
-  // If no currency is provided, use USD as default
-  const currencyToUse = currency || 'USD';
+// Supported currencies
+export type CurrencyCode = 'USD' | 'INR' | 'GBP' | 'EUR';
 
-  // Use currency-specific pricing when available in the product data
-  if (product?.prices?.[currencyToUse]) {
-    number = product.prices[currencyToUse];
+// Currency detection based on browser locale
+export const getUserCurrency = (): CurrencyCode => {
+  const locale = navigator.language || 'en-US';
+
+  if (locale.includes('en-GB')) return 'GBP';
+  if (locale.includes('en-IN') || locale.includes('hi')) return 'INR';
+  if (locale.includes('fr') || locale.includes('de') || locale.includes('es') ||
+      locale.includes('it') || locale.includes('nl')) return 'EUR';
+
+  return 'USD'; // Default
+}
+
+// Format price based on location
+export const formatPrice = (number: number, product?: productDataType) => {
+  const currency = getUserCurrency();
+
+  // Use location-specific pricing when available
+  if (product?.prices?.[currency]) {
+    number = product.prices[currency];
   }
 
   // Format according to locale conventions
-  switch(currencyToUse) {
+  switch(currency) {
     case 'INR':
       return new Intl.NumberFormat('en-IN', {
         style: 'currency',
         currency: 'INR',
+        maximumFractionDigits: 0
       }).format(number);
 
     case 'GBP':
@@ -38,15 +52,4 @@ export const formatPrice = (number: number, product?: productDataType, currency?
         currency: 'USD',
       }).format(number);
   }
-}
-
-// Function to get price value in a specific currency (without formatting)
-export const getPriceValue = (basePrice: number, product?: productDataType, currency?: CurrencyCode): number => {
-  const currencyToUse = currency || 'USD';
-
-  if (product?.prices?.[currencyToUse]) {
-    return product.prices[currencyToUse];
-  }
-
-  return basePrice;
 }

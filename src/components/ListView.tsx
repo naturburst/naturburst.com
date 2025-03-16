@@ -3,14 +3,10 @@ import styled from 'styled-components'
 import { formatPrice } from '../utils/helpers'
 import { Link } from 'react-router-dom'
 import { productDataType } from '../utils/productData'
-import { useCurrencyContext } from '../context/currency_context'
 
 const ListView: React.FC<{ filteredProducts: productDataType[] }> = ({
   filteredProducts,
 }) => {
-  // Access currency context to maintain consistent currency display across views
-  const { currency } = useCurrencyContext()
-
   return (
     <Wrapper>
       {filteredProducts.map(product => {
@@ -23,8 +19,7 @@ const ListView: React.FC<{ filteredProducts: productDataType[] }> = ({
 
             <div>
               <h4>{name}</h4>
-              {/* Apply user's selected currency to product prices */}
-              <h5>{formatPrice(price, product, currency)}</h5>
+              <h5>{formatPrice(price)}</h5>
               <p>{itemDescription.substring(0, 150)}...</p>
               <Link to={`/products/${slug}`} className='btn'>
                 Details

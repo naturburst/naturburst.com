@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 export const Logo = () => {
   return (
     <Link to='/'>
-      <img src={whiteLogo} alt='Natureburst' />
+      <img src={whiteLogo} alt='cute buddy' />
     </Link>
   )
 }
