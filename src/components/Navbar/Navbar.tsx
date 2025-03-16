@@ -1,3 +1,4 @@
+// src/components/Navbar/Navbar.tsx
 import React from 'react'
 import styled from 'styled-components'
 import CartButtons from '../CartButtons'
@@ -27,7 +28,8 @@ const NavContainer = styled.nav`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, var(--clr-primary-2), var(--clr-primary-4), var(--clr-accent-3));
+  background: linear-gradient(to right, var(--clr-accent-3), var(--clr-primary-5), var(--clr-accent-3)); /* Gradient background using brand colors */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
 
   .nav-center {
     width: 90vw;
@@ -45,7 +47,7 @@ const NavContainer = styled.nav`
   .nav-toggle {
     background: transparent;
     border: transparent;
-    color: var(--clr-white);
+    color: var(--clr-primary-1);
     cursor: pointer;
     svg {
       font-size: 2rem;
@@ -73,18 +75,49 @@ const NavContainer = styled.nav`
       display: flex;
       justify-content: center;
       li {
-        margin: 0 0.5rem;
+        margin: 0 1rem; /* Increased spacing between nav items */
+        position: relative; /* For animated underline effect */
       }
       a {
-        color: var(--clr-white);
-        font-size: 1.1rem;
-        text-transform: capitalize;
-        letter-spacing: var(--spacing);
-        padding: 0.5rem;
-        font-weight: 500;
+        color: var(--clr-primary-1);
+        font-size: 1.2rem; /* Slightly larger text */
+        text-transform: uppercase; /* More impact with uppercase */
+        letter-spacing: 1.5px; /* Increased letter spacing */
+        padding: 0.75rem 0.5rem;
+        font-weight: 600; /* Bolder text */
+        transition: all 0.3s ease;
+        position: relative;
+
+        /* Animated underline effect */
+        &::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: var(--clr-accent-1);
+          transition: width 0.3s ease;
+        }
+
         &:hover {
-          border-bottom: 2px solid var(--clr-accent-3);
-          color: var(--clr-accent-3);
+          color: var(--clr-accent-1);
+          transform: translateY(-2px); /* Slight lift effect */
+
+          &::after {
+            width: 100%; /* Expand underline on hover */
+          }
+        }
+
+        /* Active page indicator */
+        &.active {
+          color: var(--clr-accent-1);
+          font-weight: 700;
+
+          &::after {
+            width: 100%;
+            height: 3px; /* Thicker underline for active page */
+          }
         }
       }
     }

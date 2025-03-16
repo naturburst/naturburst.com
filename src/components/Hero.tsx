@@ -37,20 +37,29 @@ const Hero = () => {
           </div>
         </div>
 
-        <Link to='/products' className='btn hero-btn'>
-          Shop Now
-        </Link>
+        <div className="hero-buttons">
+          <Link to='/products' className='btn hero-btn'>
+            Shop Now
+          </Link>
 
-        <Link to="/how-to-use" className="btn hero-btn secondary">
+          <Link to="/how-to-use" className="btn hero-btn secondary">
             Learn How to Use
-        </Link>
+          </Link>
+        </div>
       </article>
 
       <article className='img-container'>
+        {/* Product images in aligned grid */}
         <div className='product-images'>
-          <img src={getImagePath('/images/custard-apple-detail1.jpg')} alt='Custard Apple' className='product-img custard-apple' />
-          <img src={getImagePath('/images/jackfruit-detail1.jpg')} alt='Jackfruit' className='product-img jackfruit' />
-          <img src={getImagePath('/images/jamun-detail1.jpg')} alt='Jamun' className='product-img jamun' />
+          <div className="product-box custard">
+            <img src={getImagePath('/images/custard-apple-detail1.jpg')} alt='Custard Apple' className='product-img' />
+          </div>
+          <div className="product-box jackfruit">
+            <img src={getImagePath('/images/jackfruit-detail1.jpg')} alt='Jackfruit' className='product-img' />
+          </div>
+          <div className="product-box jamun">
+            <img src={getImagePath('/images/jamun-detail1.jpg')} alt='Jamun' className='product-img' />
+          </div>
         </div>
       </article>
     </Wrapper>
@@ -104,9 +113,19 @@ const Wrapper = styled.section`
     }
   }
 
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
   .hero-btn {
     font-size: 1rem;
     padding: 0.75rem 1.5rem;
+  }
+
+  .secondary {
+    background: var(--clr-accent-1);
   }
 
   .img-container {
@@ -121,42 +140,68 @@ const Wrapper = styled.section`
     .img-container {
       display: block;
       position: relative;
+      height: 100%;
+      width: 100%;
 
+      /* Container for the product boxes - uses flexbox for alignment */
       .product-images {
-        position: relative;
-        height: 500px;
-        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 2rem;
+        padding: 2rem;
       }
 
-      .product-img {
-        position: absolute;
+      /* Common styling for all product boxes */
+      .product-box {
         width: 250px;
         height: 250px;
-        object-fit: contain;
         border-radius: var(--radius);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: translateY(-10px);
+        }
       }
 
-      .custard-apple {
-        top: 0;
-        left: 50px;
-        z-index: 1;
+      /* Product-specific styling */
+      .custard {
         border: 5px solid var(--clr-custard-apple);
+        align-self: flex-end; /* Align to right */
       }
 
       .jackfruit {
-        top: 150px;
-        right: 0;
-        z-index: 2;
         border: 5px solid var(--clr-jackfruit);
+        align-self: flex-start; /* Align to left */
       }
 
       .jamun {
-        bottom: 0;
-        left: 100px;
-        z-index: 3;
         border: 5px solid var(--clr-jamun);
+        align-self: flex-end; /* Align to right */
       }
+
+      .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+    }
+  }
+
+  /* Additional alignment tweaks for larger screens */
+  @media (min-width: 1200px) {
+    .product-images {
+      padding: 3rem;
+    }
+
+    .product-box {
+      width: 320px;
+      height: 320px;
     }
   }
 `

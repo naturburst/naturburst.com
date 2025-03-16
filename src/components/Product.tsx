@@ -67,6 +67,7 @@ const Wrapper = styled.article<WrapperProps>`
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s linear;
     overflow: hidden;
+    height: 100%; /* Ensure consistent height */
 
     &:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
@@ -95,6 +96,7 @@ const Wrapper = styled.article<WrapperProps>`
     display: block;
     object-fit: contain;
     transition: var(--transition);
+    padding: 1rem; /* Add padding for better product display */
   }
 
   .info-overlay {
@@ -130,11 +132,13 @@ const Wrapper = styled.article<WrapperProps>`
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
+    height: calc(100% - 200px); /* Ensure consistent height */
 
     h5 {
       margin-bottom: 0.5rem;
       font-weight: 600;
       font-size: 1.2rem;
+      color: var(--clr-primary-1); /* Dark green text */
     }
 
     p {
@@ -147,6 +151,7 @@ const Wrapper = styled.article<WrapperProps>`
     .actions {
       display: flex;
       gap: 0.5rem;
+      margin-top: auto; /* Push buttons to bottom */
 
       .btn {
         flex: 1;
@@ -167,11 +172,10 @@ const Wrapper = styled.article<WrapperProps>`
       }
 
       .cart-btn {
-        background: ${props => props.color};
+        background: var(--clr-accent-1); /* Brown button */
 
         &:hover {
-          background: ${props => props.color};
-          filter: brightness(1.1);
+          background: var(--clr-primary-3);
         }
       }
     }
