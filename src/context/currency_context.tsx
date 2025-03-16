@@ -26,10 +26,19 @@ export const CurrencyProvider: React.FC = ({ children }) => {
   // Save currency preference when it changes
   useEffect(() => {
     localStorage.setItem('selectedCurrency', currency)
+    console.log('Currency updated to:', currency) // Debug log
   }, [currency])
 
+  // Create an explicit state setter function
+  const updateCurrency = (newCurrency: CurrencyCode) => {
+    console.log('Setting currency to:', newCurrency) // Debug log
+    if (newCurrency !== currency) {
+      setCurrency(newCurrency)
+    }
+  }
+
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency: updateCurrency }}>
       {children}
     </CurrencyContext.Provider>
   )

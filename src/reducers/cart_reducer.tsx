@@ -16,7 +16,12 @@ const cart_reducer = (
     const { id, slug, amount, singleProduct } = action.payload
     const tempItem = state.cart.find(item => item.id === id)
 
+    // Debug the incoming product data
+    console.log("Adding to cart - product data:", singleProduct);
+    console.log("Product has prices?", singleProduct && singleProduct.prices ? "yes" : "no");
+
     if (tempItem) {
+      // Item exists in cart, update amount
       const tempCart = state.cart.map(cartItem => {
         if (cartItem.id === id) {
           const newAmount = tempItem.amount + amount
@@ -28,7 +33,7 @@ const cart_reducer = (
 
       return { ...state, cart: tempCart }
     } else {
-      // Create a new cart item with product reference for currency conversion
+      // Create a new cart item with full product reference for currency conversion
       const newItem: cartType = {
         id,
         slug,
@@ -36,10 +41,15 @@ const cart_reducer = (
         amount,
         image: singleProduct.images[0],
         price: singleProduct.price,
+        // Store the complete prices object for currency conversion
         productReference: {
           prices: singleProduct.prices || undefined
         }
       }
+
+      // Log the created cart item
+      console.log("New cart item with price info:", newItem);
+
       return { ...state, cart: [...state.cart, newItem] }
     }
   }
