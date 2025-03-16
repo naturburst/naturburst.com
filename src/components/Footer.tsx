@@ -51,7 +51,7 @@ const Footer = () => {
 }
 
 const Wrapper = styled.footer`
-  background: var(--clr-primary-1);
+  background: linear-gradient(to right, var(--clr-primary-1), var(--clr-primary-2));
   color: var(--clr-white);
   padding: 3rem 0 1.5rem 0;
 

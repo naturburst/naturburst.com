@@ -44,10 +44,12 @@ const Wrapper = styled.section`
     
     h2 {
       font-size: 2.8rem;
-      background: linear-gradient(to right, var(--clr-primary-3), var(--clr-accent-1));
+      background: linear-gradient(to right, var(--clr-primary-2), var(--clr-accent-1), var(--clr-accent-3));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
     
     .underline {

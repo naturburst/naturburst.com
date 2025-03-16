@@ -1,4 +1,3 @@
-// src/pages/SingleProductPage/SingleProductContent.tsx
 import React from 'react'
 import styled from 'styled-components'
 import { useProductsContext } from '../../context/products_context'
@@ -9,17 +8,17 @@ import { FaLeaf, FaCheck } from 'react-icons/fa'
 export const SingleProductContent = () => {
   const { singleProduct } = useProductsContext()
 
-  const { 
-    name, 
-    price, 
-    itemDescription, 
-    brand, 
-    stock, 
+  const {
+    name,
+    price,
+    itemDescription,
+    brand,
+    stock,
     weight,
     ingredients,
     nutritionalInfo,
     tastingNotes,
-    storageInstructions 
+    storageInstructions
   } = { ...singleProduct }
 
   return (
@@ -29,7 +28,8 @@ export const SingleProductContent = () => {
         <p className='brand'>{brand}</p>
         <h5 className='price'>{price && formatPrice(price)}</h5>
         <p className='desc'>{itemDescription}</p>
-        
+
+        {/* Product details */}
         <div className='info'>
           <span className='label'>Weight</span>
           <span>{weight}</span>
@@ -40,6 +40,7 @@ export const SingleProductContent = () => {
           <span>{stock && stock > 0 ? 'In stock' : 'Out of stock'}</span>
         </div>
 
+        {/* Ingredients section */}
         {ingredients && ingredients.length > 0 && (
           <div className='ingredients'>
             <span className='label'>Ingredients</span>
@@ -53,6 +54,7 @@ export const SingleProductContent = () => {
           </div>
         )}
 
+        {/* Tasting notes section */}
         {tastingNotes && (
           <div className='tasting-notes'>
             <span className='label'>Tasting Notes</span>
@@ -61,6 +63,7 @@ export const SingleProductContent = () => {
         )}
       </div>
 
+      {/* Nutritional information */}
       {nutritionalInfo && (
         <div className='nutrition-section'>
           <h3>Nutritional Information</h3>
@@ -93,6 +96,7 @@ export const SingleProductContent = () => {
         </div>
       )}
 
+      {/* Product features */}
       <div className='product-features'>
         <h3>Product Features</h3>
         <div className='features-list'>
@@ -114,6 +118,7 @@ export const SingleProductContent = () => {
         </div>
       </div>
 
+      {/* Storage instructions */}
       {storageInstructions && (
         <div className='storage'>
           <h3>Storage Instructions</h3>
@@ -121,6 +126,7 @@ export const SingleProductContent = () => {
         </div>
       )}
 
+      {/* Add to cart section */}
       {stock && stock > 0 && (
         <div className='add-to-cart-section'>
           <AddToCart singleProduct={singleProduct} />
@@ -132,11 +138,11 @@ export const SingleProductContent = () => {
 
 const Wrapper = styled.section`
   .product-info {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
     color: var(--clr-primary-1);
   }
@@ -147,26 +153,25 @@ const Wrapper = styled.section`
     margin-bottom: 0.75rem;
     font-weight: 500;
   }
-  
+
   .price {
     color: var(--clr-primary-5);
     font-size: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
-  
+
   .desc {
     line-height: 1.8;
-    max-width: 45em;
     margin-bottom: 1.5rem;
     color: var(--clr-grey-3);
   }
-  
+
   .info {
     display: flex;
-    margin-bottom: 1.25rem;
-    
+    margin-bottom: 1rem;
+
     .label {
-      min-width: 150px;
+      min-width: 120px;
       font-weight: 600;
       color: var(--clr-grey-3);
     }
@@ -174,28 +179,28 @@ const Wrapper = styled.section`
 
   .ingredients {
     margin-bottom: 1.5rem;
-    
+
     .label {
       display: block;
       font-weight: 600;
       color: var(--clr-grey-3);
       margin-bottom: 0.5rem;
     }
-    
+
     .ingredients-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
-    
+
     .ingredient {
       display: flex;
       align-items: center;
       background: var(--clr-primary-9);
-      padding: 0.4rem 0.75rem;
+      padding: 0.3rem 0.6rem;
       border-radius: 20px;
       font-size: 0.9rem;
-      
+
       .icon {
         color: var(--clr-primary-5);
         margin-right: 0.3rem;
@@ -205,14 +210,14 @@ const Wrapper = styled.section`
 
   .tasting-notes {
     margin-bottom: 1.5rem;
-    
+
     .label {
       display: block;
       font-weight: 600;
       color: var(--clr-grey-3);
       margin-bottom: 0.5rem;
     }
-    
+
     p {
       font-style: italic;
       color: var(--clr-grey-4);
@@ -222,57 +227,57 @@ const Wrapper = styled.section`
 
   .nutrition-section {
     background: var(--clr-primary-10);
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-radius: var(--radius);
-    margin-bottom: 2rem;
-    
+    margin-bottom: 1.5rem;
+
     h3 {
       color: var(--clr-primary-1);
       margin-bottom: 1rem;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
-    
+
     .nutrition-info {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 1rem;
     }
-    
+
     .nutrition-item {
       display: flex;
       flex-direction: column;
     }
-    
+
     .nutrient {
       font-weight: 600;
       color: var(--clr-primary-3);
       margin-bottom: 0.25rem;
     }
-    
+
     .value {
       font-size: 1.1rem;
     }
   }
 
   .product-features {
-    margin-bottom: 2rem;
-    
+    margin-bottom: 1.5rem;
+
     h3 {
       color: var(--clr-primary-1);
       margin-bottom: 1rem;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
-    
+
     .features-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 0.75rem;
     }
-    
+
     .feature {
       display: flex;
       align-items: center;
-      
+
       .icon {
         color: var(--clr-primary-5);
         margin-right: 0.5rem;
@@ -282,30 +287,34 @@ const Wrapper = styled.section`
 
   .storage {
     background: var(--clr-grey-10);
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-radius: var(--radius);
-    margin-bottom: 2rem;
-    
+    margin-bottom: 1.5rem;
+
     h3 {
       color: var(--clr-primary-1);
       margin-bottom: 0.5rem;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
-    
+
     p {
       margin-bottom: 0;
     }
   }
 
   .add-to-cart-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--clr-grey-9);
   }
 
   @media (max-width: 768px) {
     .product-features .features-list {
       grid-template-columns: 1fr;
+    }
+
+    .nutrition-info {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 `

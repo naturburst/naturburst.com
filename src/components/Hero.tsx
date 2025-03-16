@@ -128,7 +128,7 @@ const Wrapper = styled.section`
         position: absolute;
         width: 250px;
         height: 250px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: var(--radius);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       }

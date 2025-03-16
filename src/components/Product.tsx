@@ -84,7 +84,7 @@ const Wrapper = styled.article<WrapperProps>`
 
   .image-container {
     position: relative;
-    height: 225px;
+    height: 200px;
     overflow: hidden;
     display: block;
   }
@@ -93,7 +93,7 @@ const Wrapper = styled.article<WrapperProps>`
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
     transition: var(--transition);
   }
 

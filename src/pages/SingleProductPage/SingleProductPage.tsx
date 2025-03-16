@@ -19,8 +19,7 @@ const SingleProductPage = () => {
 
   const { name, images } = { ...singleProduct }
 
-  // when page refreshes, allProducts changes from [] to an array of data from API
-  // so if state of allProducts changes, run this useEffect too for the case of page refresh
+  // When page refreshes or allProducts changes, fetch the single product
   useEffect(() => {
     if (slug) {
       fetchSingleProduct(slug)
@@ -31,22 +30,27 @@ const SingleProductPage = () => {
   if (singleProductLoading) {
     return <Loading />
   }
+
   if (singleProductError) {
     return <ErrorPage />
-  } else {
-    return (
-      <Wrapper>
-        <PageHero title={name} isSingleProduct />
-        <div className='section section-center page'>
-          <BackToProductsButton />
-          <div className='product-center'>
+  }
+
+  return (
+    <Wrapper>
+      <PageHero title={name} isSingleProduct />
+      <div className='section section-center page'>
+        <BackToProductsButton />
+        <div className='product-center'>
+          <div className='product-img-container'>
             <ProductImages images={images} />
+          </div>
+          <div className='product-content-container'>
             <SingleProductContent />
           </div>
         </div>
-      </Wrapper>
-    )
-  }
+      </div>
+    </Wrapper>
+  )
 }
 
 export default SingleProductPage
@@ -54,19 +58,31 @@ export default SingleProductPage
 const Wrapper = styled.main`
   .product-center {
     display: grid;
-    gap: 4rem;
+    gap: 2rem;
     margin-top: 2rem;
   }
+
+  .product-img-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-content-container {
+    width: 100%;
+  }
+
   .price {
     color: var(--clr-primary-5);
   }
+
   .desc {
-    line-height: 2;
+    line-height: 1.8;
     max-width: 45em;
     &:first-letter {
       text-transform: capitalize;
     }
   }
+
   .info {
     width: 300px;
     display: grid;
@@ -83,8 +99,9 @@ const Wrapper = styled.main`
   @media (min-width: 992px) {
     .product-center {
       grid-template-columns: 1fr 1fr;
-      align-items: center;
+      align-items: start;
     }
+
     .price {
       font-size: 1.25rem;
     }

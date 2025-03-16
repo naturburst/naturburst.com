@@ -5,22 +5,27 @@ Variables
 */
 
 :root {
-  /* Primary color: Vibrant tropical green - based on Custard Apple packaging */
-  --clr-primary-1: hsl(145, 63%, 20%);  /* Dark green */
-  --clr-primary-2: hsl(145, 63%, 30%);
-  --clr-primary-3: hsl(145, 63%, 40%);
-  --clr-primary-4: hsl(145, 63%, 50%);
-  --clr-primary-5: hsl(145, 63%, 60%);  /* Main brand green */
-  --clr-primary-6: hsl(145, 63%, 70%);
-  --clr-primary-7: hsl(145, 63%, 80%);
-  --clr-primary-8: hsl(145, 63%, 87%);
-  --clr-primary-9: hsl(145, 63%, 92%);
-  --clr-primary-10: hsl(145, 63%, 97%);
+  /* Primary colors: Matching NatureBurst logo */
+  --clr-primary-1: hsl(140, 70%, 15%);  /* Dark green - deep forest */
+  --clr-primary-2: hsl(140, 70%, 25%);
+  --clr-primary-3: hsl(140, 60%, 35%);
+  --clr-primary-4: hsl(140, 55%, 45%);
+  --clr-primary-5: hsl(140, 50%, 55%);  /* Main brand green */
+  --clr-primary-6: hsl(140, 45%, 65%);
+  --clr-primary-7: hsl(140, 40%, 75%);
+  --clr-primary-8: hsl(140, 35%, 85%);
+  --clr-primary-9: hsl(140, 30%, 92%);
+  --clr-primary-10: hsl(140, 25%, 97%);
+
+  /* Secondary brand colors from logo */
+  --clr-accent-1: hsl(30, 70%, 35%);  /* Brown - "Fresh" */
+  --clr-accent-2: hsl(30, 60%, 45%);  /* Lighter brown */
+  --clr-accent-3: hsl(80, 60%, 45%);  /* Light green - "Original" */
 
   /* Product accent colors - matching packaging */
-  --clr-jackfruit: hsl(45, 80%, 50%);  /* Jackfruit yellow */
-  --clr-jamun: hsl(270, 50%, 40%);     /* Jamun purple */
-  --clr-custard-apple: hsl(145, 63%, 40%); /* Custard apple green */
+  --clr-jackfruit: hsl(45, 85%, 50%);  /* Jackfruit yellow - more vibrant */
+  --clr-jamun: hsl(270, 60%, 45%);     /* Jamun purple - more vibrant */
+  --clr-custard-apple: hsl(140, 65%, 40%); /* Custard apple green - matches primary */
 
   /* Grey scale for text and UI */
   --clr-grey-1: hsl(209, 61%, 16%);

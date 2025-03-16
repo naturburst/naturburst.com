@@ -36,6 +36,7 @@ const ProductsPage = () => {
 }
 
 const Wrapper = styled.div`
+
   .products {
     display: flex;
     flex-direction: column;
