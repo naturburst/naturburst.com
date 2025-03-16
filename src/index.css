@@ -215,3 +215,35 @@ p {
 .page {
   min-height: calc(100vh - (20vh + 10rem));
 }
+.address-link {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+  display: block;
+}
+
+.address-link:hover .footer-address {
+  color: var(--clr-white);
+}
+
+.footer-address {
+  color: var(--clr-grey-8);
+  font-style: normal;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  transition: var(--transition);
+}
+
+.map-indicator {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  color: var(--clr-primary-5);
+}
+
+.map-icon {
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+}

@@ -6,11 +6,7 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
-  FaClock,
-  FaInstagram,
-  FaFacebookF,
-  FaTwitter,
-  FaPinterest
+  FaInstagram
 } from 'react-icons/fa'
 
 const ContactPage = () => {
@@ -32,26 +28,70 @@ const ContactPage = () => {
     setFormState((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Google Form integration config
+  const GOOGLE_FORM = {
+    formId: '1FAIpQLSf-YxQrLVpKQcaVViRY5KayFGIvS-Mzi6J9DYLP9R4J8U3QeQ',
+    fieldIds: {
+      name: 'entry.711183719',
+      email: 'entry.2091804586',
+      subject: 'entry.513638696',
+      message: 'entry.1230634780',
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // In a real application, you would send the form data to your server here
-    // For demonstration purposes, we'll just simulate a successful submission
-
     setStatus({
       submitted: true,
-      success: true,
-      message: 'Thank you for your message! We will get back to you shortly.',
+      success: false,
+      message: 'Sending your message...',
     })
 
-    // Reset form after submission
-    setFormState({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    })
+    try {
+      // Prepare form data for submission
+      const formData = new FormData()
+      formData.append(GOOGLE_FORM.fieldIds.name, formState.name)
+      formData.append(GOOGLE_FORM.fieldIds.email, formState.email)
+      formData.append(GOOGLE_FORM.fieldIds.subject, formState.subject)
+      formData.append(GOOGLE_FORM.fieldIds.message, formState.message)
+
+      // Submit to Google Form endpoint
+      await fetch(
+        `https://docs.google.com/forms/d/e/${GOOGLE_FORM.formId}/formResponse`,
+        {
+          method: 'POST',
+          body: formData,
+          mode: 'no-cors', // Required for cross-origin Google Form submission
+        }
+      )
+
+      // Handle success case
+      setStatus({
+        submitted: true,
+        success: true,
+        message: 'Thank you for your message! We will get back to you shortly.',
+      })
+
+      // Reset form
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+      })
+
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setStatus({
+        submitted: true,
+        success: false,
+        message: 'Something went wrong. Please try again or contact us directly.',
+      })
+    }
   }
+
+  // Updated Google Maps location link with full place details
+  const directionsUrl = "https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/data=!3m1!4b1!4m6!3m5!1s0x3bae161d4bde1ac1:0xd0454380d2d678cd!8m2!3d12.9775109!4d77.5631957!16s%2Fg%2F11j2zxr1w0?entry=ttu"
 
   return (
     <main>
@@ -66,7 +106,20 @@ const ContactPage = () => {
               <FaMapMarkerAlt className='icon' />
               <div>
                 <h4>Our Location</h4>
-                <p>123 Nature Way, Green Valley, CA 95123</p>
+                <address className="contact-address">
+                  Prestige West Woods<br />
+                  Magadi Road, Gopalpura<br />
+                  Bengaluru, Karnataka 560023
+                </address>
+                {/* Directions button moved below the address */}
+                <a
+                  href={directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="directions-btn"
+                >
+                  <span className="directions-text">Get Directions</span>
+                </a>
               </div>
             </div>
 
@@ -74,7 +127,7 @@ const ContactPage = () => {
               <FaPhoneAlt className='icon' />
               <div>
                 <h4>Phone</h4>
-                <p>(555) 123-4567</p>
+                <p>+91 90984 04225</p>
               </div>
             </div>
 
@@ -82,34 +135,23 @@ const ContactPage = () => {
               <FaEnvelope className='icon' />
               <div>
                 <h4>Email</h4>
-                <p>hello@natureburst.com</p>
+                <p>natureburst.shop@gmail.com</p>
               </div>
             </div>
 
             <div className='info-item'>
-              <FaClock className='icon' />
+              <FaInstagram className='icon' />
               <div>
-                <h4>Business Hours</h4>
-                <p>Monday - Friday: 9AM - 5PM PST</p>
+                <h4>Follow Us</h4>
+                <a
+                  href='https://instagram.com/tropitreats.shop'
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-link"
+                >
+                  @tropitreats.shop
+                </a>
               </div>
-            </div>
-          </div>
-
-          <div className='social-links'>
-            <h4>Follow Us</h4>
-            <div className='social-icons'>
-              <a href='https://instagram.com' className='social-icon'>
-                <FaInstagram />
-              </a>
-              <a href='https://facebook.com' className='social-icon'>
-                <FaFacebookF />
-              </a>
-              <a href='https://twitter.com' className='social-icon'>
-                <FaTwitter />
-              </a>
-              <a href='https://pinterest.com' className='social-icon'>
-                <FaPinterest />
-              </a>
             </div>
           </div>
         </div>
@@ -150,19 +192,15 @@ const ContactPage = () => {
 
             <div className='form-group'>
               <label htmlFor='subject'>Subject</label>
-              <select
+              <input
+                type='text'
                 id='subject'
                 name='subject'
                 value={formState.subject}
                 onChange={handleChange}
+                placeholder="What's this regarding?"
                 required
-              >
-                <option value=''>Select a subject</option>
-                <option value='Product Inquiry'>Product Inquiry</option>
-                <option value='Wholesale'>Wholesale Opportunities</option>
-                <option value='Feedback'>Feedback</option>
-                <option value='Other'>Other</option>
-              </select>
+              />
             </div>
 
             <div className='form-group'>
@@ -177,22 +215,12 @@ const ContactPage = () => {
               ></textarea>
             </div>
 
-            <button type='submit' className='btn submit-btn'>
-              Send Message
+            <button type='submit' className='btn submit-btn' disabled={status.submitted && !status.success}>
+              {status.submitted && !status.success ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>
       </Wrapper>
-
-      <MapSection>
-        <div className='map-container'>
-          {/* In a real application, you would include a Google Maps embed or similar map service here */}
-          <div className='map-placeholder'>
-            <p>Map Location of NatureBurst</p>
-            <small>Google Maps integration would be implemented here</small>
-          </div>
-        </div>
-      </MapSection>
     </main>
   )
 }
@@ -249,36 +277,47 @@ const Wrapper = styled.section`
 
     p {
       margin-bottom: 0;
+      color: var(--clr-grey-5);
     }
   }
 
-  .social-links {
-    h4 {
-      margin-bottom: 1rem;
-      color: var(--clr-grey-3);
-    }
+  .contact-address {
+    color: var(--clr-grey-5);
+    font-style: normal;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
 
-    .social-icons {
-      display: flex;
-      gap: 1rem;
-    }
+  /* Standalone directions button styling */
+  .directions-btn {
+    text-decoration: none;
+    display: inline-block;
+  }
 
-    .social-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+  .directions-text {
+    display: inline-block;
+    background: var(--clr-grey-9);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--clr-grey-5);
+    transition: var(--transition);
+
+    &:hover {
       background: var(--clr-primary-5);
       color: var(--clr-white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
+    }
+  }
 
-      &:hover {
-        background: var(--clr-primary-3);
-        transform: translateY(-3px);
-      }
+  /* Social link styling */
+  .social-link {
+    color: var(--clr-grey-5);
+    text-decoration: none;
+    transition: var(--transition);
+
+    &:hover {
+      color: var(--clr-primary-5);
     }
   }
 
@@ -342,43 +381,23 @@ const Wrapper = styled.section`
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     margin-top: 0.5rem;
 
     &:hover {
       background: var(--clr-primary-3);
       transform: translateY(-3px);
     }
+
+    &:disabled {
+      background: var(--clr-grey-6);
+      cursor: not-allowed;
+      transform: none;
+    }
   }
 
   @media (min-width: 992px) {
     grid-template-columns: 1fr 1fr;
-  }
-`
-
-const MapSection = styled.section`
-  margin-top: 5rem;
-
-  .map-container {
-    width: 100%;
-    height: 400px;
-  }
-
-  .map-placeholder {
-    width: 100%;
-    height: 100%;
-    background: var(--clr-grey-9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--clr-grey-5);
-    font-size: 1.2rem;
-
-    small {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-    }
   }
 `
 

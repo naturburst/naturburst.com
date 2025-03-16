@@ -1,24 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { FaInstagram, FaMapMarkerAlt } from 'react-icons/fa'
 
 const Footer = () => {
+  // Updated Google Maps location link with full place details
+  const directionsUrl = "https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/data=!3m1!4b1!4m6!3m5!1s0x3bae161d4bde1ac1:0xd0454380d2d678cd!8m2!3d12.9775109!4d77.5631957!16s%2Fg%2F11j2zxr1w0?entry=ttu"
+
   return (
     <Wrapper>
       <div className='footer-center'>
         <div className='footer-content'>
           <div className='logo-section'>
-            <h3>NaturBurst</h3>
+            <h3>NatureBurst</h3>
             <p>Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss.</p>
             <div className='social-icons'>
-              <a href='https://facebook.com' target='_blank' rel='noopener noreferrer'>
-                <FaFacebookF />
-              </a>
-              <a href='https://twitter.com' target='_blank' rel='noopener noreferrer'>
-                <FaTwitter />
-              </a>
-              <a href='https://instagram.com' target='_blank' rel='noopener noreferrer'>
+              <a href='https://www.instagram.com/tropitreats.shop' target='_blank' rel='noopener noreferrer'>
                 <FaInstagram />
               </a>
             </div>
@@ -36,14 +33,33 @@ const Footer = () => {
 
             <div className='link-group'>
               <h4>Contact Us</h4>
-              <p>hello@naturburst.com</p>
-              <p>+1 (555) 123-4567</p>
+              <p>natureburst.shop@gmail.com</p>
+              <p>+91 90984 04225</p>
+
+              {/* Address and directions button separated */}
+              <address className="footer-address">
+                Prestige West Woods<br />
+                Magadi Road, Gopalpura<br />
+                Bengaluru, Karnataka 560023
+              </address>
+
+              {/* Directions button moved below address */}
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="directions-btn"
+              >
+                <div className="map-indicator">
+                  <FaMapMarkerAlt className="map-icon" /> Get Directions
+                </div>
+              </a>
             </div>
           </div>
         </div>
 
         <div className='copyright'>
-          &copy; {new Date().getFullYear()} NaturBurst. All rights reserved.
+          &copy; {new Date().getFullYear()} Natureburst. All rights reserved.
         </div>
       </div>
     </Wrapper>
@@ -134,6 +150,36 @@ const Wrapper = styled.footer`
       color: var(--clr-grey-8);
       margin-bottom: 0.5rem;
     }
+  }
+
+  /* Footer address styling */
+  .footer-address {
+    color: var(--clr-grey-8);
+    font-style: normal;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Standalone directions button styling */
+  .directions-btn {
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .map-indicator {
+    display: flex;
+    align-items: center;
+    color: var(--clr-primary-5);
+    font-weight: 500;
+    transition: var(--transition);
+
+    &:hover {
+      color: var(--clr-accent-3);
+    }
+  }
+
+  .map-icon {
+    margin-right: 0.5rem;
   }
 
   .copyright {
