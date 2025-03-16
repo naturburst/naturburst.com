@@ -5,7 +5,6 @@ import Sidebar from './Sidebar/Sidebar'
 import PageHero from './PageHero'
 import Hero from './Hero'
 import Services from './Services/Services'
-import Contact from './Contact/Contact'
 import FeaturedProducts from './FeaturedProducts/FeaturedProducts'
 import Loading from './Loading'
 import ProductImages from './ProductImages'
@@ -23,7 +22,6 @@ export {
   PageHero,
   Hero,
   Services,
-  Contact,
   FeaturedProducts,
   Loading,
   ProductImages,

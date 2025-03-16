@@ -27,6 +27,8 @@ const Services = () => {
           })}
         </div>
       </div>
+      {/* Bottom gap element to prevent footer collision */}
+      <div className="bottom-spacing"></div>
     </Wrapper>
   )
 }
@@ -40,25 +42,32 @@ const Wrapper = styled.section`
   }
   padding: 5rem 0;
   background: var(--clr-primary-10);
+  position: relative; /* Added for positioning context */
+
+  /* Bottom spacing to prevent footer collision */
+  .bottom-spacing {
+    height: 10rem; /* Add adequate space between services and footer */
+    width: 100%;
+  }
 
   .header h3 {
     margin-bottom: 2rem;
     text-transform: none;
     font-size: 2.5rem;
   }
-  
+
   p {
     margin-bottom: 0;
     line-height: 1.8;
     color: var(--clr-primary-3);
   }
-  
+
   .services-center {
     margin-top: 4rem;
     display: grid;
     gap: 2.5rem;
   }
-  
+
   .service {
     background: var(--clr-primary-9);
     text-align: center;
@@ -117,24 +126,28 @@ const Wrapper = styled.section`
       font-size: 2rem;
     }
   }
-  
+
   @media (min-width: 992px) {
     .header {
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
   }
-  
+
   @media (min-width: 576px) {
     .services-center {
       grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
     }
   }
-  
+
   @media (min-width: 1280px) {
     padding: 0;
     .section-center {
       transform: translateY(5rem);
+    }
+    /* Adjust bottom spacing for larger screens */
+    .bottom-spacing {
+      height: 14rem;
     }
   }
 `

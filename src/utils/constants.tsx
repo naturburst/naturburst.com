@@ -85,8 +85,6 @@ export const QUERY = `
       fat
       carbs
       protein
-      fiber
-      sugar
     }
     itemDescription
     tastingNotes

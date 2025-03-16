@@ -1,5 +1,6 @@
+// src/pages/HomePage.tsx
 import React from 'react'
-import { Hero, Services, Contact, FeaturedProducts } from '../components'
+import { Hero, Services, FeaturedProducts } from '../components'
 
 const HomePage = () => {
   return (
@@ -7,7 +8,6 @@ const HomePage = () => {
       <Hero />
       <FeaturedProducts />
       <Services />
-      <Contact />
     </main>
   )
 }
