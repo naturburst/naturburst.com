@@ -8,10 +8,12 @@ const Services = () => {
     <Wrapper>
       <div className='section-center'>
         <article className='header'>
-          <h3>why choose freeze-dried?</h3>
+          <h3>Why choose freeze-dried?</h3>
           <p>
-            Our freeze-drying process preserves all the nutritional value and flavor of fresh fruits
-            while creating a convenient, shelf-stable snack you can enjoy anytime, anywhere.
+            Our freeze-drying process removes water while preserving the fruit's cellular structure,
+            nutrients, and flavors. Unlike traditional drying methods, freeze-drying maintains
+            up to 97% of the original nutritional value and enhances shelf life without requiring
+            refrigeration.
           </p>
         </article>
         <div className='services-center'>

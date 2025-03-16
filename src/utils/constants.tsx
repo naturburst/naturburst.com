@@ -1,8 +1,9 @@
 // src/utils/constants.tsx
 import React from 'react';
-import { FaLeaf, FaRegSun, FaShippingFast } from 'react-icons/fa';
+import { FaLeaf, FaRegSun, FaUtensils } from 'react-icons/fa';
 import { GiFruitBowl } from 'react-icons/gi';
 import { RiHealthBookLine } from 'react-icons/ri';
+import { MdAccessTime } from 'react-icons/md';
 
 export const links = [
   {
@@ -54,9 +55,15 @@ export const services = [
   },
   {
     id: 5,
-    icon: <FaShippingFast />,
-    title: 'free shipping',
-    text: 'Enjoy free shipping on all orders above $50. We use eco-friendly packaging to minimize environmental impact.',
+    icon: <MdAccessTime />,
+    title: 'extended shelf life',
+    text: 'Enjoy your favorite fruits any time of year. Our freeze-dried products stay fresh without refrigeration while retaining their natural flavor and nutrients.',
+  },
+  {
+    id: 6,
+    icon: <FaUtensils />,
+    title: 'versatile usage',
+    text: 'Perfect for snacking, baking, smoothies, or as toppings. Our freeze-dried fruits maintain their shape and color while adding intense flavor to any recipe.',
   },
 ];
 
