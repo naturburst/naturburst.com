@@ -1,44 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 
-// Supported currency types
-export type CurrencyCode = 'USD' | 'INR' | 'GBP' | 'EUR';
+// Simplified to only support USD
+export type CurrencyCode = 'USD';
 
 type CurrencyContextType = {
   currency: CurrencyCode
-  setCurrency: (currency: CurrencyCode) => void
 }
 
-// Default context setup
+// Default context setup with only USD support
 const CurrencyContext = React.createContext<CurrencyContextType>({
-  currency: 'USD',
-  setCurrency: () => {}
+  currency: 'USD'
 })
 
-// Get initial currency from localStorage or fallback to USD
-const getInitialCurrency = (): CurrencyCode => {
-  const savedCurrency = localStorage.getItem('selectedCurrency')
-  return (savedCurrency as CurrencyCode) || 'USD'
-}
-
 export const CurrencyProvider: React.FC = ({ children }) => {
-  const [currency, setCurrency] = useState<CurrencyCode>(getInitialCurrency())
-
-  // Save currency preference when it changes
-  useEffect(() => {
-    localStorage.setItem('selectedCurrency', currency)
-    console.log('Currency updated to:', currency) // Debug log
-  }, [currency])
-
-  // Create an explicit state setter function
-  const updateCurrency = (newCurrency: CurrencyCode) => {
-    console.log('Setting currency to:', newCurrency) // Debug log
-    if (newCurrency !== currency) {
-      setCurrency(newCurrency)
-    }
-  }
+  // Always use USD as the currency
+  const currency: CurrencyCode = 'USD';
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency: updateCurrency }}>
+    <CurrencyContext.Provider value={{ currency }}>
       {children}
     </CurrencyContext.Provider>
   )

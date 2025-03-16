@@ -2,7 +2,7 @@
 import React, { useEffect, useContext, useReducer } from 'react'
 import reducer from '../reducers/cart_reducer'
 import { productDataType } from '../utils/productData'
-import { useCurrencyContext, CurrencyCode } from './currency_context'
+import { useCurrencyContext } from './currency_context'
 import { calculateTotalInCurrency } from '../utils/helpers'
 import {
   ADD_TO_CART,
@@ -19,9 +19,7 @@ export type cartType = {
   amount: number
   image: string
   price: number
-  productReference: {
-    prices?: Record<CurrencyCode, number>
-  }
+  // Remove productReference with prices
 }
 
 export type initialStateType = {
@@ -72,13 +70,6 @@ export const CartProvider: React.FC = ({ children }) => {
     amount: number,
     singleProduct: productDataType | {}
   ) => {
-    // Ensure we're capturing the full prices object in productReference
-    const productWithPrices = singleProduct as productDataType;
-
-    // Log for debugging
-    console.log("Adding to cart with currency:", currency);
-    console.log("Product has prices:", productWithPrices.prices ? "yes" : "no");
-
     dispatch({
       type: ADD_TO_CART,
       payload: { id, slug, amount, singleProduct },

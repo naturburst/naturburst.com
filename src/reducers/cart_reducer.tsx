@@ -16,10 +16,6 @@ const cart_reducer = (
     const { id, slug, amount, singleProduct } = action.payload
     const tempItem = state.cart.find(item => item.id === id)
 
-    // Debug the incoming product data
-    console.log("Adding to cart - product data:", singleProduct);
-    console.log("Product has prices?", singleProduct && singleProduct.prices ? "yes" : "no");
-
     if (tempItem) {
       // Item exists in cart, update amount
       const tempCart = state.cart.map(cartItem => {
@@ -33,38 +29,30 @@ const cart_reducer = (
 
       return { ...state, cart: tempCart }
     } else {
-      // Create a new cart item with full product reference for currency conversion
+      // Create a new cart item - simplified without currency conversion
       const newItem: cartType = {
         id,
         slug,
         name: singleProduct.name,
         amount,
         image: singleProduct.images[0],
-        price: singleProduct.price,
-        // Store the complete prices object for currency conversion
-        productReference: {
-          prices: singleProduct.prices || undefined
-        }
+        price: singleProduct.price
       }
-
-      // Log the created cart item
-      console.log("New cart item with price info:", newItem);
-
       return { ...state, cart: [...state.cart, newItem] }
     }
   }
-  
+
   if (action.type === CLEAR_CART) {
     return { ...state, cart: [] }
   }
-  
+
   if (action.type === REMOVE_CART_ITEM) {
     const tempCart = state.cart.filter(
       cartItem => cartItem.id !== action.payload
     )
     return { ...state, cart: tempCart }
   }
-  
+
   if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
     const { id, value } = action.payload
     const tempCart = state.cart.map(cartItem => {
@@ -85,7 +73,7 @@ const cart_reducer = (
 
     return { ...state, cart: tempCart }
   }
-  
+
   if (action.type === COUNT_CART_TOTALS) {
     const { totalItems, totalAmount } = state.cart.reduce(
       (total, cartItem) => {
@@ -99,14 +87,6 @@ const cart_reducer = (
       { totalItems: 0, totalAmount: 0 }
     )
     return { ...state, totalItems, totalAmount }
-  }
-  
-  // Handle the new action to update the currency-converted total
-  if (action.type === 'UPDATE_CURRENCY_TOTAL') {
-    return { 
-      ...state, 
-      totalInSelectedCurrency: action.payload 
-    }
   }
   
   throw new Error(`No Matching "${action.type}" - action type`)
