@@ -1,71 +1,153 @@
-import React from 'react'
-import styled from 'styled-components'
-import CartButtons from '../CartButtons'
-import { NavLinks } from '../Navbar/NavLinks'
-import { useProductsContext } from '../../context/products_context'
-import { SidebarHeader } from './SidebarHeader'
+// src/components/Sidebar/Sidebar.tsx
+import React from 'react';
+import styled from 'styled-components';
+import { Link, useLocation } from 'react-router-dom';
+import { FaTimes, FaHome, FaShoppingBag, FaQuestionCircle, FaPhone, FaUser, FaHeart } from 'react-icons/fa';
+import { useProductsContext } from '../../context/products_context';
 
 const Sidebar = () => {
-  const { isSidebarOpen } = useProductsContext()
+  const { isSidebarOpen, closeSidebar } = useProductsContext();
+  const location = useLocation();
+
   return (
     <SidebarContainer>
       <aside className={isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}>
-        <SidebarHeader />
-        <NavLinks className='links' isSidebar={true} />
-        <CartButtons />
+        <div className="sidebar-header">
+          <img 
+            src={`${process.env.PUBLIC_URL}/images/logo.png`} 
+            alt="Moon" 
+            className="logo" 
+          />
+          <button type="button" className="close-btn" onClick={closeSidebar}>
+            <FaTimes />
+          </button>
+        </div>
+
+        <div className="sidebar-content">
+          <ul className="main-links">
+            <li>
+              <Link 
+                to="/" 
+                className={location.pathname === '/' ? 'active' : ''} 
+                onClick={closeSidebar}
+              >
+                <FaHome className="icon" />
+                <span>Home</span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/products" 
+                className={location.pathname.includes('/products') ? 'active' : ''} 
+                onClick={closeSidebar}
+              >
+                <FaShoppingBag className="icon" />
+                <span>Shop</span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/how-to-use" 
+                className={location.pathname === '/how-to-use' ? 'active' : ''} 
+                onClick={closeSidebar}
+              >
+                <FaQuestionCircle className="icon" />
+                <span>How to Use</span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/contact" 
+                className={location.pathname === '/contact' ? 'active' : ''} 
+                onClick={closeSidebar}
+              >
+                <FaPhone className="icon" />
+                <span>Contact</span>
+              </Link>
+            </li>
+          </ul>
+
+          <div className="divider"></div>
+
+          <div className="category-links">
+            <h3>Categories</h3>
+            <ul>
+              <li>
+                <Link 
+                  to="/products?category=fruits" 
+                  onClick={closeSidebar}
+                >
+                  Freeze-Dried Fruits
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products?category=vegetables" 
+                  onClick={closeSidebar}
+                >
+                  Freeze-Dried Vegetables
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products?category=mixes" 
+                  onClick={closeSidebar}
+                >
+                  Trail Mixes
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products?category=gift-packs" 
+                  onClick={closeSidebar}
+                >
+                  Gift Packs
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/products?category=new" 
+                  onClick={closeSidebar}
+                >
+                  New Arrivals
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="divider"></div>
+
+          <div className="account-links">
+            <ul>
+              <li>
+                <Link to="/account" onClick={closeSidebar}>
+                  <FaUser className="icon" />
+                  <span>My Account</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/wishlist" onClick={closeSidebar}>
+                  <FaHeart className="icon" />
+                  <span>Wishlist</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="sidebar-contact">
+            <h3>Contact Us</h3>
+            <p>Need help? We're just a click away!</p>
+            <Link to="/contact" className="contact-btn" onClick={closeSidebar}>
+              Get in Touch
+            </Link>
+          </div>
+        </div>
       </aside>
     </SidebarContainer>
-  )
-}
-
-export default Sidebar
+  );
+};
 
 const SidebarContainer = styled.div`
-  text-align: center;
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-  }
-  .close-btn {
-    font-size: 2rem;
-    background: transparent;
-    border-color: transparent;
-    color: var(--clr-primary-5);
-    transition: var(--transition);
-    cursor: pointer;
-    color: var(--clr-red-dark);
-    margin-top: 0.2rem;
-  }
-  .close-btn:hover {
-    color: var(--clr-red-light);
-  }
-  .logo {
-    justify-self: center;
-    height: 45px;
-  }
-  .links {
-    margin-bottom: 2rem;
-  }
-  .links a {
-    display: block;
-    text-align: left;
-    font-size: 1rem;
-    text-transform: capitalize;
-    padding: 1rem 1.5rem;
-    color: var(--clr-grey-3);
-    transition: var(--transition);
-    letter-spacing: var(--spacing);
-  }
-
-  .links a:hover {
-    padding: 1rem 1.5rem;
-    padding-left: 2rem;
-    background: var(--clr-grey-10);
-    color: var(--clr-grey-2);
-  }
-
   .sidebar {
     position: fixed;
     top: 0;
@@ -73,20 +155,197 @@ const SidebarContainer = styled.div`
     width: 100%;
     height: 100%;
     background: var(--clr-white);
-    transition: var(--transition);
-    transform: translate(-100%);
-    z-index: -1;
-  }
-  .show-sidebar {
-    transform: translate(0);
+    transition: all 0.3s ease-in-out;
+    transform: translateX(-100%);
     z-index: 999;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
-  .cart-btn-wrapper {
-    margin: 2rem auto;
+  
+  .show-sidebar {
+    transform: translateX(0);
   }
-  @media screen and (min-width: 992px) {
+  
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--clr-grey-9);
+    
+    .logo {
+      height: 40px;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--clr-grey-5);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        color: var(--clr-primary-5);
+        transform: scale(1.1);
+      }
+    }
+  }
+  
+  .sidebar-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex: 1;
+  }
+  
+  .main-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    li {
+      a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius);
+        transition: all 0.3s ease;
+        color: var(--clr-grey-3);
+        font-weight: 500;
+        
+        .icon {
+          margin-right: 1rem;
+          font-size: 1.2rem;
+          color: var(--clr-grey-5);
+          transition: all 0.3s ease;
+        }
+        
+        &:hover, &.active {
+          background: var(--clr-primary-10);
+          color: var(--clr-primary-5);
+          
+          .icon {
+            color: var(--clr-primary-5);
+          }
+        }
+        
+        &.active {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  
+  .divider {
+    height: 1px;
+    background: var(--clr-grey-9);
+    margin: 0.5rem 0;
+  }
+  
+  .category-links {
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--clr-grey-3);
+    }
+    
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      
+      li a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--clr-grey-5);
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+        
+        &:hover {
+          color: var(--clr-primary-5);
+          background: var(--clr-primary-10);
+          border-left-color: var(--clr-primary-5);
+          padding-left: 1.5rem;
+        }
+      }
+    }
+  }
+  
+  .account-links {
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      li a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius);
+        transition: all 0.3s ease;
+        color: var(--clr-grey-3);
+        
+        .icon {
+          margin-right: 1rem;
+          font-size: 1.2rem;
+          color: var(--clr-grey-5);
+          transition: all 0.3s ease;
+        }
+        
+        &:hover {
+          background: var(--clr-primary-10);
+          color: var(--clr-primary-5);
+          
+          .icon {
+            color: var(--clr-primary-5);
+          }
+        }
+      }
+    }
+  }
+  
+  .sidebar-contact {
+    margin-top: auto;
+    padding: 1.5rem;
+    background: var(--clr-primary-10);
+    border-radius: var(--radius);
+    text-align: center;
+    
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--clr-primary-1);
+    }
+    
+    p {
+      color: var(--clr-grey-5);
+      margin-bottom: 1rem;
+    }
+    
+    .contact-btn {
+      display: inline-block;
+      background: var(--clr-primary-5);
+      color: var(--clr-white);
+      padding: 0.6rem 1.5rem;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: var(--clr-primary-3);
+        transform: translateY(-2px);
+      }
+    }
+  }
+  
+  @media (min-width: 992px) {
     .sidebar {
       display: none;
     }
   }
-`
+`;
+
+export default Sidebar;

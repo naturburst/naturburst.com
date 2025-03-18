@@ -1,36 +1,60 @@
 // src/components/Services/Services.tsx
 import React from 'react'
 import styled from 'styled-components'
-import { services } from '../../utils/constants'
+import { FaCheck } from 'react-icons/fa'
 
 const Services = () => {
   return (
     <Wrapper>
       <div className='section-center'>
-        <article className='header'>
-          <h3>Why choose freeze-dried?</h3>
+        <div className='header-container'>
+          <h2>Why Nature<span>Burst</span> Is Different</h2>
           <p>
-            Our freeze-drying process removes water while preserving the fruit's cellular structure,
-            nutrients, and flavors. Unlike traditional drying methods, freeze-drying maintains
-            up to 97% of the original nutritional value and enhances shelf life without requiring
-            refrigeration.
+            Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives.
+            Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect
+            for snacking or adding to your favorite recipes.
           </p>
-        </article>
-        <div className='services-center'>
-          {services.map((service) => {
-            const { id, icon, title, text } = service
-            return (
-              <article key={id} className='service'>
-                <span className='icon'>{icon}</span>
-                <h4>{title}</h4>
-                <p>{text}</p>
-              </article>
-            )
-          })}
+        </div>
+
+        <div className='benefits-grid'>
+          <div className='benefit-card'>
+            <div className='benefit-icon natural'></div>
+            <h3>100% Natural</h3>
+            <p>Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended.</p>
+          </div>
+
+          <div className='benefit-card'>
+            <div className='benefit-icon nutrients'></div>
+            <h3>Nutrient-Rich</h3>
+            <p>Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants.</p>
+          </div>
+
+          <div className='benefit-card'>
+            <div className='benefit-icon lifestyle'></div>
+            <h3>Lifestyle Friendly</h3>
+            <p>Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices.</p>
+          </div>
+        </div>
+
+        <div className='key-benefits'>
+          <div className="benefit">
+            <FaCheck className="check-icon" />
+            <span>100% Natural Ingredients</span>
+          </div>
+          <div className="benefit">
+            <FaCheck className="check-icon" />
+            <span>No Added Sugar</span>
+          </div>
+          <div className="benefit">
+            <FaCheck className="check-icon" />
+            <span>Rich in Vitamins</span>
+          </div>
+          <div className="benefit">
+            <FaCheck className="check-icon" />
+            <span>Extended Shelf Life</span>
+          </div>
         </div>
       </div>
-      {/* Bottom gap element to prevent footer collision */}
-      <div className="bottom-spacing"></div>
     </Wrapper>
   )
 }
@@ -38,118 +62,136 @@ const Services = () => {
 export default Services
 
 const Wrapper = styled.section`
-  h3,
-  h4 {
-    color: var(--clr-primary-1);
-  }
-  padding: 5rem 0;
-  background: var(--clr-primary-10);
-  position: relative; /* Added for positioning context */
+  padding: 3rem 0;
+  background: #f7f7f7;
 
-  /* Bottom spacing to prevent footer collision */
-  .bottom-spacing {
-    height: 10rem; /* Add adequate space between services and footer */
-    width: 100%;
+  .section-center {
+    width: 90vw;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  .header h3 {
-    margin-bottom: 2rem;
-    text-transform: none;
-    font-size: 2.5rem;
+  .header-container {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a2e37;
+    margin-bottom: 1rem;
+
+    span {
+      color: #40CEB5; /* Natureburst green */
+    }
   }
 
   p {
-    margin-bottom: 0;
-    line-height: 1.8;
-    color: var(--clr-primary-3);
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 1.5rem;
   }
 
-  .services-center {
-    margin-top: 4rem;
+  .benefits-grid {
     display: grid;
-    gap: 2.5rem;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
-  .service {
-    background: var(--clr-primary-9);
-    text-align: center;
-    padding: 2.5rem 2rem;
-    border-radius: var(--radius);
-    transition: all 0.3s linear;
+  .benefit-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
 
-    /* Alternating border colors for visual interest */
-    &:nth-child(odd) {
-      border-bottom: 4px solid var(--clr-primary-5);
-    }
-
-    &:nth-child(even) {
-      border-bottom: 4px solid var(--clr-accent-1);
-    }
-
-    &:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-      background: linear-gradient(to bottom right, var(--clr-primary-5), var(--clr-primary-4));
-
-      p {
-        color: var(--clr-white);
-      }
-
-      span {
-        background: var(--clr-white);
-        color: var(--clr-primary-5);
-        transform: scale(1.1) rotate(5deg);
-      }
-
-      h4 {
-        color: var(--clr-white);
-      }
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      color: #1a2e37;
     }
 
     p {
-      color: var(--clr-primary-2);
+      margin-bottom: 0;
+      font-size: 0.95rem;
     }
   }
 
-  span {
-    width: 4rem;
-    height: 4rem;
-    display: grid;
+  .benefit-icon {
+    width: 60px;
+    height: 60px;
     margin: 0 auto;
-    place-items: center;
-    margin-bottom: 1rem;
     border-radius: 50%;
-    background: var(--clr-primary-10);
-    color: var(--clr-primary-1);
-    transition: all 0.4s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    svg {
-      font-size: 2rem;
+    background-position: center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+  }
+
+  .natural {
+    background-color: rgba(64, 206, 181, 0.15);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2340CEB5'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20a4.67,4.67,0,0,0,1.76-.35,4.65,4.65,0,0,0,6.41-2A4.74,4.74,0,0,0,19.73,12.9a4.64,4.64,0,0,0,.55-2.64,4.47,4.47,0,0,0-1.92-3.11A4.47,4.47,0,0,0,17,8Z'/%3E%3C/svg%3E");
+  }
+
+  .nutrients {
+    background-color: rgba(64, 206, 181, 0.15);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2340CEB5'%3E%3Cpath d='M11,2a8.002,8.002,0,0,1,7.91,6.7,8,8,0,1,1-7.91-6.7ZM14,15h2v2H14ZM9,15h2v2H9ZM14,10h2v2H14ZM9,10h2v2H9Z'/%3E%3C/svg%3E");
+  }
+
+  .lifestyle {
+    background-color: rgba(64, 206, 181, 0.15);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2340CEB5'%3E%3Cpath d='M20.5,6A3.5,3.5,0,0,0,17,9.5a3.45,3.45,0,0,0,.55,1.81L14.73,14.1a3.45,3.45,0,0,0-1.81-.55,3.5,3.5,0,0,0-3.5,3.5,3.45,3.45,0,0,0,.55,1.81L7.16,21.56l1.41,1.41,2.71-2.71a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,3.5-3.5,3.45,3.45,0,0,0-.55-1.81l2.82-2.82a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,0-7Z'/%3E%3C/svg%3E");
+  }
+
+  .key-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 auto;
+    max-width: 900px;
+
+    .benefit {
+      display: flex;
+      align-items: center;
+      background: white;
+      padding: 0.5rem 1rem;
+      border-radius: 30px;
+
+      .check-icon {
+        color: #40CEB5;
+        margin-right: 0.5rem;
+      }
+
+      span {
+        font-weight: 600;
+        color: #1a2e37;
+        font-size: 0.9rem;
+      }
     }
   }
 
-  @media (min-width: 992px) {
-    .header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+  @media (min-width: 768px) {
+    .benefits-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  @media (min-width: 576px) {
-    .services-center {
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  @media (max-width: 767px) {
+    h2 {
+      font-size: 1.8rem;
     }
-  }
 
-  @media (min-width: 1280px) {
-    padding: 0;
-    .section-center {
-      transform: translateY(5rem);
-    }
-    /* Adjust bottom spacing for larger screens */
-    .bottom-spacing {
-      height: 14rem;
+    .key-benefits {
+      flex-direction: column;
+      align-items: center;
+
+      .benefit {
+        width: 100%;
+        max-width: 250px;
+      }
     }
   }
 `

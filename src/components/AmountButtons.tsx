@@ -9,39 +9,56 @@ const AmountButtons: React.FC<{
 }> = ({ amount, increase, decrease }) => {
   return (
     <Wrapper className='amount-btns'>
-      <button type='button' className='amount-btn' onClick={decrease}>
-        <FaMinus />{' '}
+      <button type='button' className='amount-btn' onClick={decrease} aria-label="Decrease quantity">
+        <FaMinus />
       </button>
       <h2 className='amount'>{amount}</h2>
-      <button type='button' className='amount-btn' onClick={increase}>
-        <FaPlus />{' '}
+      <button type='button' className='amount-btn' onClick={increase} aria-label="Increase quantity">
+        <FaPlus />
       </button>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  display: grid;
-  width: 140px;
-  justify-items: center;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   align-items: center;
+  border: 1px solid var(--clr-grey-8);
+  border-radius: 30px;
+  padding: 0.25rem;
+
   h2 {
-    margin-bottom: 0;
+    margin: 0;
+    width: 2.5rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
   }
+
   button {
-    background: transparent;
-    border-color: transparent;
+    background: var(--clr-grey-10);
+    border: none;
     cursor: pointer;
-    padding: 1rem 0;
     width: 2rem;
-    height: 1rem;
+    height: 2rem;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  h2 {
-    margin-bottom: 0;
+    transition: all 0.2s ease;
+
+    svg {
+      font-size: 0.8rem;
+      color: var(--clr-grey-1);
+    }
+
+    &:hover {
+      background: var(--clr-primary-5);
+
+      svg {
+        color: white;
+      }
+    }
   }
 `
 

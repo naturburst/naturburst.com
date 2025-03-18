@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { productDataType } from '../utils/productData'
 import { useCartContext } from '../context/cart_context'
 import AmountButtons from './AmountButtons'
+import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 
 const AddToCart: React.FC<{ singleProduct: productDataType | {} }> = ({
   singleProduct,
@@ -24,19 +25,29 @@ const AddToCart: React.FC<{ singleProduct: productDataType | {} }> = ({
 
   return (
     <Wrapper>
-      <div className='btn-container'>
+      <div className='quantity-container'>
+        <h3>Quantity:</h3>
         <AmountButtons
           amount={amount}
           increase={increaseAmount}
           decrease={decreaseAmount}
         />
+      </div>
+
+      <div className='buttons-container'>
         <Link
           to='/cart'
-          className='btn'
+          className='btn add-to-cart-btn'
           onClick={() => addToCart(id, slug, amount, singleProduct)}
         >
-          add to cart
+          <FaShoppingCart className="cart-icon" />
+          ADD TO CART
         </Link>
+
+        <button type="button" className="btn wishlist-btn">
+          <FaHeart className="heart-icon" />
+          SAVE
+        </button>
       </div>
     </Wrapper>
   )
@@ -45,49 +56,79 @@ const AddToCart: React.FC<{ singleProduct: productDataType | {} }> = ({
 export default AddToCart
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
-  .colors {
-    display: grid;
-    grid-template-columns: 125px 1fr;
+  .quantity-container {
+    display: flex;
     align-items: center;
-    margin-bottom: 1rem;
-    span {
-      text-transform: capitalize;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    h3 {
+      font-size: 1.1rem;
+      color: var(--clr-grey-1);
       font-weight: 700;
-    }
-    div {
-      display: flex;
+      margin: 0;
+      white-space: nowrap;
     }
   }
-  .color-btn {
-    display: inline-block;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: #222;
-    margin-right: 0.5rem;
-    /* border: none; */
-    border: 1px solid black;
-    cursor: pointer;
-    opacity: 0.5;
+
+  .buttons-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .add-to-cart-btn {
+    flex: 1;
+    background: var(--clr-primary-5);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 1rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    svg {
-      font-size: 0.75rem;
-      color: var(--clr-white);
+    gap: 0.75rem;
+    min-width: 180px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+
+    .cart-icon {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background: var(--clr-primary-3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
   }
 
-  .active {
-    opacity: 1;
-  }
-  .btn-container {
-    margin-top: 2rem;
+  .wishlist-btn {
+    background: transparent;
+    border: 2px solid var(--clr-primary-5);
+    color: var(--clr-primary-5);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+
+    .heart-icon {
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background: rgba(42, 157, 143, 0.1);
+      transform: translateY(-3px);
+    }
   }
 
-  .btn {
-    margin-top: 1rem;
-    width: 140px;
+  @media (max-width: 576px) {
+    .buttons-container {
+      flex-direction: column;
+    }
   }
 `

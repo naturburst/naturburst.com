@@ -11,7 +11,7 @@ export const SidebarHeader = () => {
       <Link to='/' onClick={closeSidebar}>
         <img src={logo} className='logo' alt='natureburst' />
       </Link>
-      <button type='button' className='close-btn' onClick={closeSidebar}>
+      <button type='button' className='close-btn' onClick={closeSidebar} aria-label="Close menu">
         <FaTimes />
       </button>
     </div>

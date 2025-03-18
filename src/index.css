@@ -5,27 +5,28 @@ Variables
 */
 
 :root {
-  /* Primary colors: Matching NatureBurst logo */
-  --clr-primary-1: hsl(140, 70%, 15%);  /* Dark green - deep forest */
-  --clr-primary-2: hsl(140, 70%, 25%);
-  --clr-primary-3: hsl(140, 60%, 35%);
-  --clr-primary-4: hsl(140, 55%, 45%);
-  --clr-primary-5: hsl(140, 50%, 55%);  /* Main brand green */
-  --clr-primary-6: hsl(140, 45%, 65%);
-  --clr-primary-7: hsl(140, 40%, 75%);
-  --clr-primary-8: hsl(140, 35%, 85%);
-  --clr-primary-9: hsl(140, 30%, 92%);
-  --clr-primary-10: hsl(140, 25%, 97%);
+  /* Primary brand colors - inspired by Moon */
+  --clr-primary-1: hsl(173, 58%, 24%);  /* Dark teal */
+  --clr-primary-2: hsl(173, 58%, 34%);
+  --clr-primary-3: hsl(173, 58%, 39%);
+  --clr-primary-4: hsl(173, 58%, 45%);
+  --clr-primary-5: hsl(173, 58%, 50%);  /* Main brand teal */
+  --clr-primary-6: hsl(173, 65%, 65%);
+  --clr-primary-7: hsl(173, 70%, 75%);
+  --clr-primary-8: hsl(173, 75%, 85%);
+  --clr-primary-9: hsl(173, 80%, 92%);
+  --clr-primary-10: hsl(173, 85%, 97%);
 
-  /* Secondary brand colors from logo */
-  --clr-accent-1: hsl(30, 70%, 35%);  /* Brown - "Fresh" */
-  --clr-accent-2: hsl(30, 60%, 45%);  /* Lighter brown */
-  --clr-accent-3: hsl(80, 60%, 45%);  /* Light green - "Original" */
+  /* Accent colors - vibrant and fun */
+  --clr-accent-1: hsl(35, 85%, 45%);  /* Orange-brown */
+  --clr-accent-2: hsl(35, 90%, 55%);  /* Lighter orange */
+  --clr-accent-3: hsl(35, 95%, 65%);  /* Soft orange */
+  --clr-accent-4: hsl(45, 100%, 65%); /* Yellow - like Moon branding */
 
   /* Product accent colors - matching packaging */
-  --clr-jackfruit: hsl(45, 85%, 50%);  /* Jackfruit yellow - more vibrant */
-  --clr-jamun: hsl(270, 60%, 45%);     /* Jamun purple - more vibrant */
-  --clr-custard-apple: hsl(140, 65%, 40%); /* Custard apple green - matches primary */
+  --clr-jackfruit: hsl(45, 100%, 60%);  /* Jackfruit yellow - more vibrant */
+  --clr-jamun: hsl(270, 70%, 55%);      /* Jamun purple - more vibrant */
+  --clr-custard-apple: hsl(120, 40%, 45%); /* Custard apple green */
 
   /* Grey scale for text and UI */
   --clr-grey-1: hsl(209, 61%, 16%);

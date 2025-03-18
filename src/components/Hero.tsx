@@ -1,7 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { FaLeaf } from 'react-icons/fa'
+// src/components/Hero.tsx
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { FaShoppingCart } from 'react-icons/fa';
 
 // Helper function to handle image paths
 const getImagePath = (path: string) => {
@@ -10,107 +11,126 @@ const getImagePath = (path: string) => {
 
 const Hero = () => {
   return (
-    <Wrapper className='section-center'>
-      <article className='content'>
-        <h1>
-          Natural Fruit Bliss <br />
-          in Every Bite
-        </h1>
-        <p>
-          Experience the pure taste of nature with our premium freeze-dried fruits.
-          Natureburst preserves all the natural goodness and flavor without any
-          additives or preservatives.
-        </p>
+    <Wrapper>
+      <div className="hero-container">
+        <div className="hero-content">
+          <div className="text-container">
+            <h1>
+              <span className="crispy">CRISPY,</span> <span className="crunchy">CRUNCHY</span>
+            </h1>
+            <h2 className="irresistible">IRRESISTIBLE</h2>
 
-        <div className='features'>
-          <div className='feature'>
-            <FaLeaf className='icon' />
-            <span>100% Natural</span>
+            <div className="hero-buttons">
+              <Link to="/products" className="btn shop-now-btn">
+                <FaShoppingCart className="cart-icon" /> SHOP NOW
+              </Link>
+              <Link to="/how-to-use" className="btn learn-more-btn">
+                HOW TO USE
+              </Link>
+            </div>
           </div>
-          <div className='feature'>
-            <FaLeaf className='icon' />
-            <span>No Added Sugar</span>
-          </div>
-          <div className='feature'>
-            <FaLeaf className='icon' />
-            <span>No Preservatives</span>
+
+          <div className="product-showcase">
+            <div className="product-images">
+              <img
+                src={getImagePath('/images/custard-apple-detail1.jpg')}
+                alt="Freeze-dried custard apple"
+                className="product-img custard-apple"
+              />
+              <img
+                src={getImagePath('/images/jackfruit-detail1.jpg')}
+                alt="Freeze-dried jackfruit"
+                className="product-img jackfruit"
+              />
+              <img
+                src={getImagePath('/images/jamun-detail1.jpg')}
+                alt="Freeze-dried jamun"
+                className="product-img jamun"
+              />
+            </div>
+            <div className="fun-text">
+              Pop, Crunch, Wow!
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="hero-buttons">
-          <Link to='/products' className='btn hero-btn'>
-            Shop Now
-          </Link>
-
-          <Link to="/how-to-use" className="btn hero-btn secondary">
-            Learn How to Use
-          </Link>
-        </div>
-      </article>
-
-      <article className='img-container'>
-        {/* Product images in aligned grid */}
-        <div className='product-images'>
-          <div className="product-box custard">
-            <img src={getImagePath('/images/custard-apple-detail1.jpg')} alt='Custard Apple' className='product-img' />
-          </div>
-          <div className="product-box jackfruit">
-            <img src={getImagePath('/images/jackfruit-detail1.jpg')} alt='Jackfruit' className='product-img' />
-          </div>
-          <div className="product-box jamun">
-            <img src={getImagePath('/images/jamun-detail1.jpg')} alt='Jamun' className='product-img' />
-          </div>
-        </div>
-      </article>
+      <div className="wave-divider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+          <path
+            fill="#FFF"
+            fillOpacity="1"
+            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"
+          ></path>
+        </svg>
+      </div>
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.section`
-  min-height: 60vh;
-  display: grid;
-  place-items: center;
-  padding-top: 2rem;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin-bottom: 2rem;
 
-  .content {
-    max-width: 550px;
+  .hero-container {
+    background: linear-gradient(135deg, #FFD166 0%, #F4A261 100%);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .text-container {
+    flex: 1;
+    padding: 2rem;
+    z-index: 2;
   }
 
   h1 {
-    font-size: 2.8rem;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(to right, var(--clr-primary-1), var(--clr-primary-5));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
-  }
+    font-size: 3.5rem;
+    line-height: 1;
+    margin: 0;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 
-  p {
-    line-height: 1.8;
-    font-size: 1.1rem;
-    color: var(--clr-grey-5);
-    margin-bottom: 2rem;
-  }
-
-  .features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      .icon {
-        color: var(--clr-primary-5);
-      }
-
-      span {
-        font-weight: 500;
-      }
+    .crispy {
+      color: #fff;
     }
+
+    .crunchy {
+      color: #fff;
+    }
+  }
+
+  .irresistible {
+    font-size: 4.5rem;
+    color: #9C4A1A;
+    font-weight: 900;
+    margin: 0.5rem 0 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: -1px;
+  }
+
+  .tagline {
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    font-family: "Comic Sans MS", cursive, sans-serif;
   }
 
   .hero-buttons {
@@ -119,91 +139,176 @@ const Wrapper = styled.section`
     flex-wrap: wrap;
   }
 
-  .hero-btn {
+  .shop-now-btn {
+    background-color: #2A9D8F;
+    color: white;
+    font-weight: 700;
     font-size: 1rem;
     padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    &:hover {
+      background-color: #1E7D74;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    .cart-icon {
+      font-size: 1.1rem;
+    }
   }
 
-  .secondary {
-    background: var(--clr-accent-1);
+  .learn-more-btn {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
   }
 
-  .img-container {
-    display: none;
+  .product-showcase {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .product-images {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .product-img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+    transition: transform 0.3s ease;
+    margin: 0 -1.5rem;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+  }
+
+  .custard-apple {
+    transform: rotate(-5deg);
+    z-index: 1;
+  }
+
+  .jackfruit {
+    transform: rotate(5deg);
+    z-index: 3;
+  }
+
+  .jamun {
+    transform: rotate(-8deg);
+    z-index: 2;
+  }
+
+  .fun-text {
+    position: absolute;
+    bottom: 10px;
+    right: 10%;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    transform: rotate(-5deg);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .wave-divider {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+    z-index: 1;
+
+    svg {
+      width: 100%;
+      height: 60px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero-container {
+      min-height: 500px;
+      padding: 3rem 2rem;
+    }
+
+    .hero-content {
+      flex-direction: row;
+      gap: 2rem;
+    }
+
+    h1 {
+      font-size: 4rem;
+    }
+
+    .irresistible {
+      font-size: 6rem;
+    }
+
+    .tagline {
+      font-size: 1.8rem;
+    }
+
+    .product-img {
+      width: 200px;
+      height: 200px;
+    }
   }
 
   @media (min-width: 992px) {
-    height: calc(100vh - 5rem);
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    .hero-container {
+      min-height: 550px;
+    }
 
-    .img-container {
-      display: block;
-      position: relative;
-      height: 100%;
-      width: 100%;
+    h1 {
+      font-size: 5rem;
+    }
 
-      /* Container for the product boxes - uses flexbox for alignment */
-      .product-images {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        gap: 2rem;
-        padding: 2rem;
-      }
+    .irresistible {
+      font-size: 7rem;
+    }
 
-      /* Common styling for all product boxes */
-      .product-box {
-        width: 250px;
-        height: 250px;
-        border-radius: var(--radius);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        transition: transform 0.3s ease;
-
-        &:hover {
-          transform: translateY(-10px);
-        }
-      }
-
-      /* Product-specific styling */
-      .custard {
-        border: 5px solid var(--clr-custard-apple);
-        align-self: flex-end; /* Align to right */
-      }
-
-      .jackfruit {
-        border: 5px solid var(--clr-jackfruit);
-        align-self: flex-start; /* Align to left */
-      }
-
-      .jamun {
-        border: 5px solid var(--clr-jamun);
-        align-self: flex-end; /* Align to right */
-      }
-
-      .product-img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-      }
+    .product-img {
+      width: 220px;
+      height: 220px;
     }
   }
 
-  /* Additional alignment tweaks for larger screens */
-  @media (min-width: 1200px) {
-    .product-images {
-      padding: 3rem;
+  @media (max-width: 767px) {
+    .hero-container {
+      text-align: center;
     }
 
-    .product-box {
-      width: 320px;
-      height: 320px;
+    .hero-buttons {
+      justify-content: center;
+    }
+
+    .fun-text {
+      right: 50%;
+      transform: translateX(50%) rotate(-5deg);
     }
   }
 `
 
-export default Hero
+export default Hero;

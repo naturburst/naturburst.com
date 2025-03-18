@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { useProductsContext } from '../../context/products_context'
-import { ProductImages, Loading, PageHero } from '../../components'
+import { Loading } from '../../components'
 import styled from 'styled-components'
-import { BackToProductsButton } from './BackToProductsButton'
 import { SingleProductContent } from './SingleProductContent'
 import ErrorPage from '../ErrorPage'
+import { FaArrowLeft } from 'react-icons/fa'
 
 const SingleProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -27,6 +27,11 @@ const SingleProductPage = () => {
     // eslint-disable-next-line
   }, [slug, allProducts])
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   if (singleProductLoading) {
     return <Loading />
   }
@@ -37,16 +42,39 @@ const SingleProductPage = () => {
 
   return (
     <Wrapper>
-      <PageHero title={name} isSingleProduct />
-      <div className='section section-center page'>
-        <BackToProductsButton />
-        <div className='product-center'>
-          <div className='product-img-container'>
-            <ProductImages images={images} />
-          </div>
-          <div className='product-content-container'>
-            <SingleProductContent />
-          </div>
+      <div className='back-link'>
+        <Link to='/products'>
+          <FaArrowLeft /> Back to products
+        </Link>
+      </div>
+
+      <div className='product-container'>
+        <div className='product-image'>
+          {images && images.length > 0 && (
+            <img src={images[0]} alt={name} />
+          )}
+        </div>
+
+        <div className='product-content'>
+          <SingleProductContent />
+        </div>
+      </div>
+
+      <div className="related-products">
+        <h2>You May Also Like</h2>
+        <div className="related-grid">
+          {allProducts.filter(product => product.slug !== slug).map((product, index) => (
+            index < 3 && (
+              <div key={product.id} className="related-product">
+                <Link to={`/products/${product.slug}`}>
+                  <div className="related-img-container">
+                    <img src={product.images[0]} alt={product.name} />
+                  </div>
+                  <h4>{product.name}</h4>
+                </Link>
+              </div>
+            )
+          ))}
         </div>
       </div>
     </Wrapper>
@@ -56,54 +84,115 @@ const SingleProductPage = () => {
 export default SingleProductPage
 
 const Wrapper = styled.main`
-  .product-center {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+
+  .back-link {
+    margin-bottom: 2rem;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      color: #666;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      svg {
+        margin-right: 0.5rem;
+      }
+
+      &:hover {
+        color: #40CEB5;
+      }
+    }
+  }
+
+  .product-container {
     display: grid;
     gap: 2rem;
-    margin-top: 2rem;
   }
 
-  .product-img-container {
-    width: 100%;
-    height: auto;
-  }
+  .product-image {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  .product-content-container {
-    width: 100%;
-  }
-
-  .price {
-    color: var(--clr-primary-5);
-  }
-
-  .desc {
-    line-height: 1.8;
-    max-width: 45em;
-    &:first-letter {
-      text-transform: capitalize;
+    img {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
     }
   }
 
-  .info {
-    width: 300px;
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    margin-bottom: 1.25rem;
-    &:first-letter {
-      text-transform: capitalize;
-    }
-    span {
+  .related-products {
+    margin-top: 4rem;
+
+    h2 {
+      font-size: 1.5rem;
       font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #1a2e37;
+    }
+
+    .related-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .related-product {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .related-img-container {
+        background: #f7f7f7;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 180px;
+
+        img {
+          max-width: 85%;
+          max-height: 85%;
+          object-fit: contain;
+        }
+      }
+
+      h4 {
+        padding: 1rem;
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1a2e37;
+      }
     }
   }
 
-  @media (min-width: 992px) {
-    .product-center {
+  @media (min-width: 768px) {
+    .product-container {
       grid-template-columns: 1fr 1fr;
-      align-items: start;
     }
 
-    .price {
-      font-size: 1.25rem;
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .related-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
   }
 `

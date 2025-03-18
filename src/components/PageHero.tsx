@@ -1,38 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
 const PageHero: React.FC<{
   title: string | undefined
   isSingleProduct?: boolean
-}> = ({ title, isSingleProduct }) => {
+}> = ({ title }) => {
   return (
     <Wrapper>
       <div className='section-center'>
-        <h3>
-          <Link to='/'>Home</Link>
-          {isSingleProduct && <Link to='/products'>/ Products</Link>}/ {title}
-        </h3>
+        <h2>{title}</h2>
       </div>
     </Wrapper>
   )
 }
 
 const Wrapper = styled.section`
-  background: var(--clr-primary-10);
+  background: #f7f7f7;
   width: 100%;
-  min-height: 20vh;
-  display: flex;
-  align-items: center;
+  padding: 2rem 0;
+  text-align: center;
 
-  color: var(--clr-primary-1);
-  a {
-    color: var(--clr-primary-3);
-    padding: 0.5rem;
-    transition: var(--transition);
-  }
-  a:hover {
-    color: var(--clr-primary-1);
+  h2 {
+    color: #1a2e37;
+    margin: 0;
+    text-transform: capitalize;
+    font-size: 2rem;
+    font-weight: 700;
   }
 `
 

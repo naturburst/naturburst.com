@@ -9,14 +9,18 @@ import { NavLinks } from './NavLinks'
 const Nav = () => {
   return (
     <NavContainer>
+      <div className="promo-banner">
+        <span>FREE SHIPPING ON ORDERS ABOVE ₹500</span>
+      </div>
+
       <div className='nav-center'>
         <div className='nav-header'>
           <Logo />
           <MenuIcon />
         </div>
         <NavLinks className='nav-links' />
+        <CartButtons />
       </div>
-      <CartButtons />
     </NavContainer>
   )
 }
@@ -24,67 +28,92 @@ const Nav = () => {
 export default Nav
 
 const NavContainer = styled.nav`
-  height: 5rem;
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(to right, var(--clr-accent-3), var(--clr-primary-5), var(--clr-accent-3)); /* Gradient background using brand colors */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+  background: #40CEB5; /* Matching the Natureburst light green from the logo */
+
+  .promo-banner {
+    width: 100%;
+    background: #1a2e37; /* Dark color for contrast */
+    color: white;
+    text-align: center;
+    padding: 0.25rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    span {
+      display: inline-block;
+      padding: 0.25rem 0;
+    }
+  }
 
   .nav-center {
     width: 90vw;
     margin: 0 auto;
     max-width: var(--max-width);
-  }
-  .nav-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+
     img {
-      width: 180px;
+      width: 150px;
+      height: auto;
+      object-fit: contain;
     }
   }
+
   .nav-toggle {
     background: transparent;
     border: transparent;
-    color: var(--clr-primary-1);
+    color: var(--clr-white);
     cursor: pointer;
     svg {
       font-size: 2rem;
     }
   }
+
   .nav-links {
     display: none;
   }
-  .cart-btn-wrapper {
-    display: none;
-  }
+
   @media (min-width: 992px) {
-    img {
-      margin-left: 15px;
+    .nav-header {
+      margin-right: 2rem;
     }
+
     .nav-toggle {
       display: none;
     }
+
     .nav-center {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
+      display: flex;
+      justify-content: space-between;
     }
+
     .nav-links {
       display: flex;
-      justify-content: center;
+      gap: 2rem;
+
       li {
-        margin: 0 1rem; /* Increased spacing between nav items */
-        position: relative; /* For animated underline effect */
+        padding: 0;
       }
+
       a {
-        color: var(--clr-primary-1);
-        font-size: 1.2rem; /* Slightly larger text */
-        text-transform: uppercase; /* More impact with uppercase */
-        letter-spacing: 1.5px; /* Increased letter spacing */
+        color: white;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         padding: 0.75rem 0.5rem;
-        font-weight: 600; /* Bolder text */
+        font-weight: 700;
         transition: all 0.3s ease;
         position: relative;
 
@@ -94,35 +123,40 @@ const NavContainer = styled.nav`
           position: absolute;
           width: 0;
           height: 2px;
-          bottom: 0;
+          bottom: -2px;
           left: 0;
-          background-color: var(--clr-accent-1);
+          background-color: white;
           transition: width 0.3s ease;
         }
 
         &:hover {
-          color: var(--clr-accent-1);
-          transform: translateY(-2px); /* Slight lift effect */
+          color: #1a2e37;
 
           &::after {
-            width: 100%; /* Expand underline on hover */
+            width: 100%;
+            background-color: #1a2e37;
           }
         }
 
         /* Active page indicator */
         &.active {
-          color: var(--clr-accent-1);
+          color: #1a2e37;
           font-weight: 700;
 
           &::after {
             width: 100%;
-            height: 3px; /* Thicker underline for active page */
+            height: 3px;
+            background-color: #1a2e37;
           }
         }
       }
     }
-    .cart-btn-wrapper {
-      display: grid;
+  }
+
+  @media (max-width: 991px) {
+    .nav-center {
+      justify-content: space-between;
+      align-items: center;
     }
   }
 `

@@ -15,41 +15,45 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const getProductColor = (category: string) => {
     switch(category) {
       case 'custard-apple':
-        return 'var(--clr-custard-apple)';
+        return '#E8F5E9'; // Light green background
       case 'jackfruit':
-        return 'var(--clr-jackfruit)';
+        return '#FFF8E1'; // Light yellow background
       case 'jamun':
-        return 'var(--clr-jamun)';
+        return '#F3E5F5'; // Light purple background
       default:
-        return 'var(--clr-primary-5)';
+        return '#E0F7FA'; // Default light blue background
     }
   }
 
+  // Get weight from the product data or fallback to a default
+  const weight = product.weight || '20g';
+
   return (
-    <Wrapper color={getProductColor(categories)}>
+    <Wrapper bgcolor={getProductColor(categories)}>
       <div className="container">
         <Link to={`/products/${slug}`} className="image-container">
           <img src={image} alt={name} />
-          <div className="info-overlay">
-            <h5>{name}</h5>
-            <p>{formatPrice(price)}</p>
-          </div>
         </Link>
-        <div className="card-footer">
-          <h5>{name}</h5>
-          <p>{formatPrice(price)}</p>
-          <div className="actions">
-            <Link to={`/products/${slug}`} className="btn details-btn">
-              Details
-            </Link>
-            <button
-              type="button"
-              className="btn cart-btn"
-              onClick={() => addToCart(id, slug, 1, product)}
-            >
-              <FaShoppingCart /> Add to Cart
-            </button>
+
+        <div className="card-content">
+          <h3>{name}</h3>
+
+          <div className="product-meta">
+            <div className="product-type">Freeze Dried Fruit</div>
+            <div className="weight">{weight}</div>
           </div>
+
+          <div className="price-container">
+            <p className="price">{formatPrice(price)}</p>
+          </div>
+
+          <button
+            type="button"
+            className="btn add-to-cart-btn"
+            onClick={() => addToCart(id, slug, 1, product)}
+          >
+            ADD TO CART
+          </button>
         </div>
       </div>
     </Wrapper>
@@ -57,127 +61,118 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
 }
 
 interface WrapperProps {
-  color: string;
+  bgcolor: string;
 }
 
 const Wrapper = styled.article<WrapperProps>`
   .container {
-    background: var(--clr-white);
-    border-radius: var(--radius);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s linear;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
     overflow: hidden;
-    height: 100%; /* Ensure consistent height */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     &:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       transform: translateY(-5px);
-
-      img {
-        transform: scale(1.05);
-      }
-
-      .info-overlay {
-        opacity: 1;
-      }
     }
   }
 
   .image-container {
-    position: relative;
     height: 200px;
     overflow: hidden;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${props => props.bgcolor};
+    padding: 1rem;
   }
 
   img {
-    width: 100%;
-    height: 100%;
-    display: block;
+    max-height: 85%;
+    max-width: 85%;
     object-fit: contain;
-    transition: var(--transition);
-    padding: 1rem; /* Add padding for better product display */
-  }
+    transition: all 0.3s ease;
 
-  .info-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: var(--transition);
-
-    h5, p {
-      color: var(--clr-white);
-      margin: 0.5rem;
-    }
-
-    h5 {
-      font-size: 1.25rem;
-    }
-
-    p {
-      font-weight: bold;
-      font-size: 1.1rem;
+    &:hover {
+      transform: scale(1.05);
     }
   }
 
-  .card-footer {
+  .card-content {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    height: calc(100% - 200px); /* Ensure consistent height */
+    flex-grow: 1;
+    background: white;
+  }
 
-    h5 {
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: var(--clr-primary-1); /* Dark green text */
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1a2e37;
+    line-height: 1.3;
+  }
+
+  .product-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    .product-type {
+      font-size: 0.9rem;
+      color: #666;
     }
 
-    p {
-      color: ${props => props.color};
-      font-weight: bold;
-      margin-bottom: 1.5rem;
+    .weight {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 600;
+    }
+  }
+
+  .price-container {
+    margin-bottom: 1.25rem;
+
+    .price {
+      color: #40CEB5; /* Natureburst green */
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 0;
+    }
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    background: #40CEB5; /* Natureburst green */
+    color: white;
+    font-weight: 600;
+    margin-top: auto;
+    text-align: center;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+
+    &:hover {
+      background: #36b5a0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .image-container {
+      height: 180px;
+    }
+
+    h3 {
       font-size: 1.1rem;
     }
 
-    .actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: auto; /* Push buttons to bottom */
-
-      .btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-
-      .details-btn {
-        background: var(--clr-grey-9);
-        color: var(--clr-grey-1);
-
-        &:hover {
-          background: var(--clr-grey-7);
-          color: var(--clr-grey-1);
-        }
-      }
-
-      .cart-btn {
-        background: var(--clr-accent-1); /* Brown button */
-
-        &:hover {
-          background: var(--clr-primary-3);
-        }
-      }
+    .price-container .price {
+      font-size: 1.1rem;
     }
   }
 `

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FaInstagram, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaInstagram, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaPhoneAlt, FaEnvelope } from 'react-icons/fa'
 
 const Footer = () => {
   // Updated Google Maps location link with full place details
@@ -9,14 +9,42 @@ const Footer = () => {
 
   return (
     <Wrapper>
+      <div className="wave-divider">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+          <path
+            fill="#FFF"
+            fillOpacity="1"
+            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+          ></path>
+        </svg>
+      </div>
+
       <div className='footer-center'>
         <div className='footer-content'>
           <div className='logo-section'>
-            <h3>NatureBurst</h3>
-            <p>Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss.</p>
+            <h3>Nature<span>Burst</span></h3>
+            <p>Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss that keeps all the nutrition intact.</p>
+
+            <div className="contact-info">
+              <div className="contact-item">
+                <FaEnvelope className="contact-icon" />
+                <span>natureburst.shop@gmail.com</span>
+              </div>
+              <div className="contact-item">
+                <FaPhoneAlt className="contact-icon" />
+                <span>+91 90984 04225</span>
+              </div>
+            </div>
+
             <div className='social-icons'>
-              <a href='https://www.instagram.com/tropitreats.shop' target='_blank' rel='noopener noreferrer'>
+              <a href='https://www.instagram.com/tropitreats.shop' target='_blank' rel='noopener noreferrer' aria-label="Instagram">
                 <FaInstagram />
+              </a>
+              <a href='#' target='_blank' rel='noopener noreferrer' aria-label="Facebook">
+                <FaFacebookF />
+              </a>
+              <a href='#' target='_blank' rel='noopener noreferrer' aria-label="Twitter">
+                <FaTwitter />
               </a>
             </div>
           </div>
@@ -27,23 +55,29 @@ const Footer = () => {
               <ul>
                 <li><Link to='/'>Home</Link></li>
                 <li><Link to='/products'>Shop</Link></li>
+                <li><Link to='/how-to-use'>How To Use</Link></li>
                 <li><Link to='/contact'>Contact</Link></li>
               </ul>
             </div>
 
             <div className='link-group'>
-              <h4>Contact Us</h4>
-              <p>natureburst.shop@gmail.com</p>
-              <p>+91 90984 04225</p>
+              <h4>Our Policies</h4>
+              <ul>
+                <li><Link to='/'>Shipping Policy</Link></li>
+                <li><Link to='/'>Return Policy</Link></li>
+                <li><Link to='/'>Privacy Policy</Link></li>
+                <li><Link to='/'>Terms of Service</Link></li>
+              </ul>
+            </div>
 
-              {/* Address and directions button separated */}
+            <div className='link-group location-group'>
+              <h4>Visit Us</h4>
               <address className="footer-address">
                 Prestige West Woods<br />
                 Magadi Road, Gopalpura<br />
                 Bengaluru, Karnataka 560023
               </address>
 
-              {/* Directions button moved below address */}
               <a
                 href={directionsUrl}
                 target="_blank"
@@ -58,8 +92,14 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className='copyright'>
-          &copy; {new Date().getFullYear()} Natureburst. All rights reserved.
+        <div className='bottom-section'>
+          <div className='payment-methods'>
+            <img src="https://cdn.shopify.com/s/files/1/0057/8938/4802/files/Fotter_payment_icn_2_900x.png?v=1632725578" alt="Payment methods" />
+          </div>
+
+          <div className='copyright'>
+            &copy; {new Date().getFullYear()} NatureBurst. All rights reserved.
+          </div>
         </div>
       </div>
     </Wrapper>
@@ -67,9 +107,23 @@ const Footer = () => {
 }
 
 const Wrapper = styled.footer`
-  background: linear-gradient(to right, var(--clr-primary-1), var(--clr-primary-2));
+  position: relative;
+  background: var(--clr-primary-5);
   color: var(--clr-white);
-  padding: 3rem 0 1.5rem 0;
+  padding: 5rem 0 2rem 0;
+
+  .wave-divider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+
+    svg {
+      width: 100%;
+      height: 60px;
+    }
+  }
 
   .footer-center {
     width: 90vw;
@@ -79,20 +133,48 @@ const Wrapper = styled.footer`
 
   .footer-content {
     display: grid;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 3rem;
+    margin-bottom: 3rem;
   }
 
   .logo-section {
     h3 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+
+      span {
+        color: var(--clr-accent-4);
+      }
     }
 
     p {
-      color: var(--clr-grey-8);
-      margin-bottom: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 2rem;
       max-width: 500px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+
+      .contact-icon {
+        margin-right: 1rem;
+        color: var(--clr-accent-4);
+      }
+
+      span {
+        color: rgba(255, 255, 255, 0.9);
+      }
     }
   }
 
@@ -104,15 +186,15 @@ const Wrapper = styled.footer`
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: var(--clr-primary-5);
+      background: rgba(255, 255, 255, 0.1);
       color: var(--clr-white);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: var(--transition);
+      transition: all 0.3s ease;
 
       &:hover {
-        background: var(--clr-white);
+        background: var(--clr-accent-4);
         color: var(--clr-primary-5);
         transform: translateY(-3px);
       }
@@ -126,41 +208,38 @@ const Wrapper = styled.footer`
 
   .link-group {
     h4 {
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--clr-accent-4);
     }
 
     ul {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
 
     a {
-      color: var(--clr-grey-8);
-      transition: var(--transition);
+      color: rgba(255, 255, 255, 0.8);
+      transition: all 0.3s ease;
+      font-size: 1.05rem;
 
       &:hover {
-        color: var(--clr-primary-5);
+        color: var(--clr-accent-4);
         padding-left: 0.5rem;
       }
     }
-
-    p {
-      color: var(--clr-grey-8);
-      margin-bottom: 0.5rem;
-    }
   }
 
-  /* Footer address styling */
   .footer-address {
-    color: var(--clr-grey-8);
+    color: rgba(255, 255, 255, 0.8);
     font-style: normal;
-    line-height: 1.6;
-    margin-bottom: 0.75rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
   }
 
-  /* Standalone directions button styling */
   .directions-btn {
     text-decoration: none;
     display: inline-block;
@@ -169,12 +248,16 @@ const Wrapper = styled.footer`
   .map-indicator {
     display: flex;
     align-items: center;
-    color: var(--clr-primary-5);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 30px;
+    color: white;
     font-weight: 500;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 
     &:hover {
-      color: var(--clr-accent-3);
+      background: var(--clr-accent-4);
+      color: var(--clr-primary-5);
     }
   }
 
@@ -182,12 +265,26 @@ const Wrapper = styled.footer`
     margin-right: 0.5rem;
   }
 
+  .bottom-section {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .payment-methods {
+    img {
+      max-width: 300px;
+      height: auto;
+    }
+  }
+
   .copyright {
     text-align: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--clr-primary-3);
-    color: var(--clr-grey-8);
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
   }
 
   @media (min-width: 768px) {
@@ -199,11 +296,30 @@ const Wrapper = styled.footer`
     .links-section {
       grid-template-columns: 1fr 1fr;
     }
+
+    .bottom-section {
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
 
   @media (min-width: 992px) {
     .footer-content {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .links-section {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .location-group {
+      grid-column: span 2;
+    }
+
+    .payment-methods img {
+      max-width: 250px;
     }
   }
 `
