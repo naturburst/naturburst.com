@@ -10,7 +10,7 @@ const HowToUsePage = () => {
       <PageHero title="how to use" />
       <Wrapper className="page section section-center">
         <div className="header">
-          <h2>Creative Ways to Enjoy NaturBurst Freeze-Dried Fruits</h2>
+          <h2>Creative Ways to Enjoy Freeze-Dried Fruits</h2>
           <p className="subtitle">
             Our premium freeze-dried fruits are incredibly versatile and can enhance many of your favorite foods and drinks.
             Here are some delicious ways to incorporate them into your daily routine!
@@ -107,7 +107,7 @@ const HowToUsePage = () => {
             </g>
 
             {/* Enhanced Title with shadow for better readability */}
-            <text x="400" y="50" textAnchor="middle" fontFamily="Arial" fontSize="24" fontWeight="bold" fill="#3c8957" stroke="#fff" strokeWidth="0.7" paintOrder="stroke">Creative Ways to Enjoy NaturBurst Fruits</text>
+            <text x="400" y="50" textAnchor="middle" fontFamily="Arial" fontSize="24" fontWeight="bold" fill="#3c8957" stroke="#fff" strokeWidth="0.7" paintOrder="stroke">Creative Ways to Enjoy freeze-dried Fruits</text>
 
           </svg>
         </div>
@@ -196,8 +196,8 @@ const HowToUsePage = () => {
                 <li>½ cup Greek yogurt</li>
                 <li>¼ cup granola</li>
                 <li>1 tbsp honey</li>
-                <li>2 tbsp NaturBurst Freeze-Dried Jackfruit</li>
-                <li>1 tbsp NaturBurst Freeze-Dried Custard Apple</li>
+                <li>2 tbsp Freeze-Dried Jackfruit</li>
+                <li>1 tbsp Freeze-Dried Custard Apple</li>
                 <li>Optional: fresh mint for garnish</li>
               </ul>
             </div>

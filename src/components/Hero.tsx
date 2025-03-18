@@ -18,7 +18,7 @@ const Hero = () => {
         </h1>
         <p>
           Experience the pure taste of nature with our premium freeze-dried fruits.
-          NaturBurst preserves all the natural goodness and flavor without any
+          Natureburst preserves all the natural goodness and flavor without any
           additives or preservatives.
         </p>
 
