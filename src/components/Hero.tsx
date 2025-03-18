@@ -309,6 +309,42 @@ const Wrapper = styled.section`
       transform: translateX(50%) rotate(-5deg);
     }
   }
+
+   .hero-container {
+      background: linear-gradient(135deg, #FFD166 0%, #F4A261 100%);
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem 4rem; /* Increased bottom padding to ensure content is visible */
+      overflow: hidden; /* Prevent content from overflowing */
+   }
+
+   @media (max-width: 767px) {
+     .hero-container {
+        min-height: 400px; /* Reduced height on mobile */
+        padding: 1rem 1rem 4rem; /* Adjusted padding for mobile */
+     }
+
+     h1 {
+        font-size: 2.5rem !important; /* Force smaller font size on mobile */
+     }
+
+     .irresistible {
+        font-size: 3rem !important; /* Force smaller font size on mobile */
+        margin-bottom: 1rem !important; /* Reduced margin */
+     }
+
+     .product-showcase {
+        transform: scale(0.8); /* Slightly scale down product images */
+        margin-top: -2rem; /* Adjust position */
+     }
+
+     .product-img {
+        width: 120px !important; /* Smaller product images on mobile */
+        height: 120px !important;
+     }
+    }
 `
 
 export default Hero;

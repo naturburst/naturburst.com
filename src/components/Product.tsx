@@ -39,7 +39,7 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <h3>{name}</h3>
 
           <div className="product-meta">
-            <div className="product-type">Freeze Dried Fruit</div>
+            <div className="product-type">Tropi Treats</div>
             <div className="weight">{weight}</div>
           </div>
 

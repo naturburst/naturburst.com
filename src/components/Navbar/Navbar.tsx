@@ -1,4 +1,3 @@
-// src/components/Navbar/Navbar.tsx
 import React from 'react'
 import styled from 'styled-components'
 import CartButtons from '../CartButtons'
@@ -32,7 +31,7 @@ const NavContainer = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #40CEB5; /* Matching the Natureburst light green from the logo */
+  background: #3c8558; /* Updated to match logo's green color */
 
   .promo-banner {
     width: 100%;
@@ -130,23 +129,23 @@ const NavContainer = styled.nav`
         }
 
         &:hover {
-          color: #1a2e37;
+          color: #FFD166;  /* Accent color for hover */
 
           &::after {
             width: 100%;
-            background-color: #1a2e37;
+            background-color: #FFD166;
           }
         }
 
         /* Active page indicator */
         &.active {
-          color: #1a2e37;
+          color: #FFD166;
           font-weight: 700;
 
           &::after {
             width: 100%;
             height: 3px;
-            background-color: #1a2e37;
+            background-color: #FFD166;
           }
         }
       }

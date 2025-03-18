@@ -1,13 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useProductsContext } from '../../context/products_context'
 import { formatPrice } from '../../utils/helpers'
 import { AddToCart } from '../../components'
 import { FaCheck, FaShieldAlt, FaTruck } from 'react-icons/fa'
 
+// Define section types to fix TypeScript errors
+type SectionName = 'keyBenefits' | 'ingredients' | 'tastingNotes' | 'nutritionFacts' | 'usageSuggestions' | 'storage';
+
+interface SectionStates {
+  keyBenefits: boolean;
+  ingredients: boolean;
+  tastingNotes: boolean;
+  nutritionFacts: boolean;
+  usageSuggestions: boolean;
+  storage: boolean;
+}
+
 export const SingleProductContent = () => {
   const { singleProduct } = useProductsContext()
   const [activeTab, setActiveTab] = useState('description');
+  const [activeSections, setActiveSections] = useState<SectionStates>({
+    keyBenefits: false,
+    ingredients: false,
+    tastingNotes: false,
+    nutritionFacts: false,
+    usageSuggestions: false,
+    storage: false
+  });
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 768);
+
+  // Add useEffect to initialize window.innerWidth for SSR
+  useEffect(() => {
+    // Add resize listener to update section visibility on window resize
+    const handleResize = () => {
+      // Force component re-render on resize
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const toggleSection = (section: SectionName) => {
+    setActiveSections({
+      ...activeSections,
+      [section]: !activeSections[section]
+    });
+  };
 
   const {
     name,
@@ -23,7 +63,7 @@ export const SingleProductContent = () => {
   } = { ...singleProduct }
 
   return (
-    <Wrapper>
+    <ProductContentWrapper>
       <div className='product-info'>
         <h1>{name}</h1>
         <p className='brand'>{brand || 'Tropi Treats'}</p>
@@ -43,6 +83,13 @@ export const SingleProductContent = () => {
             <span>Free Shipping</span>
           </div>
         </div>
+
+        {/* Add to cart section - moved above tabs */}
+        {stock && stock > 0 && (
+          <div className='add-to-cart-section top-cart'>
+            <AddToCart singleProduct={singleProduct} />
+          </div>
+        )}
 
         <div className="tabs">
           <button
@@ -71,44 +118,65 @@ export const SingleProductContent = () => {
               <p>{itemDescription}</p>
 
               <div className="key-features">
-                <h3>Key Benefits</h3>
-                <div className="benefits-list">
-                  <div className="benefit-item">
-                    <div className="icon-container natural"></div>
-                    <div className="benefit-content">
-                      <h4>Natural Goodness</h4>
-                      <p>100% pure fruit with no additives, preservatives or added sugar</p>
+                <h3
+                  className={activeSections.keyBenefits ? 'active' : ''}
+                  onClick={() => toggleSection('keyBenefits')}
+                >
+                  Key Benefits
+                </h3>
+                {(activeSections.keyBenefits || windowWidth >= 768) && (
+                  <div className="benefits-list">
+                    <div className="benefit-item">
+                      <div className="icon-container natural"></div>
+                      <div className="benefit-content">
+                        <h4>Natural Goodness</h4>
+                        <p>100% pure fruit with no additives, preservatives or added sugar</p>
+                      </div>
+                    </div>
+                    <div className="benefit-item">
+                      <div className="icon-container nutrients"></div>
+                      <div className="benefit-content">
+                        <h4>Nutrient-Rich</h4>
+                        <p>Retains up to 97% of nutrients from fresh fruit</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="benefit-item">
-                    <div className="icon-container nutrients"></div>
-                    <div className="benefit-content">
-                      <h4>Nutrient-Rich</h4>
-                      <p>Retains up to 97% of nutrients from fresh fruit</p>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Ingredients list */}
               {ingredients && ingredients.length > 0 && (
                 <div className='ingredients-section'>
-                  <h3>Ingredients</h3>
-                  <div className='ingredients-list'>
-                    {ingredients.map((ingredient, index) => (
-                      <div key={index} className='ingredient-tag'>
-                        <FaCheck className='check-icon' /> {ingredient}
-                      </div>
-                    ))}
-                  </div>
+                  <h3
+                    className={activeSections.ingredients ? 'active' : ''}
+                    onClick={() => toggleSection('ingredients')}
+                  >
+                    Ingredients
+                  </h3>
+                  {(activeSections.ingredients || windowWidth >= 768) && (
+                    <div className='ingredients-list'>
+                      {ingredients.map((ingredient, index) => (
+                        <div key={index} className='ingredient-tag'>
+                          <FaCheck className='check-icon' /> {ingredient}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Tasting notes section */}
               {tastingNotes && (
                 <div className='tasting-section'>
-                  <h3>Tasting Notes</h3>
-                  <p>{tastingNotes}</p>
+                  <h3
+                    className={activeSections.tastingNotes ? 'active' : ''}
+                    onClick={() => toggleSection('tastingNotes')}
+                  >
+                    Tasting Notes
+                  </h3>
+                  {(activeSections.tastingNotes || windowWidth >= 768) && (
+                    <p>{tastingNotes}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -117,32 +185,41 @@ export const SingleProductContent = () => {
           {activeTab === 'nutrition' && nutritionalInfo && (
             <div className="nutrition-tab">
               <div className="nutrition-facts">
-                <h3>Nutrition Facts</h3>
+                <h3
+                  className={activeSections.nutritionFacts ? 'active' : ''}
+                  onClick={() => toggleSection('nutritionFacts')}
+                >
+                  Nutrition Facts
+                </h3>
 
-                <table className="nutrition-table">
-                  <tbody>
-                    <tr className="calories">
-                      <td>Calories</td>
-                      <td className="value">{nutritionalInfo.calories}</td>
-                    </tr>
-                    <tr>
-                      <td>Total Fat</td>
-                      <td className="value">{nutritionalInfo.fat}g</td>
-                    </tr>
-                    <tr>
-                      <td>Total Carbohydrates</td>
-                      <td className="value">{nutritionalInfo.carbs}g</td>
-                    </tr>
-                    <tr>
-                      <td>Protein</td>
-                      <td className="value">{nutritionalInfo.protein}g</td>
-                    </tr>
-                  </tbody>
-                </table>
+                {(activeSections.nutritionFacts || windowWidth >= 768) && (
+                  <>
+                    <table className="nutrition-table">
+                      <tbody>
+                        <tr className="calories">
+                          <td>Calories</td>
+                          <td className="value">{nutritionalInfo.calories}</td>
+                        </tr>
+                        <tr>
+                          <td>Total Fat</td>
+                          <td className="value">{nutritionalInfo.fat}g</td>
+                        </tr>
+                        <tr>
+                          <td>Total Carbohydrates</td>
+                          <td className="value">{nutritionalInfo.carbs}g</td>
+                        </tr>
+                        <tr>
+                          <td>Protein</td>
+                          <td className="value">{nutritionalInfo.protein}g</td>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                <p className="health-benefits">High Vitamin Content Helps To Boost Immunity</p>
-                <p className="health-benefits">Helps In Supporting Eye, Skin, Heart, And Hair Health</p>
-                <p className="health-benefits">Contains Super Antioxidants Which Is Key In Detoxification</p>
+                    <p className="health-benefits">High Vitamin Content Helps To Boost Immunity</p>
+                    <p className="health-benefits">Helps In Supporting Eye, Skin, Heart, And Hair Health</p>
+                    <p className="health-benefits">Contains Super Antioxidants Which Is Key In Detoxification</p>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -150,46 +227,56 @@ export const SingleProductContent = () => {
           {activeTab === 'howtouse' && (
             <div className="howtouse-tab">
               <div className="usage-suggestions">
-                <h3>Creative Ways to Enjoy</h3>
-                <div className="usage-list">
-                  <div className="usage-item">
-                    <h4>Snack Straight from the Pack</h4>
-                    <p>Enjoy as a delicious, crunchy snack anytime, anywhere.</p>
+                <h3
+                  className={activeSections.usageSuggestions ? 'active' : ''}
+                  onClick={() => toggleSection('usageSuggestions')}
+                >
+                  Creative Ways to Enjoy
+                </h3>
+
+                {(activeSections.usageSuggestions || windowWidth >= 768) && (
+                  <div className="usage-list">
+                    <div className="usage-item">
+                      <h4>Snack Straight from the Pack</h4>
+                      <p>Enjoy as a delicious, crunchy snack anytime, anywhere.</p>
+                    </div>
+                    <div className="usage-item">
+                      <h4>Smoothie Booster</h4>
+                      <p>Add to your morning smoothie for an intense flavor burst.</p>
+                    </div>
+                    <div className="usage-item">
+                      <h4>Yogurt & Cereal Topping</h4>
+                      <p>Sprinkle over yogurt, oatmeal, or cereal for a crunchy texture.</p>
+                    </div>
                   </div>
-                  <div className="usage-item">
-                    <h4>Smoothie Booster</h4>
-                    <p>Add to your morning smoothie for an intense flavor burst.</p>
-                  </div>
-                  <div className="usage-item">
-                    <h4>Yogurt & Cereal Topping</h4>
-                    <p>Sprinkle over yogurt, oatmeal, or cereal for a crunchy texture.</p>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Storage instructions */}
               {storageInstructions && (
                 <div className='storage-section'>
-                  <h3>Storage Tips</h3>
-                  <p>{storageInstructions}</p>
+                  <h3
+                    className={activeSections.storage ? 'active' : ''}
+                    onClick={() => toggleSection('storage')}
+                  >
+                    Storage Tips
+                  </h3>
+                  {(activeSections.storage || windowWidth >= 768) && (
+                    <p>{storageInstructions}</p>
+                  )}
                 </div>
               )}
             </div>
           )}
         </div>
 
-        {/* Add to cart section */}
-        {stock && stock > 0 && (
-          <div className='add-to-cart-section'>
-            <AddToCart singleProduct={singleProduct} />
-          </div>
-        )}
+        {/* Removed add to cart section from bottom as it's now at the top */}
       </div>
-    </Wrapper>
+    </ProductContentWrapper>
   )
 }
 
-const Wrapper = styled.section`
+const ProductContentWrapper = styled.section`
   .product-info {
     padding: 0 0 2rem 0;
   }
@@ -495,6 +582,15 @@ const Wrapper = styled.section`
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid #e0e0e0;
+
+    &.top-cart {
+      margin-top: 0;
+      margin-bottom: 2rem;
+      padding-top: 0;
+      border-top: none;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 1.5rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -507,21 +603,108 @@ const Wrapper = styled.section`
     }
   }
 
+  @media (min-width: 1400px) {
+    .product-info {
+      max-width: 80%;
+      margin-left: 0;
+    }
+  }
+
+  /* Mobile optimizations */
   @media (max-width: 767px) {
     h1 {
       font-size: 1.5rem;
     }
 
-    .price {
+    .price-container .price {
       font-size: 1.5rem;
     }
 
     .tabs {
       overflow-x: auto;
       white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
 
       .tab-btn {
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 0.75rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Collapsible sections for mobile */
+    .key-features h3,
+    .ingredients-section h3,
+    .tasting-section h3,
+    .nutrition-facts h3,
+    .usage-suggestions h3,
+    .storage-section h3 {
+      cursor: pointer;
+      position: relative;
+      padding: 0.75rem 0;
+
+      &::after {
+        content: '+';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        color: #40CEB5;
+      }
+
+      &.active::after {
+        content: '-';
+      }
+    }
+
+    /* Compact display of benefits */
+    .key-features .benefits-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+
+      .benefit-item {
+        flex-direction: column;
+        text-align: center;
+
+        .icon-container {
+          margin: 0 auto 0.5rem;
+        }
+
+        h4 {
+          font-size: 0.9rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    /* More compact nutrition facts */
+    .nutrition-table td {
+      padding: 0.5rem 0;
+    }
+
+    /* Snappier usage suggestions */
+    .usage-suggestions .usage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .usage-item {
+        padding: 0.75rem;
+
+        h4 {
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+          margin-bottom: 0;
+        }
       }
     }
   }

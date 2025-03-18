@@ -10,8 +10,8 @@ const ProductsPage = () => {
   return (
     <main>
       <PageHero title='products' />
-      <Wrapper className='page'>
-        <div className='section-center products'>
+      <Wrapper>
+        <div className='products-section'>
           <div className='products-header'>
             <h2>Our Products</h2>
             <p>
@@ -36,18 +36,20 @@ const ProductsPage = () => {
 }
 
 const Wrapper = styled.div`
+  width: 100%;
+  padding: 0;
 
-  .products {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    margin: 4rem auto;
+  .products-section {
+    width: 100%;
+    max-width: 100%;
+    padding: 4rem 2rem;
+    background: #f7f7f7;
   }
 
   .products-header {
     text-align: center;
     max-width: 700px;
-    margin: 0 auto;
+    margin: 0 auto 3rem;
 
     h2 {
       font-size: 2.5rem;
@@ -64,17 +66,46 @@ const Wrapper = styled.div`
   .products-container {
     display: grid;
     gap: 2rem;
+    width: 100%;
+    margin: 0 auto;
   }
 
   @media (min-width: 576px) {
+    .products-section {
+      padding: 4rem 4rem;
+    }
+
     .products-container {
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      max-width: 100%;
     }
   }
 
   @media (min-width: 992px) {
+    .products-section {
+      padding: 4rem 6rem;
+    }
+
     .products-container {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .products-section {
+      padding: 4rem 8rem;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .products-section {
+      padding: 3rem 1rem;
+    }
+
+    .products-container {
+      grid-template-columns: 1fr;
+      overflow-y: auto;
+      max-height: none; /* Allow natural height */
     }
   }
 `

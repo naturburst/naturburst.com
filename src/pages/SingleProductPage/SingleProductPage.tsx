@@ -84,12 +84,14 @@ const SingleProductPage = () => {
 export default SingleProductPage
 
 const Wrapper = styled.main`
-  max-width: 1200px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem 1rem;
 
   .back-link {
-    margin-bottom: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
 
     a {
       display: inline-flex;
@@ -111,6 +113,8 @@ const Wrapper = styled.main`
   .product-container {
     display: grid;
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .product-image {
@@ -130,6 +134,9 @@ const Wrapper = styled.main`
 
   .related-products {
     margin-top: 4rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 
     h2 {
       font-size: 1.5rem;
@@ -190,9 +197,26 @@ const Wrapper = styled.main`
     }
   }
 
+  @media (min-width: 1400px) {
+    .product-container {
+      max-width: 100%;
+      grid-template-columns: 40% 60%;
+    }
+  }
+
   @media (max-width: 767px) {
+    padding: 1rem;
+
     .related-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .product-image {
+      padding: 1rem;
+
+      img {
+        max-height: 250px;
+      }
     }
   }
 `

@@ -108,7 +108,7 @@ const Footer = () => {
 
 const Wrapper = styled.footer`
   position: relative;
-  background: var(--clr-primary-5);
+  background: #3c8558; /* Updated to match logo's green color */
   color: var(--clr-white);
   padding: 5rem 0 2rem 0;
 
