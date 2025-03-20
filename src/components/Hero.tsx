@@ -1,68 +1,23 @@
-// src/components/Hero.tsx
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
-
-// Helper function to handle image paths
-const getImagePath = (path: string) => {
-  return `${process.env.PUBLIC_URL || ''}${path}`;
-};
 
 const Hero = () => {
   return (
     <Wrapper>
       <div className="hero-container">
         <div className="hero-content">
-          <div className="text-container">
-            <h1>
-              <span className="crispy">CRISPY,</span> <span className="crunchy">CRUNCHY</span>
-            </h1>
-            <h2 className="irresistible">IRRESISTIBLE</h2>
-
-            <div className="hero-buttons">
-              <Link to="/products" className="btn shop-now-btn">
-                <FaShoppingCart className="cart-icon" /> SHOP NOW
-              </Link>
-              <Link to="/how-to-use" className="btn learn-more-btn">
-                HOW TO USE
-              </Link>
-            </div>
-          </div>
-
-          <div className="product-showcase">
-            <div className="product-images">
-              <img
-                src={getImagePath('/images/custard-apple-detail1.jpg')}
-                alt="Freeze-dried custard apple"
-                className="product-img custard-apple"
-              />
-              <img
-                src={getImagePath('/images/jackfruit-detail1.jpg')}
-                alt="Freeze-dried jackfruit"
-                className="product-img jackfruit"
-              />
-              <img
-                src={getImagePath('/images/jamun-detail1.jpg')}
-                alt="Freeze-dried jamun"
-                className="product-img jamun"
-              />
-            </div>
-            <div className="fun-text">
-              Pop, Crunch, Wow!
-            </div>
+          <div className="hero-buttons">
+            <Link to="/products" className="shop-now-btn">
+              <FaShoppingCart className="cart-icon" />
+              SHOP NOW
+            </Link>
+            <Link to="/how-to-use" className="learn-more-btn">
+              HOW TO USE
+            </Link>
           </div>
         </div>
-      </div>
-
-      <div className="wave-divider">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
-          <path
-            fill="#FFF"
-            fillOpacity="1"
-            d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"
-          ></path>
-        </svg>
       </div>
     </Wrapper>
   );
@@ -71,72 +26,37 @@ const Hero = () => {
 const Wrapper = styled.section`
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
   margin-bottom: 2rem;
 
   .hero-container {
-    background: linear-gradient(135deg, #FFD166 0%, #F4A261 100%);
-    min-height: 500px;
+    background-image: url('/images/tropi-treats-banner.png'); /* Desktop banner */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+    min-height: 600px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     padding: 2rem 1rem;
+    border-bottom: 3px solid #f7f7f7;
   }
 
   .hero-content {
-    display: flex;
-    flex-direction: column;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     position: relative;
     z-index: 2;
-  }
-
-  .text-container {
-    flex: 1;
-    padding: 2rem;
-    z-index: 2;
-  }
-
-  h1 {
-    font-size: 3.5rem;
-    line-height: 1;
-    margin: 0;
-    font-weight: 800;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-
-    .crispy {
-      color: #fff;
-    }
-
-    .crunchy {
-      color: #fff;
-    }
-  }
-
-  .irresistible {
-    font-size: 4.5rem;
-    color: #9C4A1A;
-    font-weight: 900;
-    margin: 0.5rem 0 1.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    letter-spacing: -1px;
-  }
-
-  .tagline {
-    font-size: 1.5rem;
-    color: #fff;
-    font-weight: 600;
-    margin-bottom: 2rem;
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding-bottom: 2rem;
   }
 
   .hero-buttons {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .shop-now-btn {
@@ -151,6 +71,7 @@ const Wrapper = styled.section`
     gap: 0.5rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-decoration: none;
 
     &:hover {
       background-color: #1E7D74;
@@ -164,187 +85,64 @@ const Wrapper = styled.section`
   }
 
   .learn-more-btn {
-    background-color: transparent;
-    color: #fff;
-    border: 2px solid #fff;
-    font-weight: 600;
+    background-color: #ffffff;
+    color: #2A9D8F;
+    border: 2px solid #2A9D8F;
+    font-weight: 700;
     padding: 0.75rem 1.5rem;
     border-radius: 50px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
     &:hover {
-      background-color: rgba(255,255,255,0.2);
+      background-color: #2A9D8F;
+      color: white;
       transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
   }
 
-  .product-showcase {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-  }
-
-  .product-images {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    max-width: 100%;
-    margin: 0 auto;
-  }
-
-  .product-img {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
-    transition: transform 0.3s ease;
-    margin: 0 -1.5rem;
-
-    &:hover {
-      transform: translateY(-10px);
-    }
-  }
-
-  .custard-apple {
-    transform: rotate(-5deg);
-    z-index: 1;
-  }
-
-  .jackfruit {
-    transform: rotate(5deg);
-    z-index: 3;
-  }
-
-  .jamun {
-    transform: rotate(-8deg);
-    z-index: 2;
-  }
-
-  .fun-text {
-    position: absolute;
-    bottom: 10px;
-    right: 10%;
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: #fff;
-    font-size: 1.3rem;
-    font-weight: 600;
-    transform: rotate(-5deg);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-  }
-
-  .wave-divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    line-height: 0;
-    z-index: 1;
-
-    svg {
-      width: 100%;
-      height: 60px;
-    }
-  }
-
-  @media (min-width: 768px) {
+  /* Mobile responsive adjustments */
+  @media (max-width: 767px) {
     .hero-container {
-      min-height: 500px;
-      padding: 3rem 2rem;
+      background-image: url('/images/tropi-treats-mobile-banner.png');
+      min-height: 520px;
+      background-size: 100% auto; /* Ensures image fits width fully */
+      background-position: top center;
+      padding: 0; /* Remove padding to allow full-width image */
+      margin: 0; /* Remove margins */
+      width: 100%; /* Ensure full width */
     }
 
     .hero-content {
-      flex-direction: row;
-      gap: 2rem;
-    }
-
-    h1 {
-      font-size: 4rem;
-    }
-
-    .irresistible {
-      font-size: 6rem;
-    }
-
-    .tagline {
-      font-size: 1.8rem;
-    }
-
-    .product-img {
-      width: 200px;
-      height: 200px;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .hero-container {
-      min-height: 550px;
-    }
-
-    h1 {
-      font-size: 5rem;
-    }
-
-    .irresistible {
-      font-size: 7rem;
-    }
-
-    .product-img {
-      width: 220px;
-      height: 220px;
-    }
-  }
-
-  @media (max-width: 767px) {
-    .hero-container {
-      text-align: center;
+      padding-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
     }
 
     .hero-buttons {
-      justify-content: center;
+      /* Keep buttons side by side on mobile */
+      flex-direction: row;
+      align-items: center;
+      width: auto; /* Let buttons determine the width */
+      max-width: none;
+      margin: 0;
+      gap: 0.5rem; /* Reduce gap between buttons */
     }
 
-    .fun-text {
-      right: 50%;
-      transform: translateX(50%) rotate(-5deg);
+    .shop-now-btn, .learn-more-btn {
+      /* Reduce button size on mobile */
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .cart-icon {
+      font-size: 0.9rem; /* Smaller icon for mobile */
     }
   }
-
-   .hero-container {
-      background: linear-gradient(135deg, #FFD166 0%, #F4A261 100%);
-      min-height: 500px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem 4rem; /* Increased bottom padding to ensure content is visible */
-      overflow: hidden; /* Prevent content from overflowing */
-   }
-
-   @media (max-width: 767px) {
-     .hero-container {
-        min-height: 400px; /* Reduced height on mobile */
-        padding: 1rem 1rem 4rem; /* Adjusted padding for mobile */
-     }
-
-     h1 {
-        font-size: 2.5rem !important; /* Force smaller font size on mobile */
-     }
-
-     .irresistible {
-        font-size: 3rem !important; /* Force smaller font size on mobile */
-        margin-bottom: 1rem !important; /* Reduced margin */
-     }
-
-     .product-showcase {
-        transform: scale(0.8); /* Slightly scale down product images */
-        margin-top: -2rem; /* Adjust position */
-     }
-
-     .product-img {
-        width: 120px !important; /* Smaller product images on mobile */
-        height: 120px !important;
-     }
-    }
-`
+`;
 
 export default Hero;
