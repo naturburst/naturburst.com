@@ -60,16 +60,6 @@ const Footer = () => {
               </ul>
             </div>
 
-            <div className='link-group'>
-              <h4>Our Policies</h4>
-              <ul>
-                <li><Link to='/'>Shipping Policy</Link></li>
-                <li><Link to='/'>Return Policy</Link></li>
-                <li><Link to='/'>Privacy Policy</Link></li>
-                <li><Link to='/'>Terms of Service</Link></li>
-              </ul>
-            </div>
-
             <div className='link-group location-group'>
               <h4>Visit Us</h4>
               <address className="footer-address">
@@ -108,7 +98,7 @@ const Footer = () => {
 
 const Wrapper = styled.footer`
   position: relative;
-  background: #3c8558; /* Updated to match logo's green color */
+  background: #2A5E41; /* Updated to match navbar color */
   color: var(--clr-white);
   padding: 5rem 0 2rem 0;
 

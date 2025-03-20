@@ -15,8 +15,8 @@ const Sidebar = () => {
         <div className="sidebar-header">
           <img 
             src={`${process.env.PUBLIC_URL}/images/logo.png`} 
-            alt="Moon" 
-            className="logo" 
+            alt="NatureBurst"
+            className="logo"
           />
           <button type="button" className="close-btn" onClick={closeSidebar}>
             <FaTimes />
@@ -26,9 +26,9 @@ const Sidebar = () => {
         <div className="sidebar-content">
           <ul className="main-links">
             <li>
-              <Link 
-                to="/" 
-                className={location.pathname === '/' ? 'active' : ''} 
+              <Link
+                to="/"
+                className={location.pathname === '/' ? 'active' : ''}
                 onClick={closeSidebar}
               >
                 <FaHome className="icon" />
@@ -36,9 +36,9 @@ const Sidebar = () => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/products" 
-                className={location.pathname.includes('/products') ? 'active' : ''} 
+              <Link
+                to="/products"
+                className={location.pathname.includes('/products') ? 'active' : ''}
                 onClick={closeSidebar}
               >
                 <FaShoppingBag className="icon" />
@@ -46,9 +46,9 @@ const Sidebar = () => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/how-to-use" 
-                className={location.pathname === '/how-to-use' ? 'active' : ''} 
+              <Link
+                to="/how-to-use"
+                className={location.pathname === '/how-to-use' ? 'active' : ''}
                 onClick={closeSidebar}
               >
                 <FaQuestionCircle className="icon" />
@@ -56,9 +56,9 @@ const Sidebar = () => {
               </Link>
             </li>
             <li>
-              <Link 
-                to="/contact" 
-                className={location.pathname === '/contact' ? 'active' : ''} 
+              <Link
+                to="/contact"
+                className={location.pathname === '/contact' ? 'active' : ''}
                 onClick={closeSidebar}
               >
                 <FaPhone className="icon" />
@@ -68,71 +68,6 @@ const Sidebar = () => {
           </ul>
 
           <div className="divider"></div>
-
-          <div className="category-links">
-            <h3>Categories</h3>
-            <ul>
-              <li>
-                <Link 
-                  to="/products?category=fruits" 
-                  onClick={closeSidebar}
-                >
-                  Freeze-Dried Fruits
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/products?category=vegetables" 
-                  onClick={closeSidebar}
-                >
-                  Freeze-Dried Vegetables
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/products?category=mixes" 
-                  onClick={closeSidebar}
-                >
-                  Trail Mixes
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/products?category=gift-packs" 
-                  onClick={closeSidebar}
-                >
-                  Gift Packs
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/products?category=new" 
-                  onClick={closeSidebar}
-                >
-                  New Arrivals
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="divider"></div>
-
-          <div className="account-links">
-            <ul>
-              <li>
-                <Link to="/account" onClick={closeSidebar}>
-                  <FaUser className="icon" />
-                  <span>My Account</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/wishlist" onClick={closeSidebar}>
-                  <FaHeart className="icon" />
-                  <span>Wishlist</span>
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           <div className="sidebar-contact">
             <h3>Contact Us</h3>
@@ -162,20 +97,21 @@ const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
   }
-  
+
   .show-sidebar {
     transform: translateX(0);
   }
-  
+
   .sidebar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 1.5rem;
     border-bottom: 1px solid var(--clr-grey-9);
-    
+
     .logo {
-      height: 40px;
+      height: 60px; /* Increased from default size */
+      width: auto; /* Maintain aspect ratio */
     }
     
     .close-btn {

@@ -31,21 +31,20 @@ const NavContainer = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #3c8558; /* Updated to match logo's green color */
+  background: #2A5E41; /* Updated darker green to match the logo */
 
   .promo-banner {
     width: 100%;
     background: #1a2e37; /* Dark color for contrast */
     color: white;
     text-align: center;
-    padding: 0.25rem 1rem;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 1px;
+    padding: 0.25rem 0;
 
     span {
       display: inline-block;
-      padding: 0.25rem 0;
     }
   }
 
@@ -56,18 +55,6 @@ const NavContainer = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 0;
-  }
-
-  .nav-header {
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 150px;
-      height: auto;
-      object-fit: contain;
-    }
   }
 
   .nav-toggle {
@@ -79,6 +66,19 @@ const NavContainer = styled.nav`
       font-size: 2rem;
     }
   }
+
+  .nav-header {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 240px; /* Increased from 150px to make logo bigger */
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+
 
   .nav-links {
     display: none;
@@ -156,6 +156,10 @@ const NavContainer = styled.nav`
     .nav-center {
       justify-content: space-between;
       align-items: center;
+    }
+
+    .nav-header img {
+      width: 180px;
     }
   }
 `
