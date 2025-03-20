@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { PageHero } from '../components'
 import { useCartContext } from '../context/cart_context'
-import { Link, useHistory } from 'react-router-dom'
+import { useCurrencyContext } from '../context/currency_context'
 import { formatPrice } from '../utils/helpers'
+import { Link, useHistory } from 'react-router-dom'
 
 const CheckoutPage = () => {
   const { cart, totalAmount, clearCart } = useCartContext()
+  const { currency } = useCurrencyContext()
   const history = useHistory()
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +22,9 @@ const CheckoutPage = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Format prices with selected currency
+  const { originalPrice, discountedPrice } = formatPrice(totalAmount, currency)
+
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -30,7 +35,7 @@ const CheckoutPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     // Simulate processing payment
     setTimeout(() => {
       clearCart()
@@ -60,23 +65,41 @@ const CheckoutPage = () => {
           <div className='order-summary'>
             <h3>Order Summary</h3>
             <div className='items'>
-              {cart.map(item => (
-                <div key={item.id} className='item'>
-                  <img src={item.image} alt={item.name} />
-                  <div className='info'>
-                    <h4>{item.name}</h4>
-                    <p>
-                      {item.amount} × {formatPrice(item.price)}
+              {cart.map(item => {
+                // Format the prices for each item
+                const { originalPrice: itemOriginalPrice, discountedPrice: itemDiscountedPrice } =
+                  formatPrice(item.price, currency)
+
+                const { originalPrice: subtotalOriginal, discountedPrice: subtotalDiscounted } =
+                  formatPrice(item.price * item.amount, currency)
+
+                return (
+                  <div key={item.id} className='item'>
+                    <img src={item.image} alt={item.name} />
+                    <div className='info'>
+                      <h4>{item.name}</h4>
+                      <p>
+                        {item.amount} × <span className="prices">
+                          <span className="original">{itemOriginalPrice}</span>
+                          <span className="discounted">{itemDiscountedPrice}</span>
+                        </span>
+                      </p>
+                    </div>
+                    <p className='subtotal'>
+                      <span className="original">{subtotalOriginal}</span>
+                      <span className="discounted">{subtotalDiscounted}</span>
                     </p>
                   </div>
-                  <p className='subtotal'>{formatPrice(item.price * item.amount)}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
             <div className='totals'>
               <div className='line'>
                 <span>Subtotal:</span>
-                <span>{formatPrice(totalAmount)}</span>
+                <div className="amount-column">
+                  <span className="original">{originalPrice}</span>
+                  <span>{discountedPrice}</span>
+                </div>
               </div>
               <div className='line'>
                 <span>Shipping:</span>
@@ -84,20 +107,23 @@ const CheckoutPage = () => {
               </div>
               <div className='line total'>
                 <span>Total:</span>
-                <span>{formatPrice(totalAmount)}</span>
+                <div className="amount-column">
+                  <span className="original">{originalPrice}</span>
+                  <span>{discountedPrice}</span>
+                </div>
               </div>
             </div>
           </div>
 
           <form className='checkout-form' onSubmit={handleSubmit}>
             <h3>Shipping Information</h3>
-            
+
             <div className='form-group'>
               <label htmlFor='name'>Full Name</label>
-              <input 
-                type='text' 
-                id='name' 
-                name='name' 
+              <input
+                type='text'
+                id='name'
+                name='name'
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -106,10 +132,10 @@ const CheckoutPage = () => {
 
             <div className='form-group'>
               <label htmlFor='email'>Email Address</label>
-              <input 
-                type='email' 
-                id='email' 
-                name='email' 
+              <input
+                type='email'
+                id='email'
+                name='email'
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -118,10 +144,10 @@ const CheckoutPage = () => {
 
             <div className='form-group'>
               <label htmlFor='address'>Street Address</label>
-              <input 
-                type='text' 
-                id='address' 
-                name='address' 
+              <input
+                type='text'
+                id='address'
+                name='address'
                 value={formData.address}
                 onChange={handleChange}
                 required
@@ -131,10 +157,10 @@ const CheckoutPage = () => {
             <div className='form-row'>
               <div className='form-group'>
                 <label htmlFor='city'>City</label>
-                <input 
-                  type='text' 
-                  id='city' 
-                  name='city' 
+                <input
+                  type='text'
+                  id='city'
+                  name='city'
                   value={formData.city}
                   onChange={handleChange}
                   required
@@ -143,10 +169,10 @@ const CheckoutPage = () => {
 
               <div className='form-group'>
                 <label htmlFor='state'>State/Province</label>
-                <input 
-                  type='text' 
-                  id='state' 
-                  name='state' 
+                <input
+                  type='text'
+                  id='state'
+                  name='state'
                   value={formData.state}
                   onChange={handleChange}
                   required
@@ -157,10 +183,10 @@ const CheckoutPage = () => {
             <div className='form-row'>
               <div className='form-group'>
                 <label htmlFor='zip'>Postal Code</label>
-                <input 
-                  type='text' 
-                  id='zip' 
-                  name='zip' 
+                <input
+                  type='text'
+                  id='zip'
+                  name='zip'
                   value={formData.zip}
                   onChange={handleChange}
                   required
@@ -169,10 +195,10 @@ const CheckoutPage = () => {
 
               <div className='form-group'>
                 <label htmlFor='country'>Country</label>
-                <input 
-                  type='text' 
-                  id='country' 
-                  name='country' 
+                <input
+                  type='text'
+                  id='country'
+                  name='country'
                   value={formData.country}
                   onChange={handleChange}
                   required
@@ -180,12 +206,12 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            <button 
-              type='submit' 
+            <button
+              type='submit'
               className='btn submit-btn'
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Processing...' : `Pay ${formatPrice(totalAmount)}`}
+              {isSubmitting ? 'Processing...' : `Pay ${discountedPrice}`}
             </button>
           </form>
         </div>
@@ -205,7 +231,7 @@ const PageWrapper: React.FC = ({ children }) => {
 
 const Wrapper = styled.div`
   padding: 3rem 0;
-  
+
   h2 {
     margin-bottom: 2rem;
     text-align: center;
@@ -220,61 +246,101 @@ const Wrapper = styled.div`
     background: var(--clr-grey-10);
     padding: 2rem;
     border-radius: var(--radius);
-    
+
     h3 {
       margin-bottom: 1.5rem;
       font-size: 1.25rem;
     }
-    
+
     .items {
       margin-bottom: 2rem;
     }
-    
+
     .item {
       display: grid;
       grid-template-columns: 60px 1fr auto;
       gap: 1rem;
       margin-bottom: 1.5rem;
       align-items: center;
-      
+
       img {
         width: 60px;
         height: 60px;
         border-radius: var(--radius);
         object-fit: cover;
       }
-      
+
       .info {
         h4 {
           margin-bottom: 0.25rem;
           font-size: 1rem;
         }
-        
+
         p {
           color: var(--clr-grey-5);
           margin-bottom: 0;
           font-size: 0.9rem;
         }
+
+        .prices {
+          display: inline-flex;
+          flex-direction: column;
+
+          .original {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.8rem;
+          }
+
+          .discounted {
+            color: var(--clr-primary-5);
+            font-weight: 600;
+          }
+        }
       }
-      
+
       .subtotal {
         font-weight: 600;
-        color: var(--clr-primary-5);
         margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .original {
+          text-decoration: line-through;
+          color: #888;
+          font-size: 0.8rem;
+        }
+
+        .discounted {
+          color: var(--clr-primary-5);
+        }
       }
     }
-    
+
     .totals {
       border-top: 1px solid var(--clr-grey-8);
       padding-top: 1.5rem;
-      
+
       .line {
         display: flex;
         justify-content: space-between;
         margin-bottom: 0.5rem;
-        
+
         span:first-child {
           color: var(--clr-grey-3);
+        }
+
+        .amount-column {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+
+          .original {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.8rem;
+          }
         }
       }
       

@@ -4,6 +4,7 @@ import { useProductsContext } from '../../context/products_context'
 import { formatPrice } from '../../utils/helpers'
 import { AddToCart } from '../../components'
 import { FaCheck, FaShieldAlt, FaTruck } from 'react-icons/fa'
+import { useCurrencyContext } from '../../context/currency_context'
 
 // Define section types to fix TypeScript errors
 type SectionName = 'keyBenefits' | 'ingredients' | 'tastingNotes' | 'nutritionFacts' | 'usageSuggestions' | 'storage';
@@ -19,6 +20,7 @@ interface SectionStates {
 
 export const SingleProductContent = () => {
   const { singleProduct } = useProductsContext()
+  const { currency } = useCurrencyContext()
   const [activeTab, setActiveTab] = useState('description');
   const [activeSections, setActiveSections] = useState<SectionStates>({
     keyBenefits: false,
@@ -62,6 +64,9 @@ export const SingleProductContent = () => {
     storageInstructions
   } = { ...singleProduct }
 
+  // Format prices with selected currency
+  const { originalPrice, discountedPrice } = price ? formatPrice(price, currency) : { originalPrice: '', discountedPrice: '' };
+
   return (
     <ProductContentWrapper>
       <div className='product-info'>
@@ -69,7 +74,10 @@ export const SingleProductContent = () => {
         <p className='brand'>{brand || 'Tropi Treats'}</p>
 
         <div className="price-container">
-          <h2 className='price'>{price && formatPrice(price)}</h2>
+          <div className="price-column">
+            <span className="original-price">{originalPrice}</span>
+            <h2 className='price'>{discountedPrice}</h2>
+          </div>
           <div className="weight-badge">{weight}</div>
         </div>
 
@@ -298,6 +306,18 @@ const ProductContentWrapper = styled.section`
     display: flex;
     align-items: center;
     margin-bottom: 1.5rem;
+
+    .price-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .original-price {
+      color: #888;
+      text-decoration: line-through;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
 
     .price {
       color: #2A9D8F;

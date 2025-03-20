@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useReducer } from 'react'
 import reducer from '../reducers/cart_reducer'
 import { productDataType } from '../utils/productData'
+import { useCurrencyContext } from './currency_context'
+import { DISCOUNT_RATES } from '../utils/helpers'
 import {
   ADD_TO_CART,
   REMOVE_CART_ITEM,
@@ -56,6 +58,7 @@ const CartContext = React.createContext<initialStateType>(initialState)
 
 export const CartProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const { currency } = useCurrencyContext()
 
   const addToCart = (
     id: string | undefined,
@@ -81,11 +84,16 @@ export const CartProvider: React.FC = ({ children }) => {
     dispatch({ type: CLEAR_CART })
   }
 
-  // when the cart changes, store the changes to localStorage + re-calculate total amount in cart
+  // When the cart or currency changes, calculate totals with the current currency's discount
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(state.cart))
-    dispatch({type: COUNT_CART_TOTALS})
-  }, [state.cart])
+    dispatch({
+      type: COUNT_CART_TOTALS,
+      payload: {
+        discountRate: DISCOUNT_RATES[currency]
+      }
+    })
+  }, [state.cart, currency])
 
   return (
     <CartContext.Provider
@@ -95,6 +103,7 @@ export const CartProvider: React.FC = ({ children }) => {
     </CartContext.Provider>
   )
 }
+
 // make sure use
 export const useCartContext = () => {
   return useContext(CartContext)

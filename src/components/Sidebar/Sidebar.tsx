@@ -2,19 +2,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTimes, FaHome, FaShoppingBag, FaQuestionCircle, FaPhone, FaUser, FaHeart } from 'react-icons/fa';
+import { FaTimes, FaHome, FaShoppingBag, FaQuestionCircle, FaPhone, FaGlobe } from 'react-icons/fa';
 import whiteLogo from '../../assets/logo_white.jpg'
 import { useProductsContext } from '../../context/products_context';
+import { useCurrencyContext } from '../../context/currency_context';
+import { CurrencyType } from '../../context/currency_context';
 
 const Sidebar = () => {
   const { isSidebarOpen, closeSidebar } = useProductsContext();
+  const { currency, setCurrency } = useCurrencyContext();
   const location = useLocation();
+
+  // Handle currency selection in sidebar
+  const handleCurrencyChange = (selectedCurrency: CurrencyType) => {
+    setCurrency(selectedCurrency);
+    // Don't close sidebar here so user can continue navigation
+  };
 
   return (
     <SidebarContainer>
       <aside className={isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}>
         <div className="sidebar-header">
-          <img 
+          <img
             src={whiteLogo}
             alt="NatureBurst"
             className="logo"
@@ -25,6 +34,27 @@ const Sidebar = () => {
         </div>
 
         <div className="sidebar-content">
+          {/* Currency selector */}
+          <div className="currency-selector">
+            <h3><FaGlobe className="icon" /> Select Currency</h3>
+            <div className="currency-options">
+              <button
+                className={currency === 'USD' ? 'active' : ''}
+                onClick={() => handleCurrencyChange('USD')}
+              >
+                USD ($)
+              </button>
+              <button
+                className={currency === 'INR' ? 'active' : ''}
+                onClick={() => handleCurrencyChange('INR')}
+              >
+                INR (₹)
+              </button>
+            </div>
+          </div>
+
+          <div className="divider"></div>
+
           <ul className="main-links">
             <li>
               <Link
@@ -114,7 +144,7 @@ const SidebarContainer = styled.div`
       height: 60px; /* Increased from default size */
       width: auto; /* Maintain aspect ratio */
     }
-    
+
     .close-btn {
       background: transparent;
       border: none;
@@ -122,14 +152,14 @@ const SidebarContainer = styled.div`
       font-size: 1.5rem;
       cursor: pointer;
       transition: all 0.2s ease;
-      
+
       &:hover {
         color: var(--clr-primary-5);
         transform: scale(1.1);
       }
     }
   }
-  
+
   .sidebar-content {
     padding: 1.5rem;
     display: flex;
@@ -137,12 +167,56 @@ const SidebarContainer = styled.div`
     gap: 2rem;
     flex: 1;
   }
-  
+
+  .currency-selector {
+    h3 {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--clr-grey-3);
+      font-weight: 600;
+
+      .icon {
+        margin-right: 0.75rem;
+        color: var(--clr-primary-5);
+      }
+    }
+
+    .currency-options {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        flex: 1;
+        background: var(--clr-grey-10);
+        border: 1px solid var(--clr-grey-8);
+        border-radius: var(--radius);
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--clr-grey-5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        &.active {
+          background: var(--clr-primary-5);
+          color: white;
+          border-color: var(--clr-primary-5);
+        }
+
+        &:hover:not(.active) {
+          background: var(--clr-grey-9);
+        }
+      }
+    }
+  }
+
   .main-links {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    
+
     li {
       a {
         display: flex;
@@ -152,96 +226,34 @@ const SidebarContainer = styled.div`
         transition: all 0.3s ease;
         color: var(--clr-grey-3);
         font-weight: 500;
-        
+
         .icon {
           margin-right: 1rem;
           font-size: 1.2rem;
           color: var(--clr-grey-5);
           transition: all 0.3s ease;
         }
-        
+
         &:hover, &.active {
           background: var(--clr-primary-10);
           color: var(--clr-primary-5);
-          
+
           .icon {
             color: var(--clr-primary-5);
           }
         }
-        
+
         &.active {
           font-weight: 600;
         }
       }
     }
   }
-  
+
   .divider {
     height: 1px;
     background: var(--clr-grey-9);
     margin: 0.5rem 0;
-  }
-  
-  .category-links {
-    h3 {
-      font-size: 1.1rem;
-      margin-bottom: 1rem;
-      color: var(--clr-grey-3);
-    }
-    
-    ul {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      
-      li a {
-        display: block;
-        padding: 0.5rem 1rem;
-        color: var(--clr-grey-5);
-        transition: all 0.3s ease;
-        border-left: 3px solid transparent;
-        
-        &:hover {
-          color: var(--clr-primary-5);
-          background: var(--clr-primary-10);
-          border-left-color: var(--clr-primary-5);
-          padding-left: 1.5rem;
-        }
-      }
-    }
-  }
-  
-  .account-links {
-    ul {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      
-      li a {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        border-radius: var(--radius);
-        transition: all 0.3s ease;
-        color: var(--clr-grey-3);
-        
-        .icon {
-          margin-right: 1rem;
-          font-size: 1.2rem;
-          color: var(--clr-grey-5);
-          transition: all 0.3s ease;
-        }
-        
-        &:hover {
-          background: var(--clr-primary-10);
-          color: var(--clr-primary-5);
-          
-          .icon {
-            color: var(--clr-primary-5);
-          }
-        }
-      }
-    }
   }
   
   .sidebar-contact {

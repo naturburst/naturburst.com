@@ -16,6 +16,7 @@ const cart_reducer = (
     const tempItem = state.cart.find(item => item.id === id)
 
     if (tempItem) {
+      // If the item is already in cart, update its amount
       const tempCart = state.cart.map(cartItem => {
         if (cartItem.id === id) {
           const newAmount = tempItem.amount + amount
@@ -27,6 +28,7 @@ const cart_reducer = (
 
       return { ...state, cart: tempCart }
     } else {
+      // Add new item to cart
       const newItem: cartType = {
         id,
         slug,
@@ -38,15 +40,18 @@ const cart_reducer = (
       return { ...state, cart: [...state.cart, newItem] }
     }
   }
+
   if (action.type === CLEAR_CART) {
     return { ...state, cart: [] }
   }
+
   if (action.type === REMOVE_CART_ITEM) {
     const tempCart = state.cart.filter(
       cartItem => cartItem.id !== action.payload
     )
     return { ...state, cart: tempCart }
   }
+
   if (action.type === TOGGLE_CART_ITEM_AMOUNT) {
     const { id, value } = action.payload
     const tempCart = state.cart.map(cartItem => {
@@ -67,7 +72,10 @@ const cart_reducer = (
 
     return { ...state, cart: tempCart }
   }
+
   if (action.type === COUNT_CART_TOTALS) {
+    // Calculate cart totals considering the total items and the price amounts
+    // Note: The actual price display with currency and discounts is handled by the formatPrice utility
     const { totalItems, totalAmount } = state.cart.reduce(
       (total, cartItem) => {
         const { price, amount } = cartItem
@@ -79,8 +87,10 @@ const cart_reducer = (
       },
       { totalItems: 0, totalAmount: 0 }
     )
+
     return { ...state, totalItems, totalAmount }
   }
+
   throw new Error(`No Matching "${action.type}" - action type`)
 }
 

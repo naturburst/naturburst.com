@@ -5,15 +5,24 @@ import AmountButtons from './AmountButtons'
 import { FaTrash } from 'react-icons/fa'
 import { cartType, useCartContext } from '../context/cart_context'
 import { Link } from 'react-router-dom'
+import { useCurrencyContext } from '../context/currency_context'
 
 const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
   const { id, image, name, price, amount, slug } = cartItem
-
+  const { currency } = useCurrencyContext()
   const { removeItem, toggleAmount } = useCartContext()
+
+  // Format prices with selected currency
+  const { originalPrice, discountedPrice } = formatPrice(price, currency)
+
+  // Calculate subtotal prices
+  const { originalPrice: originalSubtotal, discountedPrice: discountedSubtotal } =
+    formatPrice(price * amount, currency)
 
   const increase: () => void = () => {
     toggleAmount(id, 'inc')
   }
+
   const decrease: () => void = () => {
     toggleAmount(id, 'dec')
   }
@@ -27,12 +36,18 @@ const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
         </Link>
         <div className="item-info">
           <h5 className='name'>{name}</h5>
-          <h5 className='price-small'>{formatPrice(price)}</h5>
+          <div className='price-small'>
+            <span className="original">{originalPrice}</span>
+            <span className="discounted">{discountedPrice}</span>
+          </div>
         </div>
       </div>
 
       {/* price column */}
-      <div className='price'>{formatPrice(price)}</div>
+      <div className='price'>
+        <span className="original">{originalPrice}</span>
+        <span className="discounted">{discountedPrice}</span>
+      </div>
 
       {/* quantity column */}
       <div className="amount-container">
@@ -40,7 +55,10 @@ const CartItem: React.FC<{ cartItem: cartType }> = ({ cartItem }) => {
       </div>
 
       {/* subtotal column */}
-      <h5 className='subtotal'>{formatPrice(price * amount)}</h5>
+      <h5 className='subtotal'>
+        <span className="original">{originalSubtotal}</span>
+        <span className="discounted">{discountedSubtotal}</span>
+      </h5>
 
       {/* remove icon */}
       <button
@@ -117,8 +135,21 @@ const Wrapper = styled.article`
   }
 
   .price-small {
-    color: var(--clr-primary-5);
-    font-weight: 700;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+
+    .original {
+      text-decoration: line-through;
+      color: #888;
+      font-size: 0.75rem;
+    }
+
+    .discounted {
+      color: var(--clr-primary-5);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
   }
 
   .amount-container {
@@ -165,6 +196,19 @@ const Wrapper = styled.article`
       font-size: 1rem;
       color: var(--clr-grey-5);
       font-weight: 400;
+      display: flex;
+      flex-direction: column;
+
+      .original {
+        text-decoration: line-through;
+        color: #888;
+        font-size: 0.8rem;
+      }
+
+      .discounted {
+        color: var(--clr-primary-5);
+        font-weight: 600;
+      }
     }
 
     .price-small {
@@ -172,10 +216,20 @@ const Wrapper = styled.article`
     }
 
     .price {
-      display: block;
+      display: flex;
+      flex-direction: column;
       font-size: 1rem;
-      color: var(--clr-primary-5);
-      font-weight: 600;
+
+      .original {
+        text-decoration: line-through;
+        color: #888;
+        font-size: 0.8rem;
+      }
+
+      .discounted {
+        color: var(--clr-primary-5);
+        font-weight: 600;
+      }
     }
 
     .name {

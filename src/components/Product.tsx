@@ -1,15 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { formatPrice } from '../utils/helpers'
-import { FaShoppingCart } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { productDataType } from '../utils/productData'
 import { useCartContext } from '../context/cart_context'
+import { useCurrencyContext } from '../context/currency_context'
 
 const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const { addToCart } = useCartContext()
+  const { currency } = useCurrencyContext()
   const { id, images, name, price, slug, categories } = product
   const image = images[0]
+
+  // Format prices for display with selected currency
+  const { originalPrice, discountedPrice } = formatPrice(price, currency)
 
   // Determine background color based on product category
   const getProductColor = (category: string) => {
@@ -44,7 +48,8 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           </div>
 
           <div className="price-container">
-            <p className="price">{formatPrice(price)}</p>
+            <p className="original-price">{originalPrice}</p>
+            <p className="discounted-price">{discountedPrice}</p>
           </div>
 
           <button
@@ -138,7 +143,14 @@ const Wrapper = styled.article<WrapperProps>`
   .price-container {
     margin-bottom: 1.25rem;
 
-    .price {
+    .original-price {
+      color: #888;
+      text-decoration: line-through;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .discounted-price {
       color: #2A9D8F; /* Natureburst green */
       font-weight: 700;
       font-size: 1.3rem;
@@ -171,7 +183,7 @@ const Wrapper = styled.article<WrapperProps>`
       font-size: 1.1rem;
     }
 
-    .price-container .price {
+    .discounted-price {
       font-size: 1.1rem;
     }
   }

@@ -4,9 +4,14 @@ import { useCartContext } from '../context/cart_context'
 import { formatPrice } from '../utils/helpers'
 import { Link } from 'react-router-dom'
 import { FaShoppingBag } from 'react-icons/fa'
+import { useCurrencyContext } from '../context/currency_context'
 
 const CartTotals = () => {
   const { totalAmount } = useCartContext()
+  const { currency } = useCurrencyContext()
+
+  // Format prices with selected currency
+  const { originalPrice, discountedPrice } = formatPrice(totalAmount, currency)
 
   return (
     <Wrapper>
@@ -15,7 +20,10 @@ const CartTotals = () => {
 
         <div className='summary-item'>
           <span className="label">Subtotal:</span>
-          <span className="value">{formatPrice(totalAmount)}</span>
+          <div className="value-column">
+            <span className="original-value">{originalPrice}</span>
+            <span className="value">{discountedPrice}</span>
+          </div>
         </div>
 
         <div className='summary-item'>
@@ -30,7 +38,10 @@ const CartTotals = () => {
 
         <div className='summary-item total'>
           <span className="label">Total:</span>
-          <span className="value total-value">{formatPrice(totalAmount)}</span>
+          <div className="value-column">
+            <span className="original-value">{originalPrice}</span>
+            <span className="value total-value">{discountedPrice}</span>
+          </div>
         </div>
 
         <div className="checkout-btn-container">
@@ -88,6 +99,18 @@ const Wrapper = styled.section`
 
       &.shipping {
         color: #27ae60;
+      }
+    }
+
+    .value-column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      .original-value {
+        color: #888;
+        text-decoration: line-through;
+        font-size: 0.85rem;
       }
     }
 

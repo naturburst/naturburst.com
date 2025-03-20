@@ -90,7 +90,7 @@ export const sampleProducts: productDataType[] = [
     categories: 'jamun',
     price: 4.99,
     stock: 30,
-    weight: '20g',
+    weight: '15g',
     ingredients: ['100% Natural Jamun'],
     nutritionalInfo: {
       calories: 47,

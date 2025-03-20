@@ -14,6 +14,8 @@ import ProductList from './ProductList'
 import Sort from './Sort/Sort'
 import CartContent from './CartContent'
 import ScrollToTop from './ScrollToTop'
+import CurrencySelector from './CurrencySelector'
+import PromoBanner from './PromoBanner'
 
 export {
   Navbar,
@@ -31,4 +33,6 @@ export {
   Sort,
   CartContent,
   ScrollToTop,
+  CurrencySelector,
+  PromoBanner,
 }

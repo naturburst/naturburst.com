@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FaInstagram, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaPhoneAlt, FaEnvelope } from 'react-icons/fa'
+import { FaInstagram, FaMapMarkerAlt, FaFacebookF, FaPhoneAlt, FaEnvelope } from 'react-icons/fa'
 
 const Footer = () => {
   // Updated Google Maps location link with full place details
@@ -40,11 +40,8 @@ const Footer = () => {
               <a href='https://www.instagram.com/tropitreats.shop' target='_blank' rel='noopener noreferrer' aria-label="Instagram">
                 <FaInstagram />
               </a>
-              <a href='#' target='_blank' rel='noopener noreferrer' aria-label="Facebook">
+              <a href='https://www.facebook.com/profile.php?id=61574435489769' target='_blank' rel='noopener noreferrer' aria-label="Facebook">
                 <FaFacebookF />
-              </a>
-              <a href='#' target='_blank' rel='noopener noreferrer' aria-label="Twitter">
-                <FaTwitter />
               </a>
             </div>
           </div>

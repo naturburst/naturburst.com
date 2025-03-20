@@ -1,16 +1,17 @@
+// src/components/Navbar/Navbar.tsx
 import React from 'react'
 import styled from 'styled-components'
 import CartButtons from '../CartButtons'
 import { Logo } from './Logo'
 import { MenuIcon } from './MenuIcon'
 import { NavLinks } from './NavLinks'
+import CurrencySelector from '../CurrencySelector'
+import PromoBanner from '../PromoBanner'
 
 const Nav = () => {
   return (
     <NavContainer>
-      <div className="promo-banner">
-        <span>FREE SHIPPING ON ORDERS ABOVE ₹500</span>
-      </div>
+      <PromoBanner />
 
       <div className='nav-center'>
         <div className='nav-header'>
@@ -18,7 +19,10 @@ const Nav = () => {
           <MenuIcon />
         </div>
         <NavLinks className='nav-links' />
-        <CartButtons />
+        <div className='nav-actions'>
+          <CurrencySelector />
+          <CartButtons />
+        </div>
       </div>
     </NavContainer>
   )
@@ -32,21 +36,6 @@ const NavContainer = styled.nav`
   flex-direction: column;
   align-items: center;
   background: #2A5E41; /* Updated darker green to match the logo */
-
-  .promo-banner {
-    width: 100%;
-    background: #1a2e37; /* Dark color for contrast */
-    color: white;
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    padding: 0.25rem 0;
-
-    span {
-      display: inline-block;
-    }
-  }
 
   .nav-center {
     width: 90vw;
@@ -80,6 +69,11 @@ const NavContainer = styled.nav`
 
   .nav-links {
     display: none;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
   }
 
   @media (min-width: 992px) {
@@ -173,10 +167,6 @@ const NavContainer = styled.nav`
   @media (max-width: 380px) {
     .nav-header img {
       width: 180px;
-    }
-
-    .promo-banner {
-      font-size: 0.7rem; /* Smaller text in banner */
     }
   }
 `
