@@ -16,13 +16,13 @@ const Nav = () => {
       <div className='nav-center'>
         <div className='nav-header'>
           <Logo />
-          <MenuIcon />
         </div>
         <NavLinks className='nav-links' />
         <div className='nav-actions'>
           <CurrencySelector />
           <CartButtons />
         </div>
+        <MenuIcon /> {/* Moved outside of header to position absolutely */}
       </div>
     </NavContainer>
   )
@@ -44,16 +44,7 @@ const NavContainer = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-
-  .nav-toggle {
-    background: transparent;
-    border: transparent;
-    color: var(--clr-white);
-    cursor: pointer;
-    svg {
-      font-size: 2rem;
-    }
+    position: relative; /* For absolute positioning of MenuIcon */
   }
 
   .nav-header {
@@ -81,10 +72,6 @@ const NavContainer = styled.nav`
       margin-right: 2rem;
     }
 
-    .nav-toggle {
-      display: none;
-    }
-
     .nav-center {
       display: flex;
       justify-content: space-between;
@@ -107,6 +94,7 @@ const NavContainer = styled.nav`
         font-weight: 700;
         transition: all 0.3s ease;
         position: relative;
+        font-family: var(--font-primary); /* Using font variable */
 
         /* Animated underline effect */
         &::after {
@@ -148,14 +136,13 @@ const NavContainer = styled.nav`
     .nav-center {
       justify-content: space-between;
       align-items: center;
+      padding: 0.5rem 0;
     }
 
     .nav-header {
       display: flex;
-      width: 100%; /* Take full available width */
-      justify-content: space-between; /* Push logo and menu icon apart */
+      width: auto; /* Changed from 100% to let it take its natural width */
       align-items: center;
-      padding-right: 1rem; /* Add space before the cart button */
     }
 
     .nav-header img {

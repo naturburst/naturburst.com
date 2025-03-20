@@ -79,6 +79,7 @@ const Wrapper = styled.article<WrapperProps>`
     height: 100%;
     display: flex;
     flex-direction: column;
+    text-align: center;
 
     &:hover {
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -87,7 +88,7 @@ const Wrapper = styled.article<WrapperProps>`
   }
 
   .image-container {
-    height: 200px;
+    height: 240px; /* Increased from 200px */
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -97,13 +98,13 @@ const Wrapper = styled.article<WrapperProps>`
   }
 
   img {
-    max-height: 85%;
-    max-width: 85%;
+    max-height: 90%; /* Increased from 85% */
+    max-width: 90%; /* Increased from 85% */
     object-fit: contain;
     transition: all 0.3s ease;
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.08); /* Slightly enhanced hover effect */
     }
   }
 
@@ -121,6 +122,7 @@ const Wrapper = styled.article<WrapperProps>`
     margin-bottom: 0.5rem;
     color: #1a2e37;
     line-height: 1.3;
+    font-family: var(--font-primary);
   }
 
   .product-meta {
@@ -131,12 +133,14 @@ const Wrapper = styled.article<WrapperProps>`
     .product-type {
       font-size: 0.9rem;
       color: #666;
+      font-family: var(--font-secondary);
     }
 
     .weight {
       font-size: 0.9rem;
       color: #666;
       font-weight: 600;
+      font-family: var(--font-secondary);
     }
   }
 
@@ -148,6 +152,7 @@ const Wrapper = styled.article<WrapperProps>`
       text-decoration: line-through;
       font-size: 0.9rem;
       margin-bottom: 0.25rem;
+      font-family: var(--font-secondary);
     }
 
     .discounted-price {
@@ -155,6 +160,7 @@ const Wrapper = styled.article<WrapperProps>`
       font-weight: 700;
       font-size: 1.3rem;
       margin-bottom: 0;
+      font-family: var(--font-primary);
     }
   }
 
@@ -168,6 +174,7 @@ const Wrapper = styled.article<WrapperProps>`
     padding: 0.8rem;
     border-radius: 5px;
     font-size: 0.9rem;
+    font-family: var(--font-primary);
 
     &:hover {
       background: var(--clr-primary-3);
@@ -176,7 +183,7 @@ const Wrapper = styled.article<WrapperProps>`
 
   @media (max-width: 767px) {
     .image-container {
-      height: 180px;
+      height: 200px; /* Also increased for mobile */
     }
 
     h3 {

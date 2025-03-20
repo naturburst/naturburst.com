@@ -9,7 +9,8 @@ export type CurrencyContextType = {
   setCurrency: (currency: CurrencyType) => void;
 };
 
-const defaultCurrency: CurrencyType = 'USD';
+// Changed default currency to INR
+const defaultCurrency: CurrencyType = 'INR';
 
 // Create the context with default values
 const CurrencyContext = React.createContext<CurrencyContextType>({

@@ -98,6 +98,7 @@ const Wrapper = styled.footer`
   background: #2A5E41; /* Updated to match navbar color */
   color: var(--clr-white);
   padding: 5rem 0 2rem 0;
+  font-family: var(--font-primary);
 
   .wave-divider {
     position: absolute;
@@ -129,6 +130,7 @@ const Wrapper = styled.footer`
       font-size: 2.5rem;
       margin-bottom: 1.5rem;
       font-weight: 800;
+      font-family: var(--font-primary);
 
       span {
         color: var(--clr-accent-4);
@@ -141,6 +143,7 @@ const Wrapper = styled.footer`
       max-width: 500px;
       font-size: 1.1rem;
       line-height: 1.7;
+      font-family: var(--font-secondary);
     }
   }
 
@@ -161,6 +164,7 @@ const Wrapper = styled.footer`
 
       span {
         color: rgba(255, 255, 255, 0.9);
+        font-family: var(--font-secondary);
       }
     }
   }
@@ -199,6 +203,7 @@ const Wrapper = styled.footer`
       font-size: 1.3rem;
       font-weight: 700;
       color: var(--clr-accent-4);
+      font-family: var(--font-primary);
     }
 
     ul {
@@ -211,6 +216,7 @@ const Wrapper = styled.footer`
       color: rgba(255, 255, 255, 0.8);
       transition: all 0.3s ease;
       font-size: 1.05rem;
+      font-family: var(--font-secondary);
 
       &:hover {
         color: var(--clr-accent-4);
@@ -225,6 +231,7 @@ const Wrapper = styled.footer`
     line-height: 1.7;
     margin-bottom: 1rem;
     font-size: 1.05rem;
+    font-family: var(--font-secondary);
   }
 
   .directions-btn {
@@ -241,6 +248,7 @@ const Wrapper = styled.footer`
     color: white;
     font-weight: 500;
     transition: all 0.3s ease;
+    font-family: var(--font-primary);
 
     &:hover {
       background: var(--clr-accent-4);
@@ -272,6 +280,7 @@ const Wrapper = styled.footer`
     text-align: center;
     color: rgba(255, 255, 255, 0.7);
     font-size: 0.95rem;
+    font-family: var(--font-secondary);
   }
 
   @media (min-width: 768px) {

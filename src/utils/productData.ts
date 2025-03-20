@@ -30,7 +30,7 @@ const getImagePath = (path: string) => {
   return `${process.env.PUBLIC_URL || ''}${path}`;
 };
 
-// Sample product data with location-based pricing
+// Reordered sample product data: custard apple, jamun, jackfruit
 export const sampleProducts: productDataType[] = [
   {
     id: '1',
@@ -58,32 +58,7 @@ export const sampleProducts: productDataType[] = [
     ]
   },
   {
-    id: '2',
-    name: 'Freeze-Dried Jackfruit',
-    slug: 'freeze-dried-jackfruit',
-    brand: 'Tropi Treats',
-    categories: 'jackfruit',
-    price: 4.99,
-    stock: 35,
-    weight: '20g',
-    ingredients: ['100% Natural Jackfruit'],
-    nutritionalInfo: {
-      calories: 95,
-      fat: 0.64,
-      carbs: 23.25,
-      protein: 1.72
-    },
-    itemDescription: 'Our freeze-dried jackfruit preserves all the tropical sweetness and unique texture of fresh jackfruit. Each piece delivers an explosion of flavor with a satisfying crisp texture. Free from additives, preservatives, and added sugars – just pure fruit in its most convenient form.',
-    tastingNotes: 'Sweet and fruity with notes of banana, pineapple, and mango. The crunchy texture gives way to a burst of tropical flavor.',
-    storageInstructions: 'Keep in a cool, dry place away from direct sunlight. Reseal properly after opening to maintain freshness.',
-    featured: true,
-    images: [
-      getImagePath('/images/jackfruit-detail1.jpg'),
-      getImagePath('/images/jackfruit-detail2.jpg')
-    ]
-  },
-  {
-    id: '3',
+    id: '3', // Original ID preserved for consistency
     name: 'Freeze-Dried Jamun',
     slug: 'freeze-dried-jamun',
     brand: 'Tropi Treats',
@@ -105,6 +80,31 @@ export const sampleProducts: productDataType[] = [
     images: [
       getImagePath('/images/jamun-detail1.jpg'),
       getImagePath('/images/jamun-detail2.jpg')
+    ]
+  },
+  {
+    id: '2', // Original ID preserved for consistency
+    name: 'Freeze-Dried Jackfruit',
+    slug: 'freeze-dried-jackfruit',
+    brand: 'Tropi Treats',
+    categories: 'jackfruit',
+    price: 4.99,
+    stock: 35,
+    weight: '20g',
+    ingredients: ['100% Natural Jackfruit'],
+    nutritionalInfo: {
+      calories: 95,
+      fat: 0.64,
+      carbs: 23.25,
+      protein: 1.72
+    },
+    itemDescription: 'Our freeze-dried jackfruit preserves all the tropical sweetness and unique texture of fresh jackfruit. Each piece delivers an explosion of flavor with a satisfying crisp texture. Free from additives, preservatives, and added sugars – just pure fruit in its most convenient form.',
+    tastingNotes: 'Sweet and fruity with notes of banana, pineapple, and mango. The crunchy texture gives way to a burst of tropical flavor.',
+    storageInstructions: 'Keep in a cool, dry place away from direct sunlight. Reseal properly after opening to maintain freshness.',
+    featured: true,
+    images: [
+      getImagePath('/images/jackfruit-detail1.jpg'),
+      getImagePath('/images/jackfruit-detail2.jpg')
     ]
   }
 ]

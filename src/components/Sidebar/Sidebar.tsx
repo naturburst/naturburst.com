@@ -127,6 +127,7 @@ const SidebarContainer = styled.div`
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    font-family: var(--font-primary);
   }
 
   .show-sidebar {
@@ -176,6 +177,7 @@ const SidebarContainer = styled.div`
       margin-bottom: 1rem;
       color: var(--clr-grey-3);
       font-weight: 600;
+      font-family: var(--font-primary);
 
       .icon {
         margin-right: 0.75rem;
@@ -198,6 +200,7 @@ const SidebarContainer = styled.div`
         color: var(--clr-grey-5);
         cursor: pointer;
         transition: all 0.3s ease;
+        font-family: var(--font-primary);
 
         &.active {
           background: var(--clr-primary-5);
@@ -226,6 +229,7 @@ const SidebarContainer = styled.div`
         transition: all 0.3s ease;
         color: var(--clr-grey-3);
         font-weight: 500;
+        font-family: var(--font-primary);
 
         .icon {
           margin-right: 1rem;
@@ -255,25 +259,27 @@ const SidebarContainer = styled.div`
     background: var(--clr-grey-9);
     margin: 0.5rem 0;
   }
-  
+
   .sidebar-contact {
     margin-top: auto;
     padding: 1.5rem;
     background: var(--clr-primary-10);
     border-radius: var(--radius);
     text-align: center;
-    
+
     h3 {
       font-size: 1.1rem;
       margin-bottom: 0.5rem;
       color: var(--clr-primary-1);
+      font-family: var(--font-primary);
     }
-    
+
     p {
       color: var(--clr-grey-5);
       margin-bottom: 1rem;
+      font-family: var(--font-secondary);
     }
-    
+
     .contact-btn {
       display: inline-block;
       background: var(--clr-primary-5);
@@ -282,6 +288,7 @@ const SidebarContainer = styled.div`
       border-radius: 25px;
       font-weight: 600;
       transition: all 0.3s ease;
+      font-family: var(--font-primary);
       
       &:hover {
         background: var(--clr-primary-3);

@@ -59,19 +59,24 @@ const Wrapper = styled.section`
     justify-content: center;
   }
 
+  .shop-now-btn, .learn-more-btn {
+    font-family: var(--font-primary); /* Using CSS variable */
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
   .shop-now-btn {
     background-color: #2A9D8F;
     color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    text-decoration: none;
+    gap: 0.7rem;
 
     &:hover {
       background-color: #1E7D74;
@@ -88,12 +93,6 @@ const Wrapper = styled.section`
     background-color: #ffffff;
     color: #2A9D8F;
     border: 2px solid #2A9D8F;
-    font-weight: 700;
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
     &:hover {
       background-color: #2A9D8F;

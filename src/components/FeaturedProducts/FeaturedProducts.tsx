@@ -105,8 +105,7 @@ const FeaturedProducts = () => {
   return (
     <Wrapper>
       <div className='section-header'>
-        <h2>NEW HERE?</h2>
-        <h3>OUR CUSTOMERS LOVE THESE</h3>
+        <h2>EXPLORE OUR PRODUCTS</h2>
       </div>
 
       <div className="slider-container">
