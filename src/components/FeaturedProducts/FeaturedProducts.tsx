@@ -237,7 +237,7 @@ const Wrapper = styled.section`
   .view-all-btn {
     display: inline-flex;
     align-items: center;
-    background: #40CEB5;
+    background: var(--clr-primary-5);
     color: white;
     font-weight: 600;
     padding: 0.8rem 1.5rem;
@@ -250,7 +250,7 @@ const Wrapper = styled.section`
     }
 
     &:hover {
-      background: #36b5a0;
+      background: var(--clr-primary-3);
 
       .arrow-icon {
         transform: translateX(3px);

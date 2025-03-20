@@ -5,12 +5,12 @@ Variables
 */
 
 :root {
-  /* Primary brand colors - inspired by Moon */
+  /* Primary brand colors - using #2A9D8F as the base */
   --clr-primary-1: hsl(173, 58%, 24%);  /* Dark teal */
   --clr-primary-2: hsl(173, 58%, 34%);
   --clr-primary-3: hsl(173, 58%, 39%);
   --clr-primary-4: hsl(173, 58%, 45%);
-  --clr-primary-5: hsl(173, 58%, 50%);  /* Main brand teal */
+  --clr-primary-5: #2A9D8F;  /* Main brand teal - exactly #2A9D8F */
   --clr-primary-6: hsl(173, 65%, 65%);
   --clr-primary-7: hsl(173, 70%, 75%);
   --clr-primary-8: hsl(173, 75%, 85%);

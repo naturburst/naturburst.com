@@ -78,8 +78,6 @@ const NavContainer = styled.nav`
     }
   }
 
-
-
   .nav-links {
     display: none;
   }
@@ -158,8 +156,27 @@ const NavContainer = styled.nav`
       align-items: center;
     }
 
+    .nav-header {
+      display: flex;
+      width: 100%; /* Take full available width */
+      justify-content: space-between; /* Push logo and menu icon apart */
+      align-items: center;
+      padding-right: 1rem; /* Add space before the cart button */
+    }
+
+    .nav-header img {
+      width: 150px; /* Reduce logo size on mobile */
+      max-height: 40px; /* Control the height */
+    }
+  }
+
+  @media (max-width: 380px) {
     .nav-header img {
       width: 180px;
+    }
+
+    .promo-banner {
+      font-size: 0.7rem; /* Smaller text in banner */
     }
   }
 `

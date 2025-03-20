@@ -328,28 +328,29 @@ const Wrapper = styled.div`
       gap: 1.5rem;
     }
     
-    .submit-btn {
-      width: 100%;
-      padding: 0.75rem;
-      background: var(--clr-primary-5);
-      color: var(--clr-white);
-      border: none;
-      border-radius: 30px;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-top: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        background: var(--clr-primary-3);
-      }
-      
-      &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
+  .submit-btn {
+    background: var(--clr-primary-5);
+    color: var(--clr-white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: var(--clr-primary-3);
+      transform: translateY(-3px);
     }
+
+    &:disabled {
+      background: var(--clr-grey-6);
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
   }
 
   .empty {

@@ -139,7 +139,7 @@ const Wrapper = styled.article<WrapperProps>`
     margin-bottom: 1.25rem;
 
     .price {
-      color: #40CEB5; /* Natureburst green */
+      color: #2A9D8F; /* Natureburst green */
       font-weight: 700;
       font-size: 1.3rem;
       margin-bottom: 0;
@@ -148,7 +148,7 @@ const Wrapper = styled.article<WrapperProps>`
 
   .add-to-cart-btn {
     width: 100%;
-    background: #40CEB5; /* Natureburst green */
+    background: var(--clr-primary-5); /* Using consistent brand color */
     color: white;
     font-weight: 600;
     margin-top: auto;
@@ -158,7 +158,7 @@ const Wrapper = styled.article<WrapperProps>`
     font-size: 0.9rem;
 
     &:hover {
-      background: #36b5a0;
+      background: var(--clr-primary-3);
     }
   }
 

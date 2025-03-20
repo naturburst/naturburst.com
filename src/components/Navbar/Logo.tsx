@@ -21,5 +21,15 @@ const LogoWrapper = styled(Link)`
     display: block; /* Eliminates default inline element spacing */
     max-height: 100%;
     width: auto;
+    object-fit: contain; /* Ensure logo maintains proportions */
+  }
+
+  /* Mobile-specific styling */
+  @media (max-width: 991px) {
+    max-width: 100%; /* Limit width on mobile */
+
+    img {
+      object-position: left; /* Align to the left */
+    }
   }
 `

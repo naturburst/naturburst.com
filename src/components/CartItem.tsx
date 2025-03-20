@@ -138,7 +138,7 @@ const Wrapper = styled.article`
 
   .remove-btn {
     color: white;
-    background: #e74c3c;
+    background: #e74c3c; /* Keep red for delete actions */
     border: none;
     width: 2rem;
     height: 2rem;

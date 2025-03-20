@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import { FaTimes, FaHome, FaShoppingBag, FaQuestionCircle, FaPhone, FaUser, FaHeart } from 'react-icons/fa';
+import whiteLogo from '../../assets/logo_white.jpg'
 import { useProductsContext } from '../../context/products_context';
 
 const Sidebar = () => {
@@ -14,7 +15,7 @@ const Sidebar = () => {
       <aside className={isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}>
         <div className="sidebar-header">
           <img 
-            src={`${process.env.PUBLIC_URL}/images/logo.png`} 
+            src={whiteLogo}
             alt="NatureBurst"
             className="logo"
           />

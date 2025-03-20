@@ -108,10 +108,10 @@ const Wrapper = styled.main`
   }
 
   .shop-btn {
-    background: var(--clr-accent-1);
+    background: var(--clr-primary-5);
 
     &:hover {
-      background: var(--clr-accent-2);
+      background: var(--clr-primary-3);
     }
   }
 

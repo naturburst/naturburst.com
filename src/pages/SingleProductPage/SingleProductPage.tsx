@@ -105,7 +105,7 @@ const Wrapper = styled.main`
       }
 
       &:hover {
-        color: #40CEB5;
+        color: #2A9D8F;
       }
     }
   }

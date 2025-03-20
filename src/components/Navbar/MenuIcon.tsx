@@ -24,10 +24,11 @@ const IconWrapper = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
-  opacity: 0.85;
+  opacity: 0.9;
+  margin-left: auto; /* Push to the right edge of its container */
 
   svg {
-    font-size: 1.3rem; // Reduced size from typical 2rem
+    font-size: 1.5rem; /* Slightly larger for better visibility */
   }
 
   &:hover {
@@ -35,7 +36,14 @@ const IconWrapper = styled.button`
     transform: scale(1.05);
   }
 
+  /* On mobile, add a subtle background for better tap target */
+  @media (max-width: 991px) {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+
   @media (min-width: 992px) {
-    display: none; // Hide on desktop
+    display: none; /* Hide on desktop */
   }
 `
