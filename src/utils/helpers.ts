@@ -10,7 +10,7 @@ export const EXCHANGE_RATES = {
 // Discount percentage for each currency
 export const DISCOUNT_RATES = {
   USD: 0.8, // 20% discount
-  INR: 0.7  // 30% discount
+  INR: 0.745  // 25% discount
 };
 
 // Original price formatting
