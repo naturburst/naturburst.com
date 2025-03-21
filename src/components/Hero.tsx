@@ -106,9 +106,9 @@ const Wrapper = styled.section`
   @media (max-width: 767px) {
     .hero-container {
       background-image: url('/images/tropi-treats-mobile-banner.png');
-      min-height: 520px;
+      min-height: 750px;
       background-size: 100% auto; /* Ensures image fits width fully */
-      background-position: top center;
+      background-position: center;
       padding: 0; /* Remove padding to allow full-width image */
       margin: 0; /* Remove margins */
       width: 100%; /* Ensure full width */

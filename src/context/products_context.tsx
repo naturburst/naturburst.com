@@ -52,6 +52,10 @@ export const ProductsProvider: React.FC = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSE })
   }
 
+  const toggleSidebar = () => {
+    dispatch({ type: state.isSidebarOpen ? SIDEBAR_CLOSE : SIDEBAR_OPEN });
+  }
+
   const fetchSingleProduct = (slug: string) => {
     dispatch({ type: GET_SINGLE_PRODUCT_BEGIN })
     try {
@@ -80,12 +84,18 @@ export const ProductsProvider: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <ProductsContext.Provider
-      value={{ ...state, openSidebar, closeSidebar, fetchSingleProduct }}
-    >
-      {children}
-    </ProductsContext.Provider>
-  )
+   <ProductsContext.Provider
+     value={{
+       ...state,
+       openSidebar,
+       closeSidebar,
+       toggleSidebar, // Add this
+       fetchSingleProduct
+     }}
+   >
+     {children}
+   </ProductsContext.Provider>
+ )
 }
 
 export const useProductsContext = () => {

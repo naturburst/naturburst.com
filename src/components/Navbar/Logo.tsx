@@ -1,3 +1,4 @@
+// src/components/Navbar/Logo.tsx
 import React from 'react'
 import whiteLogo from '../../assets/hero.jpg'
 import { Link } from 'react-router-dom'
@@ -11,25 +12,36 @@ export const Logo = () => {
   )
 }
 
-// Styled component for the logo container ensures consistent vertical alignment
 const LogoWrapper = styled(Link)`
-  height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
 
   img {
-    display: block; /* Eliminates default inline element spacing */
-    max-height: 100%;
-    width: auto;
-    object-fit: contain; /* Ensure logo maintains proportions */
+    height: auto;
+    object-fit: contain;
   }
 
-  /* Mobile-specific styling */
+  /* Mobile styling - centered and larger */
   @media (max-width: 991px) {
-    max-width: 100%; /* Limit width on mobile */
+    position: absolute; /* Position absolutely for perfect centering */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Perfect centering technique */
 
     img {
-      object-position: left; /* Align to the left */
+      max-height: 60px; /* Adjust height to match screenshot */
+      width: 120px;
+    }
+  }
+
+  /* Desktop styling */
+  @media (min-width: 992px) {
+    height: 100%;
+
+    img {
+      width: 240px;
+      max-height: 90px;
     }
   }
 `

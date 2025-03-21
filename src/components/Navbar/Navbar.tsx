@@ -14,15 +14,24 @@ const Nav = () => {
       <PromoBanner />
 
       <div className='nav-center'>
+        {/* Mobile menu icon positioned absolutely to the left */}
+        <MenuIcon />
+
+        {/* Logo centered on mobile */}
         <div className='nav-header'>
           <Logo />
         </div>
+
+        {/* Nav links only visible on desktop */}
         <NavLinks className='nav-links' />
+
+        {/* Desktop actions include currency selector, mobile just has cart */}
         <div className='nav-actions'>
-          <CurrencySelector />
+          <div className='desktop-only'>
+            <CurrencySelector />
+          </div>
           <CartButtons />
         </div>
-        <MenuIcon /> {/* Moved outside of header to position absolutely */}
       </div>
     </NavContainer>
   )
@@ -35,7 +44,7 @@ const NavContainer = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #2A5E41; /* Updated darker green to match the logo */
+  background: #2A5E41; /* Dark green background */
 
   .nav-center {
     width: 90vw;
@@ -45,17 +54,12 @@ const NavContainer = styled.nav`
     align-items: center;
     justify-content: space-between;
     position: relative; /* For absolute positioning of MenuIcon */
+    padding: 0.5rem 0;
   }
 
   .nav-header {
     display: flex;
     align-items: center;
-
-    img {
-      width: 240px; /* Increased from 150px to make logo bigger */
-      height: auto;
-      object-fit: contain;
-    }
   }
 
   .nav-links {
@@ -67,7 +71,12 @@ const NavContainer = styled.nav`
     align-items: center;
   }
 
+  /* Desktop styles */
   @media (min-width: 992px) {
+    .desktop-only {
+      display: block;
+    }
+
     .nav-header {
       margin-right: 2rem;
     }
@@ -94,7 +103,7 @@ const NavContainer = styled.nav`
         font-weight: 700;
         transition: all 0.3s ease;
         position: relative;
-        font-family: var(--font-primary); /* Using font variable */
+        font-family: var(--font-primary);
 
         /* Animated underline effect */
         &::after {
@@ -109,7 +118,7 @@ const NavContainer = styled.nav`
         }
 
         &:hover {
-          color: #FFD166;  /* Accent color for hover */
+          color: #FFD166;
 
           &::after {
             width: 100%;
@@ -117,7 +126,6 @@ const NavContainer = styled.nav`
           }
         }
 
-        /* Active page indicator */
         &.active {
           color: #FFD166;
           font-weight: 700;
@@ -132,28 +140,26 @@ const NavContainer = styled.nav`
     }
   }
 
+  /* Mobile styles */
   @media (max-width: 991px) {
+    position: fixed; /* Fix the header at the top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    .desktop-only {
+      display: none; /* Hide currency selector on mobile */
+    }
+
     .nav-center {
-      justify-content: space-between;
-      align-items: center;
       padding: 0.5rem 0;
     }
 
     .nav-header {
-      display: flex;
-      width: auto; /* Changed from 100% to let it take its natural width */
-      align-items: center;
-    }
-
-    .nav-header img {
-      width: 150px; /* Reduce logo size on mobile */
-      max-height: 40px; /* Control the height */
-    }
-  }
-
-  @media (max-width: 380px) {
-    .nav-header img {
-      width: 180px;
+      width: 100%; /* Take full width for centering */
+      justify-content: center; /* Center the logo */
+      padding: 0 2rem; /* Add padding for the menu and cart icons */
     }
   }
 `
