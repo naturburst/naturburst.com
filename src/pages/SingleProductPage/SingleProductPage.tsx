@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+// src/pages/SingleProductPage/SingleProductPage.tsx
+import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProductsContext } from '../../context/products_context'
 import { Loading } from '../../components'
@@ -6,6 +7,73 @@ import styled from 'styled-components'
 import { SingleProductContent } from './SingleProductContent'
 import ErrorPage from '../ErrorPage'
 import { FaArrowLeft } from 'react-icons/fa'
+import { shopifyClient } from '../../utils/shopify-config'
+import { ShopifyProduct, getVariantId } from '../../utils/shopify-product-utils'
+
+// Define interface for product option to fix TypeScript errors
+interface ProductOption {
+  name: string;
+  values: string[];
+}
+
+// Adapter function to convert Shopify SDK Product to our ShopifyProduct interface
+const adaptShopifyProduct = (sdkProduct: any): ShopifyProduct => {
+  // Map SDK product to our interface, handling type differences
+  return {
+    id: sdkProduct.id,
+    title: sdkProduct.title,
+    handle: sdkProduct.handle,
+    vendor: sdkProduct.vendor,
+    productType: sdkProduct.productType,
+    description: sdkProduct.description || '',
+    descriptionHtml: sdkProduct.descriptionHtml || '',
+
+    // Convert number amounts to strings
+    priceRange: {
+      minVariantPrice: {
+        amount: String(sdkProduct.priceRange.minVariantPrice.amount),
+        currencyCode: sdkProduct.priceRange.minVariantPrice.currencyCode
+      },
+      maxVariantPrice: {
+        amount: String(sdkProduct.priceRange.maxVariantPrice.amount),
+        currencyCode: sdkProduct.priceRange.maxVariantPrice.currencyCode
+      }
+    },
+
+    // Handle optional compareAtPriceRange
+    compareAtPriceRange: sdkProduct.compareAtPriceRange ? {
+      minVariantPrice: {
+        amount: String(sdkProduct.compareAtPriceRange.minVariantPrice.amount),
+        currencyCode: sdkProduct.compareAtPriceRange.minVariantPrice.currencyCode
+      },
+      maxVariantPrice: {
+        amount: String(sdkProduct.compareAtPriceRange.maxVariantPrice.amount),
+        currencyCode: sdkProduct.compareAtPriceRange.maxVariantPrice.currencyCode
+      }
+    } : null,
+
+    // Map variants with proper type conversion
+    variants: sdkProduct.variants.map((variant: any) => ({
+      id: variant.id,
+      title: variant.title,
+      price: String(variant.price),
+      compareAtPrice: variant.compareAtPrice ? String(variant.compareAtPrice) : null,
+      available: variant.available,
+      sku: variant.sku || '',
+      weight: variant.weight || 0,
+      weightUnit: variant.weightUnit || 'g',
+      image: variant.image,
+      selectedOptions: variant.selectedOptions || []
+    })),
+
+    // Map other properties
+    images: sdkProduct.images,
+    options: sdkProduct.options,
+    tags: sdkProduct.tags,
+    metafields: sdkProduct.metafields || null,
+    availableForSale: sdkProduct.availableForSale
+  };
+};
 
 const SingleProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -17,20 +85,70 @@ const SingleProductPage = () => {
     allProducts,
   } = useProductsContext()
 
-  const { name, images } = { ...singleProduct }
+  // State for Shopify product and variant selection
+  const [shopifyProduct, setShopifyProduct] = useState<ShopifyProduct | null>(null)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null)
 
-  // When page refreshes or allProducts changes, fetch the single product
+  // Fetch raw Shopify product data for variant information
+  useEffect(() => {
+    const fetchShopifyProduct = async () => {
+      try {
+        if (slug) {
+          // Fetch product from Shopify API
+          const sdkProduct = await shopifyClient.product.fetchByHandle(slug)
+
+          // Convert to our ShopifyProduct interface
+          const adaptedProduct = adaptShopifyProduct(sdkProduct)
+          setShopifyProduct(adaptedProduct)
+
+          // Initialize selected options with default values
+          if (adaptedProduct && adaptedProduct.options) {
+            const initialOptions: Record<string, string> = {}
+
+            adaptedProduct.options.forEach((option: ProductOption) => {
+              if (option.values.length > 0) {
+                initialOptions[option.name] = option.values[0]
+              }
+            })
+
+            setSelectedOptions(initialOptions)
+
+            // Set initial variant ID based on selected options
+            const variantId = getVariantId(adaptedProduct, initialOptions)
+            setSelectedVariantId(variantId)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching Shopify product:', error)
+      }
+    }
+
+    fetchShopifyProduct()
+  }, [slug])
+
+  // Fetch app-specific product data
   useEffect(() => {
     if (slug) {
       fetchSingleProduct(slug)
     }
-    // eslint-disable-next-line
-  }, [slug, allProducts])
+  }, [slug, allProducts, fetchSingleProduct])
 
-  // Scroll to top when component mounts
+  // Scroll to top when page loads
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  // Update selected variant when options change
+  const handleOptionChange = (optionName: string, value: string) => {
+    const newOptions = { ...selectedOptions, [optionName]: value }
+    setSelectedOptions(newOptions)
+
+    if (shopifyProduct) {
+      const variantId = getVariantId(shopifyProduct, newOptions)
+      setSelectedVariantId(variantId)
+    }
+  }
 
   if (singleProductLoading) {
     return <Loading />
@@ -39,6 +157,8 @@ const SingleProductPage = () => {
   if (singleProductError) {
     return <ErrorPage />
   }
+
+  const { name, images } = { ...singleProduct }
 
   return (
     <Wrapper>
@@ -56,7 +176,12 @@ const SingleProductPage = () => {
         </div>
 
         <div className='product-content'>
-          <SingleProductContent />
+          <SingleProductContent
+            shopifyProduct={shopifyProduct}
+            selectedOptions={selectedOptions}
+            selectedVariantId={selectedVariantId}
+            onOptionChange={handleOptionChange}
+          />
         </div>
       </div>
 

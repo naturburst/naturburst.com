@@ -6,21 +6,30 @@ import { useCartContext } from '../context/cart_context'
 import AmountButtons from './AmountButtons'
 import { FaShoppingCart, FaHeart } from 'react-icons/fa'
 
-const AddToCart: React.FC<{ singleProduct: productDataType | {} }> = ({
+interface AddToCartProps {
+  singleProduct: productDataType | {},
+  selectedVariantId?: string | null  // Accept variant ID for Shopify products
+}
+
+const AddToCart: React.FC<AddToCartProps> = ({
   singleProduct,
+  selectedVariantId = null
 }) => {
   const { addToCart } = useCartContext()
-  // need the number of stock here as well after setting up in productData array
-  const { id, slug } = { ...singleProduct }
   const [amount, setAmount] = useState(1)
+  const { id, slug } = { ...singleProduct }
 
-  // if there's stock variable, add logic to allow adding the amount === stock
+  // Handle quantity changes
   const increaseAmount = () => setAmount(amount + 1)
-
   const decreaseAmount = () => {
     if (amount > 1) {
       setAmount(amount - 1)
     }
+  }
+
+  // Handle add to cart with variant support
+  const handleAddToCart = () => {
+    addToCart(id, selectedVariantId || undefined, slug, amount, singleProduct)
   }
 
   return (
@@ -35,14 +44,15 @@ const AddToCart: React.FC<{ singleProduct: productDataType | {} }> = ({
       </div>
 
       <div className='buttons-container'>
-        <Link
-          to='/cart'
+        {/* Change to button for better control with Shopify integration */}
+        <button
+          type="button"
           className='btn add-to-cart-btn'
-          onClick={() => addToCart(id, slug, amount, singleProduct)}
+          onClick={handleAddToCart}
         >
           <FaShoppingCart className="cart-icon" />
           ADD TO CART
-        </Link>
+        </button>
 
         <button type="button" className="btn wishlist-btn">
           <FaHeart className="heart-icon" />

@@ -11,7 +11,8 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from '../actions'
-import { productDataType, sampleProducts } from '../utils/productData'
+import { productDataType } from '../utils/productData'
+import { shopifyClient, transformShopifyProduct } from '../utils/shopify-config'
 
 export type initialStateType = {
   isSidebarOpen: boolean
@@ -20,8 +21,8 @@ export type initialStateType = {
   singleProduct: productDataType | {}
   openSidebar: () => void
   closeSidebar: () => void
-  toggleSidebar: () => void // Added toggleSidebar to type definition
-  fetchSingleProduct: (id: string) => void
+  toggleSidebar: () => void
+  fetchSingleProduct: (handle: string) => void
   productsLoading: boolean
   productsError: boolean
   singleProductLoading: boolean
@@ -35,8 +36,8 @@ const initialState: initialStateType = {
   singleProduct: {},
   openSidebar: () => {},
   closeSidebar: () => {},
-  toggleSidebar: () => {}, // Added toggleSidebar to initial state
-  fetchSingleProduct: (id: string) => {},
+  toggleSidebar: () => {},
+  fetchSingleProduct: (handle: string) => {},
   productsLoading: false,
   productsError: false,
   singleProductLoading: false,
@@ -60,31 +61,63 @@ export const ProductsProvider: React.FC = ({ children }) => {
     dispatch({ type: state.isSidebarOpen ? SIDEBAR_CLOSE : SIDEBAR_OPEN });
   }
 
-  const fetchSingleProduct = (slug: string) => {
+  // Fetch all products from Shopify
+  const fetchProducts = async () => {
+    dispatch({ type: GET_PRODUCTS_BEGIN })
+    try {
+      // Using the Shopify Buy SDK to fetch products
+      const products = await shopifyClient.product.fetchAll(250); // Fetches up to 250 products
+
+      // Transform Shopify products to our app's product structure
+      const transformedProducts = products.map(transformShopifyProduct);
+
+      dispatch({
+        type: GET_PRODUCTS_SUCCESS,
+        payload: transformedProducts
+      })
+    } catch (error) {
+      console.error('Error fetching products from Shopify:', error)
+      dispatch({ type: GET_PRODUCTS_ERROR })
+    }
+  }
+
+  // Fetch a single product by handle (Shopify's term for slug)
+  const fetchSingleProduct = async (handle: string) => {
     dispatch({ type: GET_SINGLE_PRODUCT_BEGIN })
     try {
-      const singleProduct: productDataType = state.allProducts.filter(
-        (product: productDataType) => product.slug === slug
-      )[0]
+      // First try to find the product in allProducts to avoid unnecessary API calls
+      const productInState = state.allProducts.find(
+        (product: productDataType) => product.slug === handle
+      )
 
-      if (singleProduct) {
-        dispatch({ type: GET_SINGLE_PRODUCT_SUCCESS, payload: singleProduct })
+      if (productInState) {
+        dispatch({
+          type: GET_SINGLE_PRODUCT_SUCCESS,
+          payload: productInState
+        })
       } else {
-        throw new Error('Product not found')
+        // If not found in state, fetch from Shopify
+        const product = await shopifyClient.product.fetchByHandle(handle);
+
+        if (product) {
+          const transformedProduct = transformShopifyProduct(product);
+          dispatch({
+            type: GET_SINGLE_PRODUCT_SUCCESS,
+            payload: transformedProduct
+          })
+        } else {
+          throw new Error('Product not found')
+        }
       }
     } catch (error) {
-      console.log(error)
+      console.error('Error fetching single product:', error)
       dispatch({ type: GET_SINGLE_PRODUCT_ERROR })
     }
   }
 
   // Load products on initial mount
   useEffect(() => {
-    dispatch({ type: GET_PRODUCTS_BEGIN })
-
-    // Using sample product data directly since we have only 3 products
-    dispatch({ type: GET_PRODUCTS_SUCCESS, payload: sampleProducts })
-
+    fetchProducts()
   }, [])
 
   return (
@@ -93,7 +126,7 @@ export const ProductsProvider: React.FC = ({ children }) => {
         ...state,
         openSidebar,
         closeSidebar,
-        toggleSidebar, // Include toggleSidebar in the context value
+        toggleSidebar,
         fetchSingleProduct
       }}
     >

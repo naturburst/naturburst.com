@@ -1,62 +1,91 @@
+// src/pages/SingleProductPage/SingleProductContent.tsx
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useProductsContext } from '../../context/products_context'
 import { formatPrice } from '../../utils/helpers'
-import { AddToCart } from '../../components'
-import { FaCheck, FaShieldAlt, FaTruck } from 'react-icons/fa'
+import { useCartContext } from '../../context/cart_context'
 import { useCurrencyContext } from '../../context/currency_context'
+import { FaCheck, FaShieldAlt, FaTruck } from 'react-icons/fa'
+import VariantSelector from '../../components/VariantSelector'
+import { ShopifyProduct } from '../../utils/shopify-product-utils'
+import AmountButtons from '../../components/AmountButtons'
+import { Link } from 'react-router-dom'
 
-// Define section types to fix TypeScript errors
-type SectionName = 'keyBenefits' | 'ingredients' | 'tastingNotes' | 'nutritionFacts' | 'usageSuggestions' | 'storage';
-
-interface SectionStates {
-  keyBenefits: boolean;
-  ingredients: boolean;
-  tastingNotes: boolean;
-  nutritionFacts: boolean;
-  usageSuggestions: boolean;
-  storage: boolean;
+// Define props interface for better type checking
+interface SingleProductContentProps {
+  shopifyProduct: ShopifyProduct | null;
+  selectedOptions: Record<string, string>;
+  selectedVariantId: string | null;
+  onOptionChange: (optionName: string, value: string) => void;
 }
 
-export const SingleProductContent = () => {
+export const SingleProductContent: React.FC<SingleProductContentProps> = ({
+  shopifyProduct,
+  selectedOptions,
+  selectedVariantId,
+  onOptionChange
+}) => {
   const { singleProduct } = useProductsContext()
+  const { addToCart } = useCartContext()
   const { currency } = useCurrencyContext()
-  const [activeTab, setActiveTab] = useState('description');
-  const [activeSections, setActiveSections] = useState<SectionStates>({
+  const [activeTab, setActiveTab] = useState('description')
+  const [activeSections, setActiveSections] = useState({
     keyBenefits: false,
     ingredients: false,
     tastingNotes: false,
     nutritionFacts: false,
     usageSuggestions: false,
     storage: false
-  });
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 768);
+  })
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 768)
+  const [amount, setAmount] = useState(1)
+
+  // Get current variant from selectedVariantId
+  const selectedVariant = shopifyProduct?.variants.find(v => v.id === selectedVariantId) || null
+
+  // Determine if selected variant is available
+  const isAvailable = selectedVariant ? selectedVariant.available : true
 
   // Add useEffect to initialize window.innerWidth for SSR
   useEffect(() => {
     // Add resize listener to update section visibility on window resize
     const handleResize = () => {
       // Force component re-render on resize
-      setWindowWidth(window.innerWidth);
-    };
+      setWindowWidth(window.innerWidth)
+    }
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  const toggleSection = (section: SectionName) => {
+  const toggleSection = (section: string) => {
     setActiveSections({
       ...activeSections,
-      [section]: !activeSections[section]
-    });
-  };
+      [section]: !activeSections[section as keyof typeof activeSections]
+    })
+  }
+
+  // Handle quantity changes
+  const increaseAmount = () => setAmount(amount + 1)
+  const decreaseAmount = () => {
+    if (amount > 1) {
+      setAmount(amount - 1)
+    }
+  }
+
+  // Handle add to cart with variant
+  const handleAddToCart = () => {
+    if (singleProduct && selectedVariantId) {
+      const { id, slug } = singleProduct as any
+      addToCart(id, selectedVariantId, slug, amount, singleProduct)
+    }
+  }
 
   const {
     name,
     price,
     itemDescription,
     brand,
-    stock,
     weight,
     ingredients,
     nutritionalInfo,
@@ -64,8 +93,12 @@ export const SingleProductContent = () => {
     storageInstructions
   } = { ...singleProduct }
 
+  // Get the variant price if available, otherwise use the product price
+  const variantPrice = selectedVariant ? parseFloat(selectedVariant.price) : price
+
   // Format prices with selected currency
-  const { originalPrice, discountedPrice } = price ? formatPrice(price, currency) : { originalPrice: '', discountedPrice: '' };
+  const { originalPrice, discountedPrice } =
+    variantPrice ? formatPrice(variantPrice, currency) : { originalPrice: '', discountedPrice: '' }
 
   return (
     <ProductContentWrapper>
@@ -92,12 +125,58 @@ export const SingleProductContent = () => {
           </div>
         </div>
 
-        {/* Add to cart section - moved above tabs */}
-        {stock && stock > 0 && (
-          <div className='add-to-cart-section top-cart'>
-            <AddToCart singleProduct={singleProduct} />
-          </div>
+        {/* Variant selector - only shown if shopifyProduct is loaded */}
+        {shopifyProduct && (
+          <VariantSelector
+            product={shopifyProduct}
+            selectedOptions={selectedOptions}
+            onVariantChange={onOptionChange}
+          />
         )}
+
+        {/* Add to cart section with availability info */}
+        <div className='add-to-cart-section top-cart'>
+          {/* Show availability status */}
+          <div className="availability">
+            <span className={isAvailable ? 'in-stock' : 'out-of-stock'}>
+              {isAvailable ? 'In Stock' : 'Out of Stock'}
+            </span>
+          </div>
+
+          {isAvailable ? (
+            <div className="cart-actions">
+              <div className='quantity-container'>
+                <h3>Quantity:</h3>
+                <AmountButtons
+                  amount={amount}
+                  increase={increaseAmount}
+                  decrease={decreaseAmount}
+                />
+              </div>
+
+              <div className='buttons-container'>
+                <button
+                  className='btn add-to-cart-btn'
+                  onClick={handleAddToCart}
+                >
+                  ADD TO CART
+                </button>
+
+                <Link
+                  to='/checkout'
+                  className='btn checkout-btn'
+                  onClick={handleAddToCart}
+                >
+                  BUY NOW
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="out-of-stock-message">
+              This variant is currently out of stock. Please select another option or check back later.
+            </div>
+          )}
+        </div>
 
         <div className="tabs">
           <button
@@ -277,8 +356,6 @@ export const SingleProductContent = () => {
             </div>
           )}
         </div>
-
-        {/* Removed add to cart section from bottom as it's now at the top */}
       </div>
     </ProductContentWrapper>
   )
@@ -359,6 +436,94 @@ const ProductContentWrapper = styled.section`
         font-size: 0.9rem;
         font-weight: 600;
         color: #1a2e37;
+      }
+    }
+  }
+
+  .availability {
+    margin-bottom: 1rem;
+
+    span {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 0.9rem;
+
+      &.in-stock {
+        background: #e3f5e9;
+        color: #2a9d8f;
+      }
+
+      &.out-of-stock {
+        background: #ffe8e8;
+        color: #e74c3c;
+      }
+    }
+  }
+
+  .out-of-stock-message {
+    padding: 1rem;
+    background: #ffe8e8;
+    color: #e74c3c;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .cart-actions {
+    .quantity-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      gap: 1rem;
+
+      h3 {
+        font-size: 1rem;
+        margin: 0;
+        color: #1a2e37;
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+
+      @media (max-width: 576px) {
+        flex-direction: column;
+      }
+
+      .btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+      }
+
+      .add-to-cart-btn {
+        background: var(--clr-primary-5);
+        color: white;
+
+        &:hover {
+          background: var(--clr-primary-3);
+          transform: translateY(-3px);
+        }
+      }
+
+      .checkout-btn {
+        background: var(--clr-accent-1);
+        color: white;
+
+        &:hover {
+          background: var(--clr-accent-2);
+          transform: translateY(-3px);
+        }
       }
     }
   }

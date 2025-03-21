@@ -1,3 +1,4 @@
+// src/actions.ts
 // Navigation actions
 export const SIDEBAR_OPEN = 'SIDEBAR_OPEN'
 export const SIDEBAR_CLOSE = 'SIDEBAR_CLOSE'
@@ -23,3 +24,7 @@ export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM'
 export const TOGGLE_CART_ITEM_AMOUNT = 'TOGGLE_CART_ITEM_AMOUNT'
 export const CLEAR_CART = 'CLEAR_CART'
 export const COUNT_CART_TOTALS = 'COUNT_CART_TOTALS'
+
+// Shopify specific actions
+export const SET_SHOPIFY_CHECKOUT = 'SET_SHOPIFY_CHECKOUT'
+export const UPDATE_CART_FROM_SHOPIFY = 'UPDATE_CART_FROM_SHOPIFY'

@@ -12,6 +12,10 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
   const { id, images, name, price, slug, categories } = product
   const image = images[0]
 
+  // Get the default variant ID if it exists (for Shopify products)
+  // This property might be added by our transformer
+  const defaultVariantId = (product as any).defaultVariantId || undefined
+
   // Format prices for display with selected currency
   const { originalPrice, discountedPrice } = formatPrice(price, currency)
 
@@ -55,7 +59,7 @@ const Product: React.FC<{ product: productDataType }> = ({ product }) => {
           <button
             type="button"
             className="btn add-to-cart-btn"
-            onClick={() => addToCart(id, slug, 1, product)}
+            onClick={() => addToCart(id, defaultVariantId, slug, 1, product)}
           >
             ADD TO CART
           </button>

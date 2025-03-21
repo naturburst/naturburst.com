@@ -1,46 +1,23 @@
 // src/pages/CheckoutPage.tsx
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { PageHero } from '../components'
 import { useCartContext } from '../context/cart_context'
 import { useCurrencyContext } from '../context/currency_context'
 import { formatPrice } from '../utils/helpers'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { FaShoppingBag } from 'react-icons/fa'
 
 const CheckoutPage = () => {
-  const { cart, totalAmount, clearCart } = useCartContext()
+  const { cart, totalAmount, checkout } = useCartContext()
   const { currency } = useCurrencyContext()
-  const history = useHistory()
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    address: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Format prices with selected currency
   const { originalPrice, discountedPrice } = formatPrice(totalAmount, currency)
 
-  // Handle form input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
-
-  // Handle checkout submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Simulate processing payment
-    setTimeout(() => {
-      clearCart()
-      history.push('/successful_payment')
-    }, 1500)
+  // Handle checkout
+  const handleCheckout = () => {
+    checkout()
   }
 
   if (cart.length < 1) {
@@ -103,7 +80,7 @@ const CheckoutPage = () => {
               </div>
               <div className='line'>
                 <span>Shipping:</span>
-                <span>FREE</span>
+                <span>Calculated at checkout</span>
               </div>
               <div className='line total'>
                 <span>Total:</span>
@@ -115,105 +92,20 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          <form className='checkout-form' onSubmit={handleSubmit}>
-            <h3>Shipping Information</h3>
-
-            <div className='form-group'>
-              <label htmlFor='name'>Full Name</label>
-              <input
-                type='text'
-                id='name'
-                name='name'
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className='form-group'>
-              <label htmlFor='email'>Email Address</label>
-              <input
-                type='email'
-                id='email'
-                name='email'
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className='form-group'>
-              <label htmlFor='address'>Street Address</label>
-              <input
-                type='text'
-                id='address'
-                name='address'
-                value={formData.address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className='form-row'>
-              <div className='form-group'>
-                <label htmlFor='city'>City</label>
-                <input
-                  type='text'
-                  id='city'
-                  name='city'
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className='form-group'>
-                <label htmlFor='state'>State/Province</label>
-                <input
-                  type='text'
-                  id='state'
-                  name='state'
-                  value={formData.state}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className='form-row'>
-              <div className='form-group'>
-                <label htmlFor='zip'>Postal Code</label>
-                <input
-                  type='text'
-                  id='zip'
-                  name='zip'
-                  value={formData.zip}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className='form-group'>
-                <label htmlFor='country'>Country</label>
-                <input
-                  type='text'
-                  id='country'
-                  name='country'
-                  value={formData.country}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
+          <div className="checkout-actions">
+            <p className="info-text">
+              You'll be redirected to Shopify's secure checkout page to complete your purchase.
+            </p>
             <button
-              type='submit'
+              onClick={handleCheckout}
               className='btn submit-btn'
-              disabled={isSubmitting}
             >
-              {isSubmitting ? 'Processing...' : `Pay ${discountedPrice}`}
+              <FaShoppingBag className="btn-icon" /> Continue to Checkout
             </button>
-          </form>
+            <Link to='/products' className="continue-shopping">
+              Continue Shopping
+            </Link>
+          </div>
         </div>
       </Wrapper>
     </PageWrapper>
@@ -343,7 +235,7 @@ const Wrapper = styled.div`
           }
         }
       }
-      
+
       .total {
         font-weight: 600;
         font-size: 1.2rem;
@@ -354,69 +246,60 @@ const Wrapper = styled.div`
     }
   }
 
-  .checkout-form {
+  .checkout-actions {
     background: var(--clr-white);
     padding: 2rem;
     border-radius: var(--radius);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    
-    h3 {
-      margin-bottom: 1.5rem;
-      font-size: 1.25rem;
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-      
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: var(--clr-grey-3);
-      }
-      
-      input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid var(--clr-grey-8);
-        border-radius: var(--radius);
-        
-        &:focus {
-          outline: none;
-          border-color: var(--clr-primary-5);
-        }
-      }
-    }
-    
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    
-  .submit-btn {
-    background: var(--clr-primary-5);
-    color: var(--clr-white);
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 
-    &:hover {
-      background: var(--clr-primary-3);
-      transform: translateY(-3px);
+    .info-text {
+      color: var(--clr-grey-5);
+      margin-bottom: 1.5rem;
+      max-width: 400px;
     }
 
-    &:disabled {
-      background: var(--clr-grey-6);
-      cursor: not-allowed;
-      transform: none;
+    .submit-btn {
+      background: var(--clr-primary-5);
+      color: var(--clr-white);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+
+      .btn-icon {
+        font-size: 1.1rem;
+      }
+
+      &:hover {
+        background: var(--clr-primary-3);
+        transform: translateY(-3px);
+      }
     }
-  }
+
+    .continue-shopping {
+      color: var(--clr-primary-5);
+      font-weight: 500;
+      transition: var(--transition);
+
+      &:hover {
+        color: var(--clr-primary-3);
+        text-decoration: underline;
+      }
+    }
   }
 
   .empty {
@@ -426,10 +309,11 @@ const Wrapper = styled.div`
       text-transform: none;
     }
   }
-  
+
   @media (min-width: 992px) {
     .content {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 2fr 1fr;
+      align-items: start;
     }
   }
 `
