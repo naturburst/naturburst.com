@@ -1,3 +1,4 @@
+// src/context/products_context.tsx
 import React, { useContext, useEffect, useReducer } from 'react'
 import reducer from '../reducers/products_reducer'
 import {
@@ -5,6 +6,7 @@ import {
   SIDEBAR_CLOSE,
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
   GET_SINGLE_PRODUCT_BEGIN,
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
@@ -18,6 +20,7 @@ export type initialStateType = {
   singleProduct: productDataType | {}
   openSidebar: () => void
   closeSidebar: () => void
+  toggleSidebar: () => void // Added toggleSidebar to type definition
   fetchSingleProduct: (id: string) => void
   productsLoading: boolean
   productsError: boolean
@@ -32,6 +35,7 @@ const initialState: initialStateType = {
   singleProduct: {},
   openSidebar: () => {},
   closeSidebar: () => {},
+  toggleSidebar: () => {}, // Added toggleSidebar to initial state
   fetchSingleProduct: (id: string) => {},
   productsLoading: false,
   productsError: false,
@@ -84,18 +88,18 @@ export const ProductsProvider: React.FC = ({ children }) => {
   }, [])
 
   return (
-   <ProductsContext.Provider
-     value={{
-       ...state,
-       openSidebar,
-       closeSidebar,
-       toggleSidebar, // Add this
-       fetchSingleProduct
-     }}
-   >
-     {children}
-   </ProductsContext.Provider>
- )
+    <ProductsContext.Provider
+      value={{
+        ...state,
+        openSidebar,
+        closeSidebar,
+        toggleSidebar, // Include toggleSidebar in the context value
+        fetchSingleProduct
+      }}
+    >
+      {children}
+    </ProductsContext.Provider>
+  )
 }
 
 export const useProductsContext = () => {
