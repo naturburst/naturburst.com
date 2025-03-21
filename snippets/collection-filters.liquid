@@ -1,0 +1,493 @@
+{% comment %}
+  Collection Filters
+
+  Parameters:
+  - results: Collection results to filter
+  - enable_filtering: Boolean to show/hide filters
+  - filter_type: Layout type ('horizontal' or 'vertical')
+{% endcomment %}
+
+{%- if enable_filtering and results.filters.size > 0 -%}
+  <collection-filters
+    class="collection-filters"
+    data-type="{{ filter_type }}"
+  >
+    <details
+      id="Details-Mobile-Filter"
+      class="disclosure-mobile"
+      {% if filter_type == 'horizontal' %}open{% endif %}
+    >
+      <summary class="disclosure__summary">
+        <div class="disclosure__summary-inner">
+          <span>Filter</span>
+          <span class="icon-plus">{% render 'icon-plus' %}</span>
+          <span class="icon-minus">{% render 'icon-minus' %}</span>
+        </div>
+      </summary>
+
+      <div id="CollectionFiltersForm" class="collection-filters__form">
+        {% form 'collection_filters', collection %}
+          <div class="collection-filters__wrapper">
+            {%- for filter in results.filters -%}
+              <div class="collection-filters__group">
+                {%- case filter.type -%}
+                  {%- when 'list' -%}
+                    <details class="filter-group"{% if filter_type == 'horizontal' %} open{% endif %}>
+                      <summary class="filter-group__summary">
+                        <div>
+                          <span>{{ filter.label }}</span>
+                          <span class="icon-plus">{% render 'icon-plus' %}</span>
+                          <span class="icon-minus">{% render 'icon-minus' %}</span>
+                        </div>
+                      </summary>
+
+                      <div class="filter-group__options">
+                        <ul class="filter-group__list">
+                          {%- for filter_value in filter.values -%}
+                            <li class="filter-group__item">
+                              <label for="Filter-{{ filter.label | escape }}-{{ forloop.index }}" class="filter-checkbox">
+                                <input
+                                  type="checkbox"
+                                  name="{{ filter_value.param_name }}"
+                                  value="{{ filter_value.value }}"
+                                  id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                                  {% if filter_value.active %}checked{% endif %}
+                                  {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+                                >
+                                <span>{{ filter_value.label }}</span>
+                                {% if filter_value.count != nil %}
+                                  <span class="filter-count">({{ filter_value.count }})</span>
+                                {% endif %}
+                              </label>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    </details>
+
+                  {%- when 'price_range' -%}
+                    <details class="filter-group"{% if filter_type == 'horizontal' %} open{% endif %}>
+                      <summary class="filter-group__summary">
+                        <div>
+                          <span>{{ filter.label }}</span>
+                          <span class="icon-plus">{% render 'icon-plus' %}</span>
+                          <span class="icon-minus">{% render 'icon-minus' %}</span>
+                        </div>
+                      </summary>
+
+                      <div class="filter-group__options">
+                        <div class="price-range">
+                          <div class="price-range__inputs">
+                            <div class="price-range__field">
+                              <span>{{ cart.currency.symbol }}</span>
+                              <input
+                                class="price-range__input price-range__input--min"
+                                name="{{ filter.min_value.param_name }}"
+                                id="Filter-{{ filter.label | escape }}-Min"
+                                type="number"
+                                placeholder="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                                min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                value="{% if filter.min_value.value != nil %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                              >
+                              <label for="Filter-{{ filter.label | escape }}-Min">Min</label>
+                            </div>
+
+                            <span class="price-range__divider">-</span>
+
+                            <div class="price-range__field">
+                              <span>{{ cart.currency.symbol }}</span>
+                              <input
+                                class="price-range__input price-range__input--max"
+                                name="{{ filter.max_value.param_name }}"
+                                id="Filter-{{ filter.label | escape }}-Max"
+                                type="number"
+                                placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                value="{% if filter.max_value.value != nil %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}"
+                              >
+                              <label for="Filter-{{ filter.label | escape }}-Max">Max</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </details>
+
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+
+            <div class="collection-filters__buttons">
+              {% if results.filters.size > 0 %}
+                {%- if results.current_vendor or results.current_type -%}
+                  <input type="hidden" name="q" value="{{ results.current_vendor }}{{ results.current_type }}">
+                {%- endif -%}
+
+                <button type="submit" class="btn btn--small">
+                  Apply filters
+                </button>
+
+                <a href="{{ results.url_for_type }}" class="btn btn--small btn--secondary">
+                  Clear all
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endform %}
+      </div>
+    </details>
+
+    <div class="active-filters">
+      <ul class="active-filters__list">
+        {%- for filter in results.filters -%}
+          {%- for filter_value in filter.active_values -%}
+            <li class="active-filters__item">
+              <a
+                href="{{ filter_value.url_to_remove }}"
+                class="active-filters__tag"
+              >
+                {{ filter.label }}: {{ filter_value.label }}
+                <span class="active-filters__remove">✕</span>
+              </a>
+            </li>
+          {%- endfor -%}
+
+          {% if filter.type == "price_range" %}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              <li class="active-filters__item">
+                <a
+                  href="{{ filter.url_to_remove }}"
+                  class="active-filters__tag"
+                >
+                  {%- if filter.min_value.value -%}{{ filter.min_value.value | money }}{%- else -%}{{ 0 | money }}{%- endif -%}
+                  –
+                  {%- if filter.max_value.value -%}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{%- endif -%}
+                  <span class="active-filters__remove">✕</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {% endif %}
+        {%- endfor -%}
+
+        {% if results.current_vendor %}
+          <li class="active-filters__item">
+            <a href="{{ results.url_for_type }}" class="active-filters__tag">
+              Vendor: {{ results.current_vendor }}
+              <span class="active-filters__remove">✕</span>
+            </a>
+          </li>
+        {% endif %}
+
+        {% if results.current_type %}
+          <li class="active-filters__item">
+            <a href="{{ results.url_for_vendor }}" class="active-filters__tag">
+              Type: {{ results.current_type }}
+              <span class="active-filters__remove">✕</span>
+            </a>
+          </li>
+        {% endif %}
+
+        {% if results.filters.size > 0 or results.current_vendor or results.current_type %}
+          <li class="active-filters__item active-filters__item--clear">
+            <a href="{{ results.url_for_type }}" class="active-filters__clear">
+              Clear all
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </collection-filters>
+{%- endif -%}
+
+<style>
+.collection-filters {
+  width: 100%;
+}
+
+.collection-filters[data-type="vertical"] {
+  width: 300px;
+  margin-right: 2rem;
+}
+
+.disclosure-mobile {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.disclosure__summary {
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding: 0;
+}
+
+.disclosure__summary-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  padding: 0.75rem 0;
+  color: var(--color-headings);
+}
+
+.disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+.icon-plus,
+.icon-minus {
+  display: flex;
+  align-items: center;
+}
+
+.icon-plus .icon,
+.icon-minus .icon {
+  width: 16px;
+  height: 16px;
+}
+
+details[open] .icon-plus {
+  display: none;
+}
+
+details:not([open]) .icon-minus {
+  display: none;
+}
+
+.collection-filters__form {
+  margin-top: 1rem;
+}
+
+.collection-filters__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.collection-filters[data-type="vertical"] .collection-filters__wrapper {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.collection-filters__group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.collection-filters[data-type="vertical"] .collection-filters__group {
+  width: 100%;
+}
+
+.filter-group {
+  background-color: white;
+  border-radius: var(--radius-small);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.filter-group__summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  position: relative;
+  list-style: none;
+}
+
+.filter-group__summary::-webkit-details-marker {
+  display: none;
+}
+
+.filter-group__summary div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.filter-group__options {
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.filter-group__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.filter-group__item {
+  margin-bottom: 0.5rem;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-checkbox input {
+  margin-right: 0.5rem;
+}
+
+.filter-count {
+  margin-left: 0.25rem;
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+}
+
+.price-range {
+  padding: 0.5rem 0;
+}
+
+.price-range__inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price-range__field {
+  position: relative;
+  flex: 1;
+}
+
+.price-range__field span {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-light);
+}
+
+.price-range__input {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+}
+
+.price-range__divider {
+  font-weight: 600;
+}
+
+.price-range__field label {
+  position: absolute;
+  font-size: 0.75rem;
+  top: -1.2rem;
+  left: 0;
+  color: var(--color-text-light);
+}
+
+.collection-filters__buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.collection-filters__buttons .btn {
+  flex: 1;
+}
+
+.active-filters {
+  margin-top: 1rem;
+}
+
+.active-filters__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.active-filters__tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-background-light);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.active-filters__tag:hover {
+  background: #e5e5e5;
+}
+
+.active-filters__remove {
+  margin-left: 0.25rem;
+  font-weight: 600;
+}
+
+.active-filters__clear {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 767px) {
+  .collection-filters[data-type="vertical"] {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .collection-filters__wrapper {
+    flex-direction: column;
+  }
+
+  .collection-filters__group {
+    width: 100%;
+  }
+
+  .active-filters__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+</style>
+
+<script>
+  class CollectionFilters extends HTMLElement {
+    constructor() {
+      super();
+
+      this.filterType = this.dataset.type;
+      this.debouncedSubmit = this.debounce(this.onSubmitHandler.bind(this), 500);
+
+      this.querySelector('#CollectionFiltersForm').addEventListener('input', this.debouncedSubmit);
+    }
+
+    // Handle form submission with debounce
+    onSubmitHandler(event) {
+      // Don't submit on price range inputs until user finishes typing
+      if (
+        event.target.classList.contains('price-range__input') &&
+        event.inputType !== 'insertReplacementText'
+      ) {
+        return;
+      }
+
+      const form = event.target.form || event.target.closest('form');
+      if (!form) return;
+
+      // Submit the form
+      form.submit();
+    }
+
+    // Debounce helper to prevent multiple rapid submissions
+    debounce(fn, wait) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+  }
+
+  customElements.define('collection-filters', CollectionFilters);
+</script>

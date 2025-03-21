@@ -1,0 +1,120 @@
+{% comment %}
+  Collection Sorting
+
+  Provides a dropdown to sort collection products
+{% endcomment %}
+
+<div class="collection-sorting">
+  <div class="collection-sorting__wrapper">
+    <label for="SortBy" class="collection-sorting__label">Sort by:</label>
+    <select
+      name="sort_by"
+      id="SortBy"
+      class="collection-sorting__select"
+      aria-describedby="a11y-refresh-page-message"
+    >
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+
+      <option value="manual" {% if sort_by == 'manual' %}selected="selected"{% endif %}>
+        Featured
+      </option>
+      <option value="best-selling" {% if sort_by == 'best-selling' %}selected="selected"{% endif %}>
+        Best selling
+      </option>
+      <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected="selected"{% endif %}>
+        Alphabetically, A-Z
+      </option>
+      <option value="title-descending" {% if sort_by == 'title-descending' %}selected="selected"{% endif %}>
+        Alphabetically, Z-A
+      </option>
+      <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected="selected"{% endif %}>
+        Price, low to high
+      </option>
+      <option value="price-descending" {% if sort_by == 'price-descending' %}selected="selected"{% endif %}>
+        Price, high to low
+      </option>
+      <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected="selected"{% endif %}>
+        Date, old to new
+      </option>
+      <option value="created-descending" {% if sort_by == 'created-descending' %}selected="selected"{% endif %}>
+        Date, new to old
+      </option>
+    </select>
+  </div>
+
+  <p class="visually-hidden" id="a11y-refresh-page-message">
+    When you change a selection, the page will refresh.
+  </p>
+</div>
+
+<style>
+.collection-sorting {
+  min-width: 200px;
+}
+
+.collection-sorting__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.collection-sorting__label {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.collection-sorting__select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-white);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+</style>
+
+<script>
+  class CollectionSorting {
+    constructor() {
+      this.sortSelect = document.getElementById('SortBy');
+
+      if (!this.sortSelect) return;
+
+      // Preserve sort parameter on page loads
+      this.initParams();
+
+      // Add change event listener
+      this.sortSelect.addEventListener('change', this.onChange.bind(this));
+    }
+
+    // Initialize sort parameters
+    initParams() {
+      // Get sort value from URL if present
+      const searchParams = new URLSearchParams(window.location.search);
+      const sortByValue = searchParams.get('sort_by');
+
+      if (sortByValue) {
+        this.sortSelect.value = sortByValue;
+      }
+    }
+
+    // Handle sort change
+    onChange() {
+      const sortValue = this.sortSelect.value;
+      const url = new URL(window.location.href);
+      const searchParams = url.searchParams;
+
+      searchParams.set('sort_by', sortValue);
+      url.search = searchParams.toString();
+
+      window.location.href = url.toString();
+    }
+  }
+
+  // Initialize sorting on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    new CollectionSorting();
+  });
+</script>

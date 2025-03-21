@@ -1,0 +1,304 @@
+<div class="product-benefits section">
+  <div class="page-width">
+    <div class="header-container">
+      <h2>{{ section.settings.title | escape }}</h2>
+      <p>{{ section.settings.description }}</p>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon natural"></div>
+        <h3>{{ section.settings.benefit_1_title }}</h3>
+        <p>{{ section.settings.benefit_1_text }}</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon nutrients"></div>
+        <h3>{{ section.settings.benefit_2_title }}</h3>
+        <p>{{ section.settings.benefit_2_text }}</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon lifestyle"></div>
+        <h3>{{ section.settings.benefit_3_title }}</h3>
+        <p>{{ section.settings.benefit_3_text }}</p>
+      </div>
+    </div>
+
+    <div class="key-benefits">
+      {% for block in section.blocks %}
+        {% if block.type == 'benefit_point' %}
+          <div class="benefit">
+            <span class="check-icon">{% render 'icon-check' %}</span>
+            <span>{{ block.settings.text }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Default benefits if no blocks are added -->
+      {% if section.blocks.size == 0 %}
+        <div class="benefit">
+          <span class="check-icon">{% render 'icon-check' %}</span>
+          <span>100% Natural Ingredients</span>
+        </div>
+        <div class="benefit">
+          <span class="check-icon">{% render 'icon-check' %}</span>
+          <span>No Added Sugar</span>
+        </div>
+        <div class="benefit">
+          <span class="check-icon">{% render 'icon-check' %}</span>
+          <span>Rich in Vitamins</span>
+        </div>
+        <div class="benefit">
+          <span class="check-icon">{% render 'icon-check' %}</span>
+          <span>Extended Shelf Life</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Why NatureBurst Is Different"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives. Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect for snacking or adding to your favorite recipes."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 1"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_title",
+      "label": "Title",
+      "default": "100% Natural"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_1_text",
+      "label": "Text",
+      "default": "Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 2"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_title",
+      "label": "Title",
+      "default": "Nutrient-Rich"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_2_text",
+      "label": "Text",
+      "default": "Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 3"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_title",
+      "label": "Title",
+      "default": "Lifestyle Friendly"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_3_text",
+      "label": "Text",
+      "default": "Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_point",
+      "name": "Benefit Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit Text",
+          "default": "Benefit point"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Benefits",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "100% Natural Ingredients"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "No Added Sugar"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "Rich in Vitamins"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "Extended Shelf Life"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.product-benefits {
+  padding: 3rem 0;
+  background: #f7f7f7;
+}
+
+.header-container {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+}
+
+.header-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2e37;
+  margin-bottom: 1rem;
+}
+
+.header-container h2 span {
+  color: var(--color-primary);
+}
+
+.header-container p {
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.benefits-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.benefit-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.benefit-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  color: #1a2e37;
+}
+
+.benefit-card p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-position: center;
+  background-size: 30px;
+  background-repeat: no-repeat;
+}
+
+.natural {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20a4.67,4.67,0,0,0,1.76-.35,4.65,4.65,0,0,0,6.41-2A4.74,4.74,0,0,0,19.73,12.9a4.64,4.64,0,0,0,.55-2.64,4.47,4.47,0,0,0-1.92-3.11A4.47,4.47,0,0,0,17,8Z'/%3E%3C/svg%3E");
+}
+
+.nutrients {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M11,2a8.002,8.002,0,0,1,7.91,6.7,8,8,0,1,1-7.91-6.7ZM14,15h2v2H14ZM9,15h2v2H9ZM14,10h2v2H14ZM9,10h2v2H9Z'/%3E%3C/svg%3E");
+}
+
+.lifestyle {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M20.5,6A3.5,3.5,0,0,0,17,9.5a3.45,3.45,0,0,0,.55,1.81L14.73,14.1a3.45,3.45,0,0,0-1.81-.55,3.5,3.5,0,0,0-3.5,3.5,3.45,3.45,0,0,0,.55,1.81L7.16,21.56l1.41,1.41,2.71-2.71a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,3.5-3.5,3.45,3.45,0,0,0-.55-1.81l2.82-2.82a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,0-7Z'/%3E%3C/svg%3E");
+}
+
+.key-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+}
+
+.check-icon {
+  color: var(--color-primary);
+  margin-right: 0.5rem;
+}
+
+.benefit span:not(.check-icon) {
+  font-weight: 600;
+  color: #1a2e37;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .header-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .key-benefits {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .benefit {
+    width: 100%;
+    max-width: 250px;
+  }
+}
+</style>

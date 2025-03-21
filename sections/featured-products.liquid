@@ -1,0 +1,337 @@
+<div class="featured-products section">
+  <div class="section-header">
+    <h2>{{ section.settings.title | escape }}</h2>
+  </div>
+
+  <div class="featured-products-container">
+    <div class="slider-container">
+      <button class="nav-btn prev-btn js-prev-btn">
+        {% render 'icon-chevron-left' %}
+      </button>
+
+      {% assign collection = collections[section.settings.collection] %}
+      <div class="products-slider" data-products-slider>
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <div class="product-slide">
+            {% render 'product-card',
+              product: product,
+              show_rating: section.settings.show_rating,
+              show_quick_add: section.settings.enable_quick_add
+            %}
+          </div>
+        {% else %}
+          {%- for i in (1..section.settings.products_to_show) -%}
+            <div class="product-slide">
+              {% render 'product-card-placeholder' %}
+            </div>
+          {%- endfor -%}
+        {% endfor %}
+      </div>
+
+      <button class="nav-btn next-btn js-next-btn">
+        {% render 'icon-chevron-right' %}
+      </button>
+    </div>
+
+    {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank %}
+      <div class="view-all-container">
+        <a href="{{ section.settings.view_all_url }}" class="view-all-btn">
+          {{ section.settings.view_all_text }}
+          {% render 'icon-arrow-right' %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "EXPLORE OUR PRODUCTS"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "VIEW ALL PRODUCTS"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View all URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Products",
+      "settings": {
+        "collection": "featured-products",
+        "products_to_show": 4
+      }
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.featured-products {
+  padding: 3rem 0;
+  background: white;
+  width: 100%;
+  max-width: 100%;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.products-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  padding: 1rem 0;
+  width: 100%;
+}
+
+.products-slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.product-slide {
+  flex: 0 0 auto;
+  width: 280px;
+  margin-right: 1.5rem;
+}
+
+.nav-btn {
+  background: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+.view-all-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.view-all-btn .icon {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.view-all-btn:hover {
+  background: var(--color-primary-darker);
+}
+
+.view-all-btn:hover .icon {
+  transform: translateX(3px);
+}
+
+@media (min-width: 768px) {
+  .slider-container {
+    padding: 0 50px;
+    max-width: 100%;
+  }
+
+  .products-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    justify-content: space-between;
+    padding: 1rem 0;
+    overflow-x: visible;
+  }
+
+  .product-slide {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  .slider-container {
+    padding: 0 60px;
+  }
+
+  .products-slider {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .slider-container {
+    padding: 0;
+  }
+
+  .products-slider {
+    padding: 1rem 1rem;
+    justify-content: flex-start;
+  }
+
+  .product-slide {
+    width: 85vw;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Slider functionality for mobile view
+  const sliders = document.querySelectorAll('[data-products-slider]');
+
+  sliders.forEach(slider => {
+    const prevBtn = slider.parentElement.querySelector('.js-prev-btn');
+    const nextBtn = slider.parentElement.querySelector('.js-next-btn');
+
+    if (!prevBtn || !nextBtn) return;
+
+    // Calculate the width of a single product slide (including margin)
+    const getSlideWidth = () => {
+      const slides = slider.querySelectorAll('.product-slide');
+      if (slides.length > 0) {
+        // Get the first slide's width including margin
+        const slideWidth = slides[0].getBoundingClientRect().width;
+        const computedStyle = window.getComputedStyle(slides[0]);
+        const marginRight = parseFloat(computedStyle.marginRight);
+
+        // Return total width (slide + margin)
+        return slideWidth + marginRight;
+      }
+      // Fallback
+      return 280 + 24; // 280px slide width + 1.5rem margin
+    };
+
+    // Only apply scroll behavior on mobile
+    const shouldScroll = () => window.innerWidth < 768;
+
+    prevBtn.addEventListener('click', () => {
+      if (!shouldScroll()) return;
+
+      const itemWidth = getSlideWidth();
+      const currentIndex = Math.round(slider.scrollLeft / itemWidth);
+
+      // If at the beginning, jump to the end
+      if (currentIndex <= 0) {
+        // Scroll to last item without animation
+        slider.style.scrollBehavior = 'auto';
+        const slideCount = slider.querySelectorAll('.product-slide').length;
+        slider.scrollLeft = itemWidth * (slideCount - 1);
+
+        // Force browser to apply the scroll change before continuing
+        void slider.offsetWidth;
+        slider.style.scrollBehavior = 'smooth';
+      } else {
+        // Normal scroll to previous product
+        slider.scrollTo({ left: itemWidth * (currentIndex - 1), behavior: 'smooth' });
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (!shouldScroll()) return;
+
+      const itemWidth = getSlideWidth();
+      const slideCount = slider.querySelectorAll('.product-slide').length;
+      const currentIndex = Math.round(slider.scrollLeft / itemWidth);
+
+      // If at the end, jump to the beginning
+      if (currentIndex >= slideCount - 1) {
+        // Scroll to first item without animation
+        slider.style.scrollBehavior = 'auto';
+        slider.scrollLeft = 0;
+
+        // Force browser to apply the scroll change
+        void slider.offsetWidth;
+        slider.style.scrollBehavior = 'smooth';
+      } else {
+        // Normal scroll to next product
+        slider.scrollTo({ left: itemWidth * (currentIndex + 1), behavior: 'smooth' });
+      }
+    });
+
+    // Hide/show navigation buttons based on viewport width
+    const updateNavVisibility = () => {
+      const shouldShowNav = shouldScroll();
+      prevBtn.style.display = shouldShowNav ? 'flex' : 'none';
+      nextBtn.style.display = shouldShowNav ? 'flex' : 'none';
+    };
+
+    // Run on load and resize
+    updateNavVisibility();
+    window.addEventListener('resize', updateNavVisibility);
+  });
+});
+</script>

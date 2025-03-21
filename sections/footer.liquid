@@ -1,0 +1,411 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="wave-divider">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+      <path
+        fill="#FFF"
+        fill-opacity="1"
+        d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="page-width">
+    <div class="footer-content">
+      <div class="logo-section">
+        <h3>Nature<span>Burst</span></h3>
+        <p>{{ section.settings.footer_description }}</p>
+
+        <div class="contact-info">
+          <div class="contact-item">
+            {% render 'icon-email' %}
+            <span>{{ section.settings.footer_email }}</span>
+          </div>
+          <div class="contact-item">
+            {% render 'icon-phone-alt' %}
+            <span>{{ section.settings.footer_phone }}</span>
+          </div>
+        </div>
+
+        <div class="social-icons">
+          {% if section.settings.footer_instagram != blank %}
+            <a href="https://www.instagram.com/{{ section.settings.footer_instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              {% render 'icon-instagram' %}
+            </a>
+          {% endif %}
+          {% if section.settings.footer_facebook != blank %}
+            <a href="{{ section.settings.footer_facebook }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              {% render 'icon-facebook' %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="links-section">
+        <div class="link-group">
+          <h4>Quick Links</h4>
+          <ul>
+            {% for link in linklists[section.settings.footer_menu].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="link-group location-group">
+          <h4>Visit Us</h4>
+          <address class="footer-address">
+            {{ section.settings.footer_address }}
+          </address>
+
+          <a
+            href="{{ section.settings.footer_map_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="directions-btn"
+          >
+            <div class="map-indicator">
+              {% render 'icon-map' %} Get Directions
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="payment-methods">
+        {% if section.settings.show_payment_icons %}
+          <span class="visually-hidden">{{ 'general.payment.method' | t }}</span>
+          <ul class="payment-icons list-unstyled">
+            {% for type in shop.enabled_payment_types %}
+              <li class="payment-icon">
+                {{ type | payment_type_svg_tag: class: 'icon' }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="copyright">
+        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ section.settings.copyright_text }}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "footer_description",
+      "label": "Footer Description",
+      "default": "Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss that keeps all the nutrition intact."
+    },
+    {
+      "type": "text",
+      "id": "footer_email",
+      "label": "Email",
+      "default": "natureburst.shop@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "footer_phone",
+      "label": "Phone Number",
+      "default": "+91 90984 04225"
+    },
+    {
+      "type": "text",
+      "id": "footer_instagram",
+      "label": "Instagram Handle",
+      "default": "natureburst.shop",
+      "info": "Without the @ symbol"
+    },
+    {
+      "type": "url",
+      "id": "footer_facebook",
+      "label": "Facebook URL",
+      "default": "https://www.facebook.com/profile.php?id=61574435489769"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "footer_address",
+      "label": "Address",
+      "default": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023"
+    },
+    {
+      "type": "url",
+      "id": "footer_map_url",
+      "label": "Google Maps URL",
+      "default": "https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "All rights reserved."
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Footer",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.site-footer {
+  position: relative;
+  background: {{ section.settings.footer_background | default: '#2A5E41' }};
+  color: var(--color-white);
+  padding: 5rem 0 2rem 0;
+  font-family: var(--font-body);
+}
+
+.wave-divider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  line-height: 0;
+}
+
+.wave-divider svg {
+  width: 100%;
+  height: 60px;
+}
+
+.footer-content {
+  display: grid;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.logo-section h3 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+}
+
+.logo-section h3 span {
+  color: {{ settings.color_accent }};
+}
+
+.logo-section p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-family: var(--font-body);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-item svg {
+  margin-right: 1rem;
+  color: {{ settings.color_accent }};
+}
+
+.contact-item span {
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-body);
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-icons a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  background: {{ settings.color_accent }};
+  color: {{ settings.color_primary }};
+  transform: translateY(-3px);
+}
+
+.links-section {
+  display: grid;
+  gap: 2rem;
+}
+
+.link-group h4 {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: {{ settings.color_accent }};
+  font-family: var(--font-heading);
+}
+
+.link-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link-group a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  font-family: var(--font-body);
+}
+
+.link-group a:hover {
+  color: {{ settings.color_accent }};
+  padding-left: 0.5rem;
+}
+
+.footer-address {
+  color: rgba(255, 255, 255, 0.8);
+  font-style: normal;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  font-family: var(--font-body);
+}
+
+.directions-btn {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.map-indicator {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+}
+
+.map-indicator:hover {
+  background: {{ settings.color_accent }};
+  color: {{ settings.color_primary }};
+}
+
+.map-indicator svg {
+  margin-right: 0.5rem;
+}
+
+.bottom-section {
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.payment-methods img {
+  max-width: 300px;
+  height: auto;
+}
+
+.payment-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.payment-icon .icon {
+  width: 38px;
+  height: 24px;
+}
+
+.copyright {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .links-section {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bottom-section {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 992px) {
+  .footer-content {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .links-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .location-group {
+    grid-column: span 2;
+  }
+
+  .payment-methods img {
+    max-width: 250px;
+  }
+}
+</style>

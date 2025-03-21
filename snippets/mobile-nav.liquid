@@ -1,0 +1,304 @@
+<div id="MobileNav" class="mobile-nav" aria-hidden="true">
+  <div class="mobile-nav__inner">
+    <div class="mobile-nav__header">
+      {% if settings.logo != blank %}
+        <img
+          class="mobile-nav__logo"
+          src="{{ settings.logo | img_url: 'master' }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ settings.logo_width | default: 140 }}"
+          loading="lazy">
+      {% else %}
+        <span class="h1">Nature<span>Burst</span></span>
+      {% endif %}
+
+      <button type="button" class="mobile-nav__close" aria-controls="MobileNav" aria-label="Close menu">
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <div class="mobile-nav__content">
+      {%- comment -%} Currency selector {%- endcomment -%}
+      <div class="mobile-nav__section">
+        <h3 class="mobile-nav__section-title">
+          {% render 'icon-globe' %} Select Currency
+        </h3>
+        <div class="currency-options">
+          {% form 'currency' %}
+            {% for currency in shop.enabled_currencies %}
+              <button
+                type="submit"
+                name="currency_code"
+                value="{{ currency.iso_code }}"
+                class="currency-option{% if currency.iso_code == cart.currency.iso_code %} active{% endif %}">
+                {{ currency.iso_code }} ({{ currency.symbol }})
+              </button>
+            {% endfor %}
+          {% endform %}
+        </div>
+      </div>
+
+      <div class="mobile-nav__divider"></div>
+
+      {%- comment -%} Main navigation {%- endcomment -%}
+      <ul class="mobile-nav__menu">
+        {% for link in linklists.main-menu.links %}
+          <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+            <a href="{{ link.url }}" class="mobile-nav__link">
+              {% case link.title %}
+                {% when 'Home' %}
+                  {% render 'icon-home' %}
+                {% when 'Shop' or 'Products' %}
+                  {% render 'icon-shop' %}
+                {% when 'How to Use' %}
+                  {% render 'icon-help' %}
+                {% when 'Contact' %}
+                  {% render 'icon-phone' %}
+                {% else %}
+                  {% render 'icon-link' %}
+              {% endcase %}
+              <span>{{ link.title }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="mobile-nav__divider"></div>
+
+      {%- comment -%} Contact information {%- endcomment -%}
+      <div class="mobile-nav__contact">
+        <h3>Contact Us</h3>
+        <p>Need help? We're just a click away!</p>
+        <a href="{{ routes.page_url | append: 'contact' }}" class="contact-btn">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.mobile-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 999;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.mobile-nav.is-active {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav__inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mobile-nav__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mobile-nav__logo {
+  height: 60px;
+  width: auto;
+}
+
+.mobile-nav__header span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+}
+
+.mobile-nav__header span span {
+  color: {{ settings.color_primary }};
+}
+
+.mobile-nav__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav__close:hover {
+  color: {{ settings.color_primary }};
+  transform: scale(1.1);
+}
+
+.mobile-nav__content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+
+.mobile-nav__section-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--color-headings);
+  font-weight: 600;
+}
+
+.mobile-nav__section-title svg {
+  margin-right: 0.75rem;
+  color: {{ settings.color_primary }};
+}
+
+.currency-options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.currency-option {
+  flex: 1;
+  background: var(--color-background-light);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.currency-option.active {
+  background: {{ settings.color_primary }};
+  color: white;
+  border-color: {{ settings.color_primary }};
+}
+
+.currency-option:not(.active):hover {
+  background: var(--color-background-accent);
+}
+
+.mobile-nav__divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0.5rem 0;
+}
+
+.mobile-nav__menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav__link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.mobile-nav__link svg {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+  transition: all 0.3s ease;
+}
+
+.mobile-nav__link:hover,
+.mobile-nav__item--active .mobile-nav__link {
+  background: var(--color-background-primary-light);
+  color: {{ settings.color_primary }};
+}
+
+.mobile-nav__link:hover svg,
+.mobile-nav__item--active .mobile-nav__link svg {
+  color: {{ settings.color_primary }};
+}
+
+.mobile-nav__item--active .mobile-nav__link {
+  font-weight: 600;
+}
+
+.mobile-nav__contact {
+  margin-top: auto;
+  padding: 1.5rem;
+  background: var(--color-background-primary-light);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.mobile-nav__contact h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-headings);
+}
+
+.mobile-nav__contact p {
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.contact-btn {
+  display: inline-block;
+  background: {{ settings.color_primary }};
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+  background: {{ settings.color_primary_darker }};
+  transform: translateY(-2px);
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileNav = document.getElementById('MobileNav');
+    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+    const mobileNavClose = document.querySelector('.mobile-nav__close');
+    const body = document.body;
+
+    function toggleMobileNav() {
+      mobileNav.classList.toggle('is-active');
+      body.classList.toggle('overflow-hidden');
+
+      const isOpen = mobileNav.classList.contains('is-active');
+      mobileNav.setAttribute('aria-hidden', !isOpen);
+      mobileNavToggle.setAttribute('aria-expanded', isOpen);
+    }
+
+    mobileNavToggle.addEventListener('click', toggleMobileNav);
+    mobileNavClose.addEventListener('click', toggleMobileNav);
+
+    // Close mobile nav when clicking on links
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav__link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', toggleMobileNav);
+    });
+  });
+</script>

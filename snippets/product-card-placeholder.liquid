@@ -1,0 +1,98 @@
+{% comment %}
+  Product Card Placeholder
+  Used when products are loading or unavailable
+{% endcomment %}
+
+<div class="product-card product-card--placeholder">
+  <div class="product-card__container">
+    <div class="product-card__image-container">
+      <div class="product-card__image-wrapper placeholder-background">
+        <div class="placeholder-svg"></div>
+      </div>
+    </div>
+
+    <div class="product-card__content">
+      <h3 class="product-card__title placeholder-text">
+        <span class="placeholder-line"></span>
+      </h3>
+
+      <div class="product-card__meta">
+        <div class="product-card__type placeholder-text">
+          <span class="placeholder-line placeholder-line--short"></span>
+        </div>
+        <div class="product-card__weight placeholder-text">
+          <span class="placeholder-line placeholder-line--short"></span>
+        </div>
+      </div>
+
+      <div class="product-card__price placeholder-text">
+        <span class="placeholder-line placeholder-line--medium"></span>
+      </div>
+
+      <div class="placeholder-text">
+        <span class="placeholder-line placeholder-line--button"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Placeholder specific styles */
+.product-card--placeholder .placeholder-background {
+  background-color: #f6f6f6;
+  animation: shimmer 1.5s infinite;
+  background-image: linear-gradient(
+    to right,
+    #f6f6f6 0%,
+    #f0f0f0 20%,
+    #f6f6f6 40%,
+    #f6f6f6 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 800px 100%;
+}
+
+.product-card--placeholder .placeholder-svg {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.product-card--placeholder .placeholder-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.product-card--placeholder .placeholder-line {
+  height: 16px;
+  width: 100%;
+  border-radius: 4px;
+  background-color: #f6f6f6;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.product-card--placeholder .placeholder-line--short {
+  width: 60%;
+}
+
+.product-card--placeholder .placeholder-line--medium {
+  width: 80%;
+}
+
+.product-card--placeholder .placeholder-line--button {
+  height: 38px;
+  margin-top: 0.75rem;
+  border-radius: 5px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+</style>

@@ -1,0 +1,148 @@
+{% comment %}
+  Related Products Section
+
+  Shows products that are related to the current product by:
+  1. Same collection
+  2. Same product type
+  3. Same vendor
+{% endcomment %}
+
+{%- if section.settings.products_to_show > 0 -%}
+  <section class="related-products section">
+    <div class="page-width">
+      <div class="section-header">
+        <h2>{{ section.settings.heading | escape }}</h2>
+      </div>
+
+      <div class="related-products__grid">
+        {%- liquid
+          # First try to get products from the same collection
+          assign related_collection = product.collections.first
+
+          # If no collection found, try to get products from the recommendations
+          if related_collection == blank
+            assign related_collection = collections.all
+          endif
+
+          # Create an array to store related products
+          assign related_products = ''
+
+          for related_product in related_collection.products limit: section.settings.products_to_show
+            # Skip the current product
+            if related_product.id == product.id
+              continue
+            endif
+
+            # Add related product to the array
+            assign related_products = related_products | append: related_product.id | append: ','
+          endfor
+
+          # Convert the comma-separated list to an array
+          assign related_products = related_products | split: ','
+        -%}
+
+        {%- if related_products.size > 0 -%}
+          {%- for related_id in related_products limit: section.settings.products_to_show -%}
+            {%- assign related_product = all_products[related_id] -%}
+
+            {%- if related_product != blank -%}
+              <div class="related-products__item">
+                {% render 'product-card',
+                  product: related_product,
+                  show_rating: section.settings.show_rating,
+                  show_quick_add: true,
+                  show_secondary_image: section.settings.show_secondary_image
+                %}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for product in collections.all.products limit: section.settings.products_to_show -%}
+            {%- if product.id != product.id -%}
+              <div class="related-products__item">
+                {% render 'product-card',
+                  product: product,
+                  show_rating: section.settings.show_rating,
+                  show_quick_add: true,
+                  show_secondary_image: section.settings.show_secondary_image
+                %}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "You may also like",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show secondary image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show product vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related products",
+      "category": "Product information"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.related-products {
+  padding: 3rem 0 5rem;
+  background: var(--color-background-light);
+}
+
+.related-products__grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media screen and (min-width: 768px) {
+  .related-products__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .related-products__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>

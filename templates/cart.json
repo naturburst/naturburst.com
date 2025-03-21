@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "cart_items": {
+      "type": "main-cart",
+      "settings": {
+        "show_vendor": false,
+        "show_cart_note": false,
+        "enable_quick_checkout": true
+      }
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "You might also like",
+        "collection": "all",
+        "products_to_show": 4,
+        "show_rating": true,
+        "enable_quick_add": true
+      }
+    }
+  },
+  "order": [
+    "cart_items",
+    "featured_products"
+  ]
+}

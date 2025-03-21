@@ -1,0 +1,219 @@
+{% comment %}
+  Main Collection Product Grid
+
+  - Displays products in a collection
+  - Includes filtering and sorting options
+  - Responsive grid layout
+{% endcomment %}
+
+<div class="collection-grid section">
+  {%- liquid
+    assign total_products = collection.all_products_count
+
+    if section.settings.enable_filtering or section.settings.enable_sorting
+      assign show_controls = true
+    else
+      assign show_controls = false
+    endif
+  -%}
+
+  <div class="page-width">
+    {% if show_controls %}
+      <div class="collection-grid__controls{% if section.settings.filter_type == 'vertical' %} collection-grid__controls--vertical{% endif %}">
+        {% if section.settings.enable_filtering %}
+          {% render 'collection-filters',
+            results: collection,
+            enable_filtering: section.settings.enable_filtering,
+            filter_type: section.settings.filter_type
+          %}
+        {% endif %}
+
+        {% if section.settings.enable_sorting %}
+          {% render 'collection-sorting' %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="collection-grid__count-container">
+      <p class="collection-grid__product-count">
+        {{ total_products }} product{% if total_products != 1 %}s{% endif %}
+      </p>
+    </div>
+
+    <div
+      id="ProductGrid"
+      class="collection-grid__products"
+      data-products-per-page="{{ section.settings.products_per_page }}"
+    >
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- if collection.products.size == 0 -%}
+          <div class="collection-grid__empty">
+            <p>No products found</p>
+
+            {% if collection.filters.size > 0 %}
+              <div class="collection-grid__empty-filters">
+                <p>Try changing the filters or</p>
+                <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="btn btn--secondary">Clear all filters</a>
+              </div>
+            {% endif %}
+          </div>
+        {%- else -%}
+          <div class="collection-grid__grid">
+            {%- for product in collection.products -%}
+              {% render 'product-card',
+                product: product,
+                show_rating: true,
+                show_quick_add: section.settings.enable_quick_add,
+                show_secondary_image: section.settings.show_secondary_image
+              %}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate %}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "header",
+      "content": "Filtering and sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering",
+      "info": "Filter products by color, size, etc."
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        }
+      ],
+      "default": "horizontal",
+      "label": "Filter layout",
+      "info": "Position of filter controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "default": true,
+      "label": "Show secondary image on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": true,
+      "label": "Enable quick add button"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.collection-grid {
+  padding: 2rem 0 4rem;
+}
+
+.collection-grid__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.collection-grid__controls--vertical {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.collection-grid__count-container {
+  margin-bottom: 1.5rem;
+}
+
+.collection-grid__product-count {
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.collection-grid__grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.collection-grid__empty {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.collection-grid__empty p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.collection-grid__empty-filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 992px) {
+  .collection-grid__grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .collection-grid {
+    padding: 1rem 0 3rem;
+  }
+
+  .collection-grid__controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+</style>

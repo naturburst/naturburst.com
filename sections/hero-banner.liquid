@@ -1,0 +1,192 @@
+<div class="hero-banner">
+  <div class="hero-container">
+    <div class="hero-content">
+      {% if section.settings.show_buttons %}
+        <div class="hero-buttons">
+          <a href="{{ routes.collections_url }}" class="shop-now-btn">
+            {% render 'icon-cart' %}
+            {{ section.settings.shop_button_text | escape }}
+          </a>
+
+          {% if section.settings.secondary_button_text != blank and section.settings.secondary_button_url != blank %}
+            <a href="{{ section.settings.secondary_button_url }}" class="learn-more-btn">
+              {{ section.settings.secondary_button_text | escape }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buttons",
+      "label": "Show buttons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shop_button_text",
+      "label": "Shop Button Text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text",
+      "default": "HOW TO USE"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_url",
+      "label": "Secondary Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.hero-banner {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.hero-container {
+  {% if section.settings.image %}
+    background-image: url('{{ section.settings.image | img_url: 'master' }}');
+  {% endif %}
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+  min-height: 600px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem 1rem;
+  border-bottom: 3px solid #f7f7f7;
+}
+
+.hero-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.shop-now-btn, .learn-more-btn {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1.8rem;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.shop-now-btn {
+  background-color: var(--color-primary);
+  color: white;
+  gap: 0.7rem;
+}
+
+.shop-now-btn:hover {
+  background-color: var(--color-primary-darker);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+.shop-now-btn .icon {
+  font-size: 1.1rem;
+}
+
+.learn-more-btn {
+  background-color: #ffffff;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.learn-more-btn:hover {
+  background-color: var(--color-primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .hero-container {
+    {% if section.settings.mobile_image %}
+      background-image: url('{{ section.settings.mobile_image | img_url: 'master' }}');
+    {% endif %}
+    min-height: 750px;
+    background-size: 100% auto;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .hero-content {
+    padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-buttons {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    gap: 0.5rem;
+  }
+
+  .shop-now-btn, .learn-more-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .cart-icon {
+    font-size: 0.9rem;
+  }
+}
+</style>

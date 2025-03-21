@@ -1,0 +1,61 @@
+{% if settings.show_announcement %}
+<div class="announcement-bar">
+  <div class="page-width">
+    <p class="announcement-bar__message">
+      {{ settings.announcement_text }}
+    </p>
+  </div>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "FREE SHIPPING ON ORDERS ABOVE $25"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.announcement-bar {
+  width: 100%;
+  background: #1a2e37;
+  color: white;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 0.25rem 0;
+  z-index: 9;
+}
+
+.announcement-bar__message {
+  display: inline-block;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+@media screen and (max-width: 380px) {
+  .announcement-bar {
+    font-size: 0.7rem;
+  }
+}
+</style>

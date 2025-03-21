@@ -1,0 +1,43 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/tropi-treats-banner.png",
+        "mobile_image": "shopify:\/\/shop_images\/tropi-treats-mobile-banner.png",
+        "show_buttons": true,
+        "shop_button_text": "SHOP NOW",
+        "secondary_button_text": "HOW TO USE",
+        "secondary_button_url": "\/pages\/how-to-use"
+      }
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "EXPLORE OUR PRODUCTS",
+        "collection": "featured-products",
+        "products_to_show": 4,
+        "view_all_text": "VIEW ALL PRODUCTS",
+        "view_all_url": "\/collections\/all"
+      }
+    },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "title": "Why NatureBurst Is Different",
+        "description": "Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives. Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect for snacking or adding to your favorite recipes.",
+        "benefit_1_title": "100% Natural",
+        "benefit_1_text": "Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended.",
+        "benefit_2_title": "Nutrient-Rich",
+        "benefit_2_text": "Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants.",
+        "benefit_3_title": "Lifestyle Friendly",
+        "benefit_3_text": "Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured_products",
+    "benefits"
+  ]
+}
