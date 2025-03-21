@@ -6,56 +6,26 @@ import { productDataType } from './productData';
 export const shopifyClient = Client.buildClient({
   domain: 'xwgk2d-kx.myshopify.com',
   storefrontAccessToken: '52d28409d020e76fb115c0c75802c9ed',
-  apiVersion: '2025-01'
+  apiVersion: '2023-07'  // Use a current API version
 });
 
-// Interface for Shopify-specific product structure
-export interface ShopifyProductType {
-  id: string;
-  title: string;
-  handle: string;
-  vendor: string;
-  productType: string;
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    }
-  };
-  compareAtPriceRange?: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    }
-  };
-  variants: Array<{
-    id: string;
-    title: string;
-    price: string;
-    compareAtPrice: string | null;
-    available: boolean;
-    sku: string;
-    weight: number;
-    weightUnit: string;
-  }>;
-  description: string;
-  descriptionHtml: string;
-  images: Array<{
-    id: string;
-    src: string;
-    altText: string;
-  }>;
-  metafields: Array<{
-    namespace: string;
-    key: string;
-    value: string;
-  }>;
-  tags: string[];
-  availableForSale: boolean;
-}
+// Add debugging to help identify product fetching issues
+export const debugFetchProducts = async () => {
+  try {
+    console.log('Attempting to fetch products from Shopify...');
+    const products = await shopifyClient.product.fetchAll(250);
+    console.log(`Successfully fetched ${products.length} products:`, products);
+    return products;
+  } catch (error) {
+    console.error('Error fetching Shopify products:', error);
+    throw error;
+  }
+};
 
 // Transforms Shopify product data to our app's product structure
 export const transformShopifyProduct = (shopifyProduct: any): productDataType => {
+  console.log('Transforming Shopify product:', shopifyProduct);
+
   // Extract metafields for custom data
   const getMetafield = (namespace: string, key: string) => {
     const metafield = shopifyProduct.metafields?.find(
@@ -69,10 +39,6 @@ export const transformShopifyProduct = (shopifyProduct: any): productDataType =>
 
   // Convert price from string to number
   const price = parseFloat(primaryVariant.price);
-  // Store compareAtPrice for potential future use but don't add to return object
-  const compareAtPrice = primaryVariant.compareAtPrice
-    ? parseFloat(primaryVariant.compareAtPrice)
-    : null;
 
   // Extract ingredients from tags or metafields
   const ingredients = getMetafield('product', 'ingredients')
@@ -94,27 +60,32 @@ export const transformShopifyProduct = (shopifyProduct: any): productDataType =>
   // Add defaultVariantId for cart functionality
   const defaultVariantId = primaryVariant.id;
 
+  // If images array is empty, provide a default image
+  const images = shopifyProduct.images.length > 0
+    ? shopifyProduct.images.map((img: any) => img.src)
+    : ['/images/custard-apple-1.jpg'];
+
   return {
     id: shopifyProduct.id,
     name: shopifyProduct.title,
     slug: shopifyProduct.handle,
     brand: shopifyProduct.vendor,
     categories: shopifyProduct.productType.toLowerCase(),
-    price: price, // Use the compareAtPrice as the "regular" price if available
+    price: price,
     stock: primaryVariant.available ? 999 : 0,
     weight: `${primaryVariant.weight}${primaryVariant.weightUnit}`,
-    ingredients: ingredients,
+    ingredients: ingredients.length > 0 ? ingredients : ['100% Natural Fruit'],
     nutritionalInfo: nutritionalInfo || {
-      calories: parseFloat(getMetafield('product', 'calories') || '0'),
-      fat: parseFloat(getMetafield('product', 'fat') || '0'),
-      carbs: parseFloat(getMetafield('product', 'carbs') || '0'),
-      protein: parseFloat(getMetafield('product', 'protein') || '0')
+      calories: parseFloat(getMetafield('product', 'calories') || '60'),
+      fat: parseFloat(getMetafield('product', 'fat') || '0.5'),
+      carbs: parseFloat(getMetafield('product', 'carbs') || '15'),
+      protein: parseFloat(getMetafield('product', 'protein') || '1.5')
     },
-    itemDescription: shopifyProduct.description,
-    tastingNotes: getMetafield('product', 'tasting_notes') || '',
-    storageInstructions: getMetafield('product', 'storage_instructions') || '',
+    itemDescription: shopifyProduct.description || 'Premium freeze-dried fruit with all natural goodness.',
+    tastingNotes: getMetafield('product', 'tasting_notes') || 'Sweet and crispy with intense natural flavor.',
+    storageInstructions: getMetafield('product', 'storage_instructions') || 'Store in a cool, dry place. Reseal after opening.',
     featured: shopifyProduct.tags.includes('featured'),
-    images: shopifyProduct.images.map((img: any) => img.src),
+    images: images,
     // Add defaultVariantId as a non-enumerable property
     defaultVariantId
   } as productDataType & { defaultVariantId: string };

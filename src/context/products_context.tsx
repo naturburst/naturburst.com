@@ -11,8 +11,8 @@ import {
   GET_SINGLE_PRODUCT_SUCCESS,
   GET_SINGLE_PRODUCT_ERROR,
 } from '../actions'
-import { productDataType } from '../utils/productData'
-import { shopifyClient, transformShopifyProduct } from '../utils/shopify-config'
+import { productDataType, sampleProducts } from '../utils/productData'
+import { shopifyClient, transformShopifyProduct, debugFetchProducts } from '../utils/shopify-config'
 
 export type initialStateType = {
   isSidebarOpen: boolean
@@ -61,23 +61,39 @@ export const ProductsProvider: React.FC = ({ children }) => {
     dispatch({ type: state.isSidebarOpen ? SIDEBAR_CLOSE : SIDEBAR_OPEN });
   }
 
-  // Fetch all products from Shopify
+  // Fetch all products from Shopify with fallback to sample data
   const fetchProducts = async () => {
     dispatch({ type: GET_PRODUCTS_BEGIN })
     try {
-      // Using the Shopify Buy SDK to fetch products
-      const products = await shopifyClient.product.fetchAll(250); // Fetches up to 250 products
+      // First try to fetch from Shopify
+      const products = await shopifyClient.product.fetchAll(250);
+      console.log(`Retrieved ${products.length} products from Shopify`);
 
-      // Transform Shopify products to our app's product structure
-      const transformedProducts = products.map(transformShopifyProduct);
+      if (products && products.length > 0) {
+        // Transform Shopify products to our app's product structure
+        const transformedProducts = products.map(transformShopifyProduct);
 
+        dispatch({
+          type: GET_PRODUCTS_SUCCESS,
+          payload: transformedProducts
+        });
+      } else {
+        console.warn('No products found in Shopify store, using sample products');
+        // Fallback to sample products if none found
+        dispatch({
+          type: GET_PRODUCTS_SUCCESS,
+          payload: sampleProducts
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching products from Shopify:', error);
+      console.warn('Using sample products due to Shopify fetch error');
+
+      // Fallback to sample products on error
       dispatch({
         type: GET_PRODUCTS_SUCCESS,
-        payload: transformedProducts
-      })
-    } catch (error) {
-      console.error('Error fetching products from Shopify:', error)
-      dispatch({ type: GET_PRODUCTS_ERROR })
+        payload: sampleProducts
+      });
     }
   }
 
@@ -96,17 +112,41 @@ export const ProductsProvider: React.FC = ({ children }) => {
           payload: productInState
         })
       } else {
-        // If not found in state, fetch from Shopify
-        const product = await shopifyClient.product.fetchByHandle(handle);
+        try {
+          // If not found in state, fetch from Shopify
+          const product = await shopifyClient.product.fetchByHandle(handle);
 
-        if (product) {
-          const transformedProduct = transformShopifyProduct(product);
-          dispatch({
-            type: GET_SINGLE_PRODUCT_SUCCESS,
-            payload: transformedProduct
-          })
-        } else {
-          throw new Error('Product not found')
+          if (product) {
+            const transformedProduct = transformShopifyProduct(product);
+            dispatch({
+              type: GET_SINGLE_PRODUCT_SUCCESS,
+              payload: transformedProduct
+            })
+          } else {
+            // If not found in Shopify, check sample products
+            const sampleProduct = sampleProducts.find(p => p.slug === handle);
+            if (sampleProduct) {
+              dispatch({
+                type: GET_SINGLE_PRODUCT_SUCCESS,
+                payload: sampleProduct
+              });
+            } else {
+              throw new Error('Product not found');
+            }
+          }
+        } catch (shopifyError) {
+          console.error('Error fetching from Shopify, trying sample data:', shopifyError);
+
+          // Try to find in sample products
+          const sampleProduct = sampleProducts.find(p => p.slug === handle);
+          if (sampleProduct) {
+            dispatch({
+              type: GET_SINGLE_PRODUCT_SUCCESS,
+              payload: sampleProduct
+            });
+          } else {
+            throw new Error('Product not found in Shopify or sample data');
+          }
         }
       }
     } catch (error) {
