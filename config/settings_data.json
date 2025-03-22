@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_primary": "#2A9D8F",
@@ -10,7 +19,8 @@
     "color_jamun": "#F3E5F5",
     "type_header_font": "montserrat_n7",
     "type_body_font": "poppins_n4",
-    "logo_width": 140,
+    "logo": "shopify://shop_images/hero.jpg",
+    "logo_width": 160,
     "show_announcement": true,
     "announcement_text": "FREE SHIPPING ON ORDERS ABOVE $25",
     "footer_email": "natureburst.shop@gmail.com",
@@ -28,26 +38,7 @@
       },
       "header": {
         "type": "header",
-        "settings": {
-          "logo_width": 140,
-          "header_background": "#2A5E41",
-          "header_text": "#FFFFFF"
-        }
-      },
-      "footer": {
-        "type": "footer",
-        "settings": {
-          "footer_description": "Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss that keeps all the nutrition intact.",
-          "footer_email": "natureburst.shop@gmail.com",
-          "footer_phone": "+91 90984 04225",
-          "footer_instagram": "natureburst.shop",
-          "footer_facebook": "https://www.facebook.com/profile.php?id=61574435489769",
-          "footer_menu": "footer",
-          "footer_address": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023",
-          "footer_map_url": "https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/",
-          "show_payment_icons": true,
-          "copyright_text": "All rights reserved."
-        }
+        "settings": {}
       }
     },
     "content_for_index": []
@@ -86,21 +77,6 @@
             "logo_width": 140,
             "header_background": "#2A5E41",
             "header_text": "#FFFFFF"
-          }
-        },
-        "footer": {
-          "type": "footer",
-          "settings": {
-            "footer_description": "Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss that keeps all the nutrition intact.",
-            "footer_email": "natureburst.shop@gmail.com",
-            "footer_phone": "+91 90984 04225",
-            "footer_instagram": "natureburst.shop",
-            "footer_facebook": "https://www.facebook.com/profile.php?id=61574435489769",
-            "footer_menu": "footer",
-            "footer_address": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023",
-            "footer_map_url": "https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/",
-            "show_payment_icons": true,
-            "copyright_text": "All rights reserved."
           }
         }
       },
