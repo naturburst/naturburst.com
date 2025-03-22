@@ -108,12 +108,13 @@
   max-width: 350px;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 1001;
+  z-index: 1001; /* Higher than overlay */
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   visibility: hidden;
+  pointer-events: auto; /* Ensure clickable */
 }
 
 .mobile-nav.is-active {
@@ -128,16 +129,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Lower than nav */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none; /* Initially no interaction */
 }
 
 .mobile-nav-overlay.is-active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto; /* Re-enable when active */
 }
 
 body.overflow-hidden {
@@ -148,6 +151,7 @@ body.overflow-hidden {
   display: flex;
   flex-direction: column;
   height: 100%;
+  pointer-events: auto; /* Ensure all inner elements are clickable */
 }
 
 .mobile-nav__header {
@@ -183,6 +187,7 @@ body.overflow-hidden {
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0.5rem;
+  z-index: 2; /* Make sure it's above other elements */
 }
 
 .mobile-nav__close:hover {
@@ -197,6 +202,7 @@ body.overflow-hidden {
   gap: 2rem;
   flex: 1;
   background-color: #ffffff;
+  pointer-events: auto; /* Explicitly enable pointer events */
 }
 
 .mobile-nav__section-title {
@@ -231,6 +237,8 @@ body.overflow-hidden {
   text-align: center;
   transition: all 0.3s ease;
   text-decoration: none;
+  cursor: pointer; /* Explicitly make it look clickable */
+  pointer-events: auto; /* Ensure click events work */
 }
 
 .account-link:hover {
@@ -255,6 +263,7 @@ body.overflow-hidden {
   color: #1a2e37;
   cursor: pointer;
   transition: all 0.3s ease;
+  pointer-events: auto; /* Ensure click events work */
 }
 
 .currency-option.active {
@@ -292,6 +301,10 @@ body.overflow-hidden {
   color: #1a2e37;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer; /* Explicitly make it look clickable */
+  pointer-events: auto; /* Ensure click events work */
+  position: relative; /* Ensure proper stacking context */
+  z-index: 1; /* Higher than default */
 }
 
 .mobile-nav__link svg {
@@ -344,6 +357,10 @@ body.overflow-hidden {
   font-weight: 600;
   transition: all 0.3s ease;
   text-decoration: none;
+  cursor: pointer; /* Explicitly make it look clickable */
+  pointer-events: auto; /* Ensure click events work */
+  position: relative; /* Ensure proper stacking context */
+  z-index: 1; /* Higher than default */
 }
 
 .contact-btn:hover {
