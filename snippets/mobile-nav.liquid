@@ -385,4 +385,18 @@ body.overflow-hidden {
 .mobile-nav-toggle:hover {
   transform: scale(1.1);
 }
+
+.mobile-nav__link,
+.account-link,
+.currency-option,
+.mobile-nav__close,
+.contact-btn {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 1001 !important;
+}
+
+.mobile-nav__inner * {
+  pointer-events: auto !important;
+}
 </style>

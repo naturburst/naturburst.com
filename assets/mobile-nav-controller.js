@@ -1,105 +1,104 @@
-/**
- * Complete Mobile Navigation Fix
- * This script fixes:
- * - First click not opening the menu
- * - Links not being clickable
- * - Proper overlay handling
- */
 document.addEventListener('DOMContentLoaded', function() {
-  // Prevent any other scripts from initializing mobile nav
+  // Prevent duplicate initializations
+  if (window.mobileNavAlreadyInitialized) return;
   window.mobileNavAlreadyInitialized = true;
-  window.MobileNavController = { initialized: true };
 
-  // Core elements - using 'let' so we can reassign them later
-  let mobileNav = document.getElementById('MobileNav');
-  let mobileNavOverlay = document.getElementById('MobileNavOverlay');
-  let mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-  let mobileNavClose = document.querySelector('.mobile-nav__close');
+  // Core elements
+  const mobileNav = document.getElementById('MobileNav');
+  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const mobileNavClose = document.querySelector('.mobile-nav__close');
   const body = document.body;
 
-  // Exit early if required elements are missing
+  // Exit if essential elements are missing
   if (!mobileNav || !mobileNavToggle) {
     console.error('Mobile nav elements not found');
     return;
   }
 
-  // Apply crucial CSS fixes immediately
-  applyEmergencyCSSFixes();
+  // Create and configure overlay
+  let mobileNavOverlay = document.getElementById('MobileNavOverlay');
+  if (!mobileNavOverlay) {
+    mobileNavOverlay = document.createElement('div');
+    mobileNavOverlay.id = 'MobileNavOverlay';
+    mobileNavOverlay.className = 'mobile-nav-overlay';
+    document.body.appendChild(mobileNavOverlay);
+  }
 
-  // Create overlay if it doesn't exist
-  ensureOverlayExists();
+  // Apply critical CSS fixes
+  applyRequiredStyles();
 
-  // Clean up any existing click handlers to prevent duplicates
-  cleanupExistingHandlers();
+  // CORE FUNCTIONS
 
-  // Toggle function for the mobile navigation
+  // Toggle the mobile menu state
   function toggleMobileNav(e) {
     if (e) e.preventDefault();
 
-    console.log('MobileNavController: Toggle triggered');
-
-    // Handle menu state
     const isOpen = mobileNav.classList.contains('is-active');
     const willBeOpen = !isOpen;
 
-    // Toggle classes
+    // Update UI state
     mobileNav.classList.toggle('is-active');
     mobileNavOverlay.classList.toggle('is-active');
     body.classList.toggle('overflow-hidden', willBeOpen);
 
-    // Aria attributes
+    // Update accessibility attributes
     mobileNav.setAttribute('aria-hidden', String(!willBeOpen));
     mobileNavToggle.setAttribute('aria-expanded', String(willBeOpen));
 
-    // Handle focus trapping
+    // Handle focus management
     if (window.theme && window.theme.a11y) {
       if (willBeOpen) {
         window.theme.a11y.trapFocus(mobileNav);
-        console.log('MobileNavController: Focus trapped in menu');
       } else {
         window.theme.a11y.removeTrapFocus();
-        console.log('MobileNavController: Focus trap removed');
       }
     }
-
-    console.log('MobileNavController: Menu is now ' + (willBeOpen ? 'OPEN' : 'CLOSED'));
   }
 
-  // Close function specifically for links
-  function closeMenuForNavigation() {
-    console.log('MobileNavController: Navigation link clicked, closing menu');
+  // Close the menu and navigate to a link
+  function handleNavLinkClick(e) {
+    const link = e.currentTarget;
+    const href = link.getAttribute('href');
 
-    // Simply close everything
+    // Only handle actual navigation links
+    if (href && href !== '#' && !href.startsWith('javascript:')) {
+      // Stop event from bubbling to parent elements
+      e.stopPropagation();
+
+      // Allow normal behavior for ctrl/cmd+click (open in new tab)
+      if (!e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+
+        // Close the menu
+        closeMenu();
+
+        // Navigate after brief delay to allow animation
+        setTimeout(() => {
+          window.location.href = href;
+        }, 200);
+      }
+    }
+  }
+
+  // Close the menu without toggling
+  function closeMenu() {
     mobileNav.classList.remove('is-active');
     mobileNavOverlay.classList.remove('is-active');
     body.classList.remove('overflow-hidden');
 
-    // Update accessibility attributes
     mobileNav.setAttribute('aria-hidden', 'true');
     mobileNavToggle.setAttribute('aria-expanded', 'false');
 
-    // Remove focus trap
     if (window.theme && window.theme.a11y) {
       window.theme.a11y.removeTrapFocus();
     }
   }
 
-  // Ensure the overlay exists
-  function ensureOverlayExists() {
-    if (!mobileNavOverlay) {
-      console.log('MobileNavController: Creating missing overlay');
-      mobileNavOverlay = document.createElement('div');
-      mobileNavOverlay.id = 'MobileNavOverlay';
-      mobileNavOverlay.className = 'mobile-nav-overlay';
-      document.body.appendChild(mobileNavOverlay);
-    }
-  }
-
-  // Apply critical CSS fixes
-  function applyEmergencyCSSFixes() {
+  // Inject critical styles
+  function applyRequiredStyles() {
     const style = document.createElement('style');
     style.textContent = `
-      /* Critical mobile nav fixes */
+      /* Mobile nav overlay */
       .mobile-nav-overlay {
         position: fixed;
         top: 0;
@@ -120,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         pointer-events: auto;
       }
 
+      /* Menu container */
       .mobile-nav {
         z-index: 1000;
         pointer-events: auto !important;
@@ -128,6 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
       .mobile-nav.is-active {
         transform: translateX(0) !important;
         visibility: visible !important;
+      }
+
+      /* Ensure all interactive elements are clickable */
+      .mobile-nav__inner * {
         pointer-events: auto !important;
       }
 
@@ -136,90 +140,44 @@ document.addEventListener('DOMContentLoaded', function() {
       .currency-option,
       .mobile-nav__close,
       .contact-btn {
-        pointer-events: auto !important;
         position: relative !important;
-        z-index: 1001 !important;
+        z-index: 10 !important;
       }
 
-      .mobile-nav__inner * {
-        pointer-events: auto !important;
-      }
-
+      /* Prevent page scrolling when menu is open */
       body.overflow-hidden {
         overflow: hidden !important;
       }
     `;
     document.head.appendChild(style);
-    console.log('MobileNavController: Emergency CSS fixes applied');
   }
 
-  // Clean up existing handlers to prevent duplicates
-  function cleanupExistingHandlers() {
-    // Create fresh elements with cloned properties but no event handlers
-    if (mobileNavToggle) {
-      const newToggle = mobileNavToggle.cloneNode(true);
-      mobileNavToggle.parentNode.replaceChild(newToggle, mobileNavToggle);
-      mobileNavToggle = newToggle;
-    }
+  // EVENT BINDINGS
 
-    if (mobileNavClose) {
-      const newClose = mobileNavClose.cloneNode(true);
-      mobileNavClose.parentNode.replaceChild(newClose, mobileNavClose);
-      mobileNavClose = newClose;
-    }
-
-    console.log('MobileNavController: Cleaned up existing handlers');
-  }
-
-  // Attach event listeners with direct event binding
+  // Toggle button opens/closes the menu
   mobileNavToggle.addEventListener('click', toggleMobileNav);
 
+  // Close button in the menu
   if (mobileNavClose) {
     mobileNavClose.addEventListener('click', toggleMobileNav);
   }
 
-  if (mobileNavOverlay) {
-    mobileNavOverlay.addEventListener('click', toggleMobileNav);
-  }
+  // Clicking the overlay closes the menu
+  mobileNavOverlay.addEventListener('click', toggleMobileNav);
 
-  // Add ESC key handler
+  // Escape key closes the menu
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
       toggleMobileNav();
     }
   });
 
-  // Make sure all interactive elements are clickable
-  const allMenuLinks = mobileNav.querySelectorAll('a, button, .account-link, .currency-option');
-
-  allMenuLinks.forEach(item => {
-    // Remove any existing click handlers with clone technique
-    const newItem = item.cloneNode(true);
-    item.parentNode.replaceChild(newItem, item);
-
-    // For navigation links that should close the menu
-    if (newItem.classList.contains('mobile-nav__link') ||
-        newItem.classList.contains('account-link')) {
-      // Store original href
-      const href = newItem.getAttribute('href');
-
-      // Only add special handling for links with real destinations
-      if (href && href !== '#' && !href.startsWith('javascript:')) {
-        newItem.addEventListener('click', function(e) {
-          // Don't prevent default so the link still works
-          closeMenuForNavigation();
-
-          // Small delay to allow the menu to close before navigating
-          if (!e.ctrlKey && !e.metaKey) { // Don't delay if opening in new tab
-            e.preventDefault();
-            setTimeout(() => {
-              window.location.href = href;
-            }, 50);
-          }
-        });
-      }
-    }
+  // Make all navigation links clickable with proper behavior
+  const navLinks = mobileNav.querySelectorAll('.mobile-nav__link, .account-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', handleNavLinkClick);
   });
 
-  console.log('MobileNavController: Completely initialized');
+  // Debug info
+  console.log('MobileNavController: Successfully initialized');
 });

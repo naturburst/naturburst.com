@@ -43,7 +43,10 @@
       <div class="view-all-container">
         <a href="{{ section.settings.view_all_url }}" class="view-all-btn">
           {{ section.settings.view_all_text }}
-          {% render 'icon-arrow-right' %}
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
         </a>
       </div>
     {% endif %}
@@ -156,7 +159,7 @@
   margin-right: 1.5rem;
 }
 
-/* Navigation buttons */
+/* Update the slider button styles */
 .slider-button {
   position: absolute;
   top: 50%;
@@ -204,7 +207,7 @@
   transition: all 0.3s ease;
 }
 
-.view-all-btn .icon {
+.arrow-icon {
   margin-left: 0.5rem;
   transition: transform 0.3s ease;
 }
@@ -213,7 +216,7 @@
   background: var(--color-primary-darker);
 }
 
-.view-all-btn:hover .icon {
+.view-all-btn:hover .arrow-icon {
   transform: translateX(3px);
 }
 
@@ -267,7 +270,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize all product sliders on the page
+  // Locate all product sliders on the page
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach(slider => {
@@ -276,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!prevBtn || !nextBtn) return;
 
-    // Calculate slide width including margins
+    // Calculate slide width including margins for accurate scrolling
     const getSlideWidth = () => {
       const slides = slider.querySelectorAll('.product-slide');
       if (slides.length > 0) {
@@ -285,10 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const marginRight = parseFloat(computedStyle.marginRight);
         return slideWidth + marginRight;
       }
-      return 280 + 24; // Fallback: default slide width + margin
+      return 280 + 24; // Fallback dimensions if calculation fails
     };
 
-    // Only enable scroll behavior on mobile
+    // Only enable scroll behavior on mobile viewports
     const shouldScroll = () => window.innerWidth < 768;
 
     // Previous button click handler
@@ -299,17 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const currentIndex = Math.round(slider.scrollLeft / itemWidth);
       const slideCount = slider.querySelectorAll('.product-slide').length;
 
-      // Handle beginning of slider (loop to end)
+      // Loop to end if at beginning
       if (currentIndex <= 0) {
-        // Temporarily disable smooth scrolling for instant jump
-        slider.style.scrollBehavior = 'auto';
         slider.scrollLeft = itemWidth * (slideCount - 1);
-
-        // Force reflow before re-enabling smooth scrolling
-        void slider.offsetWidth;
-        slider.style.scrollBehavior = 'smooth';
       } else {
-        // Normal scroll to previous slide
         slider.scrollTo({ left: itemWidth * (currentIndex - 1), behavior: 'smooth' });
       }
     });
@@ -322,29 +318,22 @@ document.addEventListener('DOMContentLoaded', function() {
       const slideCount = slider.querySelectorAll('.product-slide').length;
       const currentIndex = Math.round(slider.scrollLeft / itemWidth);
 
-      // Handle end of slider (loop to beginning)
+      // Loop to beginning if at end
       if (currentIndex >= slideCount - 1) {
-        // Temporarily disable smooth scrolling for instant jump
-        slider.style.scrollBehavior = 'auto';
         slider.scrollLeft = 0;
-
-        // Force reflow before re-enabling smooth scrolling
-        void slider.offsetWidth;
-        slider.style.scrollBehavior = 'smooth';
       } else {
-        // Normal scroll to next slide
         slider.scrollTo({ left: itemWidth * (currentIndex + 1), behavior: 'smooth' });
       }
     });
 
-    // Update button visibility based on viewport width
+    // Toggle navigation visibility based on viewport width
     const updateNavVisibility = () => {
       const shouldShowNav = shouldScroll();
       prevBtn.style.display = shouldShowNav ? 'flex' : 'none';
       nextBtn.style.display = shouldShowNav ? 'flex' : 'none';
     };
 
-    // Run on load and resize
+    // Initialize and set up resize listener
     updateNavVisibility();
     window.addEventListener('resize', updateNavVisibility);
   });

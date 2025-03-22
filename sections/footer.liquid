@@ -491,74 +491,89 @@
   }
 }
 
-/* Mobile styles */
 @media (max-width: 767px) {
   .site-footer {
     padding: 4rem 0 2rem;
+    text-align: center;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .logo-section {
+    margin-bottom: 1rem;
   }
 
   .logo-section h3 {
     font-size: 2rem;
-    text-align: center;
   }
 
   .logo-section p {
-    text-align: center;
-    font-size: 1rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .contact-info {
     align-items: center;
   }
 
+  .contact-item {
+    justify-content: center;
+    /* Fix alignment of contact items */
+    flex-direction: row;
+    text-align: left;
+  }
+
   .social-icons {
     justify-content: center;
   }
 
-  .link-group h4 {
-    text-align: center;
+  .links-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .link-group ul {
     align-items: center;
   }
 
+  .link-group a {
+    padding: 0.5rem 0;
+    display: inline-block;
+    /* Make links easier to tap on mobile */
+    min-width: 120px;
+  }
+
   .footer-address {
-    text-align: center;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .directions-btn {
-    display: block;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  .bottom-section {
     text-align: center;
   }
 
-  .map-indicator {
-    display: inline-flex;
-    justify-content: center;
-  }
-
-  .payment-methods img {
-    max-width: 250px;
+  .payment-icons {
+    margin-bottom: 1rem;
   }
 }
 
-/* Extra small devices */
+/* Extra small mobile devices */
 @media (max-width: 480px) {
   .site-footer {
     padding: 3rem 0 1.5rem;
   }
 
-  .wave-divider svg {
-    height: 40px;
-  }
-
-  .logo-section h3 {
-    font-size: 1.8rem;
-  }
-
   .contact-item {
+    /* For extra small screens, stack icon and text */
     flex-direction: column;
-    text-align: center;
     gap: 0.5rem;
   }
 
@@ -566,13 +581,8 @@
     margin-right: 0;
   }
 
-  .payment-icons {
-    gap: 0.25rem;
-  }
-
-  .payment-icon .icon {
-    width: 32px;
-    height: 20px;
+  .link-group h4 {
+    font-size: 1.1rem;
   }
 }
 </style>
