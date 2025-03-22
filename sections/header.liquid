@@ -10,7 +10,9 @@
             aria-controls="MobileNav"
             aria-expanded="false"
             aria-label="Toggle menu">
-            <span class="icon-hamburger icon"></span>
+            <span class="icon-hamburger icon">
+              {% render 'icon-hamburger' %}
+            </span>
           </button>
         </div>
 
@@ -42,7 +44,7 @@
           </ul>
         </nav>
 
-        {%- comment -%} Cart and currency selector {%- endcomment -%}
+        {%- comment -%} Cart, account and currency selector {%- endcomment -%}
         <div class="header-actions">
           <div class="currency-selector desktop-only">
             {% form 'currency' %}
@@ -57,6 +59,11 @@
             {% endform %}
           </div>
 
+          <!-- Customer account icon -->
+          <a href="{{ routes.account_url }}" class="header-account-link" aria-label="Account">
+            {% render 'icon-account' %}
+          </a>
+
           <a href="{{ routes.cart_url }}" class="header-cart-link" aria-label="Cart">
             {% render 'icon-cart' %}
             <span class="cart-count">
@@ -70,45 +77,6 @@
 
   {% render 'mobile-nav' %}
 </div>
-
-{% schema %}
-{
-  "name": "Header",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 10,
-      "unit": "px",
-      "label": "Logo width",
-      "default": 140
-    },
-    {
-      "type": "header",
-      "content": "Header Colors"
-    },
-    {
-      "type": "color",
-      "id": "header_background",
-      "label": "Background",
-      "default": "#2A5E41"
-    },
-    {
-      "type": "color",
-      "id": "header_text",
-      "label": "Text",
-      "default": "#FFFFFF"
-    }
-  ]
-}
-{% endschema %}
 
 <style>
 .header-wrapper {
@@ -265,6 +233,24 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+}
+
+/* Account link */
+.header-account-link {
+  color: {{ settings.header_text | default: '#FFFFFF' }};
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.header-account-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Cart link */

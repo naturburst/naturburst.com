@@ -18,6 +18,24 @@
     </div>
 
     <div class="mobile-nav__content">
+      {%- comment -%} Account section for mobile {%- endcomment -%}
+      <div class="mobile-nav__section">
+        <h3 class="mobile-nav__section-title">
+          {% render 'icon-account' %} My Account
+        </h3>
+        <div class="account-options">
+          {% if customer %}
+            <a href="{{ routes.account_url }}" class="account-link">My Account</a>
+            <a href="{{ routes.account_logout_url }}" class="account-link">Log Out</a>
+          {% else %}
+            <a href="{{ routes.account_login_url }}" class="account-link">Sign In</a>
+            <a href="{{ routes.account_register_url }}" class="account-link">Register</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="mobile-nav__divider"></div>
+
       {%- comment -%} Currency selector {%- endcomment -%}
       <div class="mobile-nav__section">
         <h3 class="mobile-nav__section-title">
@@ -166,6 +184,30 @@
   color: {{ settings.color_primary }};
 }
 
+.account-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.account-link {
+  flex: 1;
+  background: var(--color-background-light);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.account-link:hover {
+  background: var(--color-background-accent);
+  color: var(--color-primary);
+}
+
 .currency-options {
   display: flex;
   gap: 0.5rem;
@@ -296,7 +338,7 @@
     mobileNavClose.addEventListener('click', toggleMobileNav);
 
     // Close mobile nav when clicking on links
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav__link');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav__link, .account-link, .currency-option');
     mobileNavLinks.forEach(link => {
       link.addEventListener('click', toggleMobileNav);
     });

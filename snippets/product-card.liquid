@@ -1,5 +1,5 @@
 {% comment %}
-  Product Card Component
+  Product Card Component - Optimized for mobile
 
   Parameters:
   - product: (required) The product object to display
@@ -463,6 +463,14 @@
   display: none !important;
 }
 
+/* Responsive styles for tablets */
+@media (max-width: 991px) {
+  .product-card__image-container {
+    height: 220px;
+  }
+}
+
+/* Responsive styles for mobile */
 @media (max-width: 767px) {
   .product-card__image-container {
     height: 200px;
@@ -476,6 +484,28 @@
   .product-card__price-item:not(.product-card__price-item--regular) {
     font-size: 1.1rem;
   }
+
+  .product-card__content {
+    padding: 1.25rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .product-card__image-container {
+    height: 180px;
+  }
+
+  .product-card__meta {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .product-card__add-to-cart-btn,
+  .product-card__quick-view-btn {
+    padding: 0.7rem;
+  }
 }
 </style>
 
@@ -488,6 +518,19 @@ if (!customElements.get('product-form')) {
       this.form = this.querySelector('form');
       // Only attach event listener if form exists to prevent null reference errors
       this.form?.addEventListener('submit', this.onSubmitHandler.bind(this));
+
+      // Add touch event handling for mobile devices
+      if (this.form && 'ontouchstart' in window) {
+        const submitButton = this.form.querySelector('[type="submit"]');
+        if (submitButton) {
+          submitButton.addEventListener('touchstart', function() {
+            this.classList.add('touch-active');
+          });
+          submitButton.addEventListener('touchend', function() {
+            this.classList.remove('touch-active');
+          });
+        }
+      }
     }
 
     onSubmitHandler(evt) {

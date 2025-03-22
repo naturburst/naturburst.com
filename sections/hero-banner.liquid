@@ -70,7 +70,7 @@
 .hero-banner {
   position: relative;
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
   padding: 0;
   margin-bottom: 2rem;
 }
@@ -155,38 +155,51 @@
     {% if section.settings.mobile_image %}
       background-image: url('{{ section.settings.mobile_image | img_url: 'master' }}');
     {% endif %}
-    min-height: 750px;
-    background-size: 100% auto;
+    min-height: 500px;
+    background-size: cover;
     background-position: center;
-    padding: 0;
-    margin: 0;
-    width: 100%;
+    align-items: center;
   }
 
   .hero-content {
-    padding-bottom: 1.5rem;
+    padding-bottom: 0;
     display: flex;
     justify-content: center;
     width: 100%;
   }
 
   .hero-buttons {
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    width: auto;
-    max-width: none;
-    margin: 0;
-    gap: 0.5rem;
+    width: 100%;
+    max-width: 280px;
+    gap: 1rem;
   }
 
   .shop-now-btn, .learn-more-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
   }
+}
 
-  .cart-icon {
-    font-size: 0.9rem;
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .hero-container {
+    min-height: 420px;
   }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Preload mobile image for better performance
+  if (window.innerWidth <= 767) {
+    const mobileImageUrl = '{{ section.settings.mobile_image | img_url: 'master' }}';
+    if (mobileImageUrl) {
+      const img = new Image();
+      img.src = mobileImageUrl;
+    }
+  }
+});
+</script>

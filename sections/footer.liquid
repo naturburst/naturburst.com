@@ -373,6 +373,7 @@
   border: 0;
 }
 
+/* Desktop styles */
 @media (min-width: 768px) {
   .footer-content {
     grid-template-columns: 1fr 1fr;
@@ -395,17 +396,92 @@
   }
 
   .links-section {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* Mobile styles */
 @media (max-width: 767px) {
-  .location-group {
-    grid-column: span 2;
+  .site-footer {
+    padding: 4rem 0 2rem;
+  }
+
+  .logo-section h3 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .logo-section p {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .contact-info {
+    align-items: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  .link-group h4 {
+    text-align: center;
+  }
+
+  .link-group ul {
+    align-items: center;
+  }
+
+  .footer-address {
+    text-align: center;
+  }
+
+  .directions-btn {
+    display: block;
+    text-align: center;
+  }
+
+  .map-indicator {
+    display: inline-flex;
+    justify-content: center;
   }
 
   .payment-methods img {
     max-width: 250px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 3rem 0 1.5rem;
+  }
+
+  .wave-divider svg {
+    height: 40px;
+  }
+
+  .logo-section h3 {
+    font-size: 1.8rem;
+  }
+
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .contact-item svg {
+    margin-right: 0;
+  }
+
+  .payment-icons {
+    gap: 0.25rem;
+  }
+
+  .payment-icon .icon {
+    width: 32px;
+    height: 20px;
   }
 }
 </style>
