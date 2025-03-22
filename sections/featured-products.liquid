@@ -4,33 +4,39 @@
   </div>
 
   <div class="featured-products-container">
-    <div class="slider-container">
-      <button class="nav-btn prev-btn js-prev-btn">
-        {% render 'icon-chevron-left' %}
-      </button>
-
-      {% assign collection = collections[section.settings.collection] %}
-      <div class="products-slider" data-products-slider>
-        {% for product in collection.products limit: section.settings.products_to_show %}
-          <div class="product-slide">
-            {% render 'product-card',
-              product: product,
-              show_rating: section.settings.show_rating,
-              show_quick_add: section.settings.enable_quick_add
-            %}
-          </div>
-        {% else %}
-          {%- for i in (1..section.settings.products_to_show) -%}
+    <div class="product-slider">
+      <div class="product-slider__wrapper">
+        {% assign collection = collections[section.settings.collection] %}
+        <div class="product-slider__items" data-products-slider>
+          {% for product in collection.products limit: section.settings.products_to_show %}
             <div class="product-slide">
-              {% render 'product-card-placeholder' %}
+              {% render 'product-card',
+                product: product,
+                show_rating: section.settings.show_rating,
+                show_quick_add: section.settings.enable_quick_add
+              %}
             </div>
-          {%- endfor -%}
-        {% endfor %}
-      </div>
+          {% else %}
+            {%- for i in (1..section.settings.products_to_show) -%}
+              <div class="product-slide">
+                {% render 'product-card-placeholder' %}
+              </div>
+            {%- endfor -%}
+          {% endfor %}
+        </div>
 
-      <button class="nav-btn next-btn js-next-btn">
-        {% render 'icon-chevron-right' %}
-      </button>
+        <button type="button" class="slider-button slider-button--prev" aria-label="Previous slide">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
+        <button type="button" class="slider-button slider-button--next" aria-label="Next slide">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
     </div>
 
     {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank %}
@@ -113,16 +119,23 @@
   max-width: 100%;
 }
 
-.slider-container {
+/* Product slider container */
+.product-slider {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  padding: 0;
-  display: flex;
-  align-items: center;
 }
 
-.products-slider {
+/* Wrapper for slider items and navigation */
+.product-slider__wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Container for product items */
+.product-slider__items {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
@@ -133,7 +146,7 @@
   width: 100%;
 }
 
-.products-slider::-webkit-scrollbar {
+.product-slider__items::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
 
@@ -143,32 +156,35 @@
   margin-right: 1.5rem;
 }
 
-.nav-btn {
-  background: white;
-  border: none;
+/* Navigation buttons */
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  z-index: 2;
   transition: all 0.3s ease;
 }
 
-.nav-btn:hover {
+.slider-button:hover {
   background: var(--color-primary);
   color: white;
 }
 
-.prev-btn {
+.slider-button--prev {
   left: 10px;
 }
 
-.next-btn {
+.slider-button--next {
   right: 10px;
 }
 
@@ -201,13 +217,14 @@
   transform: translateX(3px);
 }
 
+/* Responsive adjustments */
 @media (min-width: 768px) {
-  .slider-container {
+  .product-slider {
     padding: 0 50px;
     max-width: 100%;
   }
 
-  .products-slider {
+  .product-slider__items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
@@ -223,21 +240,21 @@
 }
 
 @media (min-width: 1200px) {
-  .slider-container {
+  .product-slider {
     padding: 0 60px;
   }
 
-  .products-slider {
+  .product-slider__items {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
 @media (max-width: 767px) {
-  .slider-container {
+  .product-slider {
     padding: 0;
   }
 
-  .products-slider {
+  .product-slider__items {
     padding: 1rem 1rem;
     justify-content: flex-start;
   }
@@ -250,56 +267,54 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Slider functionality for mobile view
+  // Initialize all product sliders on the page
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach(slider => {
-    const prevBtn = slider.parentElement.querySelector('.js-prev-btn');
-    const nextBtn = slider.parentElement.querySelector('.js-next-btn');
+    const prevBtn = slider.parentElement.querySelector('.slider-button--prev');
+    const nextBtn = slider.parentElement.querySelector('.slider-button--next');
 
     if (!prevBtn || !nextBtn) return;
 
-    // Calculate the width of a single product slide (including margin)
+    // Calculate slide width including margins
     const getSlideWidth = () => {
       const slides = slider.querySelectorAll('.product-slide');
       if (slides.length > 0) {
-        // Get the first slide's width including margin
         const slideWidth = slides[0].getBoundingClientRect().width;
         const computedStyle = window.getComputedStyle(slides[0]);
         const marginRight = parseFloat(computedStyle.marginRight);
-
-        // Return total width (slide + margin)
         return slideWidth + marginRight;
       }
-      // Fallback
-      return 280 + 24; // 280px slide width + 1.5rem margin
+      return 280 + 24; // Fallback: default slide width + margin
     };
 
-    // Only apply scroll behavior on mobile
+    // Only enable scroll behavior on mobile
     const shouldScroll = () => window.innerWidth < 768;
 
+    // Previous button click handler
     prevBtn.addEventListener('click', () => {
       if (!shouldScroll()) return;
 
       const itemWidth = getSlideWidth();
       const currentIndex = Math.round(slider.scrollLeft / itemWidth);
+      const slideCount = slider.querySelectorAll('.product-slide').length;
 
-      // If at the beginning, jump to the end
+      // Handle beginning of slider (loop to end)
       if (currentIndex <= 0) {
-        // Scroll to last item without animation
+        // Temporarily disable smooth scrolling for instant jump
         slider.style.scrollBehavior = 'auto';
-        const slideCount = slider.querySelectorAll('.product-slide').length;
         slider.scrollLeft = itemWidth * (slideCount - 1);
 
-        // Force browser to apply the scroll change before continuing
+        // Force reflow before re-enabling smooth scrolling
         void slider.offsetWidth;
         slider.style.scrollBehavior = 'smooth';
       } else {
-        // Normal scroll to previous product
+        // Normal scroll to previous slide
         slider.scrollTo({ left: itemWidth * (currentIndex - 1), behavior: 'smooth' });
       }
     });
 
+    // Next button click handler
     nextBtn.addEventListener('click', () => {
       if (!shouldScroll()) return;
 
@@ -307,22 +322,22 @@ document.addEventListener('DOMContentLoaded', function() {
       const slideCount = slider.querySelectorAll('.product-slide').length;
       const currentIndex = Math.round(slider.scrollLeft / itemWidth);
 
-      // If at the end, jump to the beginning
+      // Handle end of slider (loop to beginning)
       if (currentIndex >= slideCount - 1) {
-        // Scroll to first item without animation
+        // Temporarily disable smooth scrolling for instant jump
         slider.style.scrollBehavior = 'auto';
         slider.scrollLeft = 0;
 
-        // Force browser to apply the scroll change
+        // Force reflow before re-enabling smooth scrolling
         void slider.offsetWidth;
         slider.style.scrollBehavior = 'smooth';
       } else {
-        // Normal scroll to next product
+        // Normal scroll to next slide
         slider.scrollTo({ left: itemWidth * (currentIndex + 1), behavior: 'smooth' });
       }
     });
 
-    // Hide/show navigation buttons based on viewport width
+    // Update button visibility based on viewport width
     const updateNavVisibility = () => {
       const shouldShowNav = shouldScroll();
       prevBtn.style.display = shouldShowNav ? 'flex' : 'none';

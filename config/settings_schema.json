@@ -126,6 +126,12 @@
         "id": "announcement_text",
         "label": "Announcement text",
         "default": "FREE SHIPPING ON ORDERS ABOVE $25"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_on_mobile",
+        "label": "Hide currency selector on mobile",
+        "default": true
       }
     ]
   },

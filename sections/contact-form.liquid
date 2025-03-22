@@ -107,22 +107,23 @@
         {% endif %}
       </div>
 
-      <!-- Contact Form -->
+      <!-- Contact Form - Updated Structure -->
       <div class="contact-form-container">
         <div class="contact-form-wrapper">
-          <h2 class="contact-form-title">Send us a message</h2>
+          <h1 class="contact-form__title">{{ page.title | default: section.settings.heading }}</h1>
 
           {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
             {%- if form.posted_successfully? -%}
-              <div class="contact-form__message contact-form__message--success">
-                <h3>Thank you for contacting us!</h3>
-                <p>We've received your message and will get back to you as soon as possible.</p>
+              <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+                <p class="form-status__message" role="status">
+                  {{ 'templates.contact.form.post_success' | t }}
+                </p>
               </div>
             {%- endif -%}
 
             {%- if form.errors -%}
               <div class="contact-form__message contact-form__message--error">
-                <h3>Sorry, something went wrong!</h3>
+                <h3>{{ 'templates.contact.form.error_heading' | t }}</h3>
                 <ul>
                   {%- for field in form.errors -%}
                     <li>{{ form.errors.messages[field] }}</li>
@@ -131,62 +132,54 @@
               </div>
             {%- endif -%}
 
-            <div class="contact-form__fields">
-              <div class="contact-form__field">
-                <label for="ContactForm-name" class="contact-form__label">Your Name</label>
+            <div class="contact__fields">
+              <div class="field">
                 <input
+                  class="field__input"
                   type="text"
                   id="ContactForm-name"
                   name="contact[name]"
                   value="{% if form.name %}{{ form.name }}{% endif %}"
-                  class="contact-form__input"
-                  required
+                  placeholder="{{ 'templates.contact.form.name' | t }}"
                 >
+                <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
               </div>
 
-              <div class="contact-form__field">
-                <label for="ContactForm-email" class="contact-form__label">Your Email</label>
+              <div class="field field--required">
                 <input
+                  class="field__input"
                   type="email"
                   id="ContactForm-email"
                   name="contact[email]"
                   value="{% if form.email %}{{ form.email }}{% endif %}"
-                  class="contact-form__input"
+                  placeholder="{{ 'templates.contact.form.email' | t }}"
                   required
                   autocorrect="off"
                   autocapitalize="off"
                 >
+                <label class="field__label" for="ContactForm-email">
+                  {{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span>
+                </label>
               </div>
+            </div>
 
-              <div class="contact-form__field">
-                <label for="ContactForm-subject" class="contact-form__label">Subject</label>
-                <input
-                  type="text"
-                  id="ContactForm-subject"
-                  name="contact[subject]"
-                  value="{% if form.subject %}{{ form.subject }}{% endif %}"
-                  class="contact-form__input"
-                  placeholder="What's this regarding?"
-                  required
-                >
-              </div>
+            <div class="field">
+              <textarea
+                rows="10"
+                id="ContactForm-body"
+                class="text-area field__input"
+                name="contact[body]"
+                placeholder="{{ 'templates.contact.form.comment' | t }}"
+              >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+              <label class="form__label field__label" for="ContactForm-body">
+                {{ 'templates.contact.form.comment' | t }}
+              </label>
+            </div>
 
-              <div class="contact-form__field contact-form__field--full">
-                <label for="ContactForm-message" class="contact-form__label">Your Message</label>
-                <textarea
-                  id="ContactForm-message"
-                  name="contact[body]"
-                  class="contact-form__textarea"
-                  required
-                  rows="6"
-                >{% if form.body %}{{ form.body }}{% endif %}</textarea>
-              </div>
-
-              <div class="contact-form__field contact-form__field--full">
-                <button type="submit" class="btn contact-form__submit">
-                  Send Message
-                </button>
-              </div>
+            <div class="contact__button">
+              <button type="submit" class="button button--primary">
+                {{ 'templates.contact.form.send' | t }}
+              </button>
             </div>
           {%- endform -%}
         </div>
@@ -198,6 +191,8 @@
 {% schema %}
 {
   "name": "Contact form",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "text",
@@ -263,6 +258,7 @@
 {% endschema %}
 
 <style>
+/* Base section styling */
 .contact-section {
   padding: 4rem 0;
 }
@@ -360,7 +356,7 @@
   background: #f5f5f5;
 }
 
-/* Contact Form */
+/* Contact Form - Updated Styles */
 .contact-form-container {
   background: var(--color-background-light);
   border-radius: var(--radius-base);
@@ -371,26 +367,31 @@
   padding: 2rem;
 }
 
-.contact-form-title {
-  font-size: 1.5rem;
+.contact-form__title {
+  font-size: 1.75rem;
   margin-bottom: 1.5rem;
   color: var(--color-headings);
 }
 
-.contact-form__message {
+/* Status messages */
+.form-status {
   padding: 1.25rem;
   border-radius: var(--radius-small);
   margin-bottom: 1.5rem;
+  background-color: #EDF7ED;
 }
 
-.contact-form__message--success {
-  background-color: #EDF7ED;
+.form-status__message {
   color: #1B5E20;
+  margin: 0;
 }
 
 .contact-form__message--error {
   background-color: #FEF2F2;
   color: #B91C1C;
+  padding: 1.25rem;
+  border-radius: var(--radius-small);
+  margin-bottom: 1.5rem;
 }
 
 .contact-form__message h3 {
@@ -398,30 +399,21 @@
   font-size: 1.1rem;
 }
 
-.contact-form__message p,
-.contact-form__message ul {
-  margin-bottom: 0;
-}
-
-.contact-form__fields {
+/* Field styling */
+.contact__fields {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1.5rem;
 }
 
-.contact-form__field--full {
-  grid-column: 1 / -1;
+.field {
+  position: relative;
+  margin-bottom: 1.5rem;
 }
 
-.contact-form__label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--color-headings);
-}
-
-.contact-form__input,
-.contact-form__textarea {
+.field__input,
+.text-area {
   width: 100%;
   padding: 0.875rem;
   border: 1px solid var(--color-border);
@@ -431,22 +423,57 @@
   transition: var(--transition-fast);
 }
 
-.contact-form__input:focus,
-.contact-form__textarea:focus {
+.field__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  background: var(--color-background-light);
+  padding: 0 0.5rem;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  pointer-events: none;
+  transition: var(--transition-fast);
+}
+
+.field__input:focus,
+.text-area:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 1px var(--color-primary);
   outline: none;
 }
 
-.contact-form__textarea {
-  resize: vertical;
+.field__input:focus + .field__label,
+.field__input:not(:placeholder-shown) + .field__label,
+.text-area:focus + .field__label,
+.text-area:not(:placeholder-shown) + .field__label {
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
-.contact-form__submit {
-  width: 100%;
+.text-area {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.contact__button {
+  text-align: right;
+}
+
+.button--primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
   padding: 0.875rem 1.5rem;
-  font-weight: 700;
-  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.button--primary:hover {
+  background-color: var(--color-primary-dark);
 }
 
 /* Responsive styles */
@@ -461,8 +488,9 @@
     padding: 3rem 0;
   }
 
-  .contact-title {
-    font-size: 2rem;
+  .contact-title,
+  .contact-form__title {
+    font-size: 1.75rem;
     text-align: center;
   }
 
@@ -470,12 +498,20 @@
     text-align: center;
   }
 
-  .contact-form__fields {
+  .contact__fields {
     grid-template-columns: 1fr;
   }
 
   .contact-map__wrapper iframe {
     height: 250px;
+  }
+
+  .contact__button {
+    text-align: center;
+  }
+
+  .button--primary {
+    width: 100%;
   }
 }
 
@@ -484,8 +520,9 @@
     padding: 2rem 0;
   }
 
-  .contact-title {
-    font-size: 1.75rem;
+  .contact-title,
+  .contact-form__title {
+    font-size: 1.5rem;
   }
 
   .contact-details__item {
@@ -500,10 +537,6 @@
 
   .contact-form-wrapper {
     padding: 1.5rem;
-  }
-
-  .contact-form-title {
-    text-align: center;
   }
 
   .contact-map__wrapper iframe {

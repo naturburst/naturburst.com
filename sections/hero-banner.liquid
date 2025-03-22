@@ -3,13 +3,13 @@
     <div class="hero-content">
       {% if section.settings.show_buttons %}
         <div class="hero-buttons">
-          <a href="{{ routes.collections_url }}" class="shop-now-btn">
+          <a href="{{ routes.collections_url }}" class="button button--primary">
             {% render 'icon-cart' %}
             {{ section.settings.shop_button_text | escape }}
           </a>
 
           {% if section.settings.secondary_button_text != blank and section.settings.secondary_button_url != blank %}
-            <a href="{{ section.settings.secondary_button_url }}" class="learn-more-btn">
+            <a href="{{ section.settings.secondary_button_url }}" class="button button--secondary">
               {{ section.settings.secondary_button_text | escape }}
             </a>
           {% endif %}
@@ -106,47 +106,50 @@
   justify-content: center;
 }
 
-.shop-now-btn, .learn-more-btn {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 0.75rem 1.8rem;
-  border-radius: 50px;
-  letter-spacing: 0.5px;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-
-.shop-now-btn {
-  background-color: var(--color-primary);
+/* New button styles */
+.button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #3f704d; /* Darker green */
   color: white;
-  gap: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.shop-now-btn:hover {
-  background-color: var(--color-primary-darker);
-  transform: translateY(-3px);
+.button:hover {
+  background-color: #2b4f35;
+  transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
 
-.shop-now-btn .icon {
-  font-size: 1.1rem;
+.button--primary {
+  background-color: #3f704d;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
 }
 
-.learn-more-btn {
-  background-color: #ffffff;
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+.button--secondary {
+  background-color: white;
+  color: #3f704d;
+  border: 2px solid #3f704d;
 }
 
-.learn-more-btn:hover {
-  background-color: var(--color-primary);
+.button--secondary:hover {
+  background-color: #3f704d;
   color: white;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.button .icon {
+  font-size: 1.1rem;
 }
 
 /* Mobile responsive adjustments */
@@ -176,7 +179,7 @@
     gap: 1rem;
   }
 
-  .shop-now-btn, .learn-more-btn {
+  .button {
     width: 100%;
     justify-content: center;
     padding: 0.75rem 1rem;
@@ -192,8 +195,9 @@
 </style>
 
 <script>
+// Optimized image preloading for mobile devices
 document.addEventListener('DOMContentLoaded', function() {
-  // Preload mobile image for better performance
+  // Only preload when on mobile to save bandwidth
   if (window.innerWidth <= 767) {
     const mobileImageUrl = '{{ section.settings.mobile_image | img_url: 'master' }}';
     if (mobileImageUrl) {

@@ -10,6 +10,33 @@
   </div>
 
   <div class="page-width">
+    <!-- Footer Top Content - Blocks from schema -->
+    <div class="footer__content-top">
+      <div class="footer__blocks-wrapper grid">
+        {% for block in section.blocks %}
+          <div class="footer-block grid__item">
+            {%- case block.type -%}
+              {%- when 'link_list' -%}
+                {% if block.settings.heading != blank %}
+                  <h2 class="footer-block__heading">{{ block.settings.heading }}</h2>
+                {% endif %}
+                {% if block.settings.menu != blank %}
+                  <ul class="footer-block__details-content list-unstyled">
+                    {%- for link in block.settings.menu.links -%}
+                      <li>
+                        <a href="{{ link.url }}" class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}">
+                          {{ link.title }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {% endif %}
+            {%- endcase -%}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
     <div class="footer-content">
       <div class="logo-section">
         <h3>Nature<span>Burst</span></h3>
@@ -84,8 +111,8 @@
         {% endif %}
       </div>
 
-      <div class="copyright">
-        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ section.settings.copyright_text }}
+      <div class="footer__copyright">
+        <small class="copyright__content">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ section.settings.copyright_text }}</small>
       </div>
     </div>
   </div>
@@ -157,7 +184,26 @@
       "default": "All rights reserved."
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Quick links",
+          "label": "Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Footer",
@@ -189,6 +235,48 @@
   height: 60px;
 }
 
+/* Footer blocks styling from your new code */
+.footer__content-top {
+  padding-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.footer__blocks-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.footer-block__heading {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: {{ settings.color_accent }};
+  font-family: var(--font-heading);
+}
+
+.footer-block__details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-block__details-content a {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  font-family: var(--font-body);
+}
+
+.footer-block__details-content a:hover {
+  color: {{ settings.color_accent }};
+  padding-left: 0.5rem;
+}
+
+/* Original styling */
 .footer-content {
   display: grid;
   gap: 3rem;
@@ -355,8 +443,11 @@
   height: 24px;
 }
 
-.copyright {
+.footer__copyright {
   text-align: center;
+}
+
+.copyright__content {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
   font-family: var(--font-body);

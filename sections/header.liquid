@@ -17,20 +17,22 @@
         </div>
 
         {%- comment -%} Site logo {%- endcomment -%}
-        <div class="header-logo">
-          <a href="{{ routes.root_url }}" class="header-logo-link">
-            {% if settings.logo != blank %}
+        <div class="header__logo">
+          {% if section.settings.logo != blank %}
+            <a href="{{ routes.root_url }}" class="header__logo-link">
               <img
-                class="header-logo-image"
-                src="{{ settings.logo | img_url: 'master' }}"
-                alt="{{ shop.name | escape }}"
-                width="{{ settings.logo_width | default: 140 }}"
-                height="{{ settings.logo_height | default: 50 }}"
-                loading="lazy">
-            {% else %}
-              <span class="h1">Nature<span>Burst</span></span>
-            {% endif %}
-          </a>
+                src="{{ section.settings.logo | img_url: 'master' }}"
+                alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+                class="header__logo-image"
+                width="{{ section.settings.logo_width }}"
+                height="{{ section.settings.logo_height }}"
+              >
+            </a>
+          {% else %}
+            <a href="{{ routes.root_url }}" class="header__logo-link">
+              <span class="h2">{{ shop.name }}</span>
+            </a>
+          {% endif %}
         </div>
 
         {%- comment -%} Desktop navigation {%- endcomment -%}
@@ -50,18 +52,21 @@
 
         {%- comment -%} Cart, account and currency selector {%- endcomment -%}
         <div class="header-actions">
-          <div class="currency-selector desktop-only">
-            {% form 'currency' %}
-              <span class="currency-selector__icon">{% render 'icon-globe' %}</span>
-              <select name="currency_code" class="currency-selector__select" aria-label="Currency">
-                {% for currency in shop.enabled_currencies %}
-                  <option value="{{ currency.iso_code }}" {% if currency.iso_code == cart.currency.iso_code %}selected="selected"{% endif %}>
-                    {{ currency.iso_code }} ({{ currency.symbol }})
-                  </option>
-                {% endfor %}
-              </select>
-            {% endform %}
-          </div>
+          {%- comment -%} Currency selector with conditional visibility on mobile {%- endcomment -%}
+          {% if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 %}
+            <div class="currency-selector {% if section.settings.hide_currency_selector_on_mobile %}hide-on-mobile{% endif %}">
+              {% form 'currency' %}
+                <span class="currency-selector__icon">{% render 'icon-globe' %}</span>
+                <select name="currency_code" class="currency-selector__select" aria-label="{{ 'localization.currency_selector' | t }}">
+                  {% for currency in shop.enabled_currencies %}
+                    <option value="{{ currency.iso_code }}" {% if currency.iso_code == cart.currency.iso_code %}selected="selected"{% endif %}>
+                      {{ currency.iso_code }} ({{ currency.symbol }})
+                    </option>
+                  {% endfor %}
+                </select>
+              {% endform %}
+            </div>
+          {% endif %}
 
           <!-- Customer account icon -->
           <a href="{{ routes.account_url }}" class="header-account-link" aria-label="Account">
@@ -189,10 +194,7 @@
   align-items: center;
 }
 
-.desktop-only {
-  display: none;
-}
-
+/* Currency selector */
 .currency-selector {
   display: flex;
   align-items: center;
@@ -314,6 +316,11 @@
   color: {{ settings.color_accent | default: '#FFD166' }};
 }
 
+/* Hide on mobile utility class */
+.hide-on-mobile {
+  display: none;
+}
+
 /* Responsive */
 @media screen and (min-width: 992px) {
   .header-mobile-toggle {
@@ -324,8 +331,8 @@
     display: block;
   }
 
-  .desktop-only {
-    display: block;
+  .hide-on-mobile {
+    display: flex; /* Show currency selector on desktop */
   }
 
   .header-logo {

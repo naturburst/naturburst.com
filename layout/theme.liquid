@@ -41,6 +41,34 @@
   {% section 'announcement-bar' %}
   {% section 'header' %}
 
+  <div class="announcement-bar">
+    {% if request.design_mode %}
+      <div class="announcement-bar__message">
+        <p>{{ section.settings.text | escape }}</p>
+      </div>
+    {% else %}
+      {% if section.settings.text != blank %}
+        <div class="announcement-bar__message">
+          <p>{{ section.settings.text | escape }}</p>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+  <style>
+    .announcement-bar {
+      background-color: #1b3a27;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      width: 100%;
+    }
+    @media screen and (max-width: 749px) {
+      .announcement-bar__message {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+
   <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
     {{ content_for_layout }}
   </main>
