@@ -159,13 +159,19 @@
 
   /**
    * Mobile Navigation
-   * FIXED: Enhanced implementation to ensure proper event handling and accessibility
+   * MODIFIED: Check for mobile-nav-controller.js before initializing
    */
   theme.mobileNav = {
     /**
      * Initialize mobile navigation
      */
     init() {
+      // Check if the new controller is already handling mobile navigation
+      if (window.MobileNavController && window.MobileNavController.initialized) {
+        console.log('Mobile nav already initialized by controller - skipping theme.js initialization');
+        return;
+      }
+
       const mobileNav = document.getElementById('MobileNav');
       const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
       const mobileNavClose = document.querySelector('.mobile-nav__close');

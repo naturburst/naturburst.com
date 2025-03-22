@@ -147,6 +147,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Mark as initialized to prevent duplicate initialization
   window.MobileNavController.initialized = true;
+
+  // Import accessibility trap focus functionality from theme.js
+  const mobileMenu = document.getElementById('MobileNav');
+  if (mobileMenu && window.theme && window.theme.a11y) {
+    // Use the theme's trap focus when the menu is opened
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          if (mobileMenu.classList.contains('is-active')) {
+            window.theme.a11y.trapFocus(mobileMenu);
+            log('Applied theme a11y focus trap');
+          } else {
+            window.theme.a11y.removeTrapFocus();
+            log('Removed theme a11y focus trap');
+          }
+        }
+      });
+    });
+
+    // Start observing the menu for class changes
+    observer.observe(mobileMenu, { attributes: true });
+    log('Added accessibility observer');
+  }
+
   log('Mobile navigation initialization complete');
 
   // Apply force clickable styles to ensure all elements are interactive
