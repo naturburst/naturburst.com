@@ -18,7 +18,7 @@
     </div>
 
     <div class="mobile-nav__content">
-      {%- comment -%} Account section for mobile {%- endcomment -%}
+      <!-- Account section -->
       <div class="mobile-nav__section">
         <h3 class="mobile-nav__section-title">
           {% render 'icon-account' %} My Account
@@ -36,7 +36,7 @@
 
       <div class="mobile-nav__divider"></div>
 
-      {%- comment -%} Currency selector {%- endcomment -%}
+      <!-- Currency selector -->
       <div class="mobile-nav__section">
         <h3 class="mobile-nav__section-title">
           {% render 'icon-globe' %} Select Currency
@@ -58,7 +58,7 @@
 
       <div class="mobile-nav__divider"></div>
 
-      {%- comment -%} Main navigation {%- endcomment -%}
+      <!-- Main navigation -->
       <ul class="mobile-nav__menu">
         {% for link in linklists.main-menu.links %}
           <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
@@ -83,7 +83,7 @@
 
       <div class="mobile-nav__divider"></div>
 
-      {%- comment -%} Contact information {%- endcomment -%}
+      <!-- Contact information -->
       <div class="mobile-nav__contact">
         <h3>Contact Us</h3>
         <p>Need help? We're just a click away!</p>
@@ -95,10 +95,11 @@
   </div>
 </div>
 
-<!-- Added separate overlay element -->
+<!-- Dedicated overlay for mobile menu -->
 <div id="MobileNavOverlay" class="mobile-nav-overlay"></div>
 
 <style>
+/* Reset all previous mobile nav styles */
 .mobile-nav {
   position: fixed;
   top: 0;
@@ -106,28 +107,29 @@
   width: 85%; /* Narrower width to show it's a sidebar */
   max-width: 350px;
   height: 100vh;
-  background: white;
-  z-index: 1001; /* Higher z-index than overlay */
+  background-color: #ffffff; /* Explicit white background */
+  z-index: 1001; /* Higher than overlay */
   transform: translateX(-100%);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   visibility: hidden;
 }
 
+/* Active state for the mobile nav */
 .mobile-nav.is-active {
   transform: translateX(0);
   visibility: visible;
 }
 
-/* Explicit overlay element instead of using body::after */
+/* Dedicated overlay element */
 .mobile-nav-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better visibility */
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -139,6 +141,12 @@
   visibility: visible;
 }
 
+/* Prevent body scrolling when menu is open */
+body.overflow-hidden {
+  overflow: hidden;
+}
+
+/* Header styling */
 .mobile-nav__inner {
   display: flex;
   flex-direction: column;
@@ -150,7 +158,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
 }
 
 .mobile-nav__logo {
@@ -162,32 +171,36 @@
   font-size: 1.5rem;
   font-weight: 800;
   font-family: var(--font-heading);
+  color: #1a2e37; /* Dark text color for visibility */
 }
 
 .mobile-nav__header span span {
-  color: {{ settings.color_primary }};
+  color: #2A9D8F; /* Accent color for the second part of the name */
 }
 
 .mobile-nav__close {
   background: transparent;
   border: none;
-  color: var(--color-text);
+  color: #1a2e37; /* Dark color for visibility */
   font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  padding: 0.5rem;
 }
 
 .mobile-nav__close:hover {
-  color: {{ settings.color_primary }};
+  color: #2A9D8F; /* Accent color on hover */
   transform: scale(1.1);
 }
 
+/* Content styling */
 .mobile-nav__content {
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   flex: 1;
+  background-color: #ffffff;
 }
 
 .mobile-nav__section-title {
@@ -195,13 +208,13 @@
   align-items: center;
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: var(--color-headings);
+  color: #1a2e37; /* Dark text for visibility */
   font-weight: 600;
 }
 
 .mobile-nav__section-title svg {
   margin-right: 0.75rem;
-  color: {{ settings.color_primary }};
+  color: #2A9D8F; /* Accent color for icons */
 }
 
 .account-options {
@@ -212,20 +225,22 @@
 
 .account-link {
   flex: 1;
-  background: var(--color-background-light);
-  border: 1px solid var(--color-border);
+  background-color: #f7f7f7; /* Light gray background */
+  border: 1px solid #e5e5e5;
   border-radius: 4px;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--color-text);
+  color: #1a2e37; /* Dark text for visibility */
   text-align: center;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .account-link:hover {
-  background: var(--color-background-accent);
-  color: var(--color-primary);
+  background-color: #2A9D8F; /* Primary color background on hover */
+  color: #ffffff; /* White text on hover */
+  border-color: #2A9D8F;
 }
 
 .currency-options {
@@ -235,30 +250,31 @@
 
 .currency-option {
   flex: 1;
-  background: var(--color-background-light);
-  border: 1px solid var(--color-border);
+  background-color: #f7f7f7;
+  border: 1px solid #e5e5e5;
   border-radius: 4px;
   padding: 0.75rem;
   font-size: 1rem;
   font-weight: 500;
-  color: var(--color-text);
+  color: #1a2e37;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .currency-option.active {
-  background: {{ settings.color_primary }};
-  color: white;
-  border-color: {{ settings.color_primary }};
+  background-color: #2A9D8F;
+  color: #ffffff;
+  border-color: #2A9D8F;
 }
 
 .currency-option:not(.active):hover {
-  background: var(--color-background-accent);
+  background-color: rgba(42, 157, 143, 0.1);
+  color: #2A9D8F;
 }
 
 .mobile-nav__divider {
   height: 1px;
-  background: var(--color-border);
+  background-color: #e5e5e5;
   margin: 0.5rem 0;
 }
 
@@ -277,26 +293,27 @@
   padding: 0.75rem 1rem;
   border-radius: 4px;
   transition: all 0.3s ease;
-  color: var(--color-text);
+  color: #1a2e37; /* Dark text for visibility */
   font-weight: 500;
+  text-decoration: none;
 }
 
 .mobile-nav__link svg {
   margin-right: 1rem;
   font-size: 1.2rem;
-  color: var(--color-text-light);
+  color: #1a2e37; /* Dark color for visibility */
   transition: all 0.3s ease;
 }
 
 .mobile-nav__link:hover,
 .mobile-nav__item--active .mobile-nav__link {
-  background: var(--color-background-primary-light);
-  color: {{ settings.color_primary }};
+  background-color: rgba(42, 157, 143, 0.1);
+  color: #2A9D8F;
 }
 
 .mobile-nav__link:hover svg,
 .mobile-nav__item--active .mobile-nav__link svg {
-  color: {{ settings.color_primary }};
+  color: #2A9D8F;
 }
 
 .mobile-nav__item--active .mobile-nav__link {
@@ -306,7 +323,7 @@
 .mobile-nav__contact {
   margin-top: auto;
   padding: 1.5rem;
-  background: var(--color-background-primary-light);
+  background-color: rgba(42, 157, 143, 0.1);
   border-radius: 4px;
   text-align: center;
 }
@@ -314,77 +331,105 @@
 .mobile-nav__contact h3 {
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
-  color: var(--color-headings);
+  color: #1a2e37;
 }
 
 .mobile-nav__contact p {
-  color: var(--color-text);
+  color: #1a2e37;
   margin-bottom: 1rem;
 }
 
 .contact-btn {
   display: inline-block;
-  background: {{ settings.color_primary }};
+  background-color: #2A9D8F;
   color: white;
   padding: 0.6rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .contact-btn:hover {
-  background: {{ settings.color_primary_darker }};
+  background-color: #1E7D74;
   transform: translateY(-2px);
+}
+
+/* Mobile nav toggle button in header */
+.mobile-nav-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-toggle:hover {
+  transform: scale(1.1);
 }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mobileNav = document.getElementById('MobileNav');
-    const mobileNavOverlay = document.getElementById('MobileNavOverlay');
-    const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-    const mobileNavClose = document.querySelector('.mobile-nav__close');
-    const body = document.body;
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the key elements
+  const mobileNav = document.getElementById('MobileNav');
+  const mobileNavOverlay = document.getElementById('MobileNavOverlay');
+  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const mobileNavClose = document.querySelector('.mobile-nav__close');
+  const body = document.body;
 
-    // Exit if required elements don't exist
-    if (!mobileNav || !mobileNavToggle) {
-      console.warn('Mobile navigation elements not found');
-      return;
+  // Check if elements exist to prevent errors
+  if (!mobileNav || !mobileNavToggle) {
+    console.warn('Mobile navigation elements not found');
+    return;
+  }
+
+  // Toggle function for the mobile navigation
+  function toggleMobileNav(event) {
+    // Prevent default for links/buttons
+    if (event && event.preventDefault) {
+      event.preventDefault();
     }
 
-    function toggleMobileNav(event) {
-      // Prevent default for anchor/button elements
-      if (event && event.preventDefault) {
-        event.preventDefault();
-      }
+    // Toggle classes for mobile nav, overlay, and body
+    mobileNav.classList.toggle('is-active');
+    mobileNavOverlay.classList.toggle('is-active');
+    body.classList.toggle('overflow-hidden');
 
-      // Toggle mobile nav and overlay visibility
-      mobileNav.classList.toggle('is-active');
-      mobileNavOverlay.classList.toggle('is-active');
-      body.classList.toggle('overflow-hidden');
+    // Update accessibility attributes
+    const isOpen = mobileNav.classList.contains('is-active');
+    mobileNav.setAttribute('aria-hidden', !isOpen);
+    mobileNavToggle.setAttribute('aria-expanded', isOpen);
 
-      // Update accessibility attributes
-      const isOpen = mobileNav.classList.contains('is-active');
-      mobileNav.setAttribute('aria-hidden', !isOpen);
-      mobileNavToggle.setAttribute('aria-expanded', isOpen);
-    }
+    // Log for debugging
+    console.log('Mobile nav toggled, is open:', isOpen);
+  }
 
-    // Attach event listeners
-    mobileNavToggle.addEventListener('click', toggleMobileNav);
+  // Add event listeners to toggle elements
+  mobileNavToggle.addEventListener('click', toggleMobileNav);
+
+  if (mobileNavClose) {
     mobileNavClose.addEventListener('click', toggleMobileNav);
-    mobileNavOverlay.addEventListener('click', toggleMobileNav);
+  }
 
-    // Close mobile nav when clicking on links
-    const mobileNavLinks = mobileNav.querySelectorAll('.mobile-nav__link, .account-link, .currency-option');
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', toggleMobileNav);
-    });
+  mobileNavOverlay.addEventListener('click', toggleMobileNav);
 
-    // Add escape key support
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape' && mobileNav.classList.contains('is-active')) {
-        toggleMobileNav();
-      }
-    });
+  // Close when clicking on links
+  const mobileNavLinks = mobileNav.querySelectorAll('.mobile-nav__link, .account-link, .currency-option');
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', toggleMobileNav);
   });
+
+  // Add escape key support
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && mobileNav.classList.contains('is-active')) {
+      toggleMobileNav();
+    }
+  });
+});
 </script>
