@@ -1,0 +1,227 @@
+<div class="newsletter section {% if section.settings.full_width %}newsletter--full-width{% endif %}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="newsletter__inner">
+      <div class="newsletter__content">
+        <h2 class="newsletter__title">{{ section.settings.heading }}</h2>
+
+        {% if section.settings.description != blank %}
+          <div class="newsletter__text">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+      </div>
+
+      {%- form 'customer', id: 'ContactNewsletter', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+
+        <div class="newsletter__field-wrapper">
+          <input
+            id="NewsletterEmail"
+            type="email"
+            name="contact[email]"
+            class="newsletter__field"
+            value="{{ form.email }}"
+            placeholder="{{ 'newsletter.label' | t }}"
+            aria-required="true"
+            required
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+          >
+          <button type="submit" class="newsletter__button" name="commit">
+            {{ section.settings.button_text }}
+          </button>
+        </div>
+
+        {%- if form.errors -%}
+          <div class="newsletter__message newsletter__message--error">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </div>
+        {%- endif -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="newsletter__message newsletter__message--success">
+            {{ 'newsletter.success' | t }}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .newsletter {
+    padding: 4rem 0;
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .newsletter--full-width {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+  }
+
+  .newsletter__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .newsletter__content {
+    margin-bottom: 2rem;
+  }
+
+  .newsletter__title {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .newsletter__text {
+    color: {{ section.settings.text_color }};
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .newsletter__form {
+    width: 100%;
+  }
+
+  .newsletter__field-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .newsletter__field {
+    flex-grow: 1;
+    min-width: 200px;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid {{ section.settings.border_color }};
+    border-radius: {{ section.settings.border_radius }}px;
+    font-size: 1rem;
+  }
+
+  .newsletter__button {
+    background-color: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: {{ section.settings.border_radius }}px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter__button:hover {
+    background-color: {{ section.settings.button_background | color_darken: 10 }};
+  }
+
+  .newsletter__message {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+  }
+
+  .newsletter__message--error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+  }
+
+  .newsletter__message--success {
+    background-color: #EDF7ED;
+    color: #1B5E20;
+  }
+
+  @media screen and (max-width: 767px) {
+    .newsletter__field-wrapper {
+      flex-direction: column;
+    }
+
+    .newsletter__button {
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our newsletter for new product notification!"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Stay informed about new product arrivals and get exclusive discounts by subscribing to our newsletter.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f7f7f7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1a2e37"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Input border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#2A9D8F"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

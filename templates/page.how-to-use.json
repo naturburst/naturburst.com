@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "how-to-use-template",
+      "settings": {
+        "title": "How to Use",
+        "show_recipe": true
+      }
+    },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "title": "Benefits of Freeze-Dried Fruits",
+        "description": "Experience the natural goodness of our premium freeze-dried fruits."
+      }
+    }
+  },
+  "order": [
+    "main",
+    "benefits"
+  ]
+}

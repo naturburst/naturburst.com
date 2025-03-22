@@ -1,0 +1,195 @@
+<div class="customer-login page-width section-padding">
+  <div class="login-container">
+    <h1>{{ 'customer.login.title' | t }}</h1>
+
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error">
+          <h2 class="form-message__title" tabindex="-1">{{ 'customer.login.error' | t }}</h2>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="form-field">
+        <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="CustomerEmail"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          {%- if form.errors contains 'form' -%}
+            aria-invalid="true"
+          {%- endif -%}
+          placeholder="{{ 'customer.login.email' | t }}"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="CustomerPassword"
+          {%- if form.errors contains 'form' -%}
+            aria-invalid="true"
+          {%- endif -%}
+          placeholder="{{ 'customer.login.password' | t }}"
+        >
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ routes.account_register_url }}">{{ 'customer.login.create_account' | t }}</a>
+        <a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+      </div>
+
+      <button type="submit" class="btn btn--primary">
+        {{ 'customer.login.sign_in' | t }}
+      </button>
+    {%- endform -%}
+  </div>
+
+  <div id="RecoverPasswordForm" class="login-container hide">
+    <h2>{{ 'customer.recover_password.title' | t }}</h2>
+    <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+    {%- form 'recover_customer_password' -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="form-message form-message--success">
+          {{ 'customer.recover_password.success' | t }}
+        </div>
+      {%- endif -%}
+
+      <div class="form-field">
+        <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+        <input
+          type="email"
+          name="email"
+          id="RecoverEmail"
+          autocomplete="email"
+          placeholder="{{ 'customer.recover_password.email' | t }}"
+        >
+      </div>
+
+      <button type="submit" class="btn btn--primary">
+        {{ 'customer.recover_password.submit' | t }}
+      </button>
+
+      <a href="#login" id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</a>
+    {%- endform -%}
+  </div>
+</div>
+
+<style>
+  .customer-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+
+  h1, h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .form-field {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-small);
+  }
+
+  .form-message--error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+  }
+
+  .form-message--success {
+    background-color: #EDF7ED;
+    color: #1B5E20;
+  }
+
+  .form-message__title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  @media (max-width: 576px) {
+    .form-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const recoverPasswordLink = document.getElementById('RecoverPassword');
+    const hideRecoverPasswordLink = document.getElementById('HideRecoverPasswordLink');
+    const recoverPasswordForm = document.getElementById('RecoverPasswordForm');
+    const loginForm = document.querySelector('.login-container:not(#RecoverPasswordForm)');
+
+    if (recoverPasswordLink && hideRecoverPasswordLink && recoverPasswordForm && loginForm) {
+      recoverPasswordLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        recoverPasswordForm.classList.remove('hide');
+        loginForm.classList.add('hide');
+      });
+
+      hideRecoverPasswordLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        recoverPasswordForm.classList.add('hide');
+        loginForm.classList.remove('hide');
+      });
+    }
+
+    // Show recovery form if URL contains the recover parameter
+    if (window.location.hash === '#recover') {
+      recoverPasswordForm.classList.remove('hide');
+      loginForm.classList.add('hide');
+    }
+  });
+</script>

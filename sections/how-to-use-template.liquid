@@ -1,0 +1,313 @@
+<div class="how-to-use page-width section-padding">
+  <div class="header">
+    <h1>{{ section.settings.title }}</h1>
+    <p class="subtitle">
+      Our premium freeze-dried fruits are incredibly versatile and can enhance many of your favorite foods and drinks.
+      Here are some delicious ways to incorporate them into your daily routine!
+    </p>
+  </div>
+
+  <div class="illustration-container">
+    <img src="{{ 'how-to-use-illustration.png' | asset_url }}" alt="How to use illustration" class="illustration-image">
+  </div>
+
+  <div class="usage-section">
+    <div class="usage-card">
+      <div class="card-header">
+        <div class="icon smoothie-icon"></div>
+        <h3>Smoothies & Shakes</h3>
+      </div>
+      <p class="description">Add our freeze-dried fruits to your smoothies and shakes for an intense burst of flavor and a nutritional boost. They blend perfectly and dissolve to create a smooth texture with vibrant taste.</p>
+      <ul class="instructions">
+        <li>Add 1-2 tablespoons to your blender</li>
+        <li>Great with yogurt, milk, or plant-based alternatives</li>
+        <li>Blends instantly - no need to rehydrate first</li>
+      </ul>
+    </div>
+
+    <div class="usage-card">
+      <div class="card-header">
+        <div class="icon dessert-icon"></div>
+        <h3>Dessert Toppings</h3>
+      </div>
+      <p class="description">Sprinkle over ice cream, yogurt, oatmeal, or cereal for a delightful crunch and natural sweetness. The vivid colors make any dessert look spectacular!</p>
+      <ul class="instructions">
+        <li>Crush slightly for a more even distribution</li>
+        <li>Try mixing with nuts for contrasting textures</li>
+        <li>Perfect for decorating cakes and cupcakes</li>
+      </ul>
+    </div>
+
+    <div class="usage-card">
+      <div class="card-header">
+        <div class="icon baking-icon"></div>
+        <h3>Baking & Cooking</h3>
+      </div>
+      <p class="description">Incorporate into your baking for colorful, flavorful additions to muffins, pancakes, cookies, and more. The freeze-dried texture means they won't add excess moisture to your recipes.</p>
+      <ul class="instructions">
+        <li>Fold gently into batters and doughs</li>
+        <li>Can be powdered for natural food coloring</li>
+        <li>Use as-is or rehydrate depending on your recipe</li>
+      </ul>
+    </div>
+
+    <div class="usage-card">
+      <div class="card-header">
+        <div class="icon trail-icon"></div>
+        <h3>Trail Mix & Snacks</h3>
+      </div>
+      <p class="description">Create your own custom trail mix with nuts, seeds, and our freeze-dried fruits. The light weight makes them perfect for hiking, traveling, or just enjoying as a healthy snack any time.</p>
+      <ul class="instructions">
+        <li>Mix with nuts and dark chocolate for a balanced energy boost</li>
+        <li>Store in small containers for portion control</li>
+        <li>Perfect on-the-go snack for kids and adults</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tips-section">
+    <h2>Pro Tips for Best Results</h2>
+    <ul class="tips-list">
+      <li>
+        <strong>Storage:</strong> Always reseal the package properly and store in a cool, dry place to maintain the crisp texture.
+      </li>
+      <li>
+        <strong>Rehydration:</strong> For some recipes, you may want to rehydrate the fruits. Simply soak in warm water for 5-10 minutes until they reach your desired texture.
+      </li>
+      <li>
+        <strong>Powdering:</strong> Use a food processor or spice grinder to create fruit powders that can be used as natural food coloring or flavor enhancers.
+      </li>
+      <li>
+        <strong>Pairing:</strong> Our freeze-dried fruits pair exceptionally well with dairy, chocolate, and nuts, creating a perfect balance of flavors and textures.
+      </li>
+    </ul>
+  </div>
+
+  {% if section.settings.show_recipe %}
+    <div class="recipe-idea">
+      <h2>Featured Recipe: Tropical Breakfast Parfait</h2>
+      <div class="recipe-content">
+        <div class="ingredients">
+          <h4>Ingredients:</h4>
+          <ul>
+            <li>½ cup Greek yogurt</li>
+            <li>¼ cup granola</li>
+            <li>1 tbsp honey</li>
+            <li>2 tbsp Freeze-Dried Jackfruit</li>
+            <li>1 tbsp Freeze-Dried Custard Apple</li>
+            <li>Optional: fresh mint for garnish</li>
+          </ul>
+        </div>
+        <div class="instructions">
+          <h4>Instructions:</h4>
+          <ol>
+            <li>Layer Greek yogurt in the bottom of a glass or bowl</li>
+            <li>Add a layer of granola</li>
+            <li>Sprinkle freeze-dried fruits on top</li>
+            <li>Drizzle with honey</li>
+            <li>Repeat layers as desired</li>
+            <li>Enjoy immediately for maximum crunch!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .how-to-use {
+    padding: 4rem 0;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .header h1 {
+    color: var(--color-primary-3);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--color-grey-5);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .illustration-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    border-radius: var(--radius);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+
+  .illustration-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .usage-section {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .usage-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .usage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    background-position: center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+  }
+
+  .smoothie-icon, .dessert-icon, .baking-icon, .trail-icon {
+    background-color: rgba(64, 206, 181, 0.15);
+  }
+
+  /* Add background images for icons */
+
+  .description {
+    color: var(--color-grey-5);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .instructions {
+    list-style: disc;
+    padding-left: 1.5rem;
+    color: var(--color-grey-3);
+  }
+
+  .instructions li {
+    margin-bottom: 0.5rem;
+  }
+
+  .tips-section {
+    background: var(--color-primary-10);
+    padding: 2rem;
+    border-radius: var(--radius);
+    margin-bottom: 3rem;
+    border-left: 3px solid var(--color-primary-5);
+  }
+
+  .tips-section h2 {
+    color: var(--color-primary-1);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .tips-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .tips-list li {
+    color: var(--color-grey-3);
+    line-height: 1.6;
+  }
+
+  .tips-list strong {
+    color: var(--color-primary-5);
+  }
+
+  .recipe-idea {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius);
+    border-left: 5px solid var(--color-primary-5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .recipe-idea h2 {
+    color: var(--color-primary-3);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .recipe-content {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .recipe-content h4 {
+    color: var(--color-primary-5);
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .usage-section {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .recipe-content {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .usage-section {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "How To Use Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Creative Ways to Enjoy Freeze-Dried Fruits"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recipe",
+      "label": "Show Recipe Section",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "How To Use Page",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

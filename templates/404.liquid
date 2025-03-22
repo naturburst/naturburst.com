@@ -1,0 +1,65 @@
+<div class="page-width section-padding">
+  <div class="error-container text-center">
+    <h1 class="error-code">404</h1>
+    <h2>{{ 'general.404.title' | t }}</h2>
+    <p>{{ 'general.404.subtext' | t }}</p>
+
+    <div class="error-illustration">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200">
+        <circle cx="250" cy="100" r="80" fill="#f8d7da" />
+        <text x="250" y="120" font-size="120" font-weight="bold" fill="#e74c3c" text-anchor="middle">?</text>
+      </svg>
+    </div>
+
+    <div class="buttons-container">
+      <a href="{{ routes.root_url }}" class="btn">
+        {{ 'general.404.home_button' | t }}
+      </a>
+      <a href="{{ routes.collections_url }}" class="btn">
+        {{ 'general.404.shop_button' | t }}
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .error-container {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .error-code {
+    font-size: 6rem;
+    font-weight: 900;
+    color: var(--color-primary);
+    line-height: 1;
+    margin-bottom: 1rem;
+    text-shadow: 3px 3px 0 var(--color-primary-lighter);
+  }
+
+  .error-illustration {
+    max-width: 300px;
+    margin: 2rem auto 3rem;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 576px) {
+    .error-code {
+      font-size: 4rem;
+    }
+
+    .buttons-container {
+      flex-direction: column;
+    }
+  }
+</style>
