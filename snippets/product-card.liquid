@@ -479,28 +479,26 @@
 </style>
 
 <script>
-// Custom element for product form handling
+// Custom element for handling product form interactions with enhanced cart updates
 if (!customElements.get('product-form')) {
   customElements.define('product-form', class ProductForm extends HTMLElement {
     constructor() {
       super();
       this.form = this.querySelector('form');
+      // Only attach event listener if form exists to prevent null reference errors
       this.form?.addEventListener('submit', this.onSubmitHandler.bind(this));
     }
 
-    // Handle form submission
     onSubmitHandler(evt) {
       evt.preventDefault();
       const submitButton = this.querySelector('[type="submit"]');
+      // Skip processing if button is already in loading state
       if (submitButton.classList.contains('loading') || submitButton.hasAttribute('disabled')) return;
 
       this.handleErrorMessage();
+      this.setLoadingState(submitButton, true);
 
-      submitButton.setAttribute('aria-disabled', true);
-      submitButton.classList.add('loading');
-      const spinner = submitButton.querySelector('.loading-overlay__spinner');
-      spinner?.classList.remove('hidden');
-
+      // Configure AJAX request for cart addition
       const config = {
         method: 'POST',
         headers: {
@@ -510,70 +508,72 @@ if (!customElements.get('product-form')) {
       };
 
       const formData = new FormData(this.form);
+      // Request cart sections for potential drawer updates
       formData.append('sections', 'cart-icon-bubble,cart-drawer');
       formData.append('sections_url', window.location.pathname);
       config.body = formData;
 
+      // Execute cart addition with error handling
       fetch(`${routes.cart_add_url}`, config)
-        .then((response) => response.json())
-        .then((response) => {
+        .then(response => response.json())
+        .then(response => {
           if (response.status) {
             this.handleErrorMessage(response.description);
             return;
           }
 
-          // Update cart count and trigger cart drawer
-          const cartCountBubbles = document.querySelectorAll('.cart-count');
-          if (cartCountBubbles) {
-            cartCountBubbles.forEach(bubble => {
-              const cartCount = bubble.querySelector('[data-cart-count]');
-              if (cartCount) {
-                // Fetch updated cart count
-                fetch('/cart.js')
-                  .then(res => res.json())
-                  .then(cart => {
-                    cartCount.textContent = cart.item_count;
-                  })
-                  .catch(error => console.error('Error:', error));
-              }
-            });
-          }
-
-          // Optional: trigger cart drawer open event
-          document.dispatchEvent(new CustomEvent('cart:added', {
-            bubbles: true,
-            detail: {
-              message: 'Item added to cart'
-            }
-          }));
-
+          this.updateCartUI();
           this.resetForm();
         })
-        .catch((e) => {
-          console.error(e);
+        .catch(error => {
+          console.error(error);
           this.handleErrorMessage('An error occurred. Please try again.');
         })
         .finally(() => {
-          submitButton.classList.remove('loading');
-          submitButton.removeAttribute('aria-disabled');
-          spinner?.classList.add('hidden');
+          this.setLoadingState(submitButton, false);
         });
     }
 
-    // Handle and display error messages
+    // Extracted cart UI update logic for better maintainability
+    updateCartUI() {
+      // Update cart count across all potential indicators
+      fetch('/cart.js')
+        .then(res => res.json())
+        .then(cart => {
+          const cartCountBubbles = document.querySelectorAll('.cart-count');
+          cartCountBubbles.forEach(bubble => {
+            const cartCount = bubble.querySelector('[data-cart-count]');
+            if (cartCount) cartCount.textContent = cart.item_count;
+          });
+
+          // Notify other components of cart update using event system
+          document.dispatchEvent(new CustomEvent('cart:added', {
+            bubbles: true,
+            detail: { message: 'Item added to cart' }
+          }));
+        })
+        .catch(error => console.error('Error updating cart UI:', error));
+    }
+
+    // Toggle loading state with spinner visibility
+    setLoadingState(button, isLoading) {
+      button.setAttribute('aria-disabled', isLoading);
+      button.classList.toggle('loading', isLoading);
+      const spinner = button.querySelector('.loading-overlay__spinner');
+      if (spinner) spinner.classList.toggle('hidden', !isLoading);
+    }
+
     handleErrorMessage(errorMessage = false) {
       const errorContainer = this.querySelector('.product-form__error-message-wrapper');
       const errorMessageElement = errorContainer?.querySelector('.product-form__error-message');
 
       if (!errorContainer || !errorMessageElement) return;
 
+      // Toggle visibility and update content only when there's an actual error
       errorContainer.toggleAttribute('hidden', !errorMessage);
-      if (errorMessage) {
-        errorMessageElement.textContent = errorMessage;
-      }
+      if (errorMessage) errorMessageElement.textContent = errorMessage;
     }
 
-    // Reset form after successful submission
     resetForm() {
       this.form.reset();
     }
