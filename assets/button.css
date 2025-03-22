@@ -1,0 +1,87 @@
+/* Primary buttons */
+.btn,
+button.btn,
+.button,
+.btn--primary,
+.product-form__submit,
+.shopify-payment-button .shopify-payment-button__button,
+.checkout-btn,
+.contact-form__submit {
+  background-color: #2A5E41 !important; /* Dark green header color */
+  border-color: #2A5E41 !important;
+  color: white !important;
+}
+
+.btn:hover,
+button.btn:hover,
+.button:hover,
+.btn--primary:hover,
+.product-form__submit:hover,
+.shopify-payment-button .shopify-payment-button__button:hover,
+.checkout-btn:hover,
+.contact-form__submit:hover {
+  background-color: #234C36 !important; /* Slightly darker on hover */
+  border-color: #234C36 !important;
+  color: white !important;
+}
+
+/* Product card buttons */
+.product-card__add-to-cart-btn,
+.product-card__quick-view-btn {
+  background-color: #2A5E41 !important;
+  border-color: #2A5E41 !important;
+}
+
+.product-card__add-to-cart-btn:hover,
+.product-card__quick-view-btn:hover {
+  background-color: #234C36 !important;
+  border-color: #234C36 !important;
+}
+
+/* Contact form buttons */
+.contact-btn,
+.get-in-touch,
+.directions-btn .map-indicator:hover {
+  background-color: #2A5E41 !important;
+  color: white !important;
+}
+
+/* Mobile navigation buttons */
+.currency-option.active,
+.mobile-nav__link:hover,
+.mobile-nav__item--active .mobile-nav__link {
+  color: #2A5E41 !important;
+}
+
+/* Social icons hover */
+.social-icons a:hover {
+  background: #2A5E41 !important;
+  color: white !important;
+}
+
+/* Newsletter button */
+.newsletter__button {
+  background-color: #2A5E41 !important;
+  color: white !important;
+}
+
+.newsletter__button:hover {
+  background-color: #234C36 !important;
+}
+
+/* Fix for secondary buttons */
+.btn--secondary:not(:hover) {
+  color: #2A5E41 !important;
+  border-color: #2A5E41 !important;
+  background-color: transparent !important;
+}
+
+/* Make sure disabled buttons don't use the active color */
+button[disabled],
+.btn[disabled],
+.btn.disabled {
+  background-color: #cccccc !important;
+  border-color: #cccccc !important;
+  cursor: not-allowed;
+  opacity: 0.65;
+}

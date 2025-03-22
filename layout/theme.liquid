@@ -22,6 +22,7 @@
 
   <!-- Stylesheets -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ 'button.css' | asset_url | stylesheet_tag }}
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +31,7 @@
 
   <!-- Scripts -->
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'mobile-nav.js' | asset_url }}" defer="defer"></script>
 
   <!-- Shopify required -->
   {{ content_for_header }}
