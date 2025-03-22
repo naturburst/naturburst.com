@@ -11,8 +11,8 @@
       "type": "main-collection-product-grid",
       "settings": {
         "products_per_page": 24,
-        "enable_sorting": true,
-        "enable_filtering": true,
+        "enable_sorting": false,
+        "enable_filtering": false,
         "filter_type": "horizontal",
         "enable_quick_add": true,
         "show_secondary_image": true

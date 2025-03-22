@@ -20,13 +20,6 @@
   <div class="page-width">
     {% if show_controls %}
       <div class="collection-grid__controls{% if section.settings.filter_type == 'vertical' %} collection-grid__controls--vertical{% endif %}">
-        {% if section.settings.enable_filtering %}
-          {% render 'collection-filters',
-            results: collection,
-            enable_filtering: section.settings.enable_filtering,
-            filter_type: section.settings.filter_type
-          %}
-        {% endif %}
 
         {% if section.settings.enable_sorting %}
           {% render 'collection-sorting' %}

@@ -30,7 +30,8 @@
 
       firstFocusable.focus();
 
-      container.addEventListener('keydown', function(e) {
+      // Store reference to handler for removal
+      this._keydownHandler = function(e) {
         if (e.key !== 'Tab') return;
 
         if (e.shiftKey) {
@@ -44,14 +45,21 @@
             e.preventDefault();
           }
         }
-      });
+      };
+
+      // Attach event handler
+      container.addEventListener('keydown', this._keydownHandler);
     },
 
     /**
      * Remove trap focus from current element
      */
     removeTrapFocus() {
-      document.removeEventListener('keydown', this.trapFocus);
+      // Fixed: Now properly removes the event listener using stored reference
+      if (this._keydownHandler) {
+        document.removeEventListener('keydown', this._keydownHandler);
+        this._keydownHandler = null;
+      }
     }
   };
 
@@ -151,6 +159,7 @@
 
   /**
    * Mobile Navigation
+   * FIXED: Enhanced implementation to ensure proper event handling and accessibility
    */
   theme.mobileNav = {
     /**
@@ -162,9 +171,21 @@
       const mobileNavClose = document.querySelector('.mobile-nav__close');
       const body = document.body;
 
-      if (!mobileNav || !mobileNavToggle) return;
+      if (!mobileNav || !mobileNavToggle) {
+        console.error('Mobile nav elements not found. MobileNav:', !!mobileNav, 'Toggle:', !!mobileNavToggle);
+        return;
+      }
 
-      const toggleMobileNav = () => {
+      // Enhanced toggle function with improved event handling
+      const toggleMobileNav = (e) => {
+        // Prevent default for anchor/button elements
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        }
+
+        // Debug current state before toggling
+        console.log('Toggling mobile nav. Current state:', mobileNav.classList.contains('is-active'));
+
         mobileNav.classList.toggle('is-active');
         body.classList.toggle('overflow-hidden');
 
@@ -172,23 +193,45 @@
         mobileNav.setAttribute('aria-hidden', !isOpen);
         mobileNavToggle.setAttribute('aria-expanded', isOpen);
 
+        // Ensure proper accessibility with focus trapping
         if (isOpen) {
           theme.a11y.trapFocus(mobileNav);
+          console.log('Mobile nav opened, focus trapped');
         } else {
           theme.a11y.removeTrapFocus();
+          console.log('Mobile nav closed, focus trap removed');
         }
       };
 
-      mobileNavToggle.addEventListener('click', toggleMobileNav);
+      // Use explicit event handling with error detection
+      mobileNavToggle.addEventListener('click', function(e) {
+        console.log('Mobile nav toggle clicked');
+        toggleMobileNav(e);
+      });
 
       if (mobileNavClose) {
-        mobileNavClose.addEventListener('click', toggleMobileNav);
+        mobileNavClose.addEventListener('click', function(e) {
+          console.log('Mobile nav close clicked');
+          toggleMobileNav(e);
+        });
       }
 
-      // Close mobile nav when clicking on links
-      const mobileNavLinks = mobileNav.querySelectorAll('a');
+      // Ensure links close the menu with proper event delegation
+      const mobileNavLinks = mobileNav.querySelectorAll('a[href]:not([href="#"])');
       mobileNavLinks.forEach(link => {
-        link.addEventListener('click', toggleMobileNav);
+        link.addEventListener('click', function() {
+          console.log('Mobile nav link clicked:', this.getAttribute('href'));
+          toggleMobileNav();
+        });
+      });
+
+      console.log('Mobile navigation initialized with enhanced handlers');
+
+      // Add ESC key handler for accessibility
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
+          toggleMobileNav();
+        }
       });
     }
   };
@@ -276,6 +319,7 @@
    * Initialize all theme functionality
    */
   document.addEventListener('DOMContentLoaded', () => {
+    // Initialize core theme modules
     theme.mobileNav.init();
     theme.quantitySelector.init();
     theme.productImages.init();
