@@ -1,0 +1,119 @@
+{% comment %}
+  Account activation page
+{% endcomment %}
+
+<div class="customer-activate-account page-width section-padding">
+  <div class="activate-account-container">
+    <h1>{{ 'customer.activate_account.title' | t }}</h1>
+    <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+    {%- form 'activate_customer_password', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error">
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="form-field">
+        <label for="CustomerPassword">{{ 'customer.activate_account.password' | t }}</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="CustomerPassword"
+          autocomplete="new-password"
+          placeholder="{{ 'customer.activate_account.password' | t }}"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="CustomerPasswordConfirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
+        <input
+          type="password"
+          name="customer[password_confirmation]"
+          id="CustomerPasswordConfirmation"
+          autocomplete="new-password"
+          placeholder="{{ 'customer.activate_account.password_confirm' | t }}"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+          {{ 'customer.activate_account.submit' | t }}
+        </button>
+        <button type="submit" name="decline" class="btn btn--secondary">
+          {{ 'customer.activate_account.cancel' | t }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+<style>
+  .customer-activate-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .activate-account-container {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 2rem;
+    color: var(--color-text-light);
+  }
+
+  .form-field {
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+  }
+
+  .form-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-small);
+    text-align: left;
+  }
+
+  .form-message--error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  @media (max-width: 576px) {
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+</style>

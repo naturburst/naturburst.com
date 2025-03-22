@@ -1,0 +1,140 @@
+<div class="customer-register page-width section-padding">
+  <div class="register-container">
+    <h1>{{ 'customer.register.title' | t }}</h1>
+
+    {%- form 'create_customer', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="form-message form-message--error">
+          <h2 class="form-message__title" tabindex="-1">{{ 'general.errors.title' | t }}</h2>
+          {{ form.errors | default_errors }}
+        </div>
+      {%- endif -%}
+
+      <div class="form-field">
+        <label for="FirstName">{{ 'customer.register.first_name' | t }}</label>
+        <input
+          type="text"
+          name="customer[first_name]"
+          id="FirstName"
+          {%- if form.first_name -%}value="{{ form.first_name }}"{%- endif -%}
+          autocomplete="given-name"
+          placeholder="{{ 'customer.register.first_name' | t }}"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="LastName">{{ 'customer.register.last_name' | t }}</label>
+        <input
+          type="text"
+          name="customer[last_name]"
+          id="LastName"
+          {%- if form.last_name -%}value="{{ form.last_name }}"{%- endif -%}
+          autocomplete="family-name"
+          placeholder="{{ 'customer.register.last_name' | t }}"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="CustomerEmail">{{ 'customer.register.email' | t }}</label>
+        <input
+          type="email"
+          name="customer[email]"
+          id="CustomerEmail"
+          {%- if form.email -%}value="{{ form.email }}"{%- endif -%}
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="{{ 'customer.register.email' | t }}"
+        >
+      </div>
+
+      <div class="form-field">
+        <label for="CustomerPassword">{{ 'customer.register.password' | t }}</label>
+        <input
+          type="password"
+          name="customer[password]"
+          id="CustomerPassword"
+          autocomplete="new-password"
+          placeholder="{{ 'customer.register.password' | t }}"
+        >
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ routes.account_login_url }}">{{ 'customer.register.sign_in' | t }}</a>
+      </div>
+
+      <button type="submit" class="btn btn--primary">
+        {{ 'customer.register.submit' | t }}
+      </button>
+    {%- endform -%}
+  </div>
+</div>
+
+<style>
+  .customer-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .register-container {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+
+  h1 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .form-field {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-small);
+  }
+
+  .form-message--error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+  }
+
+  .form-message__title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 576px) {
+    .form-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>

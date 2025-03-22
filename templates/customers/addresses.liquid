@@ -1,0 +1,344 @@
+{% comment %}
+  Customer addresses page
+{% endcomment %}
+
+<div class="customer-addresses page-width section-padding" data-addresses>
+  <div class="addresses-header">
+    <h1>{{ 'customer.addresses.title' | t }}</h1>
+    <a href="{{ routes.account_url }}" class="btn btn--secondary">
+      {{ 'customer.account.return' | t }}
+    </a>
+  </div>
+
+  <div id="AddressList">
+    {% paginate customer.addresses by 10 %}
+      <div class="add-new-button-container">
+        <button
+          type="button"
+          class="btn address-new-toggle"
+          aria-expanded="false"
+          aria-controls="AddAddress"
+        >
+          {{ 'customer.addresses.add_new' | t }}
+        </button>
+      </div>
+
+      <div id="AddAddress" class="address-form-container hide">
+        {% form 'customer_address', customer.new_address, class: 'address-form' %}
+          <div class="address-form__header">
+            <h2>{{ 'customer.addresses.add_new' | t }}</h2>
+            <button type="button" class="address-form__close">
+              {% render 'icon-close' %}
+            </button>
+          </div>
+
+          {% render 'address-form', form: form, form_id: 'AddressNewForm' %}
+
+          <div class="address-form__footer">
+            <button type="submit" class="btn">
+              {{ 'customer.addresses.add' | t }}
+            </button>
+            <button type="button" class="btn btn--secondary address-new-toggle">
+              {{ 'customer.addresses.cancel' | t }}
+            </button>
+          </div>
+        {% endform %}
+      </div>
+
+      <div class="addresses-grid">
+        {% for address in customer.addresses %}
+          <div class="address-card">
+            <div class="address-card__header">
+              {% if address == customer.default_address %}
+                <span class="address-card__badge">{{ 'customer.addresses.default' | t }}</span>
+              {% endif %}
+
+              <button
+                type="button"
+                class="address-edit-toggle"
+                aria-controls="EditAddress_{{ address.id }}"
+                aria-expanded="false"
+                data-address-id="{{ address.id }}"
+              >
+                {{ 'customer.addresses.edit' | t }}
+              </button>
+            </div>
+
+            <div class="address-card__content">
+              <p class="address-card__name">{{ address.name }}</p>
+              <p class="address-card__details">{{ address | format_address }}</p>
+            </div>
+
+            <div class="address-card__footer">
+              <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn--small btn--secondary address-delete" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                  {{ 'customer.addresses.delete' | t }}
+                </button>
+              </form>
+
+              {% if address != customer.default_address %}
+                <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}">
+                  <input type="hidden" name="address[default]" value="true">
+                  <button type="submit" class="btn btn--small">
+                    {{ 'customer.addresses.set_default' | t }}
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+
+            <div id="EditAddress_{{ address.id }}" class="address-edit-form hide">
+              {% form 'customer_address', address, class: 'address-form' %}
+                <div class="address-form__header">
+                  <h2>{{ 'customer.addresses.edit_address' | t }}</h2>
+                  <button type="button" class="address-form__close" data-address-id="{{ address.id }}">
+                    {% render 'icon-close' %}
+                  </button>
+                </div>
+
+                {% render 'address-form', form: form, form_id: address.id %}
+
+                <div class="address-form__footer">
+                  <button type="submit" class="btn">
+                    {{ 'customer.addresses.update' | t }}
+                  </button>
+                  <button type="button" class="btn btn--secondary address-edit-toggle" data-address-id="{{ address.id }}">
+                    {{ 'customer.addresses.cancel' | t }}
+                  </button>
+                </div>
+              {% endform %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        {% render 'pagination', paginate: paginate %}
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+<style>
+  .customer-addresses {
+    max-width: 1200px;
+  }
+
+  .addresses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .add-new-button-container {
+    margin-bottom: 2rem;
+  }
+
+  .addresses-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .address-card {
+    background: white;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .address-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .address-card__badge {
+    background: var(--color-primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-small);
+  }
+
+  .address-edit-toggle {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .address-card__content {
+    padding: 1.5rem;
+  }
+
+  .address-card__name {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .address-card__details {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .address-card__footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .address-form-container,
+  .address-edit-form {
+    background: white;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .address-form__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .address-form__header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .address-form__close {
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+
+  .address-form {
+    padding: 1.5rem;
+  }
+
+  .address-form__footer {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 1.5rem 1.5rem;
+  }
+
+  .hide {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .addresses-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .addresses-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .address-card__footer {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .address-form__footer {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  class CustomerAddresses {
+    constructor() {
+      this.addressContainer = document.querySelector('[data-addresses]');
+      this.newAddressForm = document.getElementById('AddAddress');
+      this.addressNewToggle = document.querySelectorAll('.address-new-toggle');
+      this.addressEditToggle = document.querySelectorAll('.address-edit-toggle');
+      this.addressEditForms = document.querySelectorAll('.address-edit-form');
+      this.addressFormCloseButtons = document.querySelectorAll('.address-form__close');
+      this.deleteButtons = document.querySelectorAll('.address-delete');
+
+      if (!this.addressContainer) return;
+
+      this.initEventListeners();
+    }
+
+    initEventListeners() {
+      // New address form toggle
+      this.addressNewToggle.forEach(button => {
+        button.addEventListener('click', () => {
+          this.toggleNewAddressForm();
+        });
+      });
+
+      // Edit address form toggle
+      this.addressEditToggle.forEach(button => {
+        button.addEventListener('click', () => {
+          const addressId = button.dataset.addressId || button.getAttribute('aria-controls').replace('EditAddress_', '');
+          this.toggleEditAddressForm(addressId);
+        });
+      });
+
+      // Close form buttons
+      this.addressFormCloseButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const addressId = button.dataset.addressId;
+          if (addressId) {
+            this.toggleEditAddressForm(addressId);
+          } else {
+            this.toggleNewAddressForm();
+          }
+        });
+      });
+
+      // Delete confirmation
+      this.deleteButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+          if (!confirm(button.dataset.confirmMessage)) {
+            event.preventDefault();
+          }
+        });
+      });
+    }
+
+    toggleNewAddressForm() {
+      this.newAddressForm.classList.toggle('hide');
+
+      this.addressNewToggle.forEach(button => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !expanded);
+      });
+    }
+
+    toggleEditAddressForm(addressId) {
+      const editForm = document.getElementById(`EditAddress_${addressId}`);
+      editForm.classList.toggle('hide');
+
+      const editToggleButtons = document.querySelectorAll(`.address-edit-toggle[data-address-id="${addressId}"]`);
+      editToggleButtons.forEach(button => {
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', !expanded);
+      });
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    new CustomerAddresses();
+  });
+</script>

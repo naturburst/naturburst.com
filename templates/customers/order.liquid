@@ -1,0 +1,372 @@
+{% comment %}
+  Customer order details
+{% endcomment %}
+
+<div class="customer-order page-width section-padding">
+  <div class="order-header">
+    <h1>{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <a href="{{ routes.account_url }}" class="btn btn--secondary">
+      {{ 'customer.account.return' | t }}
+    </a>
+  </div>
+
+  <div class="order-content">
+    <div class="order-details">
+      <div class="order-card">
+        <div class="order-card__header">
+          <h2>{{ 'customer.order.details' | t }}</h2>
+        </div>
+
+        <div class="order-card__content">
+          <div class="order-info-grid">
+            <div class="order-info">
+              <h3>{{ 'customer.order.date_html' | t: date: order.created_at | date: "%b %d, %Y" }}</h3>
+            </div>
+
+            <div class="order-info">
+              <h3>{{ 'customer.order.payment_status' | t }}</h3>
+              <p>{{ order.financial_status_label }}</p>
+            </div>
+
+            <div class="order-info">
+              <h3>{{ 'customer.order.fulfillment_status' | t }}</h3>
+              <p>{{ order.fulfillment_status_label }}</p>
+            </div>
+          </div>
+
+          {% if order.cancelled %}
+            <div class="order-cancelled">
+              <p>{{ 'customer.order.cancelled_html' | t: date: order.cancelled_at | date: "%b %d, %Y" }}</p>
+              <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="order-sections">
+        <div class="order-card">
+          <div class="order-card__header">
+            <h2>{{ 'customer.order.shipping_address' | t }}</h2>
+          </div>
+          <div class="order-card__content">
+            <p>{{ order.shipping_address | format_address }}</p>
+
+            {% if order.shipping_method %}
+              <div class="shipping-method">
+                <h3>{{ 'customer.order.shipping_method' | t }}</h3>
+                <p>{{ order.shipping_method.title }}</p>
+              </div>
+            {% endif %}
+
+            {% if order.tracking_numbers.size > 0 %}
+              <div class="tracking-info">
+                <h3>{{ 'customer.order.tracking' | t }}</h3>
+                {% for tracking_number in order.tracking_numbers %}
+                  <p>
+                    {% if order.tracking_urls[forloop.index0] != blank %}
+                      <a href="{{ order.tracking_urls[forloop.index0] }}" target="_blank">
+                        {{ tracking_number }}
+                      </a>
+                    {% else %}
+                      {{ tracking_number }}
+                    {% endif %}
+                  </p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card__header">
+            <h2>{{ 'customer.order.billing_address' | t }}</h2>
+          </div>
+          <div class="order-card__content">
+            <p>{{ order.billing_address | format_address }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-products">
+      <div class="order-card">
+        <div class="order-card__header">
+          <h2>{{ 'customer.order.product' | t }}</h2>
+        </div>
+
+        <div class="order-card__content">
+          <table class="order-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.order.product' | t }}</th>
+                <th>{{ 'customer.order.sku' | t }}</th>
+                <th>{{ 'customer.order.price' | t }}</th>
+                <th>{{ 'customer.order.quantity' | t }}</th>
+                <th>{{ 'customer.order.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for line_item in order.line_items %}
+                <tr>
+                  <td>
+                    <div class="order-product">
+                      {% if line_item.product.featured_media %}
+                        <div class="order-product__image">
+                          <img
+                            src="{{ line_item.product.featured_media | img_url: '60x' }}"
+                            alt="{{ line_item.product.featured_media.alt | escape }}"
+                            width="60"
+                            height="60"
+                            loading="lazy"
+                          >
+                        </div>
+                      {% endif %}
+                      <div class="order-product__info">
+                        <a href="{{ line_item.product.url }}">{{ line_item.title }}</a>
+
+                        {% if line_item.product.has_only_default_variant == false %}
+                          <div class="order-product__variant">
+                            {% for option in line_item.options_with_values %}
+                              <p>{{ option.name }}: {{ option.value }}</p>
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+
+                        {% if line_item.properties.size > 0 %}
+                          <div class="order-product__properties">
+                            {% for property in line_item.properties %}
+                              {% unless property.last == blank %}
+                                <p>{{ property.first }}: {{ property.last }}</p>
+                              {% endunless %}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ line_item.sku }}</td>
+                  <td>{{ line_item.original_price | money }}</td>
+                  <td>{{ line_item.quantity }}</td>
+                  <td>{{ line_item.final_line_price | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">{{ 'customer.order.subtotal' | t }}</td>
+                <td>{{ order.line_items_subtotal_price | money }}</td>
+              </tr>
+
+              {% for discount in order.discounts %}
+                <tr class="order-discount">
+                  <td colspan="4">
+                    {{ 'customer.order.discount' | t }} ({{ discount.code }})
+                  </td>
+                  <td>-{{ discount.amount | money }}</td>
+                </tr>
+              {% endfor %}
+
+              {% for shipping_method in order.shipping_methods %}
+                <tr>
+                  <td colspan="4">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td>
+                  <td>{{ shipping_method.price | money }}</td>
+                </tr>
+              {% endfor %}
+
+              {% for tax_line in order.tax_lines %}
+                <tr>
+                  <td colspan="4">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+                  <td>{{ tax_line.price | money }}</td>
+                </tr>
+              {% endfor %}
+
+              <tr class="order-total">
+                <td colspan="4"><strong>{{ 'customer.order.total' | t }}</strong></td>
+                <td><strong>{{ order.total_price | money }}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .customer-order {
+    max-width: 1200px;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .order-content {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .order-card {
+    background: white;
+    border-radius: var(--radius-base);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .order-card__header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .order-card__header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .order-card__content {
+    padding: 1.5rem;
+  }
+
+  .order-info-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .order-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+  }
+
+  .order-info p {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .order-cancelled {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #FEF2F2;
+    border-radius: var(--radius-small);
+    color: #B91C1C;
+  }
+
+  .shipping-method,
+  .tracking-info {
+    margin-top: 1.5rem;
+  }
+
+  .shipping-method h3,
+  .tracking-info h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-light);
+  }
+
+  .order-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .order-table th,
+  .order-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .order-table th {
+    font-weight: 600;
+    color: var(--color-headings);
+  }
+
+  .order-product {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .order-product__image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-small);
+    overflow: hidden;
+  }
+
+  .order-product__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .order-product__info a {
+    font-weight: 600;
+    color: var(--color-headings);
+    text-decoration: none;
+  }
+
+  .order-product__variant,
+  .order-product__properties {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+  }
+
+  .order-product__variant p,
+  .order-product__properties p {
+    margin: 0;
+  }
+
+  .order-discount td {
+    color: var(--color-primary);
+  }
+
+  .order-total td {
+    font-size: 1.1rem;
+    border-bottom: none;
+  }
+
+  @media (min-width: 768px) {
+    .order-content {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .order-info-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .order-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .order-card {
+      height: 100%;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .order-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .order-table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    .order-product {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
