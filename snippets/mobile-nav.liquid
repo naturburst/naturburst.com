@@ -95,29 +95,48 @@
   </div>
 </div>
 
+<!-- Added separate overlay element -->
+<div id="MobileNavOverlay" class="mobile-nav-overlay"></div>
+
 <style>
 .mobile-nav {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 85%; /* Narrower width to show it's a sidebar */
+  max-width: 350px;
+  height: 100vh;
   background: white;
+  z-index: 1001; /* Higher z-index than overlay */
   transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
-  z-index: 999;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
   visibility: hidden;
 }
 
 .mobile-nav.is-active {
   transform: translateX(0);
+  visibility: visible;
+}
+
+/* Explicit overlay element instead of using body::after */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-nav-overlay.is-active {
   opacity: 1;
   visibility: visible;
-  z-index: 1000;
 }
 
 .mobile-nav__inner {
@@ -322,26 +341,50 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const mobileNav = document.getElementById('MobileNav');
+    const mobileNavOverlay = document.getElementById('MobileNavOverlay');
     const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
     const mobileNavClose = document.querySelector('.mobile-nav__close');
     const body = document.body;
 
-    function toggleMobileNav() {
+    // Exit if required elements don't exist
+    if (!mobileNav || !mobileNavToggle) {
+      console.warn('Mobile navigation elements not found');
+      return;
+    }
+
+    function toggleMobileNav(event) {
+      // Prevent default for anchor/button elements
+      if (event && event.preventDefault) {
+        event.preventDefault();
+      }
+
+      // Toggle mobile nav and overlay visibility
       mobileNav.classList.toggle('is-active');
+      mobileNavOverlay.classList.toggle('is-active');
       body.classList.toggle('overflow-hidden');
 
+      // Update accessibility attributes
       const isOpen = mobileNav.classList.contains('is-active');
       mobileNav.setAttribute('aria-hidden', !isOpen);
       mobileNavToggle.setAttribute('aria-expanded', isOpen);
     }
 
+    // Attach event listeners
     mobileNavToggle.addEventListener('click', toggleMobileNav);
     mobileNavClose.addEventListener('click', toggleMobileNav);
+    mobileNavOverlay.addEventListener('click', toggleMobileNav);
 
     // Close mobile nav when clicking on links
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav__link, .account-link, .currency-option');
+    const mobileNavLinks = mobileNav.querySelectorAll('.mobile-nav__link, .account-link, .currency-option');
     mobileNavLinks.forEach(link => {
       link.addEventListener('click', toggleMobileNav);
+    });
+
+    // Add escape key support
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && mobileNav.classList.contains('is-active')) {
+        toggleMobileNav();
+      }
     });
   });
 </script>

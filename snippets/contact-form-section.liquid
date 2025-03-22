@@ -1,0 +1,425 @@
+<section class="contact-section section">
+  <div class="page-width">
+    <div class="contact-container">
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <div class="contact-info__content">
+          <h1 class="contact-title">Get in Touch</h1>
+
+          <div class="contact-description">
+            <p>We'd love to hear from you! Whether you have questions about our products, want to share your experience, or are interested in wholesale opportunities, our team is here to help.</p>
+          </div>
+
+          <div class="contact-details">
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-map' %}
+              </div>
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Our Location</h3>
+                <address class="contact-details__text">
+                  Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023
+                </address>
+
+                  href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-details__link"
+                >
+                  Get Directions
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-phone' %}
+              </div>
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Phone</h3>
+                <a href="tel:+919098404225" class="contact-details__text">
+                  +91 90984 04225
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-email' %}
+              </div>
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Email</h3>
+                <a href="mailto:natureburst.shop@gmail.com" class="contact-details__text">
+                  natureburst.shop@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-instagram' %}
+              </div>
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Follow Us</h3>
+
+                  href="https://instagram.com/natureburst.shop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-details__text"
+                >
+                  @natureburst.shop
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-container">
+        <div class="contact-form-wrapper">
+          <h1 class="contact-form__title">Contact Us</h1>
+
+          {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
+                <p class="form-status__message" role="status">
+                  {{ 'templates.contact.form.post_success' | t }}
+                </p>
+              </div>
+            {%- endif -%}
+
+            {%- if form.errors -%}
+              <div class="contact-form__message contact-form__message--error">
+                <h3>{{ 'templates.contact.form.error_heading' | t }}</h3>
+                <ul>
+                  {%- for field in form.errors -%}
+                    <li>{{ form.errors.messages[field] }}</li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+
+            <div class="contact__fields">
+              <div class="field">
+                <input
+                  class="field__input"
+                  type="text"
+                  id="ContactForm-name"
+                  name="contact[name]"
+                  value="{% if form.name %}{{ form.name }}{% endif %}"
+                  placeholder="{{ 'templates.contact.form.name' | t }}"
+                >
+                <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+              </div>
+
+              <div class="field field--required">
+                <input
+                  class="field__input"
+                  type="email"
+                  id="ContactForm-email"
+                  name="contact[email]"
+                  value="{% if form.email %}{{ form.email }}{% endif %}"
+                  placeholder="{{ 'templates.contact.form.email' | t }}"
+                  required
+                  autocorrect="off"
+                  autocapitalize="off"
+                >
+                <label class="field__label" for="ContactForm-email">
+                  {{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field">
+              <textarea
+                rows="10"
+                id="ContactForm-body"
+                class="text-area field__input"
+                name="contact[body]"
+                placeholder="{{ 'templates.contact.form.comment' | t }}"
+              >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+              <label class="form__label field__label" for="ContactForm-body">
+                {{ 'templates.contact.form.comment' | t }}
+              </label>
+            </div>
+
+            <div class="contact__button">
+              <button type="submit" class="button button--primary">
+                {{ 'templates.contact.form.send' | t }}
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* Base section styling */
+.contact-section {
+  padding: 4rem 0;
+}
+
+.contact-container {
+  display: grid;
+  gap: 3rem;
+}
+
+/* Contact Information */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-headings);
+}
+
+.contact-description {
+  margin-bottom: 2rem;
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-details__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-details__icon {
+  background: var(--color-background-primary-light);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.contact-details__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.contact-details__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.contact-details__text {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: var(--transition-base);
+  font-style: normal;
+}
+
+.contact-details__text:hover,
+.contact-details__link:hover {
+  color: var(--color-primary);
+}
+
+.contact-details__link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  display: inline-block;
+  transition: var(--transition-base);
+}
+
+/* Contact Form - Updated Styles */
+.contact-form-container {
+  background: var(--color-background-light);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+}
+
+.contact-form-wrapper {
+  padding: 2rem;
+}
+
+.contact-form__title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-headings);
+}
+
+/* Status messages */
+.form-status {
+  padding: 1.25rem;
+  border-radius: var(--radius-small);
+  margin-bottom: 1.5rem;
+  background-color: #EDF7ED;
+}
+
+.form-status__message {
+  color: #1B5E20;
+  margin: 0;
+}
+
+.contact-form__message--error {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  padding: 1.25rem;
+  border-radius: var(--radius-small);
+  margin-bottom: 1.5rem;
+}
+
+.contact-form__message h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Field styling */
+.contact__fields {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1.5rem;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.field__input,
+.text-area {
+  width: 100%;
+  padding: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background-color: var(--color-white);
+  font-family: var(--font-body);
+  transition: var(--transition-fast);
+}
+
+.field__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  background: var(--color-background-light);
+  padding: 0 0.5rem;
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  pointer-events: none;
+  transition: var(--transition-fast);
+}
+
+.field__input:focus,
+.text-area:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+  outline: none;
+}
+
+.field__input:focus + .field__label,
+.field__input:not(:placeholder-shown) + .field__label,
+.text-area:focus + .field__label,
+.text-area:not(:placeholder-shown) + .field__label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.text-area {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.contact__button {
+  text-align: right;
+}
+
+.button--primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.button--primary:hover {
+  background-color: var(--color-primary-darker);
+}
+
+/* Responsive styles */
+@media screen and (min-width: 768px) {
+  .contact-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .contact-section {
+    padding: 3rem 0;
+  }
+
+  .contact-title,
+  .contact-form__title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .contact-description {
+    text-align: center;
+  }
+
+  .contact__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .contact__button {
+    text-align: center;
+  }
+
+  .button--primary {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-section {
+    padding: 2rem 0;
+  }
+
+  .contact-title,
+  .contact-form__title {
+    font-size: 1.5rem;
+  }
+
+  .contact-details__item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-details__content {
+    align-items: center;
+  }
+
+  .contact-form-wrapper {
+    padding: 1.5rem;
+  }
+}
+</style>

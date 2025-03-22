@@ -1,0 +1,141 @@
+<div class="newsletter section">
+  <div class="page-width">
+    <div class="newsletter__inner">
+      <div class="newsletter__content">
+        <h2 class="newsletter__title">Join our newsletter for new product notification!</h2>
+
+        <div class="newsletter__text">
+          <p>Stay informed about new product arrivals and get exclusive discounts by subscribing to our newsletter.</p>
+        </div>
+      </div>
+
+      {%- form 'customer', id: 'ContactNewsletter', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+
+        <div class="newsletter__field-wrapper">
+          <input
+            id="NewsletterEmail"
+            type="email"
+            name="contact[email]"
+            class="newsletter__field"
+            value="{{ form.email }}"
+            placeholder="{{ 'newsletter.label' | t }}"
+            aria-required="true"
+            required
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+          >
+          <button type="submit" class="newsletter__button" name="commit">
+            Subscribe
+          </button>
+        </div>
+
+        {%- if form.errors -%}
+          <div class="newsletter__message newsletter__message--error">
+            {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+          </div>
+        {%- endif -%}
+
+        {%- if form.posted_successfully? -%}
+          <div class="newsletter__message newsletter__message--success">
+            {{ 'newsletter.success' | t }}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .newsletter {
+    padding: 4rem 0;
+    background-color: #f7f7f7;
+    color: #1a2e37;
+  }
+
+  .newsletter__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .newsletter__content {
+    margin-bottom: 2rem;
+  }
+
+  .newsletter__title {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .newsletter__text {
+    color: #1a2e37;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .newsletter__form {
+    width: 100%;
+  }
+
+  .newsletter__field-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .newsletter__field {
+    flex-grow: 1;
+    min-width: 200px;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid #E5E5E5;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+
+  .newsletter__button {
+    background-color: #2A9D8F;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter__button:hover {
+    background-color: #1E7D74;
+  }
+
+  .newsletter__message {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 4px;
+  }
+
+  .newsletter__message--error {
+    background-color: #FEF2F2;
+    color: #B91C1C;
+  }
+
+  .newsletter__message--success {
+    background-color: #EDF7ED;
+    color: #1B5E20;
+  }
+
+  @media screen and (max-width: 767px) {
+    .newsletter__field-wrapper {
+      flex-direction: column;
+    }
+
+    .newsletter__button {
+      width: 100%;
+    }
+  }
+</style>
