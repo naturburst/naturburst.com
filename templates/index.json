@@ -1,14 +1,23 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero-banner",
       "settings": {
-        "image": "shopify:\/\/shop_images\/tropi-treats-banner.png",
-        "mobile_image": "shopify:\/\/shop_images\/tropi-treats-mobile-banner.png",
+        "image": "shopify://shop_images/tropi-treats-banner.png",
+        "mobile_image": "shopify://shop_images/PHOTO-2025-03-18-11-43-58.jpg",
         "show_buttons": true,
         "shop_button_text": "SHOP NOW",
         "secondary_button_text": "HOW TO USE",
-        "secondary_button_url": "\/pages\/how-to-use"
+        "secondary_button_url": "/pages/how-to-use"
       }
     },
     "featured_products": {
@@ -17,8 +26,10 @@
         "title": "EXPLORE OUR PRODUCTS",
         "collection": "featured-products",
         "products_to_show": 4,
+        "show_rating": true,
+        "enable_quick_add": true,
         "view_all_text": "VIEW ALL PRODUCTS",
-        "view_all_url": "\/collections\/all"
+        "view_all_url": "/collections/all"
       }
     },
     "benefits": {
