@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
   window.mobileNavAlreadyInitialized = true;
   window.MobileNavController = { initialized: true };
 
-  // Core elements
-  const mobileNav = document.getElementById('MobileNav');
-  const mobileNavOverlay = document.getElementById('MobileNavOverlay');
-  const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-  const mobileNavClose = document.querySelector('.mobile-nav__close');
+  // Core elements - using 'let' so we can reassign them later
+  let mobileNav = document.getElementById('MobileNav');
+  let mobileNavOverlay = document.getElementById('MobileNavOverlay');
+  let mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  let mobileNavClose = document.querySelector('.mobile-nav__close');
   const body = document.body;
 
   // Exit early if required elements are missing
