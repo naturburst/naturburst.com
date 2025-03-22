@@ -1,111 +1,200 @@
-// Single-source mobile navigation controller
+/**
+ * Mobile Navigation Controller
+ * A single unified script to handle mobile navigation with proper overlay and event handling
+ */
 document.addEventListener('DOMContentLoaded', function() {
-  // Get elements once
+  // Create a global namespace to avoid conflicts
+  window.MobileNavController = window.MobileNavController || {};
+
+  // Check if already initialized to prevent duplicate event handlers
+  if (window.MobileNavController.initialized) return;
+
+  // Core elements
   const mobileNav = document.getElementById('MobileNav');
   const mobileNavOverlay = document.getElementById('MobileNavOverlay');
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
   const mobileNavClose = document.querySelector('.mobile-nav__close');
   const body = document.body;
 
-  // Disable any previous handlers by creating a global flag
-  window.mobileNavInitialized = true;
-
-  // Add debug mode for troubleshooting
-  const debug = true;
-
-  // Log function that only runs in debug mode
-  function debugLog(...args) {
-    if (debug) console.log(...args);
-  }
-
-  // Exit if required elements don't exist
+  // Exit early if required elements don't exist
   if (!mobileNav || !mobileNavToggle) {
-    console.warn('Mobile navigation elements not found');
+    console.warn('Mobile navigation elements not found - initialization aborted');
     return;
   }
 
-  // Single toggle function that all events will use
+  // Debug mode for troubleshooting (set to false in production)
+  const debug = false;
+
+  /**
+   * Helper to log debug messages
+   */
+  function log(...args) {
+    if (debug) console.log('[MobileNav]', ...args);
+  }
+
+  /**
+   * Toggle the mobile navigation visibility
+   * @param {Event} e - The event that triggered the toggle
+   */
   function toggleMobileNav(e) {
-    // Prevent default only for buttons and links
+    // Only prevent default for clickable elements
     if (e && e.preventDefault && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON')) {
       e.preventDefault();
     }
 
-    debugLog('Toggle event triggered by', e?.target);
+    log('Toggling mobile nav');
 
-    // Toggle classes
+    // Handle the menu state
+    const isCurrentlyOpen = mobileNav.classList.contains('is-active');
+    const willBeOpen = !isCurrentlyOpen;
+
+    // Update visibility classes
     mobileNav.classList.toggle('is-active');
     if (mobileNavOverlay) {
       mobileNavOverlay.classList.toggle('is-active');
     }
-    body.classList.toggle('overflow-hidden');
 
-    // Track state for debugging
-    const isOpen = mobileNav.classList.contains('is-active');
+    // Control body scrolling
+    body.classList.toggle('overflow-hidden', willBeOpen);
 
-    // Update ARIA attributes
-    mobileNav.setAttribute('aria-hidden', !isOpen);
-    mobileNavToggle.setAttribute('aria-expanded', isOpen);
+    // Update accessibility attributes
+    mobileNav.setAttribute('aria-hidden', !willBeOpen);
+    if (mobileNavToggle) {
+      mobileNavToggle.setAttribute('aria-expanded', willBeOpen);
+    }
 
-    debugLog('Menu is now', isOpen ? 'OPEN' : 'CLOSED');
-
-    // Return true to allow the event to continue
-    return true;
+    // Log state change for debugging
+    log('Menu is now', willBeOpen ? 'OPEN' : 'CLOSED');
   }
 
-  // Attach open button handler
-  debugLog('Attaching click handler to mobile toggle button');
-  mobileNavToggle.addEventListener('click', toggleMobileNav);
+  /**
+   * Close the mobile navigation
+   */
+  function closeMobileNav() {
+    if (mobileNav.classList.contains('is-active')) {
+      mobileNav.classList.remove('is-active');
+      if (mobileNavOverlay) {
+        mobileNavOverlay.classList.remove('is-active');
+      }
+      body.classList.remove('overflow-hidden');
 
-  // Attach close button handler
-  if (mobileNavClose) {
-    debugLog('Attaching click handler to close button');
-    mobileNavClose.addEventListener('click', toggleMobileNav);
+      // Update accessibility attributes
+      mobileNav.setAttribute('aria-hidden', 'true');
+      if (mobileNavToggle) {
+        mobileNavToggle.setAttribute('aria-expanded', 'false');
+      }
+
+      log('Menu closed');
+    }
   }
 
-  // Attach overlay handler
-  if (mobileNavOverlay) {
-    debugLog('Attaching click handler to overlay');
-    mobileNavOverlay.addEventListener('click', toggleMobileNav);
+  // Attach event listeners with proper binding and error handling
+  function addEventSafely(element, eventType, handler) {
+    if (!element) return;
+
+    try {
+      element.addEventListener(eventType, handler);
+      log(`Added ${eventType} listener to`, element);
+    } catch (error) {
+      console.error(`Failed to add ${eventType} listener:`, error);
+    }
   }
 
-  // Escape key handler
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
-      debugLog('Escape key pressed, closing menu');
+  // Toggle button handler
+  addEventSafely(mobileNavToggle, 'click', function(e) {
+    toggleMobileNav(e);
+  });
+
+  // Close button handler
+  addEventSafely(mobileNavClose, 'click', function(e) {
+    toggleMobileNav(e);
+  });
+
+  // Overlay click handler (separate element)
+  addEventSafely(mobileNavOverlay, 'click', function(e) {
+    if (e.target === mobileNavOverlay) {
       toggleMobileNav(e);
     }
   });
 
-  // Debug mode HTML inspection
-  if (debug) {
-    // Check for pointer-event issues
-    const styles = getComputedStyle(mobileNav);
-    debugLog('Mobile nav CSS pointer-events:', styles.pointerEvents);
+  // Escape key handler
+  addEventSafely(document, 'keydown', function(e) {
+    if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
+      log('Escape key pressed, closing menu');
+      toggleMobileNav(e);
+    }
+  });
 
-    // Set explicit data attribute for testing
-    mobileNav.setAttribute('data-clickable', 'true');
+  // Make sure all menu items are clickable by preventing event propagation
+  const allInteractiveElements = mobileNav.querySelectorAll('a, button, .account-link, .currency-option');
 
-    // Make nav links report when clicked
-    const allLinks = mobileNav.querySelectorAll('a, button');
-    allLinks.forEach(link => {
-      // Store original click handler if any
-      const originalClick = link.onclick;
+  allInteractiveElements.forEach(element => {
+    addEventSafely(element, 'click', function(e) {
+      // Stop propagation to prevent the event from bubbling up and triggering other handlers
+      e.stopPropagation();
 
-      // Add debug click handler
-      link.onclick = function(e) {
-        debugLog('Link clicked:', this.textContent.trim() || this.className);
+      log('Interactive element clicked:', this.textContent.trim() || this.className);
 
-        // Call original handler if it exists
-        if (typeof originalClick === 'function') {
-          return originalClick.call(this, e);
-        }
+      // Close the menu when links are clicked (optional, comment if not desired)
+      if (this.getAttribute('href') && !this.getAttribute('href').startsWith('#')) {
+        closeMobileNav();
+      }
 
-        // Let event continue normally
-        return true;
-      };
+      // Allow the default action to continue
+      return true;
     });
+  });
+
+  // Mark as initialized to prevent duplicate initialization
+  window.MobileNavController.initialized = true;
+  log('Mobile navigation initialization complete');
+
+  // Apply force clickable styles to ensure all elements are interactive
+  function applyForceClickableStyles() {
+    // Check for an existing style element
+    let styleEl = document.getElementById('mobile-nav-clickable-styles');
+
+    // Create if it doesn't exist
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = 'mobile-nav-clickable-styles';
+      document.head.appendChild(styleEl);
+    }
+
+    // Add CSS rules that ensure clickability
+    styleEl.textContent = `
+      #MobileNav,
+      #MobileNav *,
+      .mobile-nav-overlay {
+        pointer-events: auto !important;
+      }
+
+      #MobileNav {
+        z-index: 9999 !important;
+      }
+
+      #MobileNavOverlay {
+        z-index: 9998 !important;
+      }
+
+      .mobile-nav.is-active {
+        transform: translateX(0) !important;
+        visibility: visible !important;
+      }
+
+      .mobile-nav-overlay.is-active {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      body.overflow-hidden {
+        overflow: hidden !important;
+      }
+    `;
+
+    log('Force clickable styles applied');
   }
 
-  debugLog('Mobile navigation initialization complete');
+  // Apply the styles immediately
+  applyForceClickableStyles();
 });
