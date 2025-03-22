@@ -26,7 +26,7 @@
       </summary>
 
       <div id="CollectionFiltersForm" class="collection-filters__form">
-        {% form 'collection_filters', collection %}
+        {% form 'collection-filters', method: 'get' %}
           <div class="collection-filters__wrapper">
             {%- for filter in results.filters -%}
               <div class="collection-filters__group">

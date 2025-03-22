@@ -10,8 +10,7 @@
 
 {%- if product == blank -%}
   {%- render 'product-card-placeholder' -%}
-  {% return %}
-{%- endif -%}
+{%- else -%}
 
 {%- liquid
   assign product_url = product.url
@@ -186,6 +185,8 @@
     </div>
   </div>
 </div>
+
+{%- endif -%}
 
 <style>
 .product-card {
