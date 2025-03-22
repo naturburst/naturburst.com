@@ -3,7 +3,13 @@
 
   // Wait for DOM to be fully loaded
   document.addEventListener('DOMContentLoaded', function() {
-    initMobileNavigation();
+    // Only initialize if not already handled by the controller
+    if (!window.mobileNavAlreadyInitialized) {
+      console.log('Using original mobile-nav.js initialization');
+      initMobileNavigation();
+    } else {
+      console.log('Skipping mobile-nav.js initialization - already managed by controller');
+    }
   });
 
   /**
@@ -54,16 +60,6 @@
     const mobileNavLinks = mobileNav.querySelectorAll('a');
     mobileNavLinks.forEach(link => {
       link.addEventListener('click', toggleMobileNav);
-    });
-
-    // Also close when clicking outside the menu
-    document.addEventListener('click', function(event) {
-      // If the menu is open and the click is outside the menu
-      if (mobileNav.classList.contains('is-active') &&
-          !mobileNav.contains(event.target) &&
-          event.target !== mobileNavToggle) {
-        toggleMobileNav();
-      }
     });
 
     // Add escape key support
