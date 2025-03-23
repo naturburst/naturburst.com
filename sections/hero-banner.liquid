@@ -83,9 +83,6 @@
 }
 
 .hero-container {
-  {% if section.settings.image %}
-    background-image: url('{{ section.settings.image | img_url: 'master' }}');
-  {% endif %}
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -162,14 +159,9 @@
 /* Mobile responsive adjustments - IMPROVED */
 @media (max-width: 767px) {
   .hero-container {
-    {% if section.settings.mobile_image %}
-      background-image: url('{{ section.settings.mobile_image | img_url: 'master' }}');
-    {% endif %}
-    min-height: auto; /* Remove fixed height */
-    padding-top: 56.25%; /* 16:9 Aspect ratio for mobile banner */
-    padding-bottom: 4rem; /* Space for buttons at bottom */
-    background-size: 100% auto; /* Show full width */
-    background-position: top center;
+    min-height: 450px; /* Fixed height instead of aspect ratio */
+    padding-bottom: 120px; /* Extra space for buttons at bottom */
+    background-position: center top;
     align-items: flex-end;
   }
 
@@ -179,7 +171,7 @@
     justify-content: center;
     width: 100%;
     position: absolute;
-    bottom: 1.5rem;
+    bottom: 20px; /* Position from bottom */
   }
 
   .hero-buttons {
@@ -200,12 +192,12 @@
 /* Small mobile devices - IMPROVED */
 @media (max-width: 480px) {
   .hero-container {
-    padding-top: 75%; /* Taller aspect ratio for smaller screens */
-    padding-bottom: 5rem; /* More space for buttons */
+    min-height: 350px; /* Shorter for smallest screens */
+    padding-bottom: 100px; /* Less padding */
   }
 
   .hero-content {
-    bottom: 1rem;
+    bottom: 15px;
   }
 }
 </style>
