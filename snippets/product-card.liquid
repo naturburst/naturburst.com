@@ -1,11 +1,8 @@
 {% comment %}
-  Product Card Component - Optimized for mobile
-
-  Parameters:
-  - product: (required) The product object to display
-  - show_rating: (optional) Boolean for whether to show the product rating
-  - show_quick_add: (optional) Boolean for whether to include quick add button
-  - show_secondary_image: (optional) Boolean for whether to show alternate image on hover
+  Product Card Component - Enhanced for better image display and consistent styling
+  - Improved image container to maintain full product visibility without cropping
+  - Optimized for both desktop and mobile views
+  - Consistent font styling with rest of site
 {% endcomment %}
 
 {%- if product == blank -%}
@@ -75,15 +72,15 @@
     <a href="{{ product_url }}" class="product-card__image-container {{ color_class }}">
       <div class="product-card__image-wrapper">
         <img
-          src="{{ featured_image | img_url: '400x' }}"
+          src="{{ featured_image | img_url: '500x' }}"
           srcset="
-            {{ featured_image | img_url: '200x' }} 200w,
             {{ featured_image | img_url: '300x' }} 300w,
             {{ featured_image | img_url: '400x' }} 400w,
             {{ featured_image | img_url: '500x' }} 500w,
-            {{ featured_image | img_url: '600x' }} 600w
+            {{ featured_image | img_url: '600x' }} 600w,
+            {{ featured_image | img_url: '800x' }} 800w
           "
-          sizes="(min-width: 1200px) 300px, (min-width: 768px) 250px, 85vw"
+          sizes="(min-width: 1200px) 300px, (min-width: 768px) 280px, 90vw"
           alt="{{ featured_image.alt | escape }}"
           width="{{ featured_image.width }}"
           height="{{ featured_image.height }}"
@@ -93,15 +90,15 @@
 
         {% if secondary_image %}
           <img
-            src="{{ secondary_image | img_url: '400x' }}"
+            src="{{ secondary_image | img_url: '500x' }}"
             srcset="
-              {{ secondary_image | img_url: '200x' }} 200w,
               {{ secondary_image | img_url: '300x' }} 300w,
               {{ secondary_image | img_url: '400x' }} 400w,
               {{ secondary_image | img_url: '500x' }} 500w,
-              {{ secondary_image | img_url: '600x' }} 600w
+              {{ secondary_image | img_url: '600x' }} 600w,
+              {{ secondary_image | img_url: '800x' }} 800w
             "
-            sizes="(min-width: 1200px) 300px, (min-width: 768px) 250px, 85vw"
+            sizes="(min-width: 1200px) 300px, (min-width: 768px) 280px, 90vw"
             alt="{{ secondary_image.alt | escape }}"
             width="{{ secondary_image.width }}"
             height="{{ secondary_image.height }}"
@@ -191,11 +188,12 @@
 <style>
 .product-card {
   height: 100%;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__container {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
@@ -207,16 +205,17 @@
 
 .product-card__container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
+/* Improved image container with better proportions */
 .product-card__image-container {
-  height: 240px;
+  height: 280px; /* Taller container for better display */
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 1.5rem;
   position: relative;
 }
 
@@ -243,19 +242,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible; /* Allow image to be fully visible */
 }
 
+/* Improved image styling for better visibility */
 .product-card__image {
-  max-height: 90%;
-  max-width: 90%;
-  object-fit: contain;
-  transition: all 0.3s ease;
+  max-height: 95%;
+  max-width: 95%;
+  object-fit: contain; /* Ensures full image is shown without cropping */
+  transition: transform 0.4s ease;
 }
 
 .product-card__image--secondary {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
   opacity: 0;
 }
 
@@ -296,9 +300,9 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: var(--color-headings);
+  color: #1a2e37;
   line-height: 1.3;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__title a {
@@ -314,15 +318,15 @@
 
 .product-card__type {
   font-size: 0.9rem;
-  color: var(--color-text-light);
-  font-family: var(--font-body);
+  color: #666;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__weight {
   font-size: 0.9rem;
-  color: var(--color-text-light);
+  color: #666;
   font-weight: 600;
-  font-family: var(--font-body);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__rating {
@@ -361,7 +365,7 @@
 .rating-text {
   margin-left: 0.5rem;
   font-size: 0.85rem;
-  color: var(--color-text-light);
+  color: #666;
 }
 
 .product-card__price {
@@ -369,51 +373,62 @@
 }
 
 .product-card__price-item--regular {
-  color: var(--color-text-light);
+  color: #666;
   text-decoration: line-through;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
-  font-family: var(--font-body);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__price-item--sale {
-  color: var(--color-primary);
+  color: #2A5E41;
   font-weight: 700;
   font-size: 1.3rem;
   margin-bottom: 0;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .product-card__price-item:not(.product-card__price-item--regular):not(.product-card__price-item--sale) {
-  color: var(--color-primary);
+  color: #2A5E41;
   font-weight: 700;
   font-size: 1.3rem;
   margin-bottom: 0;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
 }
 
-.product-card__add-to-cart-btn{
+/* Enhanced button styling */
+.product-card__add-to-cart-btn,
+.product-card__quick-view-btn {
   width: 100%;
   background: #2A5E41;
   color: white;
   font-weight: 600;
   margin-top: auto;
   text-align: center;
-  padding: 0.8rem;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-family: var(--font-heading);
+  padding: 0.9rem;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
   position: relative;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.product-card__add-to-cart-btn:hover{
-  background: #234C36;
+.product-card__add-to-cart-btn:hover,
+.product-card__quick-view-btn:hover {
+  background: #1e472e;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-card__add-to-cart-btn[disabled] {
-  background: var(--color-text-light);
+  background: #aaa;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .loading-overlay__spinner {
@@ -462,17 +477,38 @@
   display: none !important;
 }
 
-/* Responsive styles for tablets */
-@media (max-width: 991px) {
+/* Desktop enhancements */
+@media (min-width: 992px) {
   .product-card__image-container {
-    height: 220px;
+    height: 320px; /* Even taller on desktop */
+  }
+
+  .product-card__title {
+    font-size: 1.25rem;
+  }
+
+  .product-card__price-item--sale,
+  .product-card__price-item:not(.product-card__price-item--regular) {
+    font-size: 1.4rem;
+  }
+}
+
+/* Responsive styles for tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+  .product-card__image-container {
+    height: 260px;
   }
 }
 
 /* Responsive styles for mobile */
 @media (max-width: 767px) {
+  .product-card__container {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
   .product-card__image-container {
-    height: 200px;
+    height: 240px;
   }
 
   .product-card__title {
@@ -481,7 +517,7 @@
 
   .product-card__price-item--sale,
   .product-card__price-item:not(.product-card__price-item--regular) {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .product-card__content {
@@ -492,7 +528,7 @@
 /* Extra small devices */
 @media (max-width: 480px) {
   .product-card__image-container {
-    height: 180px;
+    height: 220px;
   }
 
   .product-card__meta {
@@ -503,7 +539,7 @@
 
   .product-card__add-to-cart-btn,
   .product-card__quick-view-btn {
-    padding: 0.7rem;
+    padding: 0.8rem;
   }
 }
 </style>

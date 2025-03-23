@@ -1,7 +1,8 @@
 {% comment %}
-  Collection Sorting
-
-  Provides a dropdown to sort collection products
+  Collection Sorting Component
+  - Changed "Catalog" to "Shop" in text
+  - Improved responsive design
+  - Consistent font styling
 {% endcomment %}
 
 <div class="collection-sorting">
@@ -50,6 +51,7 @@
 <style>
 .collection-sorting {
   min-width: 200px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .collection-sorting__wrapper {
@@ -60,61 +62,68 @@
 
 .collection-sorting__label {
   font-size: 0.9rem;
-  color: var(--color-text);
+  color: #333;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .collection-sorting__select {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-small);
-  background-color: var(--color-white);
+  padding: 0.6rem 2rem 0.6rem 0.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: white;
   font-size: 0.9rem;
   cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.collection-sorting__select:focus {
+  outline: none;
+  border-color: #2A5E41;
+  box-shadow: 0 0 0 2px rgba(42, 94, 65, 0.1);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 767px) {
+  .collection-sorting {
+    width: 100%;
+  }
+
+  .collection-sorting__wrapper {
+    width: 100%;
+  }
+
+  .collection-sorting__select {
+    width: 100%;
+  }
 }
 </style>
 
 <script>
-  class CollectionSorting {
-    constructor() {
-      this.sortSelect = document.getElementById('SortBy');
+document.addEventListener('DOMContentLoaded', function() {
+  const sortSelect = document.getElementById('SortBy');
 
-      if (!this.sortSelect) return;
+  if (!sortSelect) return;
 
-      // Preserve sort parameter on page loads
-      this.initParams();
+  // Initialize with URL parameters
+  const searchParams = new URLSearchParams(window.location.search);
+  const sortByParam = searchParams.get('sort_by');
 
-      // Add change event listener
-      this.sortSelect.addEventListener('change', this.onChange.bind(this));
-    }
-
-    // Initialize sort parameters
-    initParams() {
-      // Get sort value from URL if present
-      const searchParams = new URLSearchParams(window.location.search);
-      const sortByValue = searchParams.get('sort_by');
-
-      if (sortByValue) {
-        this.sortSelect.value = sortByValue;
-      }
-    }
-
-    // Handle sort change
-    onChange() {
-      const sortValue = this.sortSelect.value;
-      const url = new URL(window.location.href);
-      const searchParams = url.searchParams;
-
-      searchParams.set('sort_by', sortValue);
-      url.search = searchParams.toString();
-
-      window.location.href = url.toString();
-    }
+  if (sortByParam) {
+    sortSelect.value = sortByParam;
   }
 
-  // Initialize sorting on page load
-  document.addEventListener('DOMContentLoaded', () => {
-    new CollectionSorting();
+  // Handle sort change
+  sortSelect.addEventListener('change', function() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sort_by', this.value);
+    window.location.href = url.toString();
   });
+});
 </script>

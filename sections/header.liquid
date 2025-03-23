@@ -16,32 +16,33 @@
           </button>
         </div>
 
-        {%- comment -%} Site logo {%- endcomment -%}
+        {%- comment -%} Site logo with improved visibility {%- endcomment -%}
         <div class="header__logo">
-          {% if section.settings.logo != blank %}
+          {% if settings.logo != blank %}
             <a href="{{ routes.root_url }}" class="header__logo-link">
               <img
-                src="{{ section.settings.logo | img_url: 'master' }}"
-                alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+                src="{{ settings.logo | img_url: 'master' }}"
+                alt="{{ settings.logo.alt | default: shop.name | escape }}"
                 class="header__logo-image"
-                width="{{ section.settings.logo_width }}"
-                height="{{ section.settings.logo_height }}"
+                width="{{ section.settings.logo_width | default: 140 }}"
+                height="auto"
+                loading="eager"
               >
             </a>
           {% else %}
             <a href="{{ routes.root_url }}" class="header__logo-link">
-              <span class="h2">{{ shop.name }}</span>
+              <span class="h2">Nature<span>Burst</span></span>
             </a>
           {% endif %}
         </div>
 
-        {%- comment -%} Desktop navigation {%- endcomment -%}
+        {%- comment -%} Desktop navigation with "Shop" instead of "Catalog" {%- endcomment -%}
         <nav class="header-nav">
           <ul class="site-nav list-unstyled">
             {% for link in linklists.main-menu.links %}
               <li class="site-nav__item{% if link.active %} site-nav__item--active{% endif %}">
-                {% if link.title == 'Shop' or link.title == 'Products' %}
-                  <a href="/collections/featured-products" class="site-nav__link">{{ link.title }}</a>
+                {% if link.title == 'Catalog' %}
+                  <a href="{{ link.url }}" class="site-nav__link">Shop</a>
                 {% else %}
                   <a href="{{ link.url }}" class="site-nav__link">{{ link.title }}</a>
                 {% endif %}
@@ -52,7 +53,6 @@
 
         {%- comment -%} Cart, account and currency selector {%- endcomment -%}
         <div class="header-actions">
-          {%- comment -%} Currency selector with conditional visibility on mobile {%- endcomment -%}
           {% if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 %}
             <div class="currency-selector {% if section.settings.hide_currency_selector_on_mobile %}hide-on-mobile{% endif %}">
               {% form 'currency' %}
@@ -82,92 +82,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Emergency Mobile Nav Fix -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // This is a direct, emergency fix for mobile nav clickability
-        const toggle = document.querySelector('.mobile-nav-toggle');
-        const nav = document.getElementById('MobileNav');
-        const overlay = document.getElementById('MobileNavOverlay') || document.createElement('div');
-
-        if (!nav || !toggle) return;
-
-        // Create overlay if missing
-        if (!document.getElementById('MobileNavOverlay')) {
-          overlay.id = 'MobileNavOverlay';
-          overlay.className = 'mobile-nav-overlay';
-          document.body.appendChild(overlay);
-        }
-
-        // Direct event handlers for guaranteed functionality
-        toggle.onclick = function(e) {
-          e.preventDefault();
-          nav.style.transform = 'translateX(0)';
-          nav.style.visibility = 'visible';
-          overlay.style.opacity = '1';
-          overlay.style.visibility = 'visible';
-          overlay.style.pointerEvents = 'auto';
-          document.body.style.overflow = 'hidden';
-        };
-
-        const closeBtn = document.querySelector('.mobile-nav__close');
-        if (closeBtn) {
-          closeBtn.onclick = function(e) {
-            e.preventDefault();
-            nav.style.transform = 'translateX(-100%)';
-            nav.style.visibility = 'hidden';
-            overlay.style.opacity = '0';
-            overlay.style.visibility = 'hidden';
-            overlay.style.pointerEvents = 'none';
-            document.body.style.overflow = '';
-          };
-        }
-
-        overlay.onclick = function() {
-          nav.style.transform = 'translateX(-100%)';
-          nav.style.visibility = 'hidden';
-          overlay.style.opacity = '0';
-          overlay.style.visibility = 'hidden';
-          overlay.style.pointerEvents = 'none';
-          document.body.style.overflow = '';
-        };
-
-        // Apply critical styles inline for guaranteed effect
-        const style = document.createElement('style');
-        style.innerHTML = `
-          .mobile-nav {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 85% !important;
-            max-width: 350px !important;
-            height: 100vh !important;
-            z-index: 9999 !important;
-            background: white !important;
-          }
-          .mobile-nav * {
-            pointer-events: auto !important;
-          }
-          .mobile-nav-overlay {
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: rgba(0,0,0,0.5) !important;
-            z-index: 9998 !important;
-          }
-          /* Force all links to be clickable */
-          .mobile-nav a, .mobile-nav button {
-            position: relative !important;
-            z-index: 10000 !important;
-            pointer-events: auto !important;
-          }
-        `;
-        document.head.appendChild(style);
-      });
-    </script>
   </header>
 
   {% render 'mobile-nav' %}
@@ -181,10 +95,11 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .site-header {
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
 }
 
 .header-inner {
@@ -195,29 +110,31 @@
 }
 
 /* Logo */
-.header-logo {
+.header__logo {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
-.header-logo-link {
+.header__logo-link {
   display: block;
   color: {{ settings.header_text | default: '#FFFFFF' }};
 }
 
-.header-logo-image {
+.header__logo-image {
   display: block;
-  max-height: 80px;
+  max-height: 60px;
   width: auto;
 }
 
-.header-logo-link span {
-  font-size: 2rem;
+.header__logo-link span {
+  font-size: 1.75rem;
   font-weight: 800;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
 }
 
-.header-logo-link span span {
+.header__logo-link span span {
   color: {{ settings.color_accent | default: '#FFD166' }};
 }
 
@@ -233,14 +150,14 @@
 
 .site-nav__link {
   color: {{ settings.header_text | default: '#FFFFFF' }};
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   padding: 0.75rem 0.5rem;
   font-weight: 700;
   transition: all 0.3s ease;
   position: relative;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
 }
 
 .site-nav__link::after {
@@ -421,7 +338,7 @@
     display: flex; /* Show currency selector on desktop */
   }
 
-  .header-logo {
+  .header__logo {
     margin-right: 2rem;
   }
 }
@@ -431,15 +348,15 @@
     padding: 0.75rem 0;
   }
 
-  .header-logo {
+  .header__logo {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
   }
 
-  .header-logo-image {
-    max-height: 60px;
+  .header__logo-image {
+    max-height: 50px;
   }
 
   .header-actions {
@@ -448,8 +365,8 @@
 }
 
 @media screen and (max-width: 767px) {
-  .header-logo-image {
-    max-height: 50px;
+  .header__logo-image {
+    max-height: 40px;
   }
 }
 </style>

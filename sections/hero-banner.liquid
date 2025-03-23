@@ -12,6 +12,10 @@
             <a href="{{ section.settings.secondary_button_url }}" class="button button--secondary">
               {{ section.settings.secondary_button_text | escape }}
             </a>
+          {% else %}
+            <a href="/pages/how-to-use" class="button button--secondary">
+              {{ section.settings.secondary_button_text | default: 'HOW TO USE' | escape }}
+            </a>
           {% endif %}
         </div>
       {% endif %}
@@ -54,7 +58,8 @@
     {
       "type": "url",
       "id": "secondary_button_url",
-      "label": "Secondary Button URL"
+      "label": "Secondary Button URL",
+      "default": "/pages/how-to-use"
     }
   ],
   "presets": [
@@ -72,7 +77,9 @@
   width: 100%;
   overflow: hidden;
   padding: 0;
+  margin-top: 0; /* Remove gap between header and hero */
   margin-bottom: 2rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .hero-container {
@@ -106,7 +113,7 @@
   justify-content: center;
 }
 
-/* New button styles */
+/* Button styles */
 .button {
   display: inline-block;
   padding: 12px 24px;
@@ -118,7 +125,7 @@
   transition: all 0.3s ease;
   border: none;
   text-decoration: none;
-  font-family: var(--font-heading);
+  font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);

@@ -1,9 +1,8 @@
 {% comment %}
-  Main Collection Product Grid
-
-  - Displays products in a collection
-  - Includes filtering and sorting options
-  - Responsive grid layout
+  Enhanced Collection/Shop Page
+  - Changed "Catalog" label to "Shop" in dropdown
+  - Improved product visibility and sizing in grid layout
+  - Better responsiveness for mobile and desktop
 {% endcomment %}
 
 <div class="collection-grid section">
@@ -20,7 +19,6 @@
   <div class="page-width">
     {% if show_controls %}
       <div class="collection-grid__controls{% if section.settings.filter_type == 'vertical' %} collection-grid__controls--vertical{% endif %}">
-
         {% if section.settings.enable_sorting %}
           {% render 'collection-sorting' %}
         {% endif %}
@@ -140,7 +138,8 @@
 
 <style>
 .collection-grid {
-  padding: 2rem 0 4rem;
+  padding: 3rem 0 4rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .collection-grid__controls {
@@ -151,7 +150,7 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
 }
 
 .collection-grid__controls--vertical {
@@ -165,24 +164,28 @@
 
 .collection-grid__product-count {
   font-size: 0.9rem;
-  color: var(--color-text-light);
+  color: #666;
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
+/* Enhanced grid layout with larger product cards */
 .collection-grid__grid {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+/* Empty state styling */
 .collection-grid__empty {
   text-align: center;
-  padding: 2rem 0;
+  padding: 3rem 0;
 }
 
 .collection-grid__empty p {
   font-size: 1.1rem;
   margin-bottom: 1rem;
+  color: #333;
 }
 
 .collection-grid__empty-filters {
@@ -190,23 +193,51 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  margin-top: 1.5rem;
 }
 
+/* Enhanced for desktop - larger product cards */
 @media (min-width: 992px) {
   .collection-grid__grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
   }
 }
 
+/* Tablet view optimizations */
+@media (min-width: 768px) and (max-width: 991px) {
+  .collection-grid__grid {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile optimizations */
 @media (max-width: 767px) {
   .collection-grid {
-    padding: 1rem 0 3rem;
+    padding: 2rem 0 3rem;
   }
 
   .collection-grid__controls {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+  }
+
+  .collection-grid__grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .collection-grid__empty p {
+    font-size: 1rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .collection-grid__grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
   }
 }
 </style>

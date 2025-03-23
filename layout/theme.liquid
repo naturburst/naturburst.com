@@ -20,14 +20,16 @@
     <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
 
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Improved Font Loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Stylesheets -->
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   {{ 'button.css' | asset_url | stylesheet_tag }}
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- Scripts -->
   <script src="{{ 'mobile-nav-controller.js' | asset_url }}" defer="defer"></script>
@@ -35,39 +37,36 @@
 
   <!-- Shopify required -->
   {{ content_for_header }}
+
+  <style>
+    /* Critical CSS for faster rendering */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Remove gap after announcement bar */
+    .announcement-bar + main {
+      margin-top: 0;
+    }
+
+    /* Remove any extra spacing between sections */
+    .section {
+      margin-top: 0;
+    }
+
+    /* Fix any unwanted gaps between header and content */
+    .site-header + main,
+    .header-wrapper + main,
+    header + main {
+      margin-top: 0;
+    }
+  </style>
 </head>
 
 <body class="template-{{ template.name | handle }}">
-  {% section 'announcement-bar' %}
   {% section 'header' %}
-
-  <div class="announcement-bar">
-    {% if request.design_mode %}
-      <div class="announcement-bar__message">
-        <p>{{ section.settings.text | escape }}</p>
-      </div>
-    {% else %}
-      {% if section.settings.text != blank %}
-        <div class="announcement-bar__message">
-          <p>{{ section.settings.text | escape }}</p>
-        </div>
-      {% endif %}
-    {% endif %}
-  </div>
-  <style>
-    .announcement-bar {
-      background-color: #1b3a27;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-      width: 100%;
-    }
-    @media screen and (max-width: 749px) {
-      .announcement-bar__message {
-        font-size: 0.85rem;
-      }
-    }
-  </style>
 
   <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
     {{ content_for_layout }}

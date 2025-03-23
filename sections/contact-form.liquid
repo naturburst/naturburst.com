@@ -1,7 +1,8 @@
 {% comment %}
   Contact Form Section
-
-  Includes contact form and company information - mobile optimized
+  - Styled to match design from natureburst.shop
+  - Improved layout and responsiveness
+  - Fixed styling issues and spacing
 {% endcomment %}
 
 <section class="contact-section section">
@@ -10,107 +11,93 @@
       <!-- Contact Information -->
       <div class="contact-info">
         <div class="contact-info__content">
-          <h1 class="contact-title">{{ section.settings.heading | escape }}</h1>
+          <h1 class="contact-title">Get in Touch</h1>
 
           <div class="contact-description">
-            {{ section.settings.description }}
+            <p>We'd love to hear from you! Whether you have questions about our products, want to share your experience, or are interested in wholesale opportunities, our team is here to help.</p>
           </div>
 
           <div class="contact-details">
-            {% if section.settings.address != blank %}
-              <div class="contact-details__item">
-                <div class="contact-details__icon">
-                  {% render 'icon-map' %}
-                </div>
-                <div class="contact-details__content">
-                  <h3 class="contact-details__title">Our Location</h3>
-                  <address class="contact-details__text">
-                    {{ section.settings.address }}
-                  </address>
-                  {% if section.settings.map_url != blank %}
-                    <a
-                      href="{{ section.settings.map_url }}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="contact-details__link"
-                    >
-                      Get Directions
-                    </a>
-                  {% endif %}
-                </div>
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-map' %}
               </div>
-            {% endif %}
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Our Location</h3>
+                <address class="contact-details__text">
+                  Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023
+                </address>
+                <a href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-details__link"
+                >
+                  Get Directions
+                </a>
+              </div>
+            </div>
 
-            {% if section.settings.phone != blank %}
-              <div class="contact-details__item">
-                <div class="contact-details__icon">
-                  {% render 'icon-phone' %}
-                </div>
-                <div class="contact-details__content">
-                  <h3 class="contact-details__title">Phone</h3>
-                  <a href="tel:{{ section.settings.phone | replace: ' ', '' }}" class="contact-details__text">
-                    {{ section.settings.phone }}
-                  </a>
-                </div>
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-phone' %}
               </div>
-            {% endif %}
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Phone</h3>
+                <a href="tel:+919098404225" class="contact-details__text">
+                  +91 90984 04225
+                </a>
+              </div>
+            </div>
 
-            {% if section.settings.email != blank %}
-              <div class="contact-details__item">
-                <div class="contact-details__icon">
-                  {% render 'icon-email' %}
-                </div>
-                <div class="contact-details__content">
-                  <h3 class="contact-details__title">Email</h3>
-                  <a href="mailto:{{ section.settings.email }}" class="contact-details__text">
-                    {{ section.settings.email }}
-                  </a>
-                </div>
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-email' %}
               </div>
-            {% endif %}
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Email</h3>
+                <a href="mailto:natureburst.shop@gmail.com" class="contact-details__text">
+                  natureburst.shop@gmail.com
+                </a>
+              </div>
+            </div>
 
-            {% if section.settings.instagram_handle != blank %}
-              <div class="contact-details__item">
-                <div class="contact-details__icon">
-                  {% render 'icon-instagram' %}
-                </div>
-                <div class="contact-details__content">
-                  <h3 class="contact-details__title">Follow Us</h3>
-                  <a
-                    href="https://instagram.com/{{ section.settings.instagram_handle }}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="contact-details__text"
-                  >
-                    @{{ section.settings.instagram_handle }}
-                  </a>
-                </div>
+            <div class="contact-details__item">
+              <div class="contact-details__icon">
+                {% render 'icon-instagram' %}
               </div>
-            {% endif %}
+              <div class="contact-details__content">
+                <h3 class="contact-details__title">Follow Us</h3>
+                <a href="https://instagram.com/natureburst.shop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-details__text"
+                >
+                  @natureburst.shop
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        {% if section.settings.show_map and section.settings.map_url != blank %}
-          <div class="contact-map">
-            <div class="contact-map__wrapper">
-              <iframe
-                src="{{ section.settings.map_url | replace: '/place/', '/embed/place/' | split: '/@' | first }}/@12.9775109,77.5631957,17z/data=!3m1!4b1!4m5!3m4!1s0x3bae161d4bde1ac1:0xd0454380d2d678cd!8m2!3d12.9775109!4d77.5631957"
-                width="100%"
-                height="300"
-                style="border:0;"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
-            </div>
+        <div class="contact-map">
+          <div class="contact-map__wrapper">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.927393510286!2d77.5631957!3d12.9775109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae161d4bde1ac1%3A0xd0454380d2d678cd!2sPRESTIGE%20WEST%20WOODS!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin"
+              width="100%"
+              height="300"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
-        {% endif %}
+        </div>
       </div>
 
-      <!-- Contact Form - Updated Structure -->
+      <!-- Contact Form -->
       <div class="contact-form-container">
         <div class="contact-form-wrapper">
-          <h1 class="contact-form__title">{{ page.title | default: section.settings.heading }}</h1>
+          <h2 class="contact-form__title">Send Us A Message</h2>
 
           {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
             {%- if form.posted_successfully? -%}
@@ -134,51 +121,55 @@
 
             <div class="contact__fields">
               <div class="field">
+                <label for="ContactForm-name" class="field__label">Your Name</label>
                 <input
                   class="field__input"
                   type="text"
                   id="ContactForm-name"
                   name="contact[name]"
                   value="{% if form.name %}{{ form.name }}{% endif %}"
-                  placeholder="{{ 'templates.contact.form.name' | t }}"
                 >
-                <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
               </div>
 
               <div class="field field--required">
+                <label for="ContactForm-email" class="field__label">Your Email <span aria-hidden="true">*</span></label>
                 <input
                   class="field__input"
                   type="email"
                   id="ContactForm-email"
                   name="contact[email]"
                   value="{% if form.email %}{{ form.email }}{% endif %}"
-                  placeholder="{{ 'templates.contact.form.email' | t }}"
                   required
                   autocorrect="off"
                   autocapitalize="off"
                 >
-                <label class="field__label" for="ContactForm-email">
-                  {{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span>
-                </label>
               </div>
             </div>
 
             <div class="field">
+              <label for="ContactForm-subject" class="field__label">Subject</label>
+              <input
+                class="field__input"
+                type="text"
+                id="ContactForm-subject"
+                name="contact[subject]"
+                value="{% if form.subject %}{{ form.subject }}{% endif %}"
+              >
+            </div>
+
+            <div class="field">
+              <label for="ContactForm-body" class="field__label">Your Message</label>
               <textarea
-                rows="10"
+                rows="6"
                 id="ContactForm-body"
                 class="text-area field__input"
                 name="contact[body]"
-                placeholder="{{ 'templates.contact.form.comment' | t }}"
               >{% if form.body %}{{ form.body }}{% endif %}</textarea>
-              <label class="form__label field__label" for="ContactForm-body">
-                {{ 'templates.contact.form.comment' | t }}
-              </label>
             </div>
 
             <div class="contact__button">
               <button type="submit" class="button button--primary">
-                {{ 'templates.contact.form.send' | t }}
+                SEND MESSAGE
               </button>
             </div>
           {%- endform -%}
@@ -188,126 +179,71 @@
   </div>
 </section>
 
-{% schema %}
-{
-  "name": "Contact form",
-  "tag": "section",
-  "class": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Get in Touch"
-    },
-    {
-      "type": "textarea",
-      "id": "description",
-      "label": "Description",
-      "default": "We'd love to hear from you! Whether you have questions about our products, want to share your experience, or are interested in wholesale opportunities, our team is here to help."
-    },
-    {
-      "type": "header",
-      "content": "Contact Information"
-    },
-    {
-      "type": "text",
-      "id": "address",
-      "label": "Address",
-      "default": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_map",
-      "label": "Show map",
-      "default": true
-    },
-    {
-      "type": "url",
-      "id": "map_url",
-      "label": "Google Maps URL",
-      "default": "https://www.google.com/maps/"
-    },
-    {
-      "type": "text",
-      "id": "phone",
-      "label": "Phone number",
-      "default": "+91 90984 04225"
-    },
-    {
-      "type": "text",
-      "id": "email",
-      "label": "Email address",
-      "default": "natureburst.shop@gmail.com"
-    },
-    {
-      "type": "text",
-      "id": "instagram_handle",
-      "label": "Instagram handle",
-      "default": "natureburst.shop",
-      "info": "Without the @ symbol"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Contact form",
-      "category": "Forms"
-    }
-  ]
-}
-{% endschema %}
-
 <style>
 /* Base section styling */
 .contact-section {
-  padding: 4rem 0;
+  padding: 5rem 0;
+  background-color: #f8f9fa;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-container {
   display: grid;
   gap: 3rem;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* Contact Information */
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  background: #2A5E41;
+  color: white;
+}
+
+.contact-info__content {
+  padding: 3rem 2rem;
 }
 
 .contact-title {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
-  color: var(--color-headings);
+  color: white;
+  font-weight: 800;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-description {
-  margin-bottom: 2rem;
-  color: var(--color-text);
+  margin-bottom: 2.5rem;
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.7;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-details {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .contact-details__item {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .contact-details__icon {
-  background: var(--color-background-primary-light);
-  width: 40px;
-  height: 40px;
+  background: rgba(255, 255, 255, 0.15);
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
+  color: white;
   flex-shrink: 0;
 }
 
@@ -321,62 +257,73 @@
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-details__text {
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  transition: var(--transition-base);
+  transition: all 0.3s ease;
   font-style: normal;
+  line-height: 1.6;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-details__text:hover,
 .contact-details__link:hover {
-  color: var(--color-primary);
+  color: white;
 }
 
 .contact-details__link {
-  color: var(--color-primary);
+  color: #FFD166;
   text-decoration: none;
   font-weight: 600;
   margin-top: 0.5rem;
   display: inline-block;
-  transition: var(--transition-base);
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-map {
-  margin-top: 1rem;
   width: 100%;
+  height: 300px;
 }
 
 .contact-map__wrapper {
-  border-radius: var(--radius-base);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: #f5f5f5;
+  width: 100%;
+  height: 100%;
 }
 
-/* Contact Form - Updated Styles */
+.contact-map__wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+/* Contact Form */
 .contact-form-container {
-  background: var(--color-background-light);
-  border-radius: var(--radius-base);
-  overflow: hidden;
+  padding: 0;
+  background: white;
 }
 
 .contact-form-wrapper {
-  padding: 2rem;
+  padding: 3rem 2rem;
 }
 
 .contact-form__title {
-  font-size: 1.75rem;
-  margin-bottom: 1.5rem;
-  color: var(--color-headings);
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  color: #2A5E41;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Status messages */
 .form-status {
   padding: 1.25rem;
-  border-radius: var(--radius-small);
+  border-radius: 8px;
   margin-bottom: 1.5rem;
   background-color: #EDF7ED;
 }
@@ -384,19 +331,22 @@
 .form-status__message {
   color: #1B5E20;
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-form__message--error {
   background-color: #FEF2F2;
   color: #B91C1C;
   padding: 1.25rem;
-  border-radius: var(--radius-small);
+  border-radius: 8px;
   margin-bottom: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .contact-form__message h3 {
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Field styling */
@@ -412,44 +362,33 @@
   margin-bottom: 1.5rem;
 }
 
+.field__label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
 .field__input,
 .text-area {
   width: 100%;
-  padding: 0.875rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-small);
-  background-color: var(--color-white);
-  font-family: var(--font-body);
-  transition: var(--transition-fast);
-}
-
-.field__label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateY(-50%);
-  background: var(--color-background-light);
-  padding: 0 0.5rem;
-  margin-left: 0.5rem;
-  font-size: 0.875rem;
-  color: var(--color-text);
-  pointer-events: none;
-  transition: var(--transition-fast);
+  padding: 0.9rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
 
 .field__input:focus,
 .text-area:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 1px var(--color-primary);
+  border-color: #2A5E41;
+  box-shadow: 0 0 0 3px rgba(42, 94, 65, 0.1);
   outline: none;
-}
-
-.field__input:focus + .field__label,
-.field__input:not(:placeholder-shown) + .field__label,
-.text-area:focus + .field__label,
-.text-area:not(:placeholder-shown) + .field__label {
-  color: var(--color-primary);
-  font-weight: 600;
+  background-color: white;
 }
 
 .text-area {
@@ -458,28 +397,55 @@
 }
 
 .contact__button {
-  text-align: right;
+  margin-top: 1rem;
 }
 
 .button--primary {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  padding: 0.875rem 1.5rem;
+  background-color: #2A5E41;
+  color: white;
+  padding: 0.9rem 2rem;
   border: none;
-  border-radius: var(--radius-small);
+  border-radius: 30px;
   font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .button--primary:hover {
-  background-color: var(--color-primary-dark);
+  background-color: #234C36;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive styles */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .contact-container {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .contact-info {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100%;
+  }
+
+  .contact-form-wrapper {
+    padding: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .contact-section {
+    padding: 4rem 0;
+  }
+
+  .contact-info__content,
+  .contact-form-wrapper {
+    padding: 2.5rem;
   }
 }
 
@@ -490,7 +456,7 @@
 
   .contact-title,
   .contact-form__title {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
     text-align: center;
   }
 
@@ -522,25 +488,23 @@
 
   .contact-title,
   .contact-form__title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+  }
+
+  .contact-info__content,
+  .contact-form-wrapper {
+    padding: 2rem 1.5rem;
   }
 
   .contact-details__item {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 0.75rem;
   }
 
   .contact-details__content {
     align-items: center;
-  }
-
-  .contact-form-wrapper {
-    padding: 1.5rem;
-  }
-
-  .contact-map__wrapper iframe {
-    height: 200px;
   }
 }
 </style>

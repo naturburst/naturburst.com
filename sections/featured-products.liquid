@@ -13,7 +13,8 @@
               {% render 'product-card',
                 product: product,
                 show_rating: section.settings.show_rating,
-                show_quick_add: section.settings.enable_quick_add
+                show_quick_add: section.settings.enable_quick_add,
+                show_secondary_image: true
               %}
             </div>
           {% else %}
@@ -116,10 +117,26 @@
 
 <style>
 .featured-products {
-  padding: 3rem 0;
+  padding: 4rem 0 5rem;
   background: white;
   width: 100%;
   max-width: 100%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-header h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #1a2e37;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Product slider container */
@@ -147,6 +164,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   padding: 1rem 0;
   width: 100%;
+  gap: 1.5rem;
 }
 
 .product-slider__items::-webkit-scrollbar {
@@ -155,32 +173,34 @@
 
 .product-slide {
   flex: 0 0 auto;
-  width: 280px;
-  margin-right: 1.5rem;
+  width: 300px; /* Larger product cards */
+  padding: 0.5rem;
 }
 
-/* Update the slider button styles */
+/* Improved slider button styles */
 .slider-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1;
-  width: 40px;
-  height: 40px;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: #2A5E41;
 }
 
 .slider-button:hover {
-  background: var(--color-primary);
+  background: #2A5E41;
   color: white;
+  transform: translateY(-50%) scale(1.1);
 }
 
 .slider-button--prev {
@@ -193,18 +213,22 @@
 
 .view-all-container {
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 
 .view-all-btn {
   display: inline-flex;
   align-items: center;
-  background: var(--color-primary);
+  background: #2A5E41;
   color: white;
   font-weight: 600;
-  padding: 0.8rem 1.5rem;
-  border-radius: 5px;
+  padding: 0.9rem 1.8rem;
+  border-radius: 30px;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .arrow-icon {
@@ -213,24 +237,27 @@
 }
 
 .view-all-btn:hover {
-  background: var(--color-primary-darker);
+  background: #1e472e;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .view-all-btn:hover .arrow-icon {
-  transform: translateX(3px);
+  transform: translateX(5px);
 }
 
-/* Responsive adjustments */
-@media (min-width: 768px) {
+/* Desktop layout (larger grid display) */
+@media (min-width: 992px) {
   .product-slider {
-    padding: 0 50px;
-    max-width: 100%;
+    padding: 0 60px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .product-slider__items {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem;
     justify-content: space-between;
     padding: 1rem 0;
     overflow-x: visible;
@@ -238,39 +265,85 @@
 
   .product-slide {
     width: 100%;
-    margin-right: 0;
-  }
-}
-
-@media (min-width: 1200px) {
-  .product-slider {
-    padding: 0 60px;
-  }
-
-  .product-slider__items {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
-@media (max-width: 767px) {
-  .product-slider {
     padding: 0;
   }
+  
+  /* Show navigation buttons only on hover on desktop */
+  .slider-button {
+    opacity: 0.7;
+  }
+  
+  .product-slider:hover .slider-button {
+    opacity: 1;
+  }
+}
+
+/* Tablet layout */
+@media (min-width: 768px) and (max-width: 991px) {
+  .product-slider {
+    padding: 0 50px;
+  }
+  
+  .product-slider__items {
+    gap: 1.5rem;
+  }
+  
+  .product-slide {
+    width: 260px;
+  }
+  
+  .section-header h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Mobile layout - one product at a time */
+@media (max-width: 767px) {
+  .featured-products {
+    padding: 2rem 0 3rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .product-slider {
+    padding: 0 40px;
+  }
 
   .product-slider__items {
-    padding: 1rem 1rem;
-    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0;
   }
 
   .product-slide {
-    width: 85vw;
+    width: 100%;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 0;
+  }
+  
+  .slider-button {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .slider-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .view-all-btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
   }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Locate all product sliders on the page
+  // Get all product sliders on the page
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach(slider => {
@@ -279,63 +352,128 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!prevBtn || !nextBtn) return;
 
-    // Calculate slide width including margins for accurate scrolling
+    // Calculate slide width for accurate scrolling
     const getSlideWidth = () => {
       const slides = slider.querySelectorAll('.product-slide');
       if (slides.length > 0) {
-        const slideWidth = slides[0].getBoundingClientRect().width;
+        // Get actual width including margins and padding
+        const slideRect = slides[0].getBoundingClientRect();
+        // Full width including margins
         const computedStyle = window.getComputedStyle(slides[0]);
-        const marginRight = parseFloat(computedStyle.marginRight);
-        return slideWidth + marginRight;
+        const marginRight = parseFloat(computedStyle.marginRight || 0);
+        const marginLeft = parseFloat(computedStyle.marginLeft || 0);
+        return slideRect.width + marginRight + marginLeft;
       }
-      return 280 + 24; // Fallback dimensions if calculation fails
+      return 280; // Fallback dimension
     };
 
-    // Only enable scroll behavior on mobile viewports
-    const shouldScroll = () => window.innerWidth < 768;
+    // Check if we're in mobile view for scroll behavior
+    const isMobileView = () => window.innerWidth < 768;
 
-    // Previous button click handler
+    // Previous button handler with improved navigation
     prevBtn.addEventListener('click', () => {
-      if (!shouldScroll()) return;
+      if (!isMobileView() && !slider.classList.contains('slider-mobile-mode')) {
+        // On desktop, do nothing - grid layout
+        return;
+      }
 
       const itemWidth = getSlideWidth();
-      const currentIndex = Math.round(slider.scrollLeft / itemWidth);
+      const currentScroll = slider.scrollLeft;
       const slideCount = slider.querySelectorAll('.product-slide').length;
-
+      
+      // Calculate current slide index more precisely
+      const currentIndex = Math.round(currentScroll / itemWidth);
+      
       // Loop to end if at beginning
       if (currentIndex <= 0) {
-        slider.scrollLeft = itemWidth * (slideCount - 1);
+        slider.scrollTo({ 
+          left: itemWidth * (slideCount - 1), 
+          behavior: 'smooth' 
+        });
       } else {
-        slider.scrollTo({ left: itemWidth * (currentIndex - 1), behavior: 'smooth' });
+        slider.scrollTo({ 
+          left: itemWidth * (currentIndex - 1), 
+          behavior: 'smooth' 
+        });
       }
     });
 
-    // Next button click handler
+    // Next button handler with improved navigation
     nextBtn.addEventListener('click', () => {
-      if (!shouldScroll()) return;
+      if (!isMobileView() && !slider.classList.contains('slider-mobile-mode')) {
+        // On desktop, do nothing - grid layout
+        return;
+      }
 
       const itemWidth = getSlideWidth();
       const slideCount = slider.querySelectorAll('.product-slide').length;
-      const currentIndex = Math.round(slider.scrollLeft / itemWidth);
-
+      const currentScroll = slider.scrollLeft;
+      
+      // Calculate current slide index more precisely
+      const currentIndex = Math.round(currentScroll / itemWidth);
+      
       // Loop to beginning if at end
       if (currentIndex >= slideCount - 1) {
-        slider.scrollLeft = 0;
+        slider.scrollTo({ 
+          left: 0, 
+          behavior: 'smooth' 
+        });
       } else {
-        slider.scrollTo({ left: itemWidth * (currentIndex + 1), behavior: 'smooth' });
+        slider.scrollTo({ 
+          left: itemWidth * (currentIndex + 1), 
+          behavior: 'smooth' 
+        });
       }
     });
 
-    // Toggle navigation visibility based on viewport width
-    const updateNavVisibility = () => {
-      const shouldShowNav = shouldScroll();
-      prevBtn.style.display = shouldShowNav ? 'flex' : 'none';
-      nextBtn.style.display = shouldShowNav ? 'flex' : 'none';
+    // Toggle slider mode based on viewport width
+    const updateSliderMode = () => {
+      if (isMobileView()) {
+        slider.classList.add('slider-mobile-mode');
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+        
+        // Reset scroll position when switching to mobile
+        const firstVisibleIndex = Math.round(slider.scrollLeft / getSlideWidth());
+        slider.scrollTo({ 
+          left: firstVisibleIndex * getSlideWidth(), 
+          behavior: 'auto' 
+        });
+      } else {
+        slider.classList.remove('slider-mobile-mode');
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      }
     };
 
     // Initialize and set up resize listener
-    updateNavVisibility();
-    window.addEventListener('resize', updateNavVisibility);
+    updateSliderMode();
+    window.addEventListener('resize', updateSliderMode);
+    
+    // Enable swipe navigation for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+    
+    slider.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, {passive: true});
+    
+    const handleSwipe = () => {
+      if (!isMobileView()) return;
+      
+      const swipeThreshold = 50; // Minimum distance for swipe detection
+      if (touchEndX < touchStartX - swipeThreshold) {
+        // Swipe left - go to next slide
+        nextBtn.click();
+      } else if (touchEndX > touchStartX + swipeThreshold) {
+        // Swipe right - go to previous slide
+        prevBtn.click();
+      }
+    };
   });
 });
-</script>
