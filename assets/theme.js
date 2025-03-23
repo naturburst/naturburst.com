@@ -159,19 +159,19 @@
 
   /**
    * Mobile Navigation
-   * MODIFIED: Check for mobile-nav-controller.js before initializing
    */
   theme.mobileNav = {
     /**
      * Initialize mobile navigation
      */
     init() {
-      // Check if the new controller is already handling mobile navigation
+      // Check if the dedicated controller is already handling mobile navigation
       if (window.MobileNavController && window.MobileNavController.initialized) {
         console.log('Mobile nav already initialized by controller - skipping theme.js initialization');
         return;
       }
 
+      // If the controller isn't available, this acts as a fallback
       const mobileNav = document.getElementById('MobileNav');
       const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
       const mobileNavClose = document.querySelector('.mobile-nav__close');
@@ -180,6 +180,40 @@
       if (!mobileNav || !mobileNavToggle) {
         console.error('Mobile nav elements not found. MobileNav:', !!mobileNav, 'Toggle:', !!mobileNavToggle);
         return;
+      }
+
+      // Ensure we have an overlay (critical for mobile navigation)
+      let mobileNavOverlay = document.getElementById('MobileNavOverlay');
+      if (!mobileNavOverlay) {
+        mobileNavOverlay = document.createElement('div');
+        mobileNavOverlay.id = 'MobileNavOverlay';
+        mobileNavOverlay.className = 'mobile-nav-overlay';
+        document.body.appendChild(mobileNavOverlay);
+
+        // Add essential overlay styles if missing
+        const style = document.createElement('style');
+        style.textContent = `
+          .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+          }
+
+          .mobile-nav-overlay.is-active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+          }
+        `;
+        document.head.appendChild(style);
       }
 
       // Enhanced toggle function with improved event handling
@@ -192,15 +226,18 @@
         // Debug current state before toggling
         console.log('Toggling mobile nav. Current state:', mobileNav.classList.contains('is-active'));
 
-        mobileNav.classList.toggle('is-active');
-        body.classList.toggle('overflow-hidden');
-
         const isOpen = mobileNav.classList.contains('is-active');
-        mobileNav.setAttribute('aria-hidden', !isOpen);
-        mobileNavToggle.setAttribute('aria-expanded', isOpen);
+        const willBeOpen = !isOpen;
+
+        mobileNav.classList.toggle('is-active');
+        mobileNavOverlay.classList.toggle('is-active');
+        body.classList.toggle('overflow-hidden', willBeOpen);
+
+        mobileNav.setAttribute('aria-hidden', !willBeOpen);
+        mobileNavToggle.setAttribute('aria-expanded', willBeOpen);
 
         // Ensure proper accessibility with focus trapping
-        if (isOpen) {
+        if (willBeOpen) {
           theme.a11y.trapFocus(mobileNav);
           console.log('Mobile nav opened, focus trapped');
         } else {
@@ -211,16 +248,22 @@
 
       // Use explicit event handling with error detection
       mobileNavToggle.addEventListener('click', function(e) {
-        console.log('Mobile nav toggle clicked');
+        console.log('Mobile nav toggle clicked in theme.js');
         toggleMobileNav(e);
       });
 
       if (mobileNavClose) {
         mobileNavClose.addEventListener('click', function(e) {
-          console.log('Mobile nav close clicked');
+          console.log('Mobile nav close clicked in theme.js');
           toggleMobileNav(e);
         });
       }
+
+      // Clicking the overlay closes the menu
+      mobileNavOverlay.addEventListener('click', function(e) {
+        console.log('Overlay clicked in theme.js');
+        toggleMobileNav(e);
+      });
 
       // Ensure links close the menu with proper event delegation
       const mobileNavLinks = mobileNav.querySelectorAll('a[href]:not([href="#"])');
@@ -239,6 +282,12 @@
           toggleMobileNav();
         }
       });
+
+      // Expose the controller globally for other scripts to use
+      window.MobileNavController = {
+        initialized: true,
+        toggle: toggleMobileNav
+      };
     }
   };
 

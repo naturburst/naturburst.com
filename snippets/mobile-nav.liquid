@@ -114,7 +114,6 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   visibility: hidden;
-  pointer-events: auto; /* Ensure clickable */
 }
 
 .mobile-nav.is-active {
@@ -151,7 +150,6 @@ body.overflow-hidden {
   display: flex;
   flex-direction: column;
   height: 100%;
-  pointer-events: auto; /* Ensure all inner elements are clickable */
 }
 
 .mobile-nav__header {
@@ -202,7 +200,6 @@ body.overflow-hidden {
   gap: 2rem;
   flex: 1;
   background-color: #ffffff;
-  pointer-events: auto; /* Explicitly enable pointer events */
 }
 
 .mobile-nav__section-title {
@@ -237,8 +234,7 @@ body.overflow-hidden {
   text-align: center;
   transition: all 0.3s ease;
   text-decoration: none;
-  cursor: pointer; /* Explicitly make it look clickable */
-  pointer-events: auto; /* Ensure click events work */
+  cursor: pointer;
 }
 
 .account-link:hover {
@@ -263,7 +259,6 @@ body.overflow-hidden {
   color: #1a2e37;
   cursor: pointer;
   transition: all 0.3s ease;
-  pointer-events: auto; /* Ensure click events work */
 }
 
 .currency-option.active {
@@ -301,10 +296,9 @@ body.overflow-hidden {
   color: #1a2e37;
   font-weight: 500;
   text-decoration: none;
-  cursor: pointer; /* Explicitly make it look clickable */
-  pointer-events: auto; /* Ensure click events work */
-  position: relative; /* Ensure proper stacking context */
-  z-index: 1; /* Higher than default */
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .mobile-nav__link svg {
@@ -357,10 +351,9 @@ body.overflow-hidden {
   font-weight: 600;
   transition: all 0.3s ease;
   text-decoration: none;
-  cursor: pointer; /* Explicitly make it look clickable */
-  pointer-events: auto; /* Ensure click events work */
-  position: relative; /* Ensure proper stacking context */
-  z-index: 1; /* Higher than default */
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .contact-btn:hover {
@@ -386,17 +379,16 @@ body.overflow-hidden {
   transform: scale(1.1);
 }
 
+/* Ensure all interactive elements are properly clickable */
 .mobile-nav__link,
 .account-link,
 .currency-option,
 .mobile-nav__close,
 .contact-btn {
-  pointer-events: auto !important;
-  position: relative !important;
-  z-index: 1001 !important;
-}
-
-.mobile-nav__inner * {
-  pointer-events: auto !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  transform: translateZ(0);
+  will-change: transform;
+  position: relative;
+  z-index: 1;
 }
 </style>

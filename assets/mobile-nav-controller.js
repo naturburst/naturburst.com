@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Prevent duplicate initializations
-  if (window.mobileNavAlreadyInitialized) return;
-  window.mobileNavAlreadyInitialized = true;
+  // Create a global controller object to avoid initialization conflicts
+  window.MobileNavController = window.MobileNavController || {};
+
+  // Skip if already initialized to prevent duplicate event listeners
+  if (window.MobileNavController.initialized) return;
 
   // Core elements
   const mobileNav = document.getElementById('MobileNav');
@@ -11,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Exit if essential elements are missing
   if (!mobileNav || !mobileNavToggle) {
-    console.error('Mobile nav elements not found');
+    console.error('Mobile nav elements not found:', {
+      mobileNav: !!mobileNav,
+      mobileNavToggle: !!mobileNavToggle
+    });
     return;
   }
 
@@ -25,76 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Apply critical CSS fixes
-  applyRequiredStyles();
-
-  // CORE FUNCTIONS
-
-  // Toggle the mobile menu state
-  function toggleMobileNav(e) {
-    if (e) e.preventDefault();
-
-    const isOpen = mobileNav.classList.contains('is-active');
-    const willBeOpen = !isOpen;
-
-    // Update UI state
-    mobileNav.classList.toggle('is-active');
-    mobileNavOverlay.classList.toggle('is-active');
-    body.classList.toggle('overflow-hidden', willBeOpen);
-
-    // Update accessibility attributes
-    mobileNav.setAttribute('aria-hidden', String(!willBeOpen));
-    mobileNavToggle.setAttribute('aria-expanded', String(willBeOpen));
-
-    // Handle focus management
-    if (window.theme && window.theme.a11y) {
-      if (willBeOpen) {
-        window.theme.a11y.trapFocus(mobileNav);
-      } else {
-        window.theme.a11y.removeTrapFocus();
-      }
-    }
-  }
-
-  // Close the menu and navigate to a link
-  function handleNavLinkClick(e) {
-    const link = e.currentTarget;
-    const href = link.getAttribute('href');
-
-    // Only handle actual navigation links
-    if (href && href !== '#' && !href.startsWith('javascript:')) {
-      // Stop event from bubbling to parent elements
-      e.stopPropagation();
-
-      // Allow normal behavior for ctrl/cmd+click (open in new tab)
-      if (!e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-
-        // Close the menu
-        closeMenu();
-
-        // Navigate after brief delay to allow animation
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      }
-    }
-  }
-
-  // Close the menu without toggling
-  function closeMenu() {
-    mobileNav.classList.remove('is-active');
-    mobileNavOverlay.classList.remove('is-active');
-    body.classList.remove('overflow-hidden');
-
-    mobileNav.setAttribute('aria-hidden', 'true');
-    mobileNavToggle.setAttribute('aria-expanded', 'false');
-
-    if (window.theme && window.theme.a11y) {
-      window.theme.a11y.removeTrapFocus();
-    }
-  }
-
-  // Inject critical styles
   function applyRequiredStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -152,18 +87,101 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
   }
 
+  // Toggle the mobile menu state
+  function toggleMobileNav(e) {
+    if (e) {
+      e.preventDefault();
+      console.log('Toggle event triggered by:', e.currentTarget.className);
+    }
+
+    const isOpen = mobileNav.classList.contains('is-active');
+    const willBeOpen = !isOpen;
+
+    console.log('Mobile nav state change:', isOpen ? 'open → close' : 'closed → open');
+
+    // Update UI state
+    mobileNav.classList.toggle('is-active');
+    mobileNavOverlay.classList.toggle('is-active');
+    body.classList.toggle('overflow-hidden', willBeOpen);
+
+    // Update accessibility attributes
+    mobileNav.setAttribute('aria-hidden', String(!willBeOpen));
+    mobileNavToggle.setAttribute('aria-expanded', String(willBeOpen));
+
+    // Handle focus management
+    if (window.theme && window.theme.a11y) {
+      if (willBeOpen) {
+        window.theme.a11y.trapFocus(mobileNav);
+      } else {
+        window.theme.a11y.removeTrapFocus();
+      }
+    }
+  }
+
+  // Close the menu without toggling
+  function closeMenu() {
+    console.log('Closing mobile nav');
+    mobileNav.classList.remove('is-active');
+    mobileNavOverlay.classList.remove('is-active');
+    body.classList.remove('overflow-hidden');
+
+    mobileNav.setAttribute('aria-hidden', 'true');
+    mobileNavToggle.setAttribute('aria-expanded', 'false');
+
+    if (window.theme && window.theme.a11y) {
+      window.theme.a11y.removeTrapFocus();
+    }
+  }
+
+  // Close the menu and navigate to a link
+  function handleNavLinkClick(e) {
+    const link = e.currentTarget;
+    const href = link.getAttribute('href');
+
+    // Only handle actual navigation links
+    if (href && href !== '#' && !href.startsWith('javascript:')) {
+      // Stop event from bubbling to parent elements
+      e.stopPropagation();
+
+      // Allow normal behavior for ctrl/cmd+click (open in new tab)
+      if (!e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+
+        // Close the menu
+        closeMenu();
+
+        // Navigate after brief delay to allow animation
+        setTimeout(() => {
+          window.location.href = href;
+        }, 200);
+      }
+    }
+  }
+
+  // Apply the required styles
+  applyRequiredStyles();
+
   // EVENT BINDINGS
 
   // Toggle button opens/closes the menu
-  mobileNavToggle.addEventListener('click', toggleMobileNav);
+  mobileNavToggle.addEventListener('click', function(e) {
+    console.log('Mobile nav toggle clicked');
+    toggleMobileNav(e);
+  });
 
   // Close button in the menu
   if (mobileNavClose) {
-    mobileNavClose.addEventListener('click', toggleMobileNav);
+    mobileNavClose.addEventListener('click', function(e) {
+      console.log('Mobile nav close clicked');
+      toggleMobileNav(e);
+    });
   }
 
   // Clicking the overlay closes the menu
-  mobileNavOverlay.addEventListener('click', toggleMobileNav);
+  mobileNavOverlay.addEventListener('click', function(e) {
+    console.log('Overlay clicked');
+    toggleMobileNav(e);
+  });
 
   // Escape key closes the menu
   document.addEventListener('keydown', function(e) {
@@ -178,6 +196,12 @@ document.addEventListener('DOMContentLoaded', function() {
     link.addEventListener('click', handleNavLinkClick);
   });
 
-  // Debug info
+  // Store reference to toggle function for external access
+  window.MobileNavController = {
+    initialized: true,
+    toggle: toggleMobileNav,
+    close: closeMenu
+  };
+
   console.log('MobileNavController: Successfully initialized');
 });
