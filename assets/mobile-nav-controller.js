@@ -1,207 +1,135 @@
+// COMPLETELY REPLACE mobile-nav-controller.js with this code
 document.addEventListener('DOMContentLoaded', function() {
-  // Create a global controller object to avoid initialization conflicts
-  window.MobileNavController = window.MobileNavController || {};
-
-  // Skip if already initialized to prevent duplicate event listeners
-  if (window.MobileNavController.initialized) return;
-
-  // Core elements
-  const mobileNav = document.getElementById('MobileNav');
+  // Direct references to needed elements
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+  const mobileNav = document.getElementById('MobileNav');
   const mobileNavClose = document.querySelector('.mobile-nav__close');
+  const mobileNavOverlay = document.getElementById('MobileNavOverlay');
   const body = document.body;
 
-  // Exit if essential elements are missing
-  if (!mobileNav || !mobileNavToggle) {
-    console.error('Mobile nav elements not found:', {
-      mobileNav: !!mobileNav,
-      mobileNavToggle: !!mobileNavToggle
-    });
-    return;
-  }
+  // Exit if elements don't exist
+  if (!mobileNavToggle || !mobileNav) return;
 
-  // Create and configure overlay
-  let mobileNavOverlay = document.getElementById('MobileNavOverlay');
+  // Create overlay if it doesn't exist
   if (!mobileNavOverlay) {
-    mobileNavOverlay = document.createElement('div');
-    mobileNavOverlay.id = 'MobileNavOverlay';
-    mobileNavOverlay.className = 'mobile-nav-overlay';
-    document.body.appendChild(mobileNavOverlay);
+    const overlay = document.createElement('div');
+    overlay.id = 'MobileNavOverlay';
+    overlay.className = 'mobile-nav-overlay';
+    document.body.appendChild(overlay);
   }
 
-  // Apply critical CSS fixes
-  function applyRequiredStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-      /* Mobile nav overlay */
-      .mobile-nav-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
-        pointer-events: none;
-      }
-
-      .mobile-nav-overlay.is-active {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-      }
-
-      /* Menu container */
-      .mobile-nav {
-        z-index: 1000;
-        pointer-events: auto !important;
-      }
-
-      .mobile-nav.is-active {
-        transform: translateX(0) !important;
-        visibility: visible !important;
-      }
-
-      /* Ensure all interactive elements are clickable */
-      .mobile-nav__inner * {
-        pointer-events: auto !important;
-      }
-
-      .mobile-nav__link,
-      .account-link,
-      .currency-option,
-      .mobile-nav__close,
-      .contact-btn {
-        position: relative !important;
-        z-index: 10 !important;
-      }
-
-      /* Prevent page scrolling when menu is open */
-      body.overflow-hidden {
-        overflow: hidden !important;
-      }
-    `;
-    document.head.appendChild(style);
+  // Simple open function with direct manipulation
+  function openMobileNav() {
+    mobileNav.style.transform = 'translateX(0)';
+    mobileNav.style.visibility = 'visible';
+    mobileNavOverlay.style.opacity = '1';
+    mobileNavOverlay.style.visibility = 'visible';
+    mobileNavOverlay.style.pointerEvents = 'auto';
+    body.style.overflow = 'hidden';
   }
 
-  // Toggle the mobile menu state
-  function toggleMobileNav(e) {
-    if (e) {
-      e.preventDefault();
-      console.log('Toggle event triggered by:', e.currentTarget.className);
-    }
+  // Simple close function with direct manipulation
+  function closeMobileNav() {
+    mobileNav.style.transform = 'translateX(-100%)';
+    mobileNav.style.visibility = 'hidden';
+    mobileNavOverlay.style.opacity = '0';
+    mobileNavOverlay.style.visibility = 'hidden';
+    mobileNavOverlay.style.pointerEvents = 'none';
+    body.style.overflow = '';
+  }
 
-    const isOpen = mobileNav.classList.contains('is-active');
-    const willBeOpen = !isOpen;
-
-    console.log('Mobile nav state change:', isOpen ? 'open → close' : 'closed → open');
-
-    // Update UI state
-    mobileNav.classList.toggle('is-active');
-    mobileNavOverlay.classList.toggle('is-active');
-    body.classList.toggle('overflow-hidden', willBeOpen);
-
-    // Update accessibility attributes
-    mobileNav.setAttribute('aria-hidden', String(!willBeOpen));
-    mobileNavToggle.setAttribute('aria-expanded', String(willBeOpen));
-
-    // Handle focus management
-    if (window.theme && window.theme.a11y) {
-      if (willBeOpen) {
-        window.theme.a11y.trapFocus(mobileNav);
-      } else {
-        window.theme.a11y.removeTrapFocus();
-      }
+  // Simple toggle function
+  function toggleMobileNav() {
+    if (mobileNav.style.visibility === 'visible') {
+      closeMobileNav();
+    } else {
+      openMobileNav();
     }
   }
 
-  // Close the menu without toggling
-  function closeMenu() {
-    console.log('Closing mobile nav');
-    mobileNav.classList.remove('is-active');
-    mobileNavOverlay.classList.remove('is-active');
-    body.classList.remove('overflow-hidden');
+  // Clear any existing event listeners
+  const newToggle = mobileNavToggle.cloneNode(true);
+  mobileNavToggle.parentNode.replaceChild(newToggle, mobileNavToggle);
 
-    mobileNav.setAttribute('aria-hidden', 'true');
-    mobileNavToggle.setAttribute('aria-expanded', 'false');
-
-    if (window.theme && window.theme.a11y) {
-      window.theme.a11y.removeTrapFocus();
-    }
-  }
-
-  // Close the menu and navigate to a link
-  function handleNavLinkClick(e) {
-    const link = e.currentTarget;
-    const href = link.getAttribute('href');
-
-    // Only handle actual navigation links
-    if (href && href !== '#' && !href.startsWith('javascript:')) {
-      // Stop event from bubbling to parent elements
-      e.stopPropagation();
-
-      // Allow normal behavior for ctrl/cmd+click (open in new tab)
-      if (!e.ctrlKey && !e.metaKey) {
-        e.preventDefault();
-
-        // Close the menu
-        closeMenu();
-
-        // Navigate after brief delay to allow animation
-        setTimeout(() => {
-          window.location.href = href;
-        }, 200);
-      }
-    }
-  }
-
-  // Apply the required styles
-  applyRequiredStyles();
-
-  // EVENT BINDINGS
-
-  // Toggle button opens/closes the menu
-  mobileNavToggle.addEventListener('click', function(e) {
-    console.log('Mobile nav toggle clicked');
-    toggleMobileNav(e);
+  // Add event listeners for both click and touch events
+  newToggle.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openMobileNav();
   });
 
-  // Close button in the menu
+  // Clear any existing listeners on close button
   if (mobileNavClose) {
-    mobileNavClose.addEventListener('click', function(e) {
-      console.log('Mobile nav close clicked');
-      toggleMobileNav(e);
+    const newClose = mobileNavClose.cloneNode(true);
+    mobileNavClose.parentNode.replaceChild(newClose, mobileNavClose);
+
+    newClose.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeMobileNav();
     });
   }
 
-  // Clicking the overlay closes the menu
-  mobileNavOverlay.addEventListener('click', function(e) {
-    console.log('Overlay clicked');
-    toggleMobileNav(e);
+  // Clear any existing listeners on overlay
+  const newOverlay = mobileNavOverlay.cloneNode(true);
+  mobileNavOverlay.parentNode.replaceChild(newOverlay, mobileNavOverlay);
+
+  newOverlay.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    closeMobileNav();
   });
 
-  // Escape key closes the menu
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
-      toggleMobileNav();
-    }
-  });
-
-  // Make all navigation links clickable with proper behavior
-  const navLinks = mobileNav.querySelectorAll('.mobile-nav__link, .account-link');
+  // Make sure all links in the mobile nav are clickable
+  const navLinks = mobileNav.querySelectorAll('a, button');
   navLinks.forEach(link => {
-    link.addEventListener('click', handleNavLinkClick);
+    const newLink = link.cloneNode(true);
+    link.parentNode.replaceChild(newLink, link);
+
+    newLink.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
   });
 
-  // Store reference to toggle function for external access
-  window.MobileNavController = {
-    initialized: true,
-    toggle: toggleMobileNav,
-    close: closeMenu
-  };
+  // Add essential styles directly to ensure everything works
+  const styles = `
+    .mobile-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 85%;
+      max-width: 350px;
+      height: 100vh;
+      z-index: 1001;
+      background: white;
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+      visibility: hidden;
+      overflow-y: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
 
-  console.log('MobileNavController: Successfully initialized');
+    .mobile-nav * {
+      pointer-events: auto !important;
+    }
+
+    .mobile-nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+  `;
+
+  const styleSheet = document.createElement('style');
+  styleSheet.type = 'text/css';
+  styleSheet.innerHTML = styles;
+  document.head.appendChild(styleSheet);
 });
