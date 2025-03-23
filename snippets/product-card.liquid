@@ -1,8 +1,8 @@
 {% comment %}
-  Product Card Component - Enhanced for better image display and consistent styling
-  - Improved image container to maintain full product visibility without cropping
-  - Optimized for both desktop and mobile views
-  - Consistent font styling with rest of site
+  Enhanced Product Card Component
+  - Improved image container to better fill available space
+  - Fixed mobile styling issues
+  - Maintained consistent font styling
 {% endcomment %}
 
 {%- if product == blank -%}
@@ -208,14 +208,14 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-/* Improved image container with better proportions */
+/* IMPROVED image container with better proportions and fill */
 .product-card__image-container {
-  height: 280px; /* Taller container for better display */
+  height: 280px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 0.75rem; /* Reduced padding to allow more space for images */
   position: relative;
 }
 
@@ -245,10 +245,12 @@
   overflow: visible; /* Allow image to be fully visible */
 }
 
-/* Improved image styling for better visibility */
+/* IMPROVED image styling for better visibility and fill */
 .product-card__image {
-  max-height: 95%;
-  max-width: 95%;
+  max-height: 100%; /* Increased to fill container */
+  max-width: 100%; /* Increased to fill container */
+  width: auto;
+  height: auto;
   object-fit: contain; /* Ensures full image is shown without cropping */
   transition: transform 0.4s ease;
 }
@@ -477,10 +479,11 @@
   display: none !important;
 }
 
-/* Desktop enhancements */
+/* IMPROVED Desktop enhancements */
 @media (min-width: 992px) {
   .product-card__image-container {
     height: 320px; /* Even taller on desktop */
+    padding: 0.5rem; /* Even less padding for more image space */
   }
 
   .product-card__title {
@@ -493,14 +496,15 @@
   }
 }
 
-/* Responsive styles for tablets */
+/* IMPROVED Responsive styles for tablets */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-card__image-container {
     height: 260px;
+    padding: 0.5rem;
   }
 }
 
-/* Responsive styles for mobile */
+/* IMPROVED Responsive styles for mobile */
 @media (max-width: 767px) {
   .product-card__container {
     max-width: 300px;
@@ -509,6 +513,7 @@
 
   .product-card__image-container {
     height: 240px;
+    padding: 0.5rem; /* Less padding on mobile */
   }
 
   .product-card__title {
@@ -525,10 +530,11 @@
   }
 }
 
-/* Extra small devices */
+/* IMPROVED Extra small devices */
 @media (max-width: 480px) {
   .product-card__image-container {
     height: 220px;
+    padding: 0.25rem; /* Minimal padding for smallest screens */
   }
 
   .product-card__meta {

@@ -1,10 +1,3 @@
-{% comment %}
-  Enhanced Footer Component
-  - Improved visual design and structure
-  - Better responsive behavior
-  - Consistent font styling
-{% endcomment %}
-
 <footer class="site-footer" role="contentinfo">
   <div class="wave-divider">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
@@ -105,6 +98,7 @@
   left: 0;
   width: 100%;
   line-height: 0;
+  overflow: hidden;
 }
 
 .wave-divider svg {
@@ -315,19 +309,24 @@
   }
 }
 
-/* Mobile responsiveness */
+/* IMPROVED Mobile responsiveness */
 @media (max-width: 767px) {
   .site-footer {
     padding: 4rem 0 2rem;
     text-align: center;
   }
 
+  .wave-divider svg {
+    height: 40px; /* Smaller wave for mobile */
+  }
+
   .footer-content {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .logo-section {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
   }
 
   .logo-section h3 {
@@ -337,6 +336,8 @@
   .logo-section p {
     margin-left: auto;
     margin-right: auto;
+    font-size: 1rem;
+    max-width: 100%; /* Full width on mobile */
   }
 
   .contact-info {
@@ -345,6 +346,7 @@
 
   .contact-item {
     justify-content: center;
+    width: 100%;
   }
 
   .social-icons {
@@ -353,7 +355,12 @@
 
   .links-section {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .link-group h4 {
+    text-align: center;
   }
 
   .link-group ul {
@@ -361,11 +368,15 @@
   }
 
   .link-group a {
+    display: block;
     padding: 0.25rem 0;
+    width: 100%;
+    text-align: center;
   }
 
   .footer-address {
-    max-width: 280px;
+    max-width: 100%;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
   }
@@ -376,11 +387,14 @@
   }
 
   .bottom-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     text-align: center;
   }
 
-  .payment-methods {
-    margin-bottom: 1rem;
+  .payment-methods img {
+    max-width: 250px;
   }
 }
 
@@ -395,19 +409,32 @@
   }
 
   .logo-section p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-item {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .contact-item svg {
-    margin-right: 0.75rem;
+    margin-right: 0;
   }
 
-  .contact-item span {
+  .link-group h4 {
+    font-size: 1.2rem;
+  }
+
+  .link-group a {
     font-size: 0.95rem;
   }
 
   .payment-methods img {
-    max-width: 250px;
+    max-width: 220px;
+  }
+
+  .copyright__content {
+    font-size: 0.85rem;
   }
 }
 </style>
