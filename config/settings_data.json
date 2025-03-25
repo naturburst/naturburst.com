@@ -26,7 +26,7 @@
     "footer_email": "natureburst.shop@gmail.com",
     "footer_phone": "+91 90984 04225",
     "footer_address": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023",
-    "footer_instagram": "natureburst.shop",
+    "footer_instagram": "tropitreats.shop",
     "footer_facebook": "https://www.facebook.com/profile.php?id=61574435489769",
     "sections": {
       "announcement-bar": {
@@ -73,11 +73,7 @@
         },
         "header": {
           "type": "header",
-          "settings": {
-            "logo_width": 140,
-            "header_background": "#2A5E41",
-            "header_text": "#FFFFFF"
-          }
+          "settings": {}
         }
       },
       "content_for_index": []
