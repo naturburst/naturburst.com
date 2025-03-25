@@ -1,443 +1,216 @@
 <footer class="site-footer" role="contentinfo">
-  <div class="wave-divider">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
-      <path
-        fill="#FFF"
-        fill-opacity="1"
-        d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-      ></path>
-    </svg>
-  </div>
-
-  <div class="page-width">
+  <div class="footer-container">
     <div class="footer-content">
-      <div class="logo-section">
-        <h3>Nature<span>Burst</span></h3>
+      <div class="footer-title">
+        <h1>Nature<span>Burst</span></h1>
         <p>Premium freeze-dried fruits with all the natural goodness. No additives, no preservatives - just pure fruit bliss that keeps all the nutrition intact.</p>
+      </div>
 
-        <div class="contact-info">
-          <div class="contact-item">
-            {% render 'icon-email' %}
-            <span>natureburst.shop@gmail.com</span>
-          </div>
-          <div class="contact-item">
-            {% render 'icon-phone-alt' %}
-            <span>+91 90984 04225</span>
-          </div>
+      <div class="footer-contact">
+        <div class="contact-item">
+          <span class="icon">{% render 'icon-email' %}</span>
+          <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a>
         </div>
 
-        <div class="social-icons">
-          <a href="https://www.instagram.com/natureburst.shop" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            {% render 'icon-instagram' %}
-          </a>
-          <a href="https://www.facebook.com/profile.php?id=61574435489769" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            {% render 'icon-facebook' %}
-          </a>
+        <div class="contact-item">
+          <span class="icon">{% render 'icon-phone-alt' %}</span>
+          <a href="tel:+919098404225">+91 90984 04225</a>
         </div>
       </div>
 
-      <div class="links-section">
-        <div class="link-group">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/collections/all">Shop</a></li>
-            <li><a href="/pages/how-to-use">How to Use</a></li>
-            <li><a href="/pages/contact">Contact</a></li>
-            <li><a href="/policies/refund-policy">Refund Policy</a></li>
-            <li><a href="/policies/terms-of-service">Terms of Service</a></li>
-          </ul>
-        </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/natureburst.shop" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
+          {% render 'icon-instagram' %}
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61574435489769" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon">
+          {% render 'icon-facebook' %}
+        </a>
+      </div>
 
-        <div class="link-group location-group">
-          <h4>Visit Us</h4>
-          <address class="footer-address">
-            Prestige West Woods, <br>
-            Magadi Road, Gopalpura, <br>
-            Bengaluru, Karnataka 560023
-          </address>
+      <div class="footer-links">
+        <h2>Quick Links</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/collections/all">Shop</a></li>
+          <li><a href="/pages/how-to-use">How To Use</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+        </ul>
+      </div>
 
-          <a href="https://maps.app.goo.gl/KaVpZLHZUk5bY9H79" target="_blank" rel="noopener noreferrer" class="directions-btn">
-            <div class="map-indicator">
-              {% render 'icon-map' %} Get Directions
-            </div>
-          </a>
-        </div>
+      <div class="footer-location">
+        <h2>Visit Us</h2>
+        <address>
+          Prestige West Woods<br>
+          Magadi Road, Gopalpura<br>
+          Bengaluru, Karnataka 560023
+        </address>
       </div>
     </div>
 
-    <div class="bottom-section">
-      <div class="payment-methods">
-        <img src="{{ 'payment-methods.png' | asset_url }}" alt="Payment methods" width="300" height="30" loading="lazy">
-      </div>
-
-      <div class="footer__copyright">
-        <small class="copyright__content">&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.</small>
-      </div>
+    <div class="footer-copyright">
+      <span>natureburst.shop</span>
     </div>
   </div>
 </footer>
 
 <style>
-/* Main footer container */
 .site-footer {
-  position: relative;
-  background: #2A5E41;
-  color: #ffffff;
-  padding: 5rem 0 2rem 0;
+  background-color: #2A5E41;
+  color: #fff;
+  width: 100%;
+  padding: 40px 0 0 0;
+  margin: 0;
   font-family: 'Montserrat', sans-serif;
-  width: 100%;
-  overflow: hidden;
-  display: block; /* Ensure footer is displayed */
-  z-index: 2; /* Ensure footer stays visible */
 }
 
-/* Wave divider effect at the top */
-.wave-divider {
-  position: absolute;
-  top: 0;
-  left: 0;
+.footer-container {
   width: 100%;
-  line-height: 0;
-  overflow: hidden;
+  max-width: 100%;
 }
 
-.wave-divider svg {
-  width: 100%;
-  height: 60px;
-}
-
-/* Main content area */
 .footer-content {
-  display: grid;
-  gap: 3rem;
-  margin-bottom: 3rem;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Logo and branding section */
-.logo-section h3 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  font-weight: 800;
-  font-family: 'Montserrat', sans-serif;
+.footer-title h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: #fff;
+  text-align: left;
 }
 
-.logo-section h3 span {
+.footer-title span {
   color: #FFD166;
 }
 
-.logo-section p {
+.footer-title p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2rem;
-  max-width: 500px;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  font-family: 'Montserrat', sans-serif;
 }
 
-/* Contact information styling */
-.contact-info {
+.footer-contact {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .contact-item {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
-.contact-item svg {
-  margin-right: 1rem;
+.contact-item .icon {
   color: #FFD166;
-  flex-shrink: 0;
 }
 
-.contact-item span {
+.contact-item a {
   color: rgba(255, 255, 255, 0.9);
-  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  font-size: 1rem;
 }
 
-/* Social media icons */
-.social-icons {
+.footer-social {
   display: flex;
-  gap: 1rem;
+  gap: 15px;
+  margin-bottom: 40px;
 }
 
-.social-icons a {
-  width: 40px;
-  height: 40px;
+.social-icon {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  align-items: center;
+  color: #fff;
+  transition: background-color 0.3s ease;
 }
 
-.social-icons a:hover {
-  background: #FFD166;
+.social-icon:hover {
+  background-color: #FFD166;
   color: #2A5E41;
-  transform: translateY(-3px);
 }
 
-/* Footer links sections */
-.links-section {
-  display: grid;
-  gap: 2.5rem;
+.footer-links, .footer-location {
+  margin-bottom: 30px;
 }
 
-.link-group h4 {
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
+.footer-links h2, .footer-location h2 {
+  font-size: 1.5rem;
   font-weight: 700;
+  margin-bottom: 20px;
   color: #FFD166;
-  font-family: 'Montserrat', sans-serif;
 }
 
-.link-group ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
+.footer-links ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.link-group a {
-  color: rgba(255, 255, 255, 0.85);
-  transition: all 0.3s ease;
-  font-size: 1.05rem;
-  font-family: 'Montserrat', sans-serif;
-  text-decoration: none;
+.footer-links li {
+  margin-bottom: 15px;
 }
 
-.link-group a:hover {
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
   color: #FFD166;
-  padding-left: 0.5rem;
 }
 
-/* Address styling */
-.footer-address {
-  color: rgba(255, 255, 255, 0.85);
+.footer-location address {
   font-style: normal;
-  line-height: 1.8;
-  margin-bottom: 1.25rem;
-  font-size: 1.05rem;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-/* Get directions button */
-.directions-btn {
-  text-decoration: none;
-  display: inline-block;
-}
-
-.map-indicator {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.6rem 1.2rem;
-  border-radius: 30px;
-  color: white;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.map-indicator:hover {
-  background: #FFD166;
-  color: #2A5E41;
-  transform: translateY(-2px);
-}
-
-.map-indicator svg {
-  margin-right: 0.5rem;
-}
-
-/* Bottom section with payment methods and copyright */
-.bottom-section {
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.payment-methods img {
-  max-width: 300px;
-  height: auto;
-}
-
-.footer__copyright {
+.footer-copyright {
+  background-color: #2A5E41;
+  padding: 15px 0;
   text-align: center;
+  border-top: none;
+  margin-top: 20px;
 }
 
-.copyright__content {
+.footer-copyright span {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
-  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
 }
 
-/* Responsive layout for desktop */
 @media (min-width: 768px) {
   .footer-content {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
+    padding: 0 40px;
   }
 
-  .links-section {
-    grid-template-columns: 1fr 1fr;
+  .footer-links, .footer-location {
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
   }
 
-  .bottom-section {
-    flex-direction: row;
-    justify-content: space-between;
-    padding-top: 2.5rem;
-  }
-}
-
-@media (min-width: 992px) {
-  .footer-content {
-    grid-template-columns: 1.1fr 0.9fr;
-  }
-
-  .links-section {
-    grid-template-columns: repeat(2, 1fr);
+  .footer-location {
+    margin-left: 10%;
   }
 }
 
-/* FIXED Mobile responsiveness */
 @media (max-width: 767px) {
-  .site-footer {
-    padding: 4rem 0 2rem;
-    display: block !important; /* Force display on mobile */
-  }
-
-  .wave-divider svg {
-    height: 40px; /* Smaller wave for mobile */
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .logo-section {
-    margin-bottom: 0;
-    text-align: center;
-  }
-
-  .logo-section h3 {
-    font-size: 2rem;
-  }
-
-  .logo-section p {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1rem;
-    max-width: 100%; /* Full width on mobile */
-  }
-
-  .contact-info {
-    align-items: center;
-  }
-
-  .contact-item {
-    justify-content: center;
-    width: 100%;
-  }
-
-  .social-icons {
-    justify-content: center;
-  }
-
-  .links-section {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    width: 100%;
-    text-align: center;
-  }
-
-  .link-group h4 {
-    text-align: center;
-  }
-
-  .link-group ul {
-    align-items: center;
-  }
-
-  .link-group a {
-    display: block;
-    padding: 0.25rem 0;
-    width: 100%;
-    text-align: center;
-  }
-
-  .footer-address {
-    max-width: 100%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .directions-btn {
-    display: table;
-    margin: 0 auto;
-  }
-
-  .bottom-section {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    text-align: center;
-  }
-
-  .payment-methods img {
-    max-width: 250px;
-  }
-}
-
-/* FIXED Extra small devices optimization */
-@media (max-width: 480px) {
-  .site-footer {
-    padding: 3.5rem 0 1.5rem;
-  }
-
-  .logo-section h3 {
-    font-size: 1.8rem;
-  }
-
-  .logo-section p {
-    font-size: 0.95rem;
-  }
-
-  .contact-item {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .contact-item svg {
-    margin-right: 0;
-  }
-
-  .link-group h4 {
-    font-size: 1.2rem;
-  }
-
-  .link-group a {
-    font-size: 0.95rem;
-  }
-
-  .payment-methods img {
-    max-width: 220px;
-  }
-
-  .copyright__content {
-    font-size: 0.85rem;
+  .footer-title h1 {
+    font-size: 2.5rem;
   }
 }
 </style>
