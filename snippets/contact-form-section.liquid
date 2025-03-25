@@ -80,14 +80,14 @@
             {%- if form.posted_successfully? -%}
               <div class="form-status form-status-list form__message" tabindex="-1" autofocus>
                 <p class="form-status__message" role="status">
-                  {{ 'templates.contact.form.post_success' | t }}
+                  Thanks for contacting us! We'll get back to you as soon as possible.
                 </p>
               </div>
             {%- endif -%}
 
             {%- if form.errors -%}
               <div class="contact-form__message contact-form__message--error">
-                <h3>{{ 'templates.contact.form.error_heading' | t }}</h3>
+                <h3>Error</h3>
                 <ul>
                   {%- for field in form.errors -%}
                     <li>{{ form.errors.messages[field] }}</li>
@@ -104,7 +104,7 @@
                   id="ContactForm-name"
                   name="contact[name]"
                   value="{% if form.name %}{{ form.name }}{% endif %}"
-                  placeholder="{{ 'templates.contact.form.name' | t }}"
+                  placeholder="Name"
                 >
                 <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
               </div>
@@ -116,13 +116,13 @@
                   id="ContactForm-email"
                   name="contact[email]"
                   value="{% if form.email %}{{ form.email }}{% endif %}"
-                  placeholder="{{ 'templates.contact.form.email' | t }}"
+                  placeholder="Email"
                   required
                   autocorrect="off"
                   autocapitalize="off"
                 >
                 <label class="field__label" for="ContactForm-email">
-                  {{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span>
+                  Email <span aria-hidden="true">*</span>
                 </label>
               </div>
             </div>
@@ -133,16 +133,16 @@
                 id="ContactForm-body"
                 class="text-area field__input"
                 name="contact[body]"
-                placeholder="{{ 'templates.contact.form.comment' | t }}"
+                placeholder="Comment"
               >{% if form.body %}{{ form.body }}{% endif %}</textarea>
               <label class="form__label field__label" for="ContactForm-body">
-                {{ 'templates.contact.form.comment' | t }}
+                Comment
               </label>
             </div>
 
             <div class="contact__button">
               <button type="submit" class="button button--primary">
-                {{ 'templates.contact.form.send' | t }}
+                Send
               </button>
             </div>
           {%- endform -%}
