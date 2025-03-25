@@ -11,7 +11,6 @@
           <span class="icon">{% render 'icon-email' %}</span>
           <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a>
         </div>
-
         <div class="contact-item">
           <span class="icon">{% render 'icon-phone-alt' %}</span>
           <a href="tel:+919098404225">+91 90984 04225</a>
@@ -19,22 +18,19 @@
       </div>
 
       <div class="footer-social">
-        <a href="https://www.instagram.com/natureburst.shop" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-icon">
-          {% render 'icon-instagram' %}
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=61574435489769" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-icon">
-          {% render 'icon-facebook' %}
-        </a>
+        <a href="https://www.instagram.com/natureburst.shop" class="social-icon">{% render 'icon-instagram' %}</a>
+        <a href="https://www.facebook.com/profile.php?id=61574435489769" class="social-icon">{% render 'icon-facebook' %}</a>
       </div>
 
-      <div class="footer-links">
-        <h2>Quick Links</h2>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/collections/all">Shop</a></li>
-          <li><a href="/pages/how-to-use">How To Use</a></li>
-          <li><a href="/pages/contact">Contact</a></li>
-        </ul>
+      <div class="footer-accordion">
+        <button class="accordion-toggle">Quick Links</button>
+        <div class="accordion-content">
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/collections/all">Shop</a></li>
+            <li><a href="/pages/contact">Contact</a></li>
+          </ul>
+        </div>
       </div>
 
       <div class="footer-location">
@@ -53,33 +49,40 @@
   </div>
 </footer>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.querySelector(".accordion-toggle");
+    const content = document.querySelector(".accordion-content");
+    toggle.addEventListener("click", () => {
+      content.classList.toggle("active");
+    });
+  });
+</script>
+
 <style>
 .site-footer {
   background-color: #2A5E41;
   color: #fff;
-  width: 100%;
-  padding: 40px 0 0 0;
-  margin: 0;
   font-family: 'Montserrat', sans-serif;
+  padding: 40px 0 0 0;
+  width: 100%;
 }
 
 .footer-container {
   width: 100%;
-  max-width: 100%;
 }
 
 .footer-content {
-  padding: 0 20px;
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
 }
 
 .footer-title h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin: 0 0 20px 0;
+  margin-bottom: 20px;
   color: #fff;
-  text-align: left;
 }
 
 .footer-title span {
@@ -87,10 +90,10 @@
 }
 
 .footer-title p {
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 30px;
-  color: rgba(255, 255, 255, 0.9);
 }
 
 .footer-contact {
@@ -103,7 +106,7 @@
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .contact-item .icon {
@@ -112,24 +115,24 @@
 
 .contact-item a {
   color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
   font-size: 1rem;
+  text-decoration: none;
 }
 
 .footer-social {
   display: flex;
   gap: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .social-icon {
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   color: #fff;
   transition: background-color 0.3s ease;
 }
@@ -139,21 +142,32 @@
   color: #2A5E41;
 }
 
-.footer-links, .footer-location {
+.footer-accordion {
   margin-bottom: 30px;
 }
 
-.footer-links h2, .footer-location h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
+.accordion-toggle {
+  background: none;
+  border: none;
   color: #FFD166;
+  font-size: 1.5rem;
+  text-align: left;
+  padding: 0;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-.footer-links ul {
+.accordion-content {
+  display: none;
+}
+
+.accordion-content.active {
+  display: block;
+}
+
+.footer-links {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .footer-links li {
@@ -162,55 +176,67 @@
 
 .footer-links a {
   color: #fff;
-  text-decoration: none;
   font-size: 1.1rem;
-  display: block;
-  transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .footer-links a:hover {
   color: #FFD166;
 }
 
+.footer-location {
+  margin-bottom: 30px;
+}
+
+.footer-location h2 {
+  font-size: 1.5rem;
+  color: #FFD166;
+  margin-bottom: 10px;
+}
+
 .footer-location address {
   font-style: normal;
   font-size: 1rem;
-  line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
 }
 
 .footer-copyright {
-  background-color: #2A5E41;
-  padding: 15px 0;
   text-align: center;
-  border-top: none;
-  margin-top: 20px;
+  padding: 15px 0;
+  background-color: #2A5E41;
 }
 
 .footer-copyright span {
-  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 @media (min-width: 768px) {
-  .footer-content {
-    padding: 0 40px;
+  .accordion-toggle,
+  .accordion-content {
+    display: none !important;
   }
 
-  .footer-links, .footer-location {
-    display: inline-block;
-    vertical-align: top;
-    width: 45%;
+  .footer-links {
+    display: block !important;
+  }
+
+  .footer-content {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-title,
+  .footer-contact,
+  .footer-social,
+  .footer-location {
+    flex: 1 1 40%;
   }
 
   .footer-location {
-    margin-left: 10%;
-  }
-}
-
-@media (max-width: 767px) {
-  .footer-title h1 {
-    font-size: 2.5rem;
+    margin-left: auto;
   }
 }
 </style>
