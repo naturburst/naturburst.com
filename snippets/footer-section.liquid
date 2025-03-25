@@ -18,11 +18,11 @@
         <div class="contact-info">
           <div class="contact-item">
             {% render 'icon-email' %}
-            <span>natureburst.shop@gmail.com</span>
+            <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a>
           </div>
           <div class="contact-item">
             {% render 'icon-phone-alt' %}
-            <span>+91 90984 04225</span>
+            <a href="tel:+919098404225">+91 90984 04225</a>
           </div>
         </div>
 
@@ -52,12 +52,7 @@
             Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023
           </address>
 
-
-            href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="directions-btn"
-          >
+          <a href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/" target="_blank" rel="noopener noreferrer" class="directions-btn">
             <div class="map-indicator">
               {% render 'icon-map' %} Get Directions
             </div>
@@ -89,9 +84,9 @@
 .site-footer {
   position: relative;
   background: #2A5E41;
-  color: var(--color-white);
+  color: var(--color-white, #FFFFFF);
   padding: 5rem 0 2rem 0;
-  font-family: var(--font-body);
+  font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 .wave-divider {
@@ -107,6 +102,12 @@
   height: 60px;
 }
 
+.page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
 .footer-content {
   display: grid;
   gap: 3rem;
@@ -117,7 +118,7 @@
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
   font-weight: 800;
-  font-family: var(--font-heading);
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
 }
 
 .logo-section h3 span {
@@ -130,7 +131,7 @@
   max-width: 500px;
   font-size: 1.1rem;
   line-height: 1.7;
-  font-family: var(--font-body);
+  font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 .contact-info {
@@ -150,9 +151,14 @@
   color: #FFD166;
 }
 
-.contact-item span {
+.contact-item a {
   color: rgba(255, 255, 255, 0.9);
-  font-family: var(--font-body);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-item a:hover {
+  color: #FFD166;
 }
 
 .social-icons {
@@ -165,7 +171,7 @@
   height: 40px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--color-white);
+  color: var(--color-white, #FFFFFF);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,7 +194,7 @@
   font-size: 1.3rem;
   font-weight: 700;
   color: #FFD166;
-  font-family: var(--font-heading);
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
 }
 
 .link-group ul {
@@ -202,9 +208,10 @@
 
 .link-group a {
   color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
   transition: all 0.3s ease;
   font-size: 1.05rem;
-  font-family: var(--font-body);
+  font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 .link-group a:hover {
@@ -218,7 +225,7 @@
   line-height: 1.7;
   margin-bottom: 1rem;
   font-size: 1.05rem;
-  font-family: var(--font-body);
+  font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 .directions-btn {
@@ -235,7 +242,7 @@
   color: white;
   font-weight: 500;
   transition: all 0.3s ease;
-  font-family: var(--font-heading);
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
 }
 
 .map-indicator:hover {
@@ -256,9 +263,10 @@
   gap: 1.5rem;
 }
 
-.payment-methods img {
-  max-width: 300px;
-  height: auto;
+.payment-methods {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .payment-icons {
@@ -280,7 +288,7 @@
 .copyright__content {
   color: rgba(255, 255, 255, 0.7);
   font-size: 0.95rem;
-  font-family: var(--font-body);
+  font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 /* Desktop styles */
@@ -302,7 +310,7 @@
 
 @media (min-width: 992px) {
   .footer-content {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .links-section {
@@ -316,6 +324,10 @@
     padding: 4rem 0 2rem;
   }
 
+  .logo-section {
+    text-align: center;
+  }
+
   .logo-section h3 {
     font-size: 2rem;
     text-align: center;
@@ -324,10 +336,16 @@
   .logo-section p {
     text-align: center;
     font-size: 1rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .contact-info {
     align-items: center;
+  }
+
+  .contact-item {
+    justify-content: center;
   }
 
   .social-icons {
@@ -356,8 +374,8 @@
     justify-content: center;
   }
 
-  .payment-methods img {
-    max-width: 250px;
+  .payment-methods {
+    max-width: 100%;
   }
 }
 
@@ -376,13 +394,10 @@
   }
 
   .contact-item {
-    flex-direction: column;
+    flex-direction: row; /* Keep horizontal for better appearance */
     text-align: center;
     gap: 0.5rem;
-  }
-
-  .contact-item svg {
-    margin-right: 0;
+    justify-content: center;
   }
 
   .payment-icons {
