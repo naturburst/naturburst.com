@@ -20,9 +20,9 @@
     "type_header_font": "montserrat_n7",
     "type_body_font": "poppins_n4",
     "logo": "shopify://shop_images/hero.jpg",
-    "logo_width": 160,
+    "logo_width": 250,
     "show_announcement": true,
-    "announcement_text": "FREE SHIPPING ON ORDERS ABOVE $25",
+    "announcement_text": "FREE SHIPPING ON ORDERS ABOVE Rs. 1500",
     "footer_email": "natureburst.shop@gmail.com",
     "footer_phone": "+91 90984 04225",
     "footer_address": "Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023",
@@ -41,7 +41,14 @@
         "settings": {}
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {
