@@ -1,10 +1,3 @@
-{% comment %}
-  Contact Form Section
-  - Styled to match design from natureburst.shop
-  - Improved layout and responsiveness
-  - Fixed styling issues and spacing
-{% endcomment %}
-
 <section class="contact-section section">
   <div class="page-width">
     <div class="contact-container">
@@ -27,11 +20,7 @@
                 <address class="contact-details__text">
                   Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023
                 </address>
-                <a href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="contact-details__link"
-                >
+                <a href="https://maps.app.goo.gl/KaVpZLHZUk5bY9H79" target="_blank" rel="noopener noreferrer" class="contact-details__link">
                   Get Directions
                 </a>
               </div>
@@ -67,29 +56,11 @@
               </div>
               <div class="contact-details__content">
                 <h3 class="contact-details__title">Follow Us</h3>
-                <a href="https://instagram.com/natureburst.shop"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="contact-details__text"
-                >
+                <a href="https://instagram.com/natureburst.shop" target="_blank" rel="noopener noreferrer" class="contact-details__text">
                   @natureburst.shop
                 </a>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="contact-map">
-          <div class="contact-map__wrapper">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.927393510286!2d77.5631957!3d12.9775109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae161d4bde1ac1%3A0xd0454380d2d678cd!2sPRESTIGE%20WEST%20WOODS!5e0!3m2!1sen!2sin!4v1650000000000!5m2!1sen!2sin"
-              width="100%"
-              height="300"
-              style="border:0;"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
           </div>
         </div>
       </div>
@@ -285,23 +256,6 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.contact-map {
-  width: 100%;
-  height: 300px;
-}
-
-.contact-map__wrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.contact-map__wrapper iframe {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border: none;
-}
-
 /* Contact Form */
 .contact-form-container {
   padding: 0;
@@ -468,16 +422,27 @@
     grid-template-columns: 1fr;
   }
 
-  .contact-map__wrapper iframe {
-    height: 250px;
-  }
-
   .contact__button {
     text-align: center;
   }
 
   .button--primary {
     width: 100%;
+  }
+
+  /* Simplified mobile contact details */
+  .contact-details__item {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-details__content {
+    align-items: center;
+  }
+
+  .contact-details__icon {
+    width: 40px;
+    height: 40px;
   }
 }
 

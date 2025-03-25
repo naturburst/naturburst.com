@@ -1,10 +1,3 @@
-{% comment %}
-  Enhanced Product Card Component
-  - Improved image container to better fill available space
-  - Fixed mobile styling issues
-  - Maintained consistent font styling
-{% endcomment %}
-
 {%- if product == blank -%}
   {%- render 'product-card-placeholder' -%}
 {%- else -%}
@@ -147,7 +140,7 @@
       </div>
 
       {% if show_quick_add %}
-        <product-form class="product-card__form">
+        <div class="product-card__form">
           {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'form', novalidate: 'novalidate', data-type: 'quick-add-form' -%}
             <input type="hidden" name="id" value="{{ current_variant.id }}">
 
@@ -169,21 +162,14 @@
                     Sold out
                   {%- endif -%}
                 </span>
-                <div class="loading-overlay__spinner hidden">
-                  <svg class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                  </svg>
-                </div>
               </button>
             {% endif %}
           {%- endform -%}
-        </product-form>
+        </div>
       {% endif %}
     </div>
   </div>
 </div>
-
-{%- endif -%}
 
 <style>
 .product-card {
@@ -208,14 +194,14 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-/* IMPROVED image container with better proportions and fill */
+/* Improved image container */
 .product-card__image-container {
   height: 280px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem; /* Reduced padding to allow more space for images */
+  padding: 0.75rem;
   position: relative;
 }
 
@@ -242,16 +228,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible; /* Allow image to be fully visible */
+  overflow: visible;
 }
 
-/* IMPROVED image styling for better visibility and fill */
 .product-card__image {
-  max-height: 100%; /* Increased to fill container */
-  max-width: 100%; /* Increased to fill container */
+  max-height: 100%;
+  max-width: 100%;
   width: auto;
   height: auto;
-  object-fit: contain; /* Ensures full image is shown without cropping */
+  object-fit: contain;
   transition: transform 0.4s ease;
 }
 
@@ -398,7 +383,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-/* Enhanced button styling */
+/* Enhanced button styling without spinner */
 .product-card__add-to-cart-btn,
 .product-card__quick-view-btn {
   width: 100%;
@@ -411,7 +396,6 @@
   border-radius: 30px;
   font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
-  position: relative;
   transition: all 0.3s ease;
   cursor: pointer;
   border: none;
@@ -433,57 +417,11 @@
   box-shadow: none;
 }
 
-.loading-overlay__spinner {
-  display: inline-block;
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.spinner {
-  animation: rotate 2s linear infinite;
-  animation-play-state: paused;
-}
-
-.spinner .path {
-  stroke: currentColor;
-  stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* IMPROVED Desktop enhancements */
+/* Media queries for responsive design */
 @media (min-width: 992px) {
   .product-card__image-container {
-    height: 320px; /* Even taller on desktop */
-    padding: 0.5rem; /* Even less padding for more image space */
+    height: 320px;
+    padding: 0.5rem;
   }
 
   .product-card__title {
@@ -496,7 +434,6 @@
   }
 }
 
-/* IMPROVED Responsive styles for tablets */
 @media (min-width: 768px) and (max-width: 991px) {
   .product-card__image-container {
     height: 260px;
@@ -504,7 +441,6 @@
   }
 }
 
-/* IMPROVED Responsive styles for mobile */
 @media (max-width: 767px) {
   .product-card__container {
     max-width: 300px;
@@ -513,7 +449,7 @@
 
   .product-card__image-container {
     height: 240px;
-    padding: 0.5rem; /* Less padding on mobile */
+    padding: 0.5rem;
   }
 
   .product-card__title {
@@ -530,11 +466,10 @@
   }
 }
 
-/* IMPROVED Extra small devices */
 @media (max-width: 480px) {
   .product-card__image-container {
     height: 220px;
-    padding: 0.25rem; /* Minimal padding for smallest screens */
+    padding: 0.25rem;
   }
 
   .product-card__meta {
@@ -551,117 +486,42 @@
 </style>
 
 <script>
-// Custom element for handling product form interactions with enhanced cart updates
-if (!customElements.get('product-form')) {
-  customElements.define('product-form', class ProductForm extends HTMLElement {
-    constructor() {
-      super();
-      this.form = this.querySelector('form');
-      // Only attach event listener if form exists to prevent null reference errors
-      this.form?.addEventListener('submit', this.onSubmitHandler.bind(this));
+// Simplified add to cart functionality without spinners
+document.addEventListener('DOMContentLoaded', function() {
+  const quickAddForms = document.querySelectorAll('form[data-type="quick-add-form"]');
 
-      // Add touch event handling for mobile devices
-      if (this.form && 'ontouchstart' in window) {
-        const submitButton = this.form.querySelector('[type="submit"]');
-        if (submitButton) {
-          submitButton.addEventListener('touchstart', function() {
-            this.classList.add('touch-active');
-          });
-          submitButton.addEventListener('touchend', function() {
-            this.classList.remove('touch-active');
-          });
-        }
-      }
-    }
+  quickAddForms.forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    onSubmitHandler(evt) {
-      evt.preventDefault();
-      const submitButton = this.querySelector('[type="submit"]');
-      // Skip processing if button is already in loading state
-      if (submitButton.classList.contains('loading') || submitButton.hasAttribute('disabled')) return;
+      // Get form data
+      const formData = new FormData(form);
 
-      this.handleErrorMessage();
-      this.setLoadingState(submitButton, true);
-
-      // Configure AJAX request for cart addition
-      const config = {
+      // Add to cart via fetch
+      fetch('/cart/add.js', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/javascript',
-          'X-Requested-With': 'XMLHttpRequest'
-        }
-      };
-
-      const formData = new FormData(this.form);
-      // Request cart sections for potential drawer updates
-      formData.append('sections', 'cart-icon-bubble,cart-drawer');
-      formData.append('sections_url', window.location.pathname);
-      config.body = formData;
-
-      // Execute cart addition with error handling
-      fetch(`${routes.cart_add_url}`, config)
-        .then(response => response.json())
-        .then(response => {
-          if (response.status) {
-            this.handleErrorMessage(response.description);
-            return;
-          }
-
-          this.updateCartUI();
-          this.resetForm();
-        })
-        .catch(error => {
-          console.error(error);
-          this.handleErrorMessage('An error occurred. Please try again.');
-        })
-        .finally(() => {
-          this.setLoadingState(submitButton, false);
-        });
-    }
-
-    // Extracted cart UI update logic for better maintainability
-    updateCartUI() {
-      // Update cart count across all potential indicators
-      fetch('/cart.js')
-        .then(res => res.json())
-        .then(cart => {
-          const cartCountBubbles = document.querySelectorAll('.cart-count');
-          cartCountBubbles.forEach(bubble => {
-            const cartCount = bubble.querySelector('[data-cart-count]');
-            if (cartCount) cartCount.textContent = cart.item_count;
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Update cart count
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            const cartCountElements = document.querySelectorAll('[data-cart-count]');
+            cartCountElements.forEach(el => {
+              el.textContent = cart.item_count;
+            });
           });
 
-          // Notify other components of cart update using event system
-          document.dispatchEvent(new CustomEvent('cart:added', {
-            bubbles: true,
-            detail: { message: 'Item added to cart' }
-          }));
-        })
-        .catch(error => console.error('Error updating cart UI:', error));
-    }
-
-    // Toggle loading state with spinner visibility
-    setLoadingState(button, isLoading) {
-      button.setAttribute('aria-disabled', isLoading);
-      button.classList.toggle('loading', isLoading);
-      const spinner = button.querySelector('.loading-overlay__spinner');
-      if (spinner) spinner.classList.toggle('hidden', !isLoading);
-    }
-
-    handleErrorMessage(errorMessage = false) {
-      const errorContainer = this.querySelector('.product-form__error-message-wrapper');
-      const errorMessageElement = errorContainer?.querySelector('.product-form__error-message');
-
-      if (!errorContainer || !errorMessageElement) return;
-
-      // Toggle visibility and update content only when there's an actual error
-      errorContainer.toggleAttribute('hidden', !errorMessage);
-      if (errorMessage) errorMessageElement.textContent = errorMessage;
-    }
-
-    resetForm() {
-      this.form.reset();
-    }
+        // Show success message or redirect
+        console.log('Item added to cart:', data);
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+      });
+    });
   });
-}
+});
 </script>
+{%- endif -%}

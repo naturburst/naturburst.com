@@ -1,5 +1,5 @@
 <div class="hero-banner">
-  <div class="hero-container">
+  <div class="hero-container{% if template.name == 'index' %} hero-container--home{% endif %}">
     <div class="hero-content">
       {% if section.settings.show_buttons %}
         <div class="hero-buttons">
@@ -7,16 +7,6 @@
             {% render 'icon-cart' %}
             {{ section.settings.shop_button_text | escape }}
           </a>
-
-          {% if section.settings.secondary_button_text != blank and section.settings.secondary_button_url != blank %}
-            <a href="{{ section.settings.secondary_button_url }}" class="button button--secondary">
-              {{ section.settings.secondary_button_text | escape }}
-            </a>
-          {% else %}
-            <a href="/pages/how-to-use" class="button button--secondary">
-              {{ section.settings.secondary_button_text | default: 'HOW TO USE' | escape }}
-            </a>
-          {% endif %}
         </div>
       {% endif %}
     </div>
@@ -48,18 +38,6 @@
       "id": "shop_button_text",
       "label": "Shop Button Text",
       "default": "SHOP NOW"
-    },
-    {
-      "type": "text",
-      "id": "secondary_button_text",
-      "label": "Secondary Button Text",
-      "default": "HOW TO USE"
-    },
-    {
-      "type": "url",
-      "id": "secondary_button_url",
-      "label": "Secondary Button URL",
-      "default": "/pages/how-to-use"
     }
   ],
   "presets": [
@@ -141,17 +119,6 @@
   gap: 0.7rem;
 }
 
-.button--secondary {
-  background-color: white;
-  color: #3f704d;
-  border: 2px solid #3f704d;
-}
-
-.button--secondary:hover {
-  background-color: #3f704d;
-  color: white;
-}
-
 .button .icon {
   font-size: 1.1rem;
 }
@@ -159,10 +126,16 @@
 /* Mobile responsive adjustments - IMPROVED */
 @media (max-width: 767px) {
   .hero-container {
-    min-height: 450px; /* Fixed height instead of aspect ratio */
-    padding-bottom: 120px; /* Extra space for buttons at bottom */
-    background-position: center top;
+    min-height: 100vh; /* Full viewport height on mobile */
+    height: 100vh;
+    padding-bottom: 0; /* Remove extra padding */
+    background-position: center;
     align-items: flex-end;
+    background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
+  }
+
+  .hero-container--home {
+    height: 100vh;
   }
 
   .hero-content {
@@ -171,12 +144,10 @@
     justify-content: center;
     width: 100%;
     position: absolute;
-    bottom: 20px; /* Position from bottom */
+    bottom: 60px; /* Position from bottom */
   }
 
   .hero-buttons {
-    flex-direction: column;
-    align-items: center;
     width: 100%;
     max-width: 280px;
     gap: 1rem;
@@ -185,32 +156,27 @@
   .button {
     width: 100%;
     justify-content: center;
-    padding: 0.75rem 1rem;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
   }
 }
 
 /* Small mobile devices - IMPROVED */
 @media (max-width: 480px) {
-  .hero-container {
-    min-height: 350px; /* Shorter for smallest screens */
-    padding-bottom: 100px; /* Less padding */
-  }
-
   .hero-content {
-    bottom: 15px;
+    bottom: 40px; /* Less distance from bottom */
   }
 }
 </style>
 
 <script>
-// Optimized image preloading for mobile devices
+// Set background image from Shopify settings
 document.addEventListener('DOMContentLoaded', function() {
-  // Only preload when on mobile to save bandwidth
-  if (window.innerWidth <= 767) {
-    const mobileImageUrl = '{{ section.settings.mobile_image | img_url: 'master' }}';
-    if (mobileImageUrl) {
-      const img = new Image();
-      img.src = mobileImageUrl;
+  const heroContainer = document.querySelector('.hero-container');
+  if (heroContainer) {
+    const desktopImageUrl = '{{ section.settings.image | img_url: 'master' }}';
+    if (desktopImageUrl && window.innerWidth > 767) {
+      heroContainer.style.backgroundImage = `url(${desktopImageUrl})`;
     }
   }
 });

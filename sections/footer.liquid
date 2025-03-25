@@ -57,10 +57,7 @@
             Bengaluru, Karnataka 560023
           </address>
 
-          <a href="https://www.google.com/maps/place/PRESTIGE+WEST+WOODS,+Gopalapura,+Binnipete,+Bengaluru,+Karnataka+560023,+India/@12.9776301,77.5630992,18z/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="directions-btn">
+          <a href="https://maps.app.goo.gl/KaVpZLHZUk5bY9H79" target="_blank" rel="noopener noreferrer" class="directions-btn">
             <div class="map-indicator">
               {% render 'icon-map' %} Get Directions
             </div>
@@ -83,13 +80,16 @@
 
 <style>
 /* Main footer container */
-/* Main footer container */
 .site-footer {
   position: relative;
   background: #2A5E41;
   color: #ffffff;
   padding: 5rem 0 2rem 0;
   font-family: 'Montserrat', sans-serif;
+  width: 100%;
+  overflow: hidden;
+  display: block; /* Ensure footer is displayed */
+  z-index: 2; /* Ensure footer stays visible */
 }
 
 /* Wave divider effect at the top */
@@ -314,6 +314,7 @@
 @media (max-width: 767px) {
   .site-footer {
     padding: 4rem 0 2rem;
+    display: block !important; /* Force display on mobile */
   }
 
   .wave-divider svg {

@@ -49,48 +49,61 @@ document.addEventListener('DOMContentLoaded', function() {
     body.classList.remove('mobile-menu-open');
   }
 
-  // Add toggle button event listener
-  mobileNavToggle.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Toggle button clicked');
-    openMobileNav();
-  });
-
-  // Add close button event listener - FIXED
-  if (mobileNavClose) {
-    mobileNavClose.addEventListener('click', function(e) {
+  // Add toggle button event listener with error handling
+  if (mobileNavToggle) {
+    mobileNavToggle.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log('Close button clicked');
+      console.log('Toggle button clicked');
+      openMobileNav();
+    });
+  }
+
+  // Add close button event listener - FIXED with delegation
+  document.addEventListener('click', function(e) {
+    // Use closest to check if the clicked element or any of its parents is the close button
+    if (e.target.closest('.mobile-nav__close')) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Close button clicked via delegation');
+      closeMobileNav();
+    }
+  });
+
+  // Add overlay event listener
+  if (mobileNavOverlay) {
+    mobileNavOverlay.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('Overlay clicked');
       closeMobileNav();
     });
   }
 
-  // Add overlay event listener
-  mobileNavOverlay.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Overlay clicked');
-    closeMobileNav();
-  });
-
   // Make sure all links in the mobile nav are clickable
-  const navLinks = mobileNav.querySelectorAll('a, button');
-  navLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.stopPropagation();
-      // Close menu when a link is clicked
-      if (!this.classList.contains('mobile-nav__close') &&
-          !this.classList.contains('currency-option')) {
-        closeMobileNav();
-      }
+  if (mobileNav) {
+    const navLinks = mobileNav.querySelectorAll('a, button');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        // Only prevent default for buttons that are not submit buttons
+        if (this.tagName === 'BUTTON' && this.type !== 'submit') {
+          e.preventDefault();
+        }
+
+        e.stopPropagation();
+
+        // Close menu when a link is clicked
+        if (!this.classList.contains('mobile-nav__close') &&
+            !this.classList.contains('currency-option')) {
+          closeMobileNav();
+        }
+      });
     });
-  });
+  }
 
   // Add keyboard navigation (ESC to close)
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileNav.style.visibility === 'visible') {
+    if (e.key === 'Escape' && mobileNav && mobileNav.classList.contains('is-active')) {
       closeMobileNav();
     }
   });

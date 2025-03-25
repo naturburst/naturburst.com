@@ -26,7 +26,7 @@
           {% endfor %}
         </div>
 
-        <!-- FIXED Navigation arrows with proper styling -->
+        <!-- Fixed Navigation arrows with improved mobile visibility -->
         <button type="button" class="slider-button slider-button--prev" aria-label="Previous slide">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 18 9 12 15 6"></polyline>
@@ -41,8 +41,8 @@
       </div>
     </div>
 
-    {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank %}
-      <div class="view-all-container">
+    {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank and request.design_mode %}
+      <div class="view-all-container desktop-only">
         <a href="{{ section.settings.view_all_url }}" class="view-all-btn">
           {{ section.settings.view_all_text }}
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
@@ -54,6 +54,63 @@
     {% endif %}
   </div>
 </div>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "EXPLORE OUR PRODUCTS"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": true,
+      "label": "Show product rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "default": true,
+      "label": "Enable quick add"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "VIEW ALL PRODUCTS"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View all URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}
 
 <style>
 .featured-products {
@@ -135,14 +192,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   color: #2A5E41;
-  opacity: 0.9;
+  opacity: 1; /* Always visible */
 }
 
 .slider-button:hover {
   background: #2A5E41;
   color: white;
   transform: translateY(-50%) scale(1.1);
-  opacity: 1;
 }
 
 .slider-button--prev {
@@ -178,6 +234,7 @@
   letter-spacing: 1px;
   font-size: 0.95rem;
   font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
 }
 
 .arrow-icon {
@@ -193,6 +250,11 @@
 
 .view-all-btn:hover .arrow-icon {
   transform: translateX(5px);
+}
+
+/* Hide desktop-only elements on mobile */
+.desktop-only {
+  display: none;
 }
 
 /* Desktop layout (larger grid display) */
@@ -217,13 +279,9 @@
     padding: 0;
   }
 
-  /* Show navigation buttons only on hover on desktop */
-  .slider-button {
-    opacity: 0.7;
-  }
-
-  .product-slider:hover .slider-button {
-    opacity: 1;
+  /* Show desktop elements */
+  .desktop-only {
+    display: block;
   }
 }
 
@@ -246,7 +304,7 @@
   }
 }
 
-/* Mobile layout - one product at a time */
+/* Mobile layout - one product at a time with visible arrows */
 @media (max-width: 767px) {
   .featured-products {
     padding: 2rem 0 3rem;
@@ -274,22 +332,32 @@
 
   /* FIXED: Made slider buttons more visible on mobile */
   .slider-button {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     opacity: 1;
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
   }
 
   .slider-button svg {
     width: 20px;
     height: 20px;
   }
+}
 
-  .view-all-btn {
-    width: 100%;
-    max-width: 280px;
-    justify-content: center;
+/* Adjustments for smaller mobile screens */
+@media (max-width: 480px) {
+  .slider-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .slider-button--prev {
+    left: 5px;
+  }
+
+  .slider-button--next {
+    right: 5px;
   }
 }
 </style>
@@ -326,13 +394,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Check if we're in mobile view for scroll behavior
-    const isMobileView = () => window.innerWidth < 768;
+    const isMobileView = () => window.innerWidth < 992;
 
     // Previous button handler with improved navigation
     prevBtn.addEventListener('click', () => {
       console.log('Previous button clicked');
 
-      if (!isMobileView() && !slider.classList.contains('slider-mobile-mode')) {
+      if (!isMobileView()) {
         // On desktop, do nothing - grid layout
         return;
       }
@@ -362,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', () => {
       console.log('Next button clicked');
 
-      if (!isMobileView() && !slider.classList.contains('slider-mobile-mode')) {
+      if (!isMobileView()) {
         // On desktop, do nothing - grid layout
         return;
       }
@@ -388,47 +456,39 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Toggle slider mode based on viewport width
+    // Make sure navigation is properly set up on mobile
     const updateSliderMode = () => {
       if (isMobileView()) {
-        slider.classList.add('slider-mobile-mode');
+        // Enable navigation on mobile
         prevBtn.style.display = 'flex';
         nextBtn.style.display = 'flex';
-
-        // Reset scroll position when switching to mobile
-        const firstVisibleIndex = Math.round(slider.scrollLeft / getSlideWidth());
-        slider.scrollTo({
-          left: firstVisibleIndex * getSlideWidth(),
-          behavior: 'auto'
-        });
       } else {
-        slider.classList.remove('slider-mobile-mode');
-        // Don't hide navigation buttons on desktop - users still need them
-        prevBtn.style.display = 'flex';
-        nextBtn.style.display = 'flex';
+        // Hide navigation on desktop grid view
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
       }
     };
 
     // Initialize and set up resize listener
     updateSliderMode();
     window.addEventListener('resize', updateSliderMode);
-    
+
     // Enable swipe navigation for mobile
     let touchStartX = 0;
     let touchEndX = 0;
-    
+
     slider.addEventListener('touchstart', (e) => {
       touchStartX = e.changedTouches[0].screenX;
     }, {passive: true});
-    
+
     slider.addEventListener('touchend', (e) => {
       touchEndX = e.changedTouches[0].screenX;
       handleSwipe();
     }, {passive: true});
-    
+
     const handleSwipe = () => {
       if (!isMobileView()) return;
-      
+
       const swipeThreshold = 50; // Minimum distance for swipe detection
       if (touchEndX < touchStartX - swipeThreshold) {
         // Swipe left - go to next slide
@@ -439,4 +499,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     };
   });
-});
+});</script>
