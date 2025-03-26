@@ -116,20 +116,6 @@
         <div class="product-card__weight">{{ weight }}</div>
       </div>
 
-      {% if show_rating and product.metafields.reviews.rating %}
-        <div class="product-card__rating">
-          {%- liquid
-            assign rating_decimal = product.metafields.reviews.rating.value | round: 1
-            assign rating_value = product.metafields.reviews.rating.value | round
-          -%}
-
-          <div class="rating" role="img" aria-label="{{ rating_decimal }} out of 5 stars">
-            <span aria-hidden="true" class="rating-star rating-{{ rating_value }}">★★★★★</span>
-            <span class="rating-text">{{ rating_decimal }} / 5</span>
-          </div>
-        </div>
-      {% endif %}
-
       <div class="product-card__price">
         {% if compare_at_price > price %}
           <p class="product-card__price-item product-card__price-item--regular">{{ compare_at_price | money }}</p>

@@ -9,13 +9,12 @@
         <div class="product-images-slider" data-product-images>
           <div class="product-featured-image-container">
             <img
-              src="{{ featured_image | img_url: 'master' }}"
+              src="{{ featured_image | img_url: '1200x' }}"
               srcset="
-                {%- if featured_image.width >= 375 -%}{{ featured_image | img_url: width: 375 }} 375w,{%- endif -%}
-                {%- if featured_image.width >= 750 -%}{{ featured_image | img_url: width: 750 }} 750w,{%- endif -%}
-                {%- if featured_image.width >= 1100 -%}{{ featured_image | img_url: width: 1100 }} 1100w,{%- endif -%}
-                {%- if featured_image.width >= 1500 -%}{{ featured_image | img_url: width: 1500 }} 1500w,{%- endif -%}
-                {{ featured_image | img_url: 'master' }} {{ featured_image.width }}w
+                {{ featured_image | img_url: '400x' }} 400w,
+                {{ featured_image | img_url: '800x' }} 800w,
+                {{ featured_image | img_url: '1200x' }} 1200w,
+                {{ featured_image | img_url: '1600x' }} 1600w
               "
               sizes="(min-width: 1100px) 550px, (min-width: 990px) 47.5vw, 90vw"
               alt="{{ featured_image.alt | escape }}"
@@ -1054,160 +1053,57 @@ details:not([open]) .icon-minus {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Product variant selector
-  const productForm = document.querySelector('[data-product-form]');
+  const productForm = document.querySelector('form[data-product-form]');
 
   if (productForm) {
-    // Track when variant selection changes
-    const optionSelectors = productForm.querySelectorAll('[data-option-position]');
-    const variantIdInput = productForm.querySelector('input[name="id"]');
+    productForm.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    // Helper to detect selected variant based on options
-    function getSelectedVariantId() {
-      // Get selected options
-      const selectedOptions = [];
-      optionSelectors.forEach(radio => {
-        if (radio.checked) {
-          selectedOptions[parseInt(radio.dataset.optionPosition) - 1] = radio.value;
-        }
-      });
+      const submitBtn = this.querySelector('.product-form__submit');
+      const loadingOverlay = submitBtn ? submitBtn.querySelector('.loading-overlay__spinner') : null;
 
-      // Find matching variant in product json
-      const productData = JSON.parse(document.getElementById('ProductJson-{{ product.id }}')?.textContent || '{{ product | json }}');
-
-      // Return first variant where all options match selected options
-      for (const variant of productData.variants) {
-        if (variant.options.every((option, index) => option === selectedOptions[index])) {
-          return variant.id;
-        }
+      // Show loading state
+      if (submitBtn) {
+        submitBtn.classList.add('loading');
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
       }
 
-      return null;
-    }
-
-    // Update form when variant selection changes
-    optionSelectors.forEach(radio => {
-      radio.addEventListener('change', () => {
-        const variantId = getSelectedVariantId();
-        if (variantId) {
-          variantIdInput.value = variantId;
-          // Trigger form change event for any other code that needs to respond
-          variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+      // Submit the form via AJAX
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
         }
-      });
-    });
-  }
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Update cart count
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            const cartCountElements = document.querySelectorAll('[data-cart-count]');
+            if (cartCountElements.length) {
+              cartCountElements.forEach(el => {
+                el.textContent = cart.item_count;
+              });
+            }
+          });
 
-  // Product image gallery
-  const productImages = document.querySelector('[data-product-images]');
+        // Hide loading state
+        if (submitBtn) {
+          submitBtn.classList.remove('loading');
+          if (loadingOverlay) loadingOverlay.classList.add('hidden');
+        }
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
 
-  if (productImages) {
-    const mainImage = productImages.querySelector('.product-featured-image');
-    const thumbnails = productImages.querySelectorAll('.product-single__thumbnail');
-
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        // Update main image src
-        const newSrc = thumb.getAttribute('data-src');
-        const newSrcset = thumb.getAttribute('data-srcset');
-        const mediaId = thumb.getAttribute('data-media-id');
-
-        // Update active state on thumbnails
-        thumbnails.forEach(t => t.classList.remove('active'));
-        thumb.classList.add('active');
-
-        // Update main image
-        if (newSrc) mainImage.setAttribute('src', newSrc);
-        if (newSrcset) mainImage.setAttribute('srcset', newSrcset);
-        if (mediaId) mainImage.setAttribute('data-media-id', mediaId);
-      });
-    });
-
-    // Image modal functionality
-    const modal = document.getElementById('ProductImageModal');
-    const expandBtn = document.querySelector('[data-image-expand]');
-    const closeBtn = modal.querySelector('[data-modal-close]');
-    const prevBtn = modal.querySelector('.image-modal__prev');
-    const nextBtn = modal.querySelector('.image-modal__next');
-    const modalThumbnails = modal.querySelectorAll('.image-modal__thumbnail');
-    const modalImage = modal.querySelector('.image-modal__image');
-
-    // Open modal
-    expandBtn.addEventListener('click', () => {
-      // Get current main image details
-      const currentSrc = mainImage.getAttribute('src');
-      const currentMediaId = mainImage.getAttribute('data-media-id');
-
-      // Set initial modal image
-      modalImage.setAttribute('src', currentSrc);
-
-      // Update active thumbnail in modal
-      modalThumbnails.forEach(thumb => {
-        const thumbMediaId = thumb.getAttribute('data-media-id');
-        thumb.classList.toggle('active', thumbMediaId === currentMediaId);
-      });
-
-      // Show modal
-      modal.classList.add('is-active');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    });
-
-    // Close modal
-    function closeModal() {
-      modal.classList.remove('is-active');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-
-    closeBtn.addEventListener('click', closeModal);
-    modal.querySelector('.image-modal__overlay').addEventListener('click', closeModal);
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (!modal.classList.contains('is-active')) return;
-
-      if (e.key === 'Escape') {
-        closeModal();
-      } else if (e.key === 'ArrowLeft') {
-        navigateImages('prev');
-      } else if (e.key === 'ArrowRight') {
-        navigateImages('next');
-      }
-    });
-
-    // Navigate between images
-    function navigateImages(direction) {
-      const currentThumb = modal.querySelector('.image-modal__thumbnail.active');
-      if (!currentThumb) return;
-
-      let nextThumb;
-
-      if (direction === 'next') {
-        nextThumb = currentThumb.nextElementSibling || modalThumbnails[0]; // Cycle to first if at end
-      } else {
-        nextThumb = currentThumb.previousElementSibling || modalThumbnails[modalThumbnails.length - 1]; // Cycle to last if at beginning
-      }
-
-      // Update image and active thumbnail
-      modalImage.setAttribute('src', nextThumb.querySelector('img').getAttribute('src').replace('100x', 'master'));
-      modalThumbnails.forEach(t => t.classList.remove('active'));
-      nextThumb.classList.add('active');
-    }
-
-    // Navigation button handlers
-    prevBtn.addEventListener('click', () => navigateImages('prev'));
-    nextBtn.addEventListener('click', () => navigateImages('next'));
-
-    // Modal thumbnail clicks
-    modalThumbnails.forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        const img = thumb.querySelector('img');
-        const newSrc = img.getAttribute('src').replace('100x', 'master');
-
-        modalImage.setAttribute('src', newSrc);
-        modalThumbnails.forEach(t => t.classList.remove('active'));
-        thumb.classList.add('active');
+        // Hide loading state on error too
+        if (submitBtn) {
+          submitBtn.classList.remove('loading');
+          if (loadingOverlay) loadingOverlay.classList.add('hidden');
+        }
       });
     });
   }

@@ -12,13 +12,6 @@
         "enable_dynamic_checkout": true
       }
     },
-    "product_benefits": {
-      "type": "product-benefits",
-      "settings": {
-        "title": "Why NatureBurst Is Different",
-        "description": "Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives. Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect for snacking or adding to your favorite recipes."
-      }
-    },
     "related_products": {
       "type": "related-products",
       "settings": {
@@ -32,7 +25,6 @@
   },
   "order": [
     "main",
-    "product_benefits",
     "related_products"
   ]
 }
