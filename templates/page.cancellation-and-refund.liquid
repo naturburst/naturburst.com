@@ -1,0 +1,224 @@
+<div class="page-width section-padding">
+  <div class="refund-container">
+    <h1 class="refund-title">{{ page.title }}</h1>
+
+    <div class="refund-content rte">
+      {{ page.content }}
+    </div>
+
+    {% if page.content == blank %}
+      <!-- Default cancellation and refund policy content if page content is empty -->
+      <div class="refund-sections">
+        <div class="refund-section">
+          <h2>Cancellation Policy</h2>
+
+          <div class="refund-subsection">
+            <h3>Order Cancellation</h3>
+            <p>You may cancel your order under the following conditions:</p>
+            <ul>
+              <li>Orders can be cancelled before they are shipped. Once an order has been shipped, it cannot be cancelled, but you may initiate a return after receiving the products.</li>
+              <li>To cancel an order, please contact our customer service team at <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a> or call us at <a href="tel:+919098404225">+91 90984 04225</a> with your order number.</li>
+              <li>For orders cancelled before shipping, a full refund will be processed to the original payment method.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="refund-section">
+          <h2>Return Policy</h2>
+
+          <div class="refund-subsection">
+            <h3>Return Eligibility</h3>
+            <p>You may return products within 7 days of delivery under the following conditions:</p>
+            <ul>
+              <li>Products are in their original, unopened packaging</li>
+              <li>Products are unused and undamaged</li>
+              <li>You have the original receipt or proof of purchase</li>
+            </ul>
+            <p>The following items cannot be returned:</p>
+            <ul>
+              <li>Products that have been opened or have broken seals</li>
+              <li>Products that show signs of use or tampering</li>
+              <li>Products purchased through unauthorized resellers</li>
+            </ul>
+          </div>
+
+          <div class="refund-subsection">
+            <h3>Return Process</h3>
+            <p>To initiate a return, please follow these steps:</p>
+            <ol>
+              <li>Contact our customer service at <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a> or call us at <a href="tel:+919098404225">+91 90984 04225</a> within 7 days of receiving your order.</li>
+              <li>Provide your order number, the items you wish to return, and the reason for the return.</li>
+              <li>Our customer service team will guide you through the return process and provide you with a Return Merchandise Authorization (RMA) number.</li>
+              <li>Package the items securely in their original packaging along with the RMA number.</li>
+              <li>Ship the package to the address provided by our customer service team.</li>
+            </ol>
+            <p>Please note that return shipping costs are to be borne by the customer unless the return is due to our error (such as damaged or incorrect items).</p>
+          </div>
+        </div>
+
+        <div class="refund-section">
+          <h2>Refund Policy</h2>
+
+          <div class="refund-subsection">
+            <h3>Refund Processing</h3>
+            <p>Once we receive and inspect your return, we will notify you about the status of your refund:</p>
+            <ul>
+              <li>If your return is approved, we will initiate a refund to your original payment method.</li>
+              <li>If your return is rejected, you will be notified of the reason, and the items will be sent back to you.</li>
+            </ul>
+            <p>Refunds will typically be processed within 7-10 business days after approval, depending on your payment method:</p>
+            <ul>
+              <li>Credit/Debit Card: 5-7 business days</li>
+              <li>UPI/Netbanking: 3-5 business days</li>
+              <li>Other payment methods: Up to 10 business days</li>
+            </ul>
+          </div>
+
+          <div class="refund-subsection">
+            <h3>Refund Amount</h3>
+            <p>The refund will include the price of the product and any applicable taxes. Shipping charges are non-refundable unless the return is due to our error (such as damaged or incorrect items).</p>
+            <p>If you received free shipping due to a promotion or minimum order requirement, and the return causes your order total to fall below the minimum threshold, the shipping cost may be deducted from your refund.</p>
+          </div>
+        </div>
+
+        <div class="refund-section">
+          <h2>Exchanges</h2>
+          <p>We do not directly process exchanges. If you wish to exchange a product, please return the original item following our return process and place a new order for the desired product.</p>
+        </div>
+
+        <div class="refund-section">
+          <h2>Damaged or Defective Products</h2>
+          <p>If you receive damaged or defective products, please contact our customer service within 48 hours of delivery with the following information:</p>
+          <ul>
+            <li>Your order number</li>
+            <li>Description of the damage or defect</li>
+            <li>Photos of the damaged or defective products</li>
+          </ul>
+          <p>Our team will review your case and may offer a replacement or a full refund including shipping charges.</p>
+        </div>
+
+        <div class="refund-section">
+          <h2>Special Circumstances</h2>
+
+          <div class="refund-subsection">
+            <h3>Undelivered Orders</h3>
+            <p>If your order is shown as delivered but you haven't received it, please:</p>
+            <ol>
+              <li>Check with neighbors or other household members</li>
+              <li>Check any safe spots around your delivery address</li>
+              <li>Contact the delivery carrier with your tracking information</li>
+              <li>If still not found, contact our customer service within 24 hours of the delivery confirmation</li>
+            </ol>
+          </div>
+
+          <div class="refund-subsection">
+            <h3>Non-Deliverable Areas</h3>
+            <p>If we are unable to deliver to your location, we will notify you and provide a full refund including shipping charges.</p>
+          </div>
+        </div>
+
+        <div class="refund-section">
+          <h2>Contact Us</h2>
+          <p>If you have any questions about our Cancellation and Refund Policy, please contact our customer service team:</p>
+          <p>Email: <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a><br>
+          Phone: <a href="tel:+919098404225">+91 90984 04225</a><br>
+          Address: Prestige West Woods, Magadi Road, Gopalpura, Bengaluru, Karnataka 560023</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .refund-container {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .refund-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .refund-content {
+    line-height: 1.7;
+  }
+
+  .refund-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .refund-section {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 2rem;
+  }
+
+  .refund-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .refund-section h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .refund-subsection {
+    margin-bottom: 1.5rem;
+  }
+
+  .refund-subsection:last-child {
+    margin-bottom: 0;
+  }
+
+  .refund-subsection h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .refund-section p,
+  .refund-subsection p {
+    margin-bottom: 1rem;
+  }
+
+  .refund-section ul,
+  .refund-subsection ul,
+  .refund-section ol,
+  .refund-subsection ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .refund-section li,
+  .refund-subsection li {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .refund-container {
+      padding: 2rem 1.5rem;
+    }
+
+    .refund-title {
+      font-size: 2rem;
+    }
+
+    .refund-section h2 {
+      font-size: 1.5rem;
+    }
+
+    .refund-subsection h3 {
+      font-size: 1.2rem;
+    }
+  }
+</style>

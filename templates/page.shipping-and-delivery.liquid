@@ -1,0 +1,179 @@
+<div class="page-width section-padding">
+  <div class="shipping-container">
+    <h1 class="shipping-title">{{ page.title }}</h1>
+
+    <div class="shipping-content rte">
+      {{ page.content }}
+    </div>
+
+    {% if page.content == blank %}
+      <!-- Default shipping content if page content is empty -->
+      <div class="shipping-sections">
+        <div class="shipping-section">
+          <h2>Shipping Coverage</h2>
+
+          <div class="shipping-subsection">
+            <h3>Domestic Shipping</h3>
+            <p>We currently ship to most locations within India. However, there may be certain remote areas where our shipping partners have limited access. If we are unable to deliver to your location, we will notify you and provide a refund for your order.</p>
+          </div>
+
+          <div class="shipping-subsection">
+            <h3>International Shipping</h3>
+            <p>At this time, we do not offer international shipping. We are focused on serving our customers in India.</p>
+          </div>
+        </div>
+
+        <div class="shipping-section">
+          <h2>Order Processing</h2>
+
+          <div class="shipping-subsection">
+            <h3>Processing Time</h3>
+            <p>Orders are typically processed within 1-2 business days after payment confirmation. During peak seasons or promotional periods, processing times may be slightly longer.</p>
+          </div>
+
+          <div class="shipping-subsection">
+            <h3>Shipping Time</h3>
+            <p>Once your order is processed and handed over to our shipping partner, the estimated delivery time is:</p>
+            <ul>
+              <li>Metro Cities: 2-4 business days</li>
+              <li>Other Urban Areas: 3-5 business days</li>
+              <li>Remote/Rural Areas: 5-7 business days</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="shipping-section">
+          <h2>Shipping Costs</h2>
+
+          <div class="shipping-subsection">
+            <h3>Standard Shipping</h3>
+            <p>Shipping charges are calculated based on your location and the weight of the package.</p>
+            <ul>
+              <li>Orders below Rs. 1500: Shipping charges as per the checkout calculation</li>
+              <li>Orders above Rs. 1500: FREE shipping across India</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="shipping-section">
+          <h2>Order Tracking</h2>
+
+          <div class="shipping-subsection">
+            <p>Once your order is shipped, you will receive a confirmation email with tracking information. You can track your order status using the tracking number provided.</p>
+          </div>
+        </div>
+
+        <div class="shipping-section">
+          <h2>Delivery Information</h2>
+
+          <div class="shipping-subsection">
+            <h3>Delivery Attempts</h3>
+            <p>Our shipping partners will make up to 3 attempts to deliver your package. If all delivery attempts are unsuccessful, the package will be returned to us, and we will contact you for further instructions.</p>
+          </div>
+
+          <div class="shipping-subsection">
+            <h3>Address Accuracy</h3>
+            <p>Please ensure that the shipping address you provide is accurate and complete. We are not responsible for delivery issues arising from incorrect address information.</p>
+          </div>
+        </div>
+
+        <div class="shipping-section">
+          <h2>Contact Us</h2>
+
+          <div class="shipping-subsection">
+            <p>If you have any questions about shipping and delivery, please contact our customer service team at <a href="mailto:natureburst.shop@gmail.com">natureburst.shop@gmail.com</a> or call us at <a href="tel:+919098404225">+91 90984 04225</a>.</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .shipping-container {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .shipping-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .shipping-content {
+    line-height: 1.7;
+  }
+
+  .shipping-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .shipping-section {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 2rem;
+  }
+
+  .shipping-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .shipping-section h2 {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .shipping-subsection {
+    margin-bottom: 1.5rem;
+  }
+
+  .shipping-subsection:last-child {
+    margin-bottom: 0;
+  }
+
+  .shipping-subsection h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .shipping-subsection p {
+    margin-bottom: 1rem;
+  }
+
+  .shipping-subsection ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .shipping-subsection li {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .shipping-container {
+      padding: 2rem 1.5rem;
+    }
+
+    .shipping-title {
+      font-size: 2rem;
+    }
+
+    .shipping-section h2 {
+      font-size: 1.5rem;
+    }
+
+    .shipping-subsection h3 {
+      font-size: 1.2rem;
+    }
+  }
+</style>
