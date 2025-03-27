@@ -222,9 +222,11 @@
 
             <!-- Checkout buttons -->
             <div class="cart__checkout-buttons">
-              <a href="{{ routes.checkout_url }}" class="checkout-btn">
+            <form method="post" action="{{ routes.cart_url }}">
+              <button type="submit" name="checkout" class="checkout-btn">
                 {% render 'icon-checkout' %} CHECKOUT
-              </a>
+              </button>
+            </form>
 
               {%- if section.settings.enable_quick_checkout -%}
                 {{ form | payment_button }}
