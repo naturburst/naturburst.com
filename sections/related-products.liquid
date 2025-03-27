@@ -1,148 +1,98 @@
-{% comment %}
-  Related Products Section
+{%- liquid
+  # First try to get products from the same collection
+  assign related_collection = product.collections.first
 
-  Shows products that are related to the current product by:
-  1. Same collection
-  2. Same product type
-  3. Same vendor
-{% endcomment %}
+  # If no collection found, use all products collection
+  if related_collection == blank
+    assign related_collection = collections.all
+  endif
 
-{%- if section.settings.products_to_show > 0 -%}
-  <section class="related-products section">
-    <div class="page-width">
-      <div class="section-header">
-        <h2>{{ section.settings.heading | escape }}</h2>
-      </div>
+  # Set the current product id for comparison
+  assign current_product_id = product.id
 
-      <div class="related-products__grid">
-        {%- liquid
-          # First try to get products from the same collection
-          assign related_collection = product.collections.first
+  # Create an array to store related products
+  assign related_products = []
 
-          # If no collection found, try to get products from the recommendations
-          if related_collection == blank
-            assign related_collection = collections.all
+  # First pass: gather all potential related products
+  for related_product in related_collection.products limit: section.settings.products_to_show
+    # Skip the current product
+    if related_product.id != current_product_id
+      assign related_products = related_products | append: related_product
+    endif
+  endfor
+
+  # If not enough related products found, try other collections
+  if related_products.size < section.settings.products_to_show and product.collections.size > 1
+    for collection in product.collections
+      if collection.id != related_collection.id
+        for related_product in collection.products limit: section.settings.products_to_show
+          if related_product.id != current_product_id and related_products.size < section.settings.products_to_show
+            # Check if this product is already in our results
+            assign is_duplicate = false
+            for existing_product in related_products
+              if existing_product.id == related_product.id
+                assign is_duplicate = true
+                break
+              endif
+            endfor
+
+            # Only add if not a duplicate
+            unless is_duplicate
+              assign related_products = related_products | append: related_product
+            endunless
           endif
+        endfor
+      endif
 
-          # Create an array to store related products
-          assign related_products = ''
+      # Break if we have enough products
+      if related_products.size >= section.settings.products_to_show
+        break
+      endif
+    endfor
+  endif
 
-          for related_product in related_collection.products limit: section.settings.products_to_show
-            # Skip the current product
-            if related_product.id == product.id
-              continue
-            endif
+  # Last resort: If still not enough products, add more from any collection
+  if related_products.size < section.settings.products_to_show
+    for product_item in collections.all.products limit: 20
+      if product_item.id != current_product_id and related_products.size < section.settings.products_to_show
+        # Check if this product is already in our results
+        assign is_duplicate = false
+        for existing_product in related_products
+          if existing_product.id == product_item.id
+            assign is_duplicate = true
+            break
+          endif
+        endfor
 
-            # Add related product to the array
-            assign related_products = related_products | append: related_product.id | append: ','
-          endfor
+        # Only add if not a duplicate
+        unless is_duplicate
+          assign related_products = related_products | append: product_item
+        endunless
+      endif
 
-          # Convert the comma-separated list to an array
-          assign related_products = related_products | split: ','
-        -%}
+      # Break if we have enough products
+      if related_products.size >= section.settings.products_to_show
+        break
+      endif
+    endfor
+  endif
+-%}
 
-        {%- if related_products.size > 0 -%}
-          {%- for related_id in related_products limit: section.settings.products_to_show -%}
-            {%- assign related_product = all_products[related_id] -%}
-
-            {%- if related_product != blank -%}
-              <div class="related-products__item">
-                {% render 'product-card',
-                  product: related_product,
-                  show_rating: section.settings.show_rating,
-                  show_quick_add: true,
-                  show_secondary_image: section.settings.show_secondary_image
-                %}
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        {%- else -%}
-          {%- for product in collections.all.products limit: section.settings.products_to_show -%}
-            {%- if product.id != product.id -%}
-              <div class="related-products__item">
-                {% render 'product-card',
-                  product: product,
-                  show_rating: section.settings.show_rating,
-                  show_quick_add: true,
-                  show_secondary_image: section.settings.show_secondary_image
-                %}
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
+{%- if related_products.size > 0 -%}
+  <div class="related-products__grid">
+    {%- for related_product in related_products -%}
+      <div class="related-products__item">
+        {% render 'product-card',
+          product: related_product,
+          show_rating: section.settings.show_rating,
+          show_quick_add: true,
+          show_secondary_image: section.settings.show_secondary_image
+        %}
       </div>
-    </div>
-  </section>
+    {%- endfor -%}
+  </div>
+{%- else -%}
+  <div class="related-products__empty">
+    <p>No related products found.</p>
+  </div>
 {%- endif -%}
-
-{% schema %}
-{
-  "name": "Related products",
-  "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "default": "You may also like",
-      "label": "Heading"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 2,
-      "max": 8,
-      "step": 1,
-      "default": 4,
-      "label": "Number of products to show"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": true,
-      "label": "Show secondary image on hover"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "Show product vendor"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": true,
-      "label": "Show product rating"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Related products",
-      "category": "Product information"
-    }
-  ]
-}
-{% endschema %}
-
-<style>
-.related-products {
-  padding: 3rem 0 5rem;
-  background: var(--color-background-light);
-}
-
-.related-products__grid {
-  display: grid;
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-@media screen and (min-width: 768px) {
-  .related-products__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .related-products__grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-</style>

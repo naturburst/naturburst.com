@@ -6,7 +6,7 @@
 
 <cart-items class="section-cart">
   <div class="page-width">
-    <h1 class="cart__title">{{ 'templates.cart.title' | t }}</h1>
+    <h1 class="cart__title">Your cart</h1>
 
     <div class="cart__container">
       {% if cart.item_count > 0 %}
@@ -632,6 +632,66 @@
     width: 80px;
   }
 }
+
+.cart-item__remove-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
+.cart-item__remove {
+  background: none;
+  border: none;
+  color: var(--color-text-light);
+  cursor: pointer;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 1;
+}
+
+.cart-item__remove:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+  transform: scale(1.1);
+}
+
+/* Fix for the minus button blur issue */
+.quantity-btn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.quantity-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2px;
+}
+
+.quantity-btn:hover {
+  background: var(--color-background-light);
+}
+
+/* Remove the disabled attribute for button when quantity is 1 */
+.quantity-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: none !important; /* Prevents blur effect */
+}
 </style>
 
 <script>
@@ -717,17 +777,21 @@
       })
       .then(response => response.json())
       .then(data => {
-        // If item was removed or cart is empty, reload the page
-        if (quantity === 0 || data.item_count === 0) {
+      if (data.item_count === 0) {
           window.location.reload();
-        } else {
-          // Update cart count in the header
-          const cartCountElements = document.querySelectorAll('[data-cart-count]');
-          if (cartCountElements.length) {
-            cartCountElements.forEach(el => {
-              el.textContent = data.item_count;
-            });
-          }
+      }
+      // If quantity was set to 0, reload to remove the item
+      else if (quantity === 0) {
+         window.location.reload();
+      }
+      else {
+        // Update cart count in the header
+        const cartCountElements = document.querySelectorAll('[data-cart-count]');
+        if (cartCountElements.length) {
+        cartCountElements.forEach(el => {
+          el.textContent = data.item_count;
+        });
+      }
 
           // Update the subtotal amount
           const subtotalElements = document.querySelectorAll('.cart__subtotal, .cart__total');

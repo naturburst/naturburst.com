@@ -1049,6 +1049,37 @@ details:not([open]) .icon-minus {
     height: 50px;
   }
 }
+
+.loading-overlay__spinner {
+  display: none !important;
+}
+
+/* Clean button loading state */
+.btn--loading {
+  opacity: 0.7;
+  position: relative;
+  background-color: var(--color-primary-darker) !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Remove any strange animations */
+.spinner, .spinner .path {
+  animation: none !important;
+}
+
+/* Make Add to Cart and Buy Now buttons more consistent */
+.product-form__buttons .btn {
+  transition: all 0.3s ease;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.product-form__buttons .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
 </style>
 
 <script>
@@ -1060,12 +1091,11 @@ document.addEventListener('DOMContentLoaded', function() {
       e.preventDefault();
 
       const submitBtn = this.querySelector('.product-form__submit');
-      const loadingOverlay = submitBtn ? submitBtn.querySelector('.loading-overlay__spinner') : null;
 
-      // Show loading state
+      // Show simple transition without spinner
       if (submitBtn) {
-        submitBtn.classList.add('loading');
-        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+        submitBtn.classList.add('btn--loading');
+        submitBtn.disabled = true;
       }
 
       // Submit the form via AJAX
@@ -1090,19 +1120,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           });
 
-        // Hide loading state
-        if (submitBtn) {
-          submitBtn.classList.remove('loading');
-          if (loadingOverlay) loadingOverlay.classList.add('hidden');
-        }
+        // Hide loading state and restore button after short delay
+        setTimeout(() => {
+          if (submitBtn) {
+            submitBtn.classList.remove('btn--loading');
+            submitBtn.disabled = false;
+          }
+        }, 600);
       })
       .catch(error => {
         console.error('Error adding to cart:', error);
 
         // Hide loading state on error too
         if (submitBtn) {
-          submitBtn.classList.remove('loading');
-          if (loadingOverlay) loadingOverlay.classList.add('hidden');
+          submitBtn.classList.remove('btn--loading');
+          submitBtn.disabled = false;
         }
       });
     });
