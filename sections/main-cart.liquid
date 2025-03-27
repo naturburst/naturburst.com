@@ -2,9 +2,14 @@
   Main Cart Section
 
   Allows viewing and editing items in the cart
+  - Fixed alignment issues
+  - Improved quantity selectors
+  - Fixed remove button functionality
+  - Enhanced checkout button behavior
+  - Mobile responsive design improvements
 {% endcomment %}
 
-<cart-items class="section-cart">
+<div class="section-cart">
   <div class="page-width">
     <h1 class="cart__title">Your cart</h1>
 
@@ -81,20 +86,14 @@
                     <!-- Mobile price display -->
                     <div class="cart-item__price-container mobile-only">
                       {%- if item.original_price != item.final_price -%}
-                        <dl class="cart-item__price">
-                          <dt>
-                            <span class="visually-hidden">Regular price</span>
-                          </dt>
-                          <dd class="cart-item__old-price">
+                        <div class="cart-item__price">
+                          <span class="cart-item__old-price">
                             <s>{{ item.original_price | money }}</s>
-                          </dd>
-                          <dt>
-                            <span class="visually-hidden">Sale price</span>
-                          </dt>
-                          <dd class="cart-item__final-price">
+                          </span>
+                          <span class="cart-item__final-price">
                             {{ item.final_price | money }}
-                          </dd>
-                        </dl>
+                          </span>
+                        </div>
                       {%- else -%}
                         <div class="cart-item__price">
                           {{ item.original_price | money }}
@@ -106,20 +105,14 @@
                   <!-- Desktop price display -->
                   <div class="cart-item__price-wrapper hide-mobile">
                     {%- if item.original_price != item.final_price -%}
-                      <dl class="cart-item__price">
-                        <dt>
-                          <span class="visually-hidden">Regular price</span>
-                        </dt>
-                        <dd class="cart-item__old-price">
+                      <div class="cart-item__price">
+                        <span class="cart-item__old-price">
                           <s>{{ item.original_price | money }}</s>
-                        </dd>
-                        <dt>
-                          <span class="visually-hidden">Sale price</span>
-                        </dt>
-                        <dd class="cart-item__final-price">
+                        </span>
+                        <span class="cart-item__final-price">
                           {{ item.final_price | money }}
-                        </dd>
-                      </dl>
+                        </span>
+                      </div>
                     {%- else -%}
                       <div class="cart-item__price">
                         {{ item.original_price | money }}
@@ -136,6 +129,7 @@
                         aria-label="Decrease quantity for {{ item.product.title | escape }}"
                         name="minus"
                         {% if item.quantity == 1 %}disabled{% endif %}
+                        data-line-id="{{ forloop.index }}"
                       >
                         {% render 'icon-minus' %}
                       </button>
@@ -145,10 +139,9 @@
                         value="{{ item.quantity }}"
                         min="0"
                         aria-label="Quantity for {{ item.product.title | escape }}"
-                        data-index="{{ forloop.index }}"
                         id="Quantity-{{ item.key }}"
                         class="quantity-input js-qty__input"
-                        data-quantity-update
+                        data-index="{{ forloop.index }}"
                         data-line-id="{{ forloop.index }}"
                       >
                       <button
@@ -156,6 +149,7 @@
                         class="quantity-btn js-qty__inc"
                         aria-label="Increase quantity for {{ item.product.title | escape }}"
                         name="plus"
+                        data-line-id="{{ forloop.index }}"
                       >
                         {% render 'icon-plus' %}
                       </button>
@@ -166,24 +160,16 @@
                   <div class="cart-item__subtotal-wrapper hide-mobile">
                     <div class="cart-item__subtotal">
                       {%- if item.original_line_price != item.final_line_price -%}
-                        <dl>
-                          <dt>
-                            <span class="visually-hidden">Regular price</span>
-                          </dt>
-                          <dd class="cart-item__old-price">
-                            <s>{{ item.original_line_price | money }}</s>
-                          </dd>
-                          <dt>
-                            <span class="visually-hidden">Sale price</span>
-                          </dt>
-                          <dd class="cart-item__final-price">
-                            {{ item.final_line_price | money }}
-                          </dd>
-                        </dl>
+                        <span class="cart-item__old-price">
+                          <s>{{ item.original_line_price | money }}</s>
+                        </span>
+                        <span class="cart-item__final-price">
+                          {{ item.final_line_price | money }}
+                        </span>
                       {%- else -%}
-                        <div>
+                        <span>
                           {{ item.original_line_price | money }}
-                        </div>
+                        </span>
                       {%- endif -%}
                     </div>
                   </div>
@@ -278,34 +264,7 @@
       {% endif %}
     </div>
   </div>
-</cart-items>
-
-{% schema %}
-{
-  "name": "Cart",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "label": "Show product vendor",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cart_note",
-      "label": "Enable order notes",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_quick_checkout",
-      "label": "Enable quick checkout buttons",
-      "info": "Display quick checkout buttons like Shop Pay, Apple Pay, etc.",
-      "default": true
-    }
-  ]
-}
-{% endschema %}
+</div>
 
 <style>
 .section-cart {
@@ -386,6 +345,7 @@
 
 .cart-item__name a {
   color: var(--color-headings);
+  text-decoration: none;
 }
 
 .cart-item__vendor {
@@ -421,6 +381,8 @@
 .cart-item__subtotal {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-item__old-price {
@@ -438,10 +400,55 @@
   justify-content: center;
 }
 
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.quantity-btn {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text);
+}
+
+.quantity-btn:hover:not([disabled]) {
+  background: var(--color-background-light);
+}
+
+.quantity-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-input {
+  width: 40px;
+  height: 32px;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  -moz-appearance: textfield;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .cart-item__remove-wrapper {
-  padding: 0 1rem;
   display: flex;
   justify-content: center;
+  padding: 0 1rem;
 }
 
 .cart-item__remove {
@@ -449,8 +456,9 @@
   border: none;
   color: var(--color-text-light);
   cursor: pointer;
-  width: 36px;
-  height: 36px;
+  padding: 0;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -461,6 +469,7 @@
 .cart-item__remove:hover {
   background: #FEE2E2;
   color: #DC2626;
+  transform: scale(1.1);
 }
 
 /* Cart note */
@@ -540,6 +549,17 @@
   justify-content: center;
   gap: 0.5rem;
   font-weight: 700;
+  background-color: #2A5E41;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #234C36;
 }
 
 .cart__additional-checkout {
@@ -564,7 +584,20 @@
 }
 
 .cart__empty-button {
-  margin-top: 1rem;
+  display: inline-block;
+  background-color: transparent;
+  color: #2A5E41;
+  border: 1px solid #2A5E41;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cart__empty-button:hover {
+  background-color: #2A5E41;
+  color: white;
 }
 
 /* Utility classes */
@@ -574,6 +607,12 @@
 
 .mobile-only {
   display: block;
+}
+
+/* Cart updating state */
+.cart--loading .cart__inner {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 /* Responsive layout */
@@ -632,189 +671,197 @@
     width: 80px;
   }
 }
-
-.cart-item__remove-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 0 1rem;
-}
-
-.cart-item__remove {
-  background: none;
-  border: none;
-  color: var(--color-text-light);
-  cursor: pointer;
-  padding: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  opacity: 1;
-}
-
-.cart-item__remove:hover {
-  background: #FEE2E2;
-  color: #DC2626;
-  transform: scale(1.1);
-}
-
-/* Fix for the minus button blur issue */
-.quantity-btn {
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.quantity-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2px;
-}
-
-.quantity-btn:hover {
-  background: var(--color-background-light);
-}
-
-/* Remove the disabled attribute for button when quantity is 1 */
-.quantity-btn[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
-  filter: none !important; /* Prevents blur effect */
-}
 </style>
 
 <script>
-  class CartItems extends HTMLElement {
-    constructor() {
-      super();
+document.addEventListener('DOMContentLoaded', function() {
+  // Select the cart container
+  const cartContainer = document.querySelector('.section-cart');
+  if (!cartContainer) return;
 
-      // Initialize event handlers once the component is connected
-      this.addEventListener('input', this.onQuantityChange);
-      this.addEventListener('click', this.onButtonClick);
+  // Select all quantity inputs, increase/decrease buttons, and remove buttons
+  const quantityInputs = document.querySelectorAll('.js-qty__input');
+  const increaseButtons = document.querySelectorAll('.js-qty__inc');
+  const decreaseButtons = document.querySelectorAll('.js-qty__dec');
+  const removeButtons = document.querySelectorAll('.cart-item__remove');
 
-      // Debounced cart update
-      this.debouncedOnChange = this.debounce(this.onChange.bind(this), 300);
-    }
+  // Update cart function (handles quantity changes and removals)
+  function updateCart(lineId, quantity) {
+    // Show loading state
+    cartContainer.classList.add('cart--loading');
 
-    // Handle quantity changes
-    onQuantityChange(event) {
-      if (event.target.dataset.quantityUpdate) {
-        this.debouncedOnChange(event);
-      }
-    }
+    // Prepare the update data
+    const data = {
+      id: lineId,
+      quantity: quantity
+    };
 
-    // Handle button clicks
-    onButtonClick(event) {
-      // Quantity buttons
-      if (event.target.closest('.js-qty__inc')) {
-        const input = event.target.closest('.js-qty').querySelector('.js-qty__input');
-        input.value = parseInt(input.value) + 1;
-        input.dispatchEvent(new Event('input'));
-      } else if (event.target.closest('.js-qty__dec')) {
-        const input = event.target.closest('.js-qty').querySelector('.js-qty__input');
-        if (parseInt(input.value) > 1) {
-          input.value = parseInt(input.value) - 1;
-          input.dispatchEvent(new Event('input'));
-        }
-      }
-
-      // Remove item button
-      if (event.target.closest('.cart-item__remove')) {
-        const lineId = event.target.closest('.cart-item__remove').dataset.lineId;
-        this.updateQuantity(lineId, 0);
-      }
-    }
-
-    // Debounce helper function
-    debounce(fn, wait) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => fn.apply(this, args), wait);
-      };
-    }
-
-    // Handle quantity changes with debouncing
-    onChange(event) {
-      const lineId = event.target.dataset.lineId;
-      const quantity = parseInt(event.target.value);
-
-      if (quantity >= 0) {
-        this.updateQuantity(lineId, quantity);
-      }
-    }
-
-    // Update cart quantity via fetch
-    updateQuantity(lineId, quantity) {
-      // Show loading state on the cart
-      this.classList.add('cart--loading');
-
-      // Use fetch API to update cart
-      const body = JSON.stringify({
-        updates: {
-          [lineId]: quantity
-        },
-        sections: ['main-cart']
-      });
-
-      fetch('/cart/update.js', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body
-      })
-      .then(response => response.json())
-      .then(data => {
-      if (data.item_count === 0) {
-          window.location.reload();
-      }
-      // If quantity was set to 0, reload to remove the item
-      else if (quantity === 0) {
-         window.location.reload();
-      }
-      else {
-        // Update cart count in the header
-        const cartCountElements = document.querySelectorAll('[data-cart-count]');
-        if (cartCountElements.length) {
-        cartCountElements.forEach(el => {
-          el.textContent = data.item_count;
-        });
+    // Send the update request
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(cart => {
+      // If cart is now empty, reload the page to show empty cart state
+      if (cart.item_count === 0) {
+        window.location.reload();
+        return;
       }
 
-          // Update the subtotal amount
-          const subtotalElements = document.querySelectorAll('.cart__subtotal, .cart__total');
-          if (subtotalElements.length) {
-            const formatter = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: data.currency
-            });
+      // If an item was removed, reload the page
+      if (quantity === 0) {
+        window.location.reload();
+        return;
+      }
 
-            subtotalElements.forEach(el => {
-              el.textContent = formatter.format(data.total_price / 100);
-            });
-          }
-        }
-      })
-      .catch(error => {
-        console.error('Error updating cart:', error);
-      })
-      .finally(() => {
-        this.classList.remove('cart--loading');
+      // Update cart count in the header
+      updateCartCount(cart.item_count);
+
+      // Update cart subtotal
+      updateCartSubtotal(cart.total_price);
+
+      // Enable/disable decrease buttons based on new quantities
+      updateDecreaseButtons();
+
+      // Remove loading state
+      cartContainer.classList.remove('cart--loading');
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+      cartContainer.classList.remove('cart--loading');
+    });
+  }
+
+  // Update cart count in header
+  function updateCartCount(count) {
+    const cartCountElements = document.querySelectorAll('[data-cart-count]');
+    if (cartCountElements) {
+      cartCountElements.forEach(el => {
+        el.textContent = count;
       });
     }
   }
 
-  customElements.define('cart-items', CartItems);
+  // Update cart subtotal
+  function updateCartSubtotal(price) {
+    const subtotalElements = document.querySelectorAll('.cart__subtotal, .cart__total');
+    if (subtotalElements) {
+      const formattedPrice = formatMoney(price);
+      subtotalElements.forEach(el => {
+        el.textContent = formattedPrice;
+      });
+    }
+  }
+
+  // Format money amount
+  function formatMoney(cents) {
+    const formatter = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 2
+    });
+    return formatter.format(cents / 100);
+  }
+
+  // Enable/disable decrease buttons based on quantity
+  function updateDecreaseButtons() {
+    quantityInputs.forEach(input => {
+      const lineId = input.dataset.lineId;
+      const value = parseInt(input.value, 10);
+      const decreaseBtn = document.querySelector(`.js-qty__dec[data-line-id="${lineId}"]`);
+
+      if (decreaseBtn) {
+        decreaseBtn.disabled = value <= 1;
+      }
+    });
+  }
+
+  // Handle quantity input changes
+  quantityInputs.forEach(input => {
+    input.addEventListener('change', function() {
+      const lineId = this.dataset.lineId;
+      const quantity = parseInt(this.value, 10);
+
+      if (quantity >= 0) {
+        updateCart(lineId, quantity);
+      }
+    });
+  });
+
+  // Handle increase button clicks
+  increaseButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const lineId = this.dataset.lineId;
+      const input = document.querySelector(`.js-qty__input[data-line-id="${lineId}"]`);
+
+      if (input) {
+        const currentValue = parseInt(input.value, 10);
+        const newValue = currentValue + 1;
+        input.value = newValue;
+        updateCart(lineId, newValue);
+      }
+    });
+  });
+
+  // Handle decrease button clicks
+  decreaseButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      if (this.disabled) return;
+
+      const lineId = this.dataset.lineId;
+      const input = document.querySelector(`.js-qty__input[data-line-id="${lineId}"]`);
+
+      if (input) {
+        const currentValue = parseInt(input.value, 10);
+        if (currentValue > 1) {
+          const newValue = currentValue - 1;
+          input.value = newValue;
+          updateCart(lineId, newValue);
+        }
+      }
+    });
+  });
+
+  // Handle remove button clicks
+  removeButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const lineId = this.dataset.lineId;
+      updateCart(lineId, 0); // Set quantity to 0 to remove
+    });
+  });
+
+  // Initialize decrease buttons state
+  updateDecreaseButtons();
+});
 </script>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "Enable order notes",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_checkout",
+      "label": "Enable quick checkout buttons",
+      "info": "Display quick checkout buttons like Shop Pay, Apple Pay, etc.",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
