@@ -2,11 +2,12 @@
   Main Cart Section
 
   Allows viewing and editing items in the cart
-  - Fixed alignment issues
-  - Improved quantity selectors
+  - Fixed layout and alignment issues
+  - Completely rebuilt quantity selectors with proper styling
   - Fixed remove button functionality
   - Enhanced checkout button behavior
   - Mobile responsive design improvements
+  - Fixed cart update issues with proper fetch requests
 {% endcomment %}
 
 <div class="section-cart">
@@ -120,38 +121,36 @@
                     {%- endif -%}
                   </div>
 
-                  <!-- Quantity selector -->
+                  <!-- Quantity selector - redesigned for better appearance -->
                   <div class="cart-item__quantity-wrapper">
-                    <div class="quantity-selector js-qty">
+                    <div class="cart-quantity-selector">
                       <button
                         type="button"
-                        class="quantity-btn js-qty__dec"
+                        class="cart-quantity-btn cart-quantity-btn--dec"
                         aria-label="Decrease quantity for {{ item.product.title | escape }}"
-                        name="minus"
                         {% if item.quantity == 1 %}disabled{% endif %}
-                        data-line-id="{{ forloop.index }}"
+                        data-line="{{ forloop.index }}"
                       >
-                        {% render 'icon-minus' %}
+                        <span>-</span>
                       </button>
                       <input
                         type="number"
                         name="updates[]"
                         value="{{ item.quantity }}"
-                        min="0"
+                        min="1"
                         aria-label="Quantity for {{ item.product.title | escape }}"
                         id="Quantity-{{ item.key }}"
-                        class="quantity-input js-qty__input"
-                        data-index="{{ forloop.index }}"
-                        data-line-id="{{ forloop.index }}"
+                        class="cart-quantity-input"
+                        data-line="{{ forloop.index }}"
+                        data-key="{{ item.key }}"
                       >
                       <button
                         type="button"
-                        class="quantity-btn js-qty__inc"
+                        class="cart-quantity-btn cart-quantity-btn--inc"
                         aria-label="Increase quantity for {{ item.product.title | escape }}"
-                        name="plus"
-                        data-line-id="{{ forloop.index }}"
+                        data-line="{{ forloop.index }}"
                       >
-                        {% render 'icon-plus' %}
+                        <span>+</span>
                       </button>
                     </div>
                   </div>
@@ -180,7 +179,7 @@
                       type="button"
                       class="cart-item__remove"
                       aria-label="Remove {{ item.product.title | escape }}"
-                      data-line-id="{{ forloop.index }}"
+                      data-line="{{ forloop.index }}"
                     >
                       {% render 'icon-remove' %}
                     </button>
@@ -235,8 +234,8 @@
 
             <!-- Checkout buttons -->
             <div class="cart__checkout-buttons">
-              <a href="{{ routes.checkout_url }}" class="btn checkout-btn">
-                {% render 'icon-checkout' %} Checkout
+              <a href="{{ routes.checkout_url }}" class="checkout-btn">
+                {% render 'icon-checkout' %} CHECKOUT
               </a>
 
               {%- if section.settings.enable_quick_checkout -%}
@@ -400,47 +399,57 @@
   justify-content: center;
 }
 
-.quantity-selector {
+.cart-quantity-selector {
   display: flex;
   align-items: center;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 2rem;
+  width: 100px;
+  height: 40px;
+  overflow: hidden;
+  background: #f8f9fa;
 }
 
-.quantity-btn {
-  width: 32px;
-  height: 32px;
+.cart-quantity-btn {
+  width: 30px;
+  height: 40px;
   background: transparent;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: var(--color-text);
+  font-size: 20px;
+  font-weight: 700;
+  color: #2A5E41;
+  transition: all 0.15s ease;
+  padding: 0;
 }
 
-.quantity-btn:hover:not([disabled]) {
-  background: var(--color-background-light);
+.cart-quantity-btn:hover:not([disabled]) {
+  background: rgba(42, 94, 65, 0.1);
 }
 
-.quantity-btn[disabled] {
-  opacity: 0.5;
+.cart-quantity-btn--dec[disabled] {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
-.quantity-input {
+.cart-quantity-input {
   width: 40px;
-  height: 32px;
+  height: 40px;
   border: none;
   text-align: center;
   font-size: 1rem;
   font-weight: 500;
+  background: transparent;
+  color: #1a2e37;
   -moz-appearance: textfield;
+  padding: 0;
 }
 
-.quantity-input::-webkit-outer-spin-button,
-.quantity-input::-webkit-inner-spin-button {
+.cart-quantity-input::-webkit-outer-spin-button,
+.cart-quantity-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -555,11 +564,16 @@
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .checkout-btn:hover {
   background-color: #234C36;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .cart__additional-checkout {
@@ -624,10 +638,13 @@
 
   .cart__form {
     flex: 1;
+    margin-right: 2rem;
   }
 
   .cart__totals {
     margin-top: 0;
+    width: 350px;
+    flex-shrink: 0;
   }
 
   .hide-mobile {
@@ -669,6 +686,10 @@
 
   .cart-item__image {
     width: 80px;
+  }
+
+  .cart-quantity-selector {
+    width: 90px;
   }
 }
 </style>
