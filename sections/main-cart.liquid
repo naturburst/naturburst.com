@@ -684,28 +684,22 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Select the cart container
   const cartContainer = document.querySelector('.section-cart');
   if (!cartContainer) return;
 
-  // Select all quantity inputs, increase/decrease buttons, and remove buttons
-  const quantityInputs = document.querySelectorAll('.js-qty__input');
-  const increaseButtons = document.querySelectorAll('.js-qty__inc');
-  const decreaseButtons = document.querySelectorAll('.js-qty__dec');
+  const quantityInputs = document.querySelectorAll('.cart-quantity-input');
+  const increaseButtons = document.querySelectorAll('.cart-quantity-btn--inc');
+  const decreaseButtons = document.querySelectorAll('.cart-quantity-btn--dec');
   const removeButtons = document.querySelectorAll('.cart-item__remove');
 
-  // Update cart function (handles quantity changes and removals)
-  function updateCart(lineId, quantity) {
-    // Show loading state
+  function updateCart(itemKey, quantity) {
     cartContainer.classList.add('cart--loading');
 
-    // Prepare the update data
     const data = {
-      id: lineId,
+      id: itemKey,
       quantity: quantity
     };
 
-    // Send the update request
     fetch('/cart/change.js', {
       method: 'POST',
       headers: {
@@ -715,28 +709,13 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(cart => {
-      // If cart is now empty, reload the page to show empty cart state
-      if (cart.item_count === 0) {
+      if (cart.item_count === 0 || quantity === 0) {
         window.location.reload();
         return;
       }
-
-      // If an item was removed, reload the page
-      if (quantity === 0) {
-        window.location.reload();
-        return;
-      }
-
-      // Update cart count in the header
       updateCartCount(cart.item_count);
-
-      // Update cart subtotal
       updateCartSubtotal(cart.total_price);
-
-      // Enable/disable decrease buttons based on new quantities
       updateDecreaseButtons();
-
-      // Remove loading state
       cartContainer.classList.remove('cart--loading');
     })
     .catch(error => {
@@ -745,28 +724,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Update cart count in header
   function updateCartCount(count) {
     const cartCountElements = document.querySelectorAll('[data-cart-count]');
-    if (cartCountElements) {
-      cartCountElements.forEach(el => {
-        el.textContent = count;
-      });
-    }
+    cartCountElements.forEach(el => {
+      el.textContent = count;
+    });
   }
 
-  // Update cart subtotal
   function updateCartSubtotal(price) {
     const subtotalElements = document.querySelectorAll('.cart__subtotal, .cart__total');
-    if (subtotalElements) {
-      const formattedPrice = formatMoney(price);
-      subtotalElements.forEach(el => {
-        el.textContent = formattedPrice;
-      });
-    }
+    const formattedPrice = formatMoney(price);
+    subtotalElements.forEach(el => {
+      el.textContent = formattedPrice;
+    });
   }
 
-  // Format money amount
   function formatMoney(cents) {
     const formatter = new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -776,77 +748,66 @@ document.addEventListener('DOMContentLoaded', function() {
     return formatter.format(cents / 100);
   }
 
-  // Enable/disable decrease buttons based on quantity
   function updateDecreaseButtons() {
     quantityInputs.forEach(input => {
-      const lineId = input.dataset.lineId;
       const value = parseInt(input.value, 10);
-      const decreaseBtn = document.querySelector(`.js-qty__dec[data-line-id="${lineId}"]`);
-
+      const itemKey = input.dataset.key;
+      const decreaseBtn = document.querySelector(`.cart-quantity-btn--dec[data-key="${itemKey}"]`);
       if (decreaseBtn) {
         decreaseBtn.disabled = value <= 1;
       }
     });
   }
 
-  // Handle quantity input changes
   quantityInputs.forEach(input => {
     input.addEventListener('change', function() {
-      const lineId = this.dataset.lineId;
+      const itemKey = this.dataset.key;
       const quantity = parseInt(this.value, 10);
-
       if (quantity >= 0) {
-        updateCart(lineId, quantity);
+        updateCart(itemKey, quantity);
       }
     });
   });
 
-  // Handle increase button clicks
   increaseButtons.forEach(button => {
     button.addEventListener('click', function() {
-      const lineId = this.dataset.lineId;
-      const input = document.querySelector(`.js-qty__input[data-line-id="${lineId}"]`);
-
+      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+      const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
       if (input) {
-        const currentValue = parseInt(input.value, 10);
-        const newValue = currentValue + 1;
+        const newValue = parseInt(input.value, 10) + 1;
         input.value = newValue;
-        updateCart(lineId, newValue);
+        updateCart(itemKey, newValue);
       }
     });
   });
 
-  // Handle decrease button clicks
   decreaseButtons.forEach(button => {
     button.addEventListener('click', function() {
       if (this.disabled) return;
-
-      const lineId = this.dataset.lineId;
-      const input = document.querySelector(`.js-qty__input[data-line-id="${lineId}"]`);
-
+      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+      const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
       if (input) {
         const currentValue = parseInt(input.value, 10);
         if (currentValue > 1) {
           const newValue = currentValue - 1;
           input.value = newValue;
-          updateCart(lineId, newValue);
+          updateCart(itemKey, newValue);
         }
       }
     });
   });
 
-  // Handle remove button clicks
   removeButtons.forEach(button => {
     button.addEventListener('click', function() {
-      const lineId = this.dataset.lineId;
-      updateCart(lineId, 0); // Set quantity to 0 to remove
+      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+      updateCart(itemKey, 0);
     });
   });
 
-  // Initialize decrease buttons state
   updateDecreaseButtons();
 });
 </script>
+
 
 {% schema %}
 {
