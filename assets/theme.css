@@ -198,7 +198,46 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 2px var(--color-primary-lighter);
 }
 
-/* Improved mobile nav */
+/* HEADER STYLES - Updated for white background */
+.header-wrapper {
+  position: relative;
+  background-color: #FFFFFF; /* Changed from green to white */
+  color: #1a2e37; /* Changed text color for visibility on white */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Added subtle shadow */
+}
+
+/* Header navigation links - Updated for visibility on white */
+.site-nav__link {
+  color: #1a2e37; /* Dark color for visibility on white */
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.75rem 0.5rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.site-nav__link:hover {
+  color: var(--color-primary); /* Keep brand color on hover */
+}
+
+/* Mobile toggle button - Updated for white header */
+.mobile-nav-toggle {
+  background: transparent;
+  border: none;
+  color: #1a2e37; /* Changed from white to dark */
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+/* IMPROVED MOBILE NAVIGATION */
 .mobile-nav {
   position: fixed !important;
   top: 0 !important;
@@ -207,14 +246,15 @@ input:focus, textarea:focus, select:focus {
   max-width: 350px !important;
   height: 100vh !important;
   background-color: #ffffff !important;
-  z-index: 9999 !important; /* Extremely high z-index */
+  z-index: 9999 !important;
   transform: translateX(-100%) !important;
-  transition: transform 0.3s ease !important;
+  /* Added visibility to transition to fix lingering elements */
+  transition: transform 0.3s ease, visibility 0.3s ease !important;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) !important;
   overflow-y: auto !important;
   visibility: hidden !important;
-  -webkit-overflow-scrolling: touch !important; /* Smooth scroll on iOS */
-  will-change: transform !important; /* Performance optimization */
+  -webkit-overflow-scrolling: touch !important;
+  will-change: transform !important;
 }
 
 .mobile-nav * {
@@ -223,6 +263,7 @@ input:focus, textarea:focus, select:focus {
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Fixed overlay transition to match main nav */
 .mobile-nav-overlay {
   position: fixed !important;
   top: 0 !important;
@@ -230,15 +271,16 @@ input:focus, textarea:focus, select:focus {
   width: 100% !important;
   height: 100% !important;
   background-color: rgba(0, 0, 0, 0.5) !important;
-  z-index: 9998 !important; /* High but below mobile nav */
+  z-index: 9998 !important;
   opacity: 0 !important;
   visibility: hidden !important;
   transition: opacity 0.3s ease, visibility 0.3s ease !important;
   pointer-events: none !important;
-  will-change: opacity !important; /* Performance optimization */
+  will-change: opacity !important;
 }
 
 .mobile-nav-overlay.active,
+.mobile-nav-overlay.is-active,
 .mobile-nav-overlay[style*="visibility: visible"] {
   opacity: 1 !important;
   visibility: visible !important;
@@ -246,11 +288,77 @@ input:focus, textarea:focus, select:focus {
 }
 
 .mobile-nav.active,
+.mobile-nav.is-active,
 .mobile-nav[style*="visibility: visible"] {
   transform: translateX(0) !important;
   visibility: visible !important;
 }
 
+/* Fixed close button z-index and enhanced positioning */
+.mobile-nav__close {
+  background: transparent !important;
+  border: none !important;
+  color: #1a2e37 !important; /* Darker color for visibility */
+  font-size: 1.5rem !important;
+  cursor: pointer !important;
+  padding: 0.5rem !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 10001 !important; /* Ensure it's above all other elements */
+  position: relative !important;
+}
+
+.mobile-nav__close:hover {
+  color: var(--color-primary) !important;
+  transform: scale(1.1) !important;
+}
+
+/* ENHANCED IMAGE SIZING */
+.product-featured-image-container {
+  position: relative;
+  margin-bottom: 1rem;
+  background: var(--color-background-light);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  max-height: none; /* Remove height restriction */
+}
+
+.product-featured-image {
+  display: block;
+  width: 100%; /* Take full width */
+  height: auto;
+  max-height: none; /* Remove height restriction */
+  margin: 0 auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card__image-container {
+  height: auto; /* Remove fixed height */
+  min-height: 280px; /* Minimum height for consistency */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  position: relative;
+}
+
+.product-card__image {
+  width: 100%; /* Full width */
+  height: auto;
+  max-height: none; /* Remove max-height */
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+/* Ensure body lock when menu is open */
+body.mobile-menu-open,
 body.overflow-hidden {
   overflow: hidden !important;
   position: fixed !important;
@@ -258,7 +366,7 @@ body.overflow-hidden {
   height: 100% !important;
 }
 
-/* Ensure all interactive elements are clickable */
+/* Ensure all interactive elements are clickable with proper z-index */
 .mobile-nav__link,
 .account-link,
 .currency-option,
@@ -284,140 +392,7 @@ body.overflow-hidden {
   transform: translateZ(0) !important;
   backface-visibility: hidden !important;
   perspective: 1000px !important;
-}
-
-/* Mobile nav toggle button with higher specificity */
-.header-mobile-toggle .mobile-nav-toggle,
-button.mobile-nav-toggle {
-  cursor: pointer !important;
-  position: relative !important;
-  z-index: 9997 !important;
-  pointer-events: auto !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0.5rem !important;
-  color: white !important;
-  font-size: 1.5rem !important;
-}
-
-/* Mobile nav header with logo and close button */
-.mobile-nav__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-}
-
-/* Improved close button styling */
-.mobile-nav__close {
-  background: transparent;
-  border: none;
-  color: #2A5E41; /* Match header color */
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: transform 0.2s ease;
-}
-
-.mobile-nav__close:hover {
-  transform: scale(1.1);
-}
-
-/* Enhanced navigation menu styling */
-.mobile-nav__menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.mobile-nav__item {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.mobile-nav__link {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  color: #333;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
-
-.mobile-nav__link:hover,
-.mobile-nav__item--active .mobile-nav__link {
-  background-color: rgba(42, 94, 65, 0.1); /* Lighter version of header color */
-  color: #2A5E41; /* Header color */
-}
-
-.mobile-nav__link svg {
-  margin-right: 0.75rem;
-}
-
-/* Fix for header hamburger icon */
-.mobile-nav-toggle {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mobile-nav-toggle:hover {
-  transform: scale(1.1);
-}
-
-/* Account section styling */
-.mobile-nav__section {
-  padding: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.mobile-nav__section-title {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.mobile-nav__section-title svg {
-  margin-right: 0.5rem;
-  color: #2A5E41; /* Header color */
-}
-
-.account-options,
-.currency-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.account-link,
-.currency-option {
-  padding: 0.5rem 0.75rem;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #333;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-}
-
-.account-link:hover,
-.currency-option:hover,
-.currency-option.active {
-  background-color: rgba(42, 94, 65, 0.15);
-  color: #2A5E41;
+  -webkit-font-smoothing: antialiased !important;
 }
 
 /*
@@ -539,6 +514,11 @@ Utility Classes
 
   .section {
     padding: 3rem 0;
+  }
+
+  /* Improved mobile image sizing */
+  .product-card__image-container {
+    min-height: 220px;
   }
 }
 
