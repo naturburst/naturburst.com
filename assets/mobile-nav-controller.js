@@ -22,6 +22,58 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay = overlay;
   }
 
+  // Fix currency selector right away - this is crucial
+  fixCurrencySelector();
+
+  // Function to fix currency selector display issues
+  function fixCurrencySelector() {
+    const currencyOptions = document.querySelectorAll('.currency-option');
+    if (currencyOptions.length > 0) {
+      // Add immediate styling to ensure visibility and proper color
+      currencyOptions.forEach(option => {
+        // Force visibility properties
+        option.style.display = 'block';
+        option.style.visibility = 'visible';
+        option.style.opacity = '1';
+
+        // Force text color to be visible against white background
+        option.style.color = '#1a2e37'; // Dark color for standard options
+
+        // Fix layout issues that might cause weird positioning
+        option.style.textAlign = 'center';
+        option.style.margin = '5px 0';
+        option.style.padding = '10px';
+        option.style.width = '100%';
+        option.style.borderRadius = '4px';
+      });
+
+      // Style the active currency differently (if any)
+      const activeCurrency = document.querySelector('.currency-option.active');
+      if (activeCurrency) {
+        activeCurrency.style.color = '#2A5E41'; // Green color for active
+        activeCurrency.style.backgroundColor = 'rgba(42, 94, 65, 0.1)'; // Light green background
+        activeCurrency.style.fontWeight = 'bold';
+      }
+
+      // Try to determine current currency if no active class exists
+      try {
+        const currentCurrency = Shopify?.currency?.active ||
+                               document.querySelector('html').getAttribute('data-currency') ||
+                               'INR';
+        const currentOption = document.querySelector(`.currency-option[value="${currentCurrency}"]`);
+
+        if (currentOption && !currentOption.classList.contains('active')) {
+          currentOption.classList.add('active');
+          currentOption.style.color = '#2A5E41'; // Green color for active
+          currentOption.style.backgroundColor = 'rgba(42, 94, 65, 0.1)'; // Light green background
+          currentOption.style.fontWeight = 'bold';
+        }
+      } catch (e) {
+        console.warn('Could not determine active currency:', e);
+      }
+    }
+  }
+
   // Improved open function with direct DOM manipulation
   function openMobileNav() {
     console.log('Opening mobile navigation');
@@ -47,24 +99,27 @@ document.addEventListener('DOMContentLoaded', function() {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
 
-    // Ensure currency options are visible
-    const currencyOptions = document.querySelectorAll('.currency-option');
-    currencyOptions.forEach(option => {
-      option.style.visibility = 'visible';
-      option.style.display = 'block';
-    });
+    // Fix currency selector again when opening
+    fixCurrencySelector();
   }
 
   // Improved close function with immediate actions
   function closeMobileNav() {
     console.log('Closing mobile navigation');
 
+    // Hide problematic elements first
+    const accountLinks = document.querySelectorAll('.account-link');
+    const currencyOptions = document.querySelectorAll('.currency-option');
+
+    [...accountLinks, ...currencyOptions].forEach(el => {
+      el.style.visibility = 'hidden';
+    });
+
     // Apply styles directly
     mobileNav.style.transform = 'translateX(-100%)';
     mobileNav.style.visibility = 'hidden';
 
     // Add a small delay before removing the element from accessibility flow
-    // This prevents flickering of content during transition
     setTimeout(() => {
       if (!mobileNav.classList.contains('is-active')) {
         mobileNav.style.display = 'none'; // Remove from layout completely
@@ -87,14 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'false');
     }
-
-    // Additional cleanup - make sure everything is properly hidden
-    document.querySelectorAll('.mobile-nav .account-link, .mobile-nav .currency-option').forEach(el => {
-      // Reset any inline styles that might be interfering
-      el.style.removeProperty('z-index');
-      el.style.removeProperty('position');
-      el.style.removeProperty('visibility');
-    });
   }
 
   // Toggle button event handler
@@ -112,19 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Close button clicked');
       e.preventDefault();
       e.stopPropagation();
-
-      // Force immediate visibility changes on problematic elements
-      const accountLinks = document.querySelectorAll('.account-link');
-      const currencyOptions = document.querySelectorAll('.currency-option');
-
-      accountLinks.forEach(link => {
-        link.style.visibility = 'hidden';
-      });
-
-      currencyOptions.forEach(option => {
-        option.style.visibility = 'hidden';
-      });
-
       closeMobileNav();
     });
   }
@@ -138,34 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Fix for currency selector initialization
-  const currencySelectors = document.querySelectorAll('.currency-options .currency-option');
-  if (currencySelectors.length > 0) {
-    // Add specific styling to ensure visibility
-    currencySelectors.forEach(option => {
-      option.style.display = 'block';
-      option.style.visibility = 'visible';
-      option.style.opacity = '1';
-    });
-
-    // Ensure the active currency is highlighted
-    const currentCurrency = Shopify?.currency?.active || 'INR';
-    document.querySelector(`.currency-option[value="${currentCurrency}"]`)?.classList.add('active');
-  }
-
   // Fix for navigation links closing menu
   const navLinks = document.querySelectorAll('[data-nav-link]');
   navLinks.forEach(link => {
-    // For non-form links, let the navigation happen before closing
     link.addEventListener('click', function() {
-      // Capture link destination
-      const href = this.getAttribute('href');
-
-      // FIX: Close the menu immediately to prevent lingering elements
       closeMobileNav();
-
-      // For sign-in/register links, we don't need special handling
-      // as they already work with the immediate close
     });
   });
 
