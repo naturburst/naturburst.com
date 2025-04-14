@@ -109,239 +109,251 @@
 {% endschema %}
 
 <style>
-.featured-products {
-  padding: 4rem 0 5rem;
-  background: white;
-  width: 100%;
-  max-width: 100%;
-  font-family: 'Montserrat', sans-serif;
-}
+  .featured-products {
+    padding: 4rem 0 5rem;
+    background: white;
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Montserrat', sans-serif;
+  }
 
-.section-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
+  .section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
 
-.section-header h2 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #1a2e37;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Montserrat', sans-serif;
-}
+  .section-header h2 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1a2e37;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Montserrat', sans-serif;
+  }
 
-/* Product slider container */
-.product-slider {
-  position: relative;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Wrapper for slider items and navigation */
-.product-slider__wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-/* Container for product items */
-.product-slider__items {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  padding: 1rem 0;
-  width: 100%;
-  gap: 1.5rem;
-}
-
-.product-slider__items::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.product-slide {
-  flex: 0 0 auto;
-  width: 300px; /* Larger product cards */
-  padding: 0.5rem;
-}
-
-/* Enhanced slider button styling for improved appearance */
-.slider-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  padding: 8px;
-  background: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  color: #2A5E41;
-}
-
-.slider-button:hover {
-  transform: translateY(-50%) scale(1.1);
-}
-
-.slider-button--prev {
-  left: 10px;
-}
-
-.slider-button--next {
-  right: 10px;
-}
-
-.slider-button svg {
-  width: 24px;
-  height: 24px;
-  display: block;
-}
-
-/* View All button styling */
-.view-all-container {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.view-all-btn {
-  display: inline-flex;
-  align-items: center;
-  background: #2A5E41;
-  color: white;
-  font-weight: 600;
-  padding: 0.9rem 1.8rem;
-  border-radius: 30px;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.95rem;
-  font-family: 'Montserrat', sans-serif;
-  text-decoration: none;
-}
-
-.arrow-icon {
-  margin-left: 0.5rem;
-  transition: transform 0.3s ease;
-}
-
-.view-all-btn:hover {
-  background: #1e472e;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-}
-
-.view-all-btn:hover .arrow-icon {
-  transform: translateX(5px);
-}
-
-/* Hide desktop-only elements on mobile */
-.desktop-only {
-  display: none;
-}
-
-/* Desktop layout (larger grid display) */
-@media (min-width: 992px) {
+  /* Product slider container */
   .product-slider {
-    padding: 0 60px;
-    max-width: 1200px;
+    position: relative;
+    width: 100%;
     margin: 0 auto;
   }
 
-  .product-slider__items {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    justify-content: space-between;
-    padding: 1rem 0;
-    overflow-x: visible;
-  }
-
-  .product-slide {
+  /* Wrapper for slider items and navigation */
+  .product-slider__wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: 0;
   }
 
-  /* Hide navigation arrows on desktop */
-  .slider-button {
-    display: none !important;
-  }
-
-  .desktop-only {
-    display: block;
-  }
-}
-
-/* Tablet layout */
-@media (min-width: 768px) and (max-width: 991px) {
-  .product-slider {
-    padding: 0 50px;
-  }
-
+  /* Container for product items */
   .product-slider__items {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding: 1rem 0;
+    width: 100%;
     gap: 1.5rem;
   }
 
-  .product-slide {
-    width: 260px;
-  }
-
-  .section-header h2 {
-    font-size: 2rem;
-  }
-}
-
-/* Mobile layout */
-@media (max-width: 767px) {
-  .featured-products {
-    padding: 2rem 0 3rem;
-  }
-
-  .section-header h2 {
-    font-size: 1.5rem;
-  }
-
-  .product-slider {
-    padding: 0 40px;
-  }
-
-  .product-slider__items {
-    scroll-snap-type: x mandatory;
-    padding: 1rem 0;
+  .product-slider__items::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 
   .product-slide {
-    width: 100%;
-    flex: 0 0 100%;
-    scroll-snap-align: center;
-    padding: 0;
+    flex: 0 0 auto;
+    width: 300px; /* Larger product cards */
+    padding: 0.5rem;
   }
 
-  /* Use the enhanced, non-circular styling on mobile */
+  /* Enhanced slider button styling for improved appearance */
   .slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
     padding: 8px;
     background: transparent;
-    box-shadow: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    color: #2A5E41;
+  }
+
+  .slider-button:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .slider-button--prev {
+    left: 10px;
+  }
+
+  .slider-button--next {
+    right: 10px;
   }
 
   .slider-button svg {
     width: 24px;
     height: 24px;
+    display: block;
   }
-}
+
+  /* View All button styling */
+  .view-all-container {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    background: #2A5E41;
+    color: white;
+    font-weight: 600;
+    padding: 0.9rem 1.8rem;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+  }
+
+  .arrow-icon {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .view-all-btn:hover {
+    background: #1e472e;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .view-all-btn:hover .arrow-icon {
+    transform: translateX(5px);
+  }
+
+  /* Hide desktop-only elements on mobile */
+  .desktop-only {
+    display: none;
+  }
+
+  /* Desktop layout (larger grid display) */
+  @media (min-width: 992px) {
+    .product-slider {
+      padding: 0 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .product-slider__items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      justify-content: space-between;
+      padding: 1rem 0;
+      overflow-x: visible;
+    }
+
+    .product-slide {
+      width: 100%;
+      padding: 0;
+    }
+
+    /* Hide navigation arrows on desktop */
+    .slider-button {
+      display: none !important;
+    }
+
+    .desktop-only {
+      display: block;
+    }
+  }
+
+  /* Tablet layout */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .product-slider {
+      padding: 0 50px;
+    }
+
+    .product-slider__items {
+      gap: 1.5rem;
+    }
+
+    .product-slide {
+      width: 260px;
+    }
+
+    .section-header h2 {
+      font-size: 2rem;
+    }
+  }
+
+  /* Mobile layout */
+  @media (max-width: 767px) {
+    .featured-products {
+      padding: 2rem 0 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+    }
+
+    .product-slider {
+      padding: 0 40px;
+    }
+
+    .product-slider__items {
+      scroll-snap-type: x mandatory;
+      padding: 1rem 0;
+    }
+
+    .product-slide {
+      width: 100%;
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      padding: 0;
+    }
+
+    /* Use the enhanced, non-circular styling on mobile */
+    .slider-button {
+      padding: 8px;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .slider-button svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  /* Remove highlight/focus outline on slider buttons */
+  .slider-button:focus,
+  .slider-button:active,
+  .slider-button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* For Firefox to remove the dotted line */
+  .slider-button::-moz-focus-inner {
+    border: 0 !important;
+  }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Update the breakpoint to match desktop media query (992px)
-  const mobileBreakpoint = 992;
+  const mobileBreakpoint = 480;
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach((slider) => {
@@ -357,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to update arrow visibility based on window width
     const updateArrowVisibility = () => {
-      if (window.innerWidth < mobileBreakpoint) {
+      if (window.innerWidth <= mobileBreakpoint) {
         prevBtn.style.display = 'flex';
         nextBtn.style.display = 'flex';
       } else {
