@@ -61,7 +61,8 @@
 }
 
 .hero-container {
-  background-size: cover;
+  /* Using contain to ensure the whole image is visible */
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   min-height: 600px;
@@ -123,15 +124,16 @@
   font-size: 1.1rem;
 }
 
-/* Mobile responsive adjustments - IMPROVED */
+/* Mobile responsive adjustments */
 @media (max-width: 767px) {
   .hero-container {
-    min-height: 100vh; /* Full viewport height on mobile */
+    min-height: 100vh;
     height: 100vh;
-    padding-bottom: 0; /* Remove extra padding */
+    padding-bottom: 0;
     background-position: center;
-    align-items: flex-end;
+    /* Apply mobile image and force contain so the full image shows */
     background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
+    background-size: contain !important;
   }
 
   .hero-container--home {
@@ -144,7 +146,7 @@
     justify-content: center;
     width: 100%;
     position: absolute;
-    bottom: 60px; /* Position from bottom */
+    bottom: 60px;
   }
 
   .hero-buttons {
@@ -161,10 +163,10 @@
   }
 }
 
-/* Small mobile devices - IMPROVED */
+/* Small mobile devices */
 @media (max-width: 480px) {
   .hero-content {
-    bottom: 40px; /* Less distance from bottom */
+    bottom: 40px;
   }
 }
 </style>
@@ -174,9 +176,11 @@
 document.addEventListener('DOMContentLoaded', function() {
   const heroContainer = document.querySelector('.hero-container');
   if (heroContainer) {
-    const desktopImageUrl = '{{ section.settings.image | img_url: 'master' }}';
+    const desktopImageUrl = '{{ section.settings.image | img_url: "master" }}';
     if (desktopImageUrl && window.innerWidth > 767) {
       heroContainer.style.backgroundImage = `url(${desktopImageUrl})`;
+      // Enforce contain to make sure the full image is visible
+      heroContainer.style.backgroundSize = 'contain';
     }
   }
 });
