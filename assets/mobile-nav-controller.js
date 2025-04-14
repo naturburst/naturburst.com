@@ -1,4 +1,3 @@
-// Enhanced mobile navigation controller with improved reliability
 document.addEventListener('DOMContentLoaded', function() {
   const mobileNav         = document.getElementById('MobileNav');
   const mobileNavToggle   = document.querySelector('.mobile-nav-toggle');
@@ -6,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let   mobileNavOverlay  = document.getElementById('MobileNavOverlay');
   const body              = document.body;
 
+  // Exit if mobile nav doesn't exist
   if (!mobileNav) {
     console.warn('Mobile navigation element not found');
     return;
@@ -20,38 +20,24 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay = overlay;
   }
 
-  // Function to fix currency selector display issues
+  // Simplified fixCurrencySelector to just add .active classes
   function fixCurrencySelector() {
     const currencyOptions = document.querySelectorAll('.currency-option');
     if (currencyOptions.length > 0 && mobileNav.classList.contains('is-active')) {
-      currencyOptions.forEach(option => {
-        option.style.textAlign = 'center';
-        option.style.margin = '5px 0';
-        option.style.padding = '10px';
-        option.style.width = '100%';
-        option.style.borderRadius = '4px';
-        option.style.color = '#1a2e37';
-      });
+      // Remove 'active' from all
+      currencyOptions.forEach(option => option.classList.remove('active'));
 
-      const activeCurrency = document.querySelector('.currency-option.active');
-      if (activeCurrency) {
-        activeCurrency.style.color = '#2A5E41';
-        activeCurrency.style.backgroundColor = 'rgba(42, 94, 65, 0.1)';
-        activeCurrency.style.fontWeight = 'bold';
-      }
-
-      // Try to determine current currency if no active class exists
+      // Try to determine current currency
       try {
         const currentCurrency = Shopify?.currency?.active ||
           document.querySelector('html')?.getAttribute('data-currency');
 
         if (currentCurrency) {
-          const currentOption = document.querySelector(`.currency-option[value="${currentCurrency}"]`);
-          if (currentOption && !currentOption.classList.contains('active')) {
+          const currentOption = document.querySelector(
+            `.currency-option[value="${currentCurrency}"]`
+          );
+          if (currentOption) {
             currentOption.classList.add('active');
-            currentOption.style.color = '#2A5E41';
-            currentOption.style.backgroundColor = 'rgba(42, 94, 65, 0.1)';
-            currentOption.style.fontWeight = 'bold';
           }
         }
       } catch (e) {
@@ -61,18 +47,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function openMobileNav() {
-    console.log('Opening mobile navigation');
-
-    // Slide in the nav
     mobileNav.classList.add('is-active');
     mobileNav.setAttribute('aria-hidden', 'false');
     mobileNav.style.display = 'block';
 
-    // Show overlay
     mobileNavOverlay.classList.add('is-active');
     mobileNavOverlay.style.pointerEvents = 'auto';
 
-    // Prevent background scroll
     body.classList.add('mobile-menu-open');
     body.style.overflow = 'hidden';
 
@@ -80,17 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
 
-    // Small delay to ensure the DOM updated before styling
+    // Call fixCurrencySelector after a short delay
     setTimeout(fixCurrencySelector, 50);
   }
 
   function closeMobileNav() {
-    console.log('Closing mobile navigation');
-
     mobileNav.classList.remove('is-active');
     mobileNav.setAttribute('aria-hidden', 'true');
 
-    // Hide overlay
     mobileNavOverlay.classList.remove('is-active');
     mobileNavOverlay.style.pointerEvents = 'none';
 
@@ -101,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
       mobileNavToggle.setAttribute('aria-expanded', 'false');
     }
 
-    // Let the transition finish before removing display for better animation
+    // Let the transition finish
     setTimeout(() => {
       if (!mobileNav.classList.contains('is-active')) {
         mobileNav.style.display = 'none';
@@ -109,27 +87,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 150);
   }
 
-  // Button: open nav
+  // Event listeners
   if (mobileNavToggle) {
-    mobileNavToggle.addEventListener('click', function(e) {
+    mobileNavToggle.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       openMobileNav();
     });
   }
 
-  // Button: close nav
   if (mobileNavClose) {
-    mobileNavClose.addEventListener('click', function(e) {
+    mobileNavClose.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       closeMobileNav();
     });
   }
 
-  // Overlay click also closes nav
   if (mobileNavOverlay) {
-    mobileNavOverlay.addEventListener('click', function(e) {
+    mobileNavOverlay.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       closeMobileNav();
@@ -139,19 +115,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // Close nav on link clicks
   const navLinks = document.querySelectorAll('[data-nav-link]');
   navLinks.forEach(link => {
-    link.addEventListener('click', function() {
+    link.addEventListener('click', () => {
       closeMobileNav();
     });
   });
 
   // Close nav on Escape key
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
       closeMobileNav();
     }
   });
 
-  // Expose functionality for other scripts
+  // Expose to window
   window.MobileNavController = {
     initialized: true,
     open: openMobileNav,

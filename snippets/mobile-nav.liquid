@@ -274,24 +274,19 @@ body.mobile-menu-open {
 }
 
 .currency-option {
-  flex: 1;
-  background-color: #f7f7f7;
-  border: 1px solid #e5e5e5;
+  text-align: center;
+  margin: 5px 0;
+  padding: 10px;
+  width: 100%;
   border-radius: 4px;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 500;
   color: #1a2e37;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative; /* For z-index */
-  z-index: 10000; /* High z-index */
+  cursor: pointer; /* So it looks clickable */
 }
 
 .currency-option.active {
-  background-color: #2A5E41;
-  color: #ffffff;
-  border-color: #2A5E41;
+  color: #2A5E41;
+  background-color: rgba(42, 94, 65, 0.1);
+  font-weight: bold;
 }
 
 .currency-option:not(.active):hover {
