@@ -26,7 +26,7 @@
           {% endfor %}
         </div>
 
-        <!-- Fixed Navigation arrows with improved mobile visibility -->
+        <!-- Enhanced Navigation arrows with refined styling -->
         <button type="button" class="slider-button slider-button--prev" aria-label="Previous slide">
           {% render 'icon-arrow-left' %}
         </button>
@@ -170,30 +170,24 @@
   padding: 0.5rem;
 }
 
-/* FIXED Slider button styles with improved visibility */
+/* Enhanced slider button styling for improved appearance */
 .slider-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+  padding: 8px;
+  background: transparent;
   border: none;
-  display: flex !important; /* Force display */
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
   color: #2A5E41;
-  opacity: 1; /* Always visible */
 }
 
 .slider-button:hover {
-  background: #2A5E41;
-  color: white;
   transform: translateY(-50%) scale(1.1);
 }
 
@@ -205,13 +199,13 @@
   right: 10px;
 }
 
-/* Make sure SVG is visible */
 .slider-button svg {
   width: 24px;
   height: 24px;
   display: block;
 }
 
+/* View All button styling */
 .view-all-container {
   text-align: center;
   margin-top: 3rem;
@@ -275,13 +269,13 @@
     padding: 0;
   }
 
-  /* Show desktop elements */
-  .desktop-only {
-    display: block;
-  }
-
+  /* Hide navigation arrows on desktop */
   .slider-button {
     display: none !important;
+  }
+
+  .desktop-only {
+    display: block;
   }
 }
 
@@ -304,7 +298,7 @@
   }
 }
 
-/* Mobile layout - one product at a time with visible arrows */
+/* Mobile layout */
 @media (max-width: 767px) {
   .featured-products {
     padding: 2rem 0 3rem;
@@ -330,50 +324,24 @@
     padding: 0;
   }
 
-  /* FIXED: Made slider buttons more visible on mobile */
+  /* Use the enhanced, non-circular styling on mobile */
   .slider-button {
-    width: 40px;
-    height: 40px;
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  }
-
-  .slider-button svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-/* Adjustments for smaller mobile screens */
-@media (max-width: 480px) {
-  .slider-button {
+    padding: 8px;
     background: transparent;
     box-shadow: none;
-    border-radius: 0;
-    width: auto;
-    height: auto;
   }
 
   .slider-button svg {
     width: 24px;
     height: 24px;
-    fill: #2A5E41;
-  }
-
-  .slider-button--prev {
-    left: 0 !important;
-  }
-
-  .slider-button--next {
-    right: 0 !important;
   }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const mobileBreakpoint = 768; // Show arrows only on screens less than 768px wide
+  // Update the breakpoint to match desktop media query (992px)
+  const mobileBreakpoint = 992;
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach((slider) => {
@@ -423,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slider.addEventListener('touchend', e => {
       touchEndX = e.changedTouches[0].screenX;
-      const swipeThreshold = 50; // Minimum swipe distance in pixels
+      const swipeThreshold = 50;
       if (touchEndX < touchStartX - swipeThreshold) {
         nextBtn.click();
       } else if (touchEndX > touchStartX + swipeThreshold) {
