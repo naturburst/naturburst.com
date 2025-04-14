@@ -279,6 +279,10 @@
   .desktop-only {
     display: block;
   }
+
+  .slider-button {
+    display: none !important;
+  }
 }
 
 /* Tablet layout */
@@ -344,16 +348,25 @@
 /* Adjustments for smaller mobile screens */
 @media (max-width: 480px) {
   .slider-button {
-    width: 36px;
-    height: 36px;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .slider-button svg {
+    width: 24px;
+    height: 24px;
+    fill: #2A5E41;
   }
 
   .slider-button--prev {
-    left: 5px;
+    left: 0 !important;
   }
 
   .slider-button--next {
-    right: 5px;
+    right: 0 !important;
   }
 }
 </style>
