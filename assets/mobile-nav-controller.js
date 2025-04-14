@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const mobileNav         = document.getElementById('MobileNav');
   const mobileNavToggle   = document.querySelector('.mobile-nav-toggle');
   const mobileNavClose    = document.querySelector('.mobile-nav__close');
-  let mobileNavOverlay  = document.getElementById('MobileNavOverlay');
+  let   mobileNavOverlay  = document.getElementById('MobileNavOverlay');
   const body              = document.body;
 
   if (!mobileNav) {
@@ -79,6 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
+
+    // Small delay to ensure the DOM updated before styling
+    setTimeout(fixCurrencySelector, 50);
   }
 
   function closeMobileNav() {
