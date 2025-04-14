@@ -90,12 +90,13 @@
 <style>
 .header-wrapper {
   position: relative;
-  background-color: {{ settings.header_background | default: '#2A5E41' }};
-  color: {{ settings.header_text | default: '#FFFFFF' }};
+  background-color: #FFFFFF; /* Changed from green to white */
+  color: #1a2e37; /* Changed text color to dark for better contrast on white */
   position: sticky;
   top: 0;
   z-index: 100;
   font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Added subtle shadow for definition */
 }
 
 .site-header {
@@ -149,7 +150,7 @@
 }
 
 .site-nav__link {
-  color: {{ settings.header_text | default: '#FFFFFF' }};
+  color: #1a2e37;
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -172,7 +173,7 @@
 }
 
 .site-nav__link:hover {
-  color: {{ settings.color_accent | default: '#FFD166' }};
+  color: #2A5E41; /* Keep hover color as brand green */
 }
 
 .site-nav__link:hover::after {
@@ -246,7 +247,7 @@
 
 /* Account link */
 .header-account-link {
-  color: {{ settings.header_text | default: '#FFFFFF' }};
+  color: #1a2e37;
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
@@ -264,7 +265,7 @@
 
 /* Cart link */
 .header-cart-link {
-  color: {{ settings.header_text | default: '#FFFFFF' }};
+  color: #1a2e37;
   font-size: 1.5rem;
   letter-spacing: var(--spacing);
   display: flex;
@@ -285,7 +286,8 @@
   position: absolute;
   top: -8px;
   right: -8px;
-  background: {{ settings.color_accent | default: '#FFD166' }};
+  background: #2A5E41;
+  color: white;
   width: 22px;
   height: 22px;
   display: flex;
@@ -305,14 +307,14 @@
 .mobile-nav-toggle {
   background: transparent;
   border: none;
-  color: {{ settings.header_text | default: '#FFFFFF' }};
+  color: #1a2e37; /* Changed from white to dark */
+  font-size: 1.5rem;
   cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
-  padding: 0.5rem;
-  font-size: 1.75rem;
 }
 
 .mobile-nav-toggle:hover {

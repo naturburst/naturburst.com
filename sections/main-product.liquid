@@ -309,9 +309,6 @@
   </div>
 </section>
 
-{% comment %}
-  The fullscreen image modal for product gallery
-{% endcomment %}
 <div id="ProductImageModal" class="image-modal" aria-hidden="true" role="dialog">
   <div class="image-modal__overlay" data-modal-close></div>
   <div class="image-modal__content">
@@ -484,12 +481,16 @@
   border-radius: var(--radius-base);
   overflow: hidden;
   text-align: center;
+  width: 100%;
+  height: auto;
+  max-height: none;
 }
 
 .product-featured-image {
   display: block;
-  max-width: 100%;
-  max-height: 550px;
+  width: 100%; /* Take full width */
+  height: auto;
+  max-height: none; /* Remove height restriction */
   margin: 0 auto;
   object-fit: contain;
   transition: transform 0.3s ease;
