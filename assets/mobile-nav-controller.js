@@ -22,29 +22,25 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay = overlay;
   }
 
-  // Fix currency selector right away - this is crucial
-  fixCurrencySelector();
-
-  // Function to fix currency selector display issues
+  // Function to fix currency selector display issues - FIXED
   function fixCurrencySelector() {
     const currencyOptions = document.querySelectorAll('.currency-option');
     if (currencyOptions.length > 0) {
-      // Add immediate styling to ensure visibility and proper color
+      // Fix ONLY when mobile nav is active
+      if (!mobileNav.classList.contains('is-active')) {
+        return; // Don't apply fixes if mobile nav is not active
+      }
+
+      // Add appropriate styling while preserving visibility states
       currencyOptions.forEach(option => {
-        // Force visibility properties
-        option.style.display = 'block';
-        option.style.visibility = 'visible';
-        option.style.opacity = '1';
-
-        // Force text color to be visible against white background
-        option.style.color = '#1a2e37'; // Dark color for standard options
-
-        // Fix layout issues that might cause weird positioning
+        // Don't force visibility - let CSS handle initial state
+        // Just apply consistent styling
         option.style.textAlign = 'center';
         option.style.margin = '5px 0';
         option.style.padding = '10px';
         option.style.width = '100%';
         option.style.borderRadius = '4px';
+        option.style.color = '#1a2e37'; // Dark color for standard options
       });
 
       // Style the active currency differently (if any)
@@ -56,17 +52,21 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // Try to determine current currency if no active class exists
+      // REMOVED HARDCODED INR FALLBACK
       try {
         const currentCurrency = Shopify?.currency?.active ||
-                               document.querySelector('html').getAttribute('data-currency') ||
-                               'INR';
-        const currentOption = document.querySelector(`.currency-option[value="${currentCurrency}"]`);
+                              document.querySelector('html').getAttribute('data-currency');
 
-        if (currentOption && !currentOption.classList.contains('active')) {
-          currentOption.classList.add('active');
-          currentOption.style.color = '#2A5E41'; // Green color for active
-          currentOption.style.backgroundColor = 'rgba(42, 94, 65, 0.1)'; // Light green background
-          currentOption.style.fontWeight = 'bold';
+        // Only proceed if we found a valid currency
+        if (currentCurrency) {
+          const currentOption = document.querySelector(`.currency-option[value="${currentCurrency}"]`);
+
+          if (currentOption && !currentOption.classList.contains('active')) {
+            currentOption.classList.add('active');
+            currentOption.style.color = '#2A5E41';
+            currentOption.style.backgroundColor = 'rgba(42, 94, 65, 0.1)';
+            currentOption.style.fontWeight = 'bold';
+          }
         }
       } catch (e) {
         console.warn('Could not determine active currency:', e);
@@ -99,8 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
 
-    // Fix currency selector again when opening
-    fixCurrencySelector();
+    // Fix currency selector after opening
+    // Small delay to ensure DOM has updated
+    setTimeout(fixCurrencySelector, 50);
   }
 
   // Improved close function with immediate actions
