@@ -1,13 +1,13 @@
-// Enhanced mobile navigation controller
+// Enhanced mobile navigation controller with improved reliability
 document.addEventListener('DOMContentLoaded', function() {
-  // Get all required DOM elements with direct selectors
+  // Direct references to critical DOM elements
   const mobileNav = document.getElementById('MobileNav');
   const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-  const mobileNavCloseButton = document.querySelector('.mobile-nav__close');
+  const mobileNavClose = document.querySelector('.mobile-nav__close');
   const mobileNavOverlay = document.getElementById('MobileNavOverlay');
   const body = document.body;
 
-  // Only initialize if the mobile nav exists
+  // Exit if mobile nav doesn't exist (prevents console errors)
   if (!mobileNav) {
     console.warn('Mobile navigation element not found');
     return;
@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Create overlay if it doesn't exist
   if (!mobileNavOverlay) {
-    console.log('Creating mobile nav overlay');
     const overlay = document.createElement('div');
     overlay.id = 'MobileNavOverlay';
     overlay.className = 'mobile-nav-overlay';
@@ -23,11 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay = overlay;
   }
 
-  // Improved openMobileNav function with proper state management
+  // Improved open function with direct DOM manipulation
   function openMobileNav() {
-    console.log('Opening mobile navigation menu');
+    console.log('Opening mobile navigation');
 
-    // Apply direct style changes for better performance
+    // Apply styles directly for better performance
     mobileNav.style.transform = 'translateX(0)';
     mobileNav.style.visibility = 'visible';
     mobileNav.classList.add('is-active');
@@ -37,22 +36,22 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay.style.pointerEvents = 'auto';
     mobileNavOverlay.classList.add('is-active');
 
-    // Prevent body scrolling
+    // Prevent background scrolling
     body.style.overflow = 'hidden';
     body.classList.add('mobile-menu-open');
 
-    // Set proper ARIA attributes
+    // Set ARIA attributes
     mobileNav.setAttribute('aria-hidden', 'false');
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
   }
 
-  // Improved closeMobileNav function
+  // Improved close function with immediate actions
   function closeMobileNav() {
-    console.log('Closing mobile navigation menu');
+    console.log('Closing mobile navigation');
 
-    // Apply direct style changes with no delay
+    // Apply styles directly
     mobileNav.style.transform = 'translateX(-100%)';
     mobileNav.style.visibility = 'hidden';
     mobileNav.classList.remove('is-active');
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mobileNavOverlay.style.pointerEvents = 'none';
     mobileNavOverlay.classList.remove('is-active');
 
-    // Restore body scrolling
+    // Restore background scrolling
     body.style.overflow = '';
     body.classList.remove('mobile-menu-open');
 
@@ -73,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Toggle button event listener
+  // Toggle button event handler
   if (mobileNavToggle) {
     mobileNavToggle.addEventListener('click', function(e) {
       e.preventDefault();
@@ -82,18 +81,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Close button event listener - IMPORTANT FIX
-  if (mobileNavCloseButton) {
-    mobileNavCloseButton.addEventListener('click', function(e) {
+  // Close button event handler - FIX: Added direct event listener
+  if (mobileNavClose) {
+    mobileNavClose.addEventListener('click', function(e) {
+      console.log('Close button clicked');
       e.preventDefault();
       e.stopPropagation();
       closeMobileNav();
     });
-  } else {
-    console.warn('Mobile nav close button not found');
   }
 
-  // Overlay click event listener
+  // Overlay click handler
   if (mobileNavOverlay) {
     mobileNavOverlay.addEventListener('click', function(e) {
       e.preventDefault();
@@ -102,38 +100,30 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Fix for handling all navigation links - IMPORTANT
-  const allNavLinks = mobileNav.querySelectorAll('a, button:not(.mobile-nav__close)');
-  allNavLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Allow default behavior for links but close menu
-      if (!this.classList.contains('mobile-nav__close') &&
-          !this.classList.contains('currency-option') &&
-          !this.classList.contains('account-link')) {
-        // Add slight delay for links to work before closing
-        setTimeout(closeMobileNav, 50);
-      }
-    });
-  });
+  // Fix for navigation links closing menu
+  const navLinks = document.querySelectorAll('[data-nav-link]');
+  navLinks.forEach(link => {
+    // For non-form links, let the navigation happen before closing
+    link.addEventListener('click', function() {
+      // Capture link destination
+      const href = this.getAttribute('href');
 
-  // Fix sign-in and register buttons
-  const accountLinks = mobileNav.querySelectorAll('.account-link');
-  accountLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Don't prevent default so the link works
-      // Close menu immediately so no lingering buttons
+      // FIX: Close the menu immediately to prevent lingering elements
       closeMobileNav();
+
+      // For sign-in/register links, we don't need special handling
+      // as they already work with the immediate close
     });
   });
 
-  // ESC key support for accessibility
+  // Keyboard navigation support
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && mobileNav.classList.contains('is-active')) {
       closeMobileNav();
     }
   });
 
-  // Expose mobile nav controller to window
+  // Make functions available globally
   window.MobileNavController = {
     initialized: true,
     open: openMobileNav,
@@ -146,6 +136,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   };
-
-  console.log('Mobile navigation controller initialized with fixes');
 });

@@ -124,35 +124,6 @@
           <p class="product-card__price-item">{{ price | money }}</p>
         {% endif %}
       </div>
-
-      {% if show_quick_add %}
-        <div class="product-card__form">
-          {%- form 'product', product, id: 'QuickAddForm-' | append: product.id, class: 'form', novalidate: 'novalidate', data-type: 'quick-add-form' -%}
-            <input type="hidden" name="id" value="{{ current_variant.id }}">
-
-            {% if has_multiple_variants %}
-              <a href="{{ product_url }}" class="btn product-card__quick-view-btn">
-                View options
-              </a>
-            {% else %}
-              <button
-                type="submit"
-                name="add"
-                {% if product_available == false %} disabled{% endif %}
-                class="btn product-card__add-to-cart-btn"
-              >
-                <span>
-                  {%- if product_available -%}
-                    Add to cart
-                  {%- else -%}
-                    Sold out
-                  {%- endif -%}
-                </span>
-              </button>
-            {% endif %}
-          {%- endform -%}
-        </div>
-      {% endif %}
     </div>
   </div>
 </div>

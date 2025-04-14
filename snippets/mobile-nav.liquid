@@ -1,3 +1,10 @@
+{%- comment -%}
+  Enhanced Mobile Navigation Component
+  - Fixed close button functionality
+  - Improved overlay management
+  - Fixed lingering sign-in/register buttons
+{%- endcomment -%}
+
 <div id="MobileNav" class="mobile-nav" aria-hidden="true">
   <div class="mobile-nav__inner">
     <div class="mobile-nav__header">
@@ -25,11 +32,11 @@
         </h3>
         <div class="account-options">
           {% if customer %}
-            <a href="{{ routes.account_url }}" class="account-link">My Account</a>
-            <a href="{{ routes.account_logout_url }}" class="account-link">Log Out</a>
+            <a href="{{ routes.account_url }}" class="account-link" data-nav-link>My Account</a>
+            <a href="{{ routes.account_logout_url }}" class="account-link" data-nav-link>Log Out</a>
           {% else %}
-            <a href="{{ routes.account_login_url }}" class="account-link">Sign In</a>
-            <a href="{{ routes.account_register_url }}" class="account-link">Register</a>
+            <a href="{{ routes.account_login_url }}" class="account-link" data-nav-link>Sign In</a>
+            <a href="{{ routes.account_register_url }}" class="account-link" data-nav-link>Register</a>
           {% endif %}
         </div>
       </div>
@@ -62,7 +69,7 @@
       <ul class="mobile-nav__menu">
         {% for link in linklists.main-menu.links %}
           <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
-            <a href="{{ link.url }}" class="mobile-nav__link">
+            <a href="{{ link.url }}" class="mobile-nav__link" data-nav-link>
               {% case link.title %}
                 {% when 'Home' %}
                   {% render 'icon-home' %}
@@ -87,7 +94,7 @@
       <div class="mobile-nav__contact">
         <h3>Contact Us</h3>
         <p>Need help? We're just a click away!</p>
-        <a href="{{ routes.page_url | append: 'contact' }}" class="contact-btn">
+        <a href="{{ routes.page_url | append: 'contact' }}" class="contact-btn" data-nav-link>
           Get in Touch
         </a>
       </div>
@@ -99,7 +106,7 @@
 <div id="MobileNavOverlay" class="mobile-nav-overlay"></div>
 
 <style>
-/* Mobile navigation styling */
+/* Base mobile nav styling */
 .mobile-nav {
   position: fixed;
   top: 0;
@@ -108,12 +115,13 @@
   max-width: 350px;
   height: 100vh;
   background-color: #ffffff;
-  z-index: 1001; /* Higher than overlay */
+  z-index: 9999; /* Higher than overlay */
   transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, visibility 0.3s ease; /* Added visibility transition */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   visibility: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
 }
 
 .mobile-nav.is-active {
@@ -129,29 +137,35 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000; /* Lower than nav */
+  z-index: 9998; /* Lower than nav but higher than content */
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  pointer-events: none; /* Initially no interaction */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Added visibility transition */
+  pointer-events: none;
 }
 
 .mobile-nav-overlay.is-active {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto; /* Re-enable when active */
+  pointer-events: auto; /* Enable interaction when active */
 }
 
-body.overflow-hidden {
+/* Prevent body scrolling when menu is open */
+body.mobile-menu-open {
   overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
+/* Inner container structure */
 .mobile-nav__inner {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
+/* Header with logo and close button */
 .mobile-nav__header {
   display: flex;
   justify-content: space-between;
@@ -174,9 +188,10 @@ body.overflow-hidden {
 }
 
 .mobile-nav__header span span {
-  color: #2A9D8F;
+  color: #2A5E41;
 }
 
+/* Fixed close button styling */
 .mobile-nav__close {
   background: transparent;
   border: none;
@@ -185,14 +200,19 @@ body.overflow-hidden {
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0.5rem;
-  z-index: 2; /* Make sure it's above other elements */
+  z-index: 10001; /* Make sure it's above other elements */
+  position: relative; /* Needed for z-index to work */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobile-nav__close:hover {
-  color: #2A9D8F;
+  color: #2A5E41;
   transform: scale(1.1);
 }
 
+/* Main content area */
 .mobile-nav__content {
   padding: 1.5rem;
   display: flex;
@@ -202,6 +222,7 @@ body.overflow-hidden {
   background-color: #ffffff;
 }
 
+/* Section titles */
 .mobile-nav__section-title {
   display: flex;
   align-items: center;
@@ -213,9 +234,10 @@ body.overflow-hidden {
 
 .mobile-nav__section-title svg {
   margin-right: 0.75rem;
-  color: #2A9D8F;
+  color: #2A5E41;
 }
 
+/* Account links */
 .account-options {
   display: flex;
   flex-wrap: wrap;
@@ -235,14 +257,17 @@ body.overflow-hidden {
   transition: all 0.3s ease;
   text-decoration: none;
   cursor: pointer;
+  position: relative; /* For z-index */
+  z-index: 10000; /* High z-index */
 }
 
 .account-link:hover {
-  background-color: #2A9D8F;
+  background-color: #2A5E41;
   color: #ffffff;
-  border-color: #2A9D8F;
+  border-color: #2A5E41;
 }
 
+/* Currency selector */
 .currency-options {
   display: flex;
   gap: 0.5rem;
@@ -259,25 +284,29 @@ body.overflow-hidden {
   color: #1a2e37;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative; /* For z-index */
+  z-index: 10000; /* High z-index */
 }
 
 .currency-option.active {
-  background-color: #2A9D8F;
+  background-color: #2A5E41;
   color: #ffffff;
-  border-color: #2A9D8F;
+  border-color: #2A5E41;
 }
 
 .currency-option:not(.active):hover {
   background-color: rgba(42, 157, 143, 0.1);
-  color: #2A9D8F;
+  color: #2A5E41;
 }
 
+/* Divider styling */
 .mobile-nav__divider {
   height: 1px;
   background-color: #e5e5e5;
   margin: 0.5rem 0;
 }
 
+/* Navigation menu */
 .mobile-nav__menu {
   list-style: none;
   padding: 0;
@@ -298,7 +327,7 @@ body.overflow-hidden {
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  z-index: 1;
+  z-index: 10000; /* High z-index */
 }
 
 .mobile-nav__link svg {
@@ -311,18 +340,19 @@ body.overflow-hidden {
 .mobile-nav__link:hover,
 .mobile-nav__item--active .mobile-nav__link {
   background-color: rgba(42, 157, 143, 0.1);
-  color: #2A9D8F;
+  color: #2A5E41;
 }
 
 .mobile-nav__link:hover svg,
 .mobile-nav__item--active .mobile-nav__link svg {
-  color: #2A9D8F;
+  color: #2A5E41;
 }
 
 .mobile-nav__item--active .mobile-nav__link {
   font-weight: 600;
 }
 
+/* Contact section */
 .mobile-nav__contact {
   margin-top: auto;
   padding: 1.5rem;
@@ -344,7 +374,7 @@ body.overflow-hidden {
 
 .contact-btn {
   display: inline-block;
-  background-color: #2A9D8F;
+  background-color: #2A5E41;
   color: white;
   padding: 0.6rem 1.5rem;
   border-radius: 25px;
@@ -353,30 +383,12 @@ body.overflow-hidden {
   text-decoration: none;
   cursor: pointer;
   position: relative;
-  z-index: 1;
+  z-index: 10000; /* High z-index */
 }
 
 .contact-btn:hover {
-  background-color: #1E7D74;
+  background-color: #234C36;
   transform: translateY(-2px);
-}
-
-/* Mobile nav toggle button */
-.mobile-nav-toggle {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mobile-nav-toggle:hover {
-  transform: scale(1.1);
 }
 
 /* Ensure all interactive elements are properly clickable */
@@ -388,7 +400,14 @@ body.overflow-hidden {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   transform: translateZ(0);
   will-change: transform;
-  position: relative;
-  z-index: 1;
+}
+
+/* Force hardware acceleration for smooth transitions */
+.mobile-nav,
+.mobile-nav-overlay {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-font-smoothing: antialiased;
 }
 </style>
