@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply styles directly for better performance
     mobileNav.style.transform = 'translateX(0)';
     mobileNav.style.visibility = 'visible';
+    mobileNav.style.display = 'block'; // Ensure it's displayed
     mobileNav.classList.add('is-active');
 
     mobileNavOverlay.style.opacity = '1';
@@ -45,6 +46,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'true');
     }
+
+    // Ensure currency options are visible
+    const currencyOptions = document.querySelectorAll('.currency-option');
+    currencyOptions.forEach(option => {
+      option.style.visibility = 'visible';
+      option.style.display = 'block';
+    });
   }
 
   // Improved close function with immediate actions
@@ -54,6 +62,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply styles directly
     mobileNav.style.transform = 'translateX(-100%)';
     mobileNav.style.visibility = 'hidden';
+
+    // Add a small delay before removing the element from accessibility flow
+    // This prevents flickering of content during transition
+    setTimeout(() => {
+      if (!mobileNav.classList.contains('is-active')) {
+        mobileNav.style.display = 'none'; // Remove from layout completely
+      }
+    }, 300); // Match transition duration
+
     mobileNav.classList.remove('is-active');
 
     mobileNavOverlay.style.opacity = '0';
@@ -70,6 +87,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'false');
     }
+
+    // Additional cleanup - make sure everything is properly hidden
+    document.querySelectorAll('.mobile-nav .account-link, .mobile-nav .currency-option').forEach(el => {
+      // Reset any inline styles that might be interfering
+      el.style.removeProperty('z-index');
+      el.style.removeProperty('position');
+      el.style.removeProperty('visibility');
+    });
   }
 
   // Toggle button event handler
@@ -81,12 +106,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Close button event handler - FIX: Added direct event listener
+  // Close button event handler with improved reliability
   if (mobileNavClose) {
     mobileNavClose.addEventListener('click', function(e) {
       console.log('Close button clicked');
       e.preventDefault();
       e.stopPropagation();
+
+      // Force immediate visibility changes on problematic elements
+      const accountLinks = document.querySelectorAll('.account-link');
+      const currencyOptions = document.querySelectorAll('.currency-option');
+
+      accountLinks.forEach(link => {
+        link.style.visibility = 'hidden';
+      });
+
+      currencyOptions.forEach(option => {
+        option.style.visibility = 'hidden';
+      });
+
       closeMobileNav();
     });
   }
@@ -98,6 +136,21 @@ document.addEventListener('DOMContentLoaded', function() {
       e.stopPropagation();
       closeMobileNav();
     });
+  }
+
+  // Fix for currency selector initialization
+  const currencySelectors = document.querySelectorAll('.currency-options .currency-option');
+  if (currencySelectors.length > 0) {
+    // Add specific styling to ensure visibility
+    currencySelectors.forEach(option => {
+      option.style.display = 'block';
+      option.style.visibility = 'visible';
+      option.style.opacity = '1';
+    });
+
+    // Ensure the active currency is highlighted
+    const currentCurrency = Shopify?.currency?.active || 'INR';
+    document.querySelector(`.currency-option[value="${currentCurrency}"]`)?.classList.add('active');
   }
 
   // Fix for navigation links closing menu
