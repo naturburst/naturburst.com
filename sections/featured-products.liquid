@@ -348,11 +348,11 @@
 /* Adjustments for smaller mobile screens */
 @media (max-width: 480px) {
   .slider-button {
-    background: transparent !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    width: auto !important;
-    height: auto !important;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
   }
 
   .slider-button svg {
@@ -372,23 +372,24 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileBreakpoint = 768; // Show arrows only on screens less than 768px wide
   const sliders = document.querySelectorAll('[data-products-slider]');
 
-  sliders.forEach(slider => {
-    const sliderWrapper = slider.closest('.product-slider__wrapper');
-    const prevBtn = sliderWrapper.querySelector('.slider-button--prev');
-    const nextBtn = sliderWrapper.querySelector('.slider-button--next');
+  sliders.forEach((slider) => {
+    const wrapper = slider.closest('.product-slider__wrapper');
+    if (!wrapper) return;
 
+    const prevBtn = wrapper.querySelector('.slider-button--prev');
+    const nextBtn = wrapper.querySelector('.slider-button--next');
     if (!prevBtn || !nextBtn) {
       console.error('Navigation buttons not found for slider');
       return;
     }
 
-    const isMobileView = () => window.innerWidth < 992;
-
+    // Function to update arrow visibility based on window width
     const updateArrowVisibility = () => {
-      if (isMobileView()) {
+      if (window.innerWidth < mobileBreakpoint) {
         prevBtn.style.display = 'flex';
         nextBtn.style.display = 'flex';
       } else {
@@ -397,21 +398,22 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     };
 
+    // Get the width of the first slide (fallback to 300 if not found)
     const getSlideWidth = () => {
-      const slides = slider.querySelectorAll('.product-slide');
-      return slides.length ? slides[0].offsetWidth : 300;
+      const slide = slider.querySelector('.product-slide');
+      return slide ? slide.offsetWidth : 300;
     };
 
+    // Bind click events to scroll slider by one slide width
     prevBtn.addEventListener('click', () => {
-      const slideWidth = getSlideWidth();
-      slider.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      slider.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
     });
 
     nextBtn.addEventListener('click', () => {
-      const slideWidth = getSlideWidth();
-      slider.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      slider.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
     });
 
+    // Touch event handling for swipe gestures
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -421,19 +423,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     slider.addEventListener('touchend', e => {
       touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-
-    const handleSwipe = () => {
-      const swipeThreshold = 50;
+      const swipeThreshold = 50; // Minimum swipe distance in pixels
       if (touchEndX < touchStartX - swipeThreshold) {
         nextBtn.click();
       } else if (touchEndX > touchStartX + swipeThreshold) {
         prevBtn.click();
       }
-    };
+    });
 
+    // Set arrow visibility on load and update on window resize
     updateArrowVisibility();
     window.addEventListener('resize', updateArrowVisibility);
   });
-});</script>
+});
+</script>
