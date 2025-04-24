@@ -6,10 +6,10 @@
     </div>
 
     <div class="benefits-grid">
-      <div class="benefit-card">
+            <div class="benefit-card">
         {% if section.settings.benefit_1_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_1_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_1_title }}">
+            <img src="{{ section.settings.benefit_1_image | img_url: '400x400', scale: 2 }}" alt="{{ section.settings.benefit_1_title }}">
           </div>
         {% else %}
           <div class="benefit-icon natural"></div>
@@ -19,7 +19,7 @@
       <div class="benefit-card">
         {% if section.settings.benefit_2_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_2_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_2_title }}">
+            <img src="{{ section.settings.benefit_2_image | img_url: '400x400', scale: 2 }}" alt="{{ section.settings.benefit_2_title }}">
           </div>
         {% else %}
           <div class="benefit-icon nutrients"></div>
@@ -29,7 +29,7 @@
       <div class="benefit-card">
         {% if section.settings.benefit_3_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_3_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_3_title }}">
+            <img src="{{ section.settings.benefit_3_image | img_url: '400x400', scale: 2 }}" alt="{{ section.settings.benefit_3_title }}">
           </div>
         {% else %}
           <div class="benefit-icon lifestyle"></div>
@@ -39,7 +39,7 @@
       <div class="benefit-card">
         {% if section.settings.benefit_4_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_4_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_4_title }}">
+            <img src="{{ section.settings.benefit_4_image | img_url: '400x400', scale: 2 }}" alt="{{ section.settings.benefit_4_title }}">
           </div>
         {% else %}
           <div class="benefit-icon shelf-life"></div>
@@ -216,18 +216,22 @@
 /* Removed text styling as we no longer have paragraph text */
 
 .benefit-icon {
-  width: 220px;
-  height: 220px;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  aspect-ratio: 1/1;
   margin: 0 auto;
   border-radius: 50%;
   background-position: center;
-  background-size: 80px;
+  background-size: 120px;
   background-repeat: no-repeat;
 }
 
 .benefit-image {
-  width: 220px;
-  height: 220px;
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  aspect-ratio: 1/1;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 50%;
@@ -241,8 +245,9 @@
 .benefit-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.5s ease;
+  padding: 15px;
 }
 
 .benefit-card:hover .benefit-image img {
