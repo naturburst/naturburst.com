@@ -126,7 +126,7 @@
 /* Mobile responsive adjustments */
 @media (max-width: 767px) {
   .hero-banner {
-    margin-top: -1px; /* Fix gap with header */
+    margin-top: 0; /* Fix gap with header - changed from -1px */
   }
   
   .hero-container {
@@ -149,7 +149,7 @@
     justify-content: center;
     width: 100%;
     position: absolute;
-    bottom: 60px;
+    bottom: 30px; /* Moved from 60px to 30px to position lower */
   }
 
   .hero-buttons {
@@ -169,7 +169,7 @@
 /* Small mobile devices */
 @media (max-width: 480px) {
   .hero-content {
-    bottom: 40px;
+    bottom: 20px; /* Moved from 40px to 20px for even lower position */
   }
 }
 </style>
