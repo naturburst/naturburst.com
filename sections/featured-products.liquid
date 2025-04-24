@@ -158,6 +158,7 @@
     padding: 1rem 0;
     width: 100%;
     gap: 1.5rem;
+    background-color: white; /* Fix blue gap issue */
   }
 
   .product-slider__items::-webkit-scrollbar {
@@ -168,6 +169,7 @@
     flex: 0 0 auto;
     width: 300px; /* Larger product cards */
     padding: 0.5rem;
+    background-color: white; /* Ensure slide background is white */
   }
 
   /* Enhanced slider button styling for improved appearance */
@@ -176,19 +178,22 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    padding: 8px;
-    background: transparent;
+    padding: 12px;
+    background: rgba(42, 94, 65, 0.8);
     border: none;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    color: #2A5E41;
+    transition: transform 0.3s ease, background 0.3s ease;
+    color: white;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   }
 
   .slider-button:hover {
     transform: translateY(-50%) scale(1.1);
+    background: rgba(42, 94, 65, 1);
   }
 
   .slider-button--prev {
@@ -203,6 +208,31 @@
     width: 24px;
     height: 24px;
     display: block;
+    fill: white;
+    stroke: white;
+  }
+
+  /* Pagination dots */
+  .slider-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ddd;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .slider-dot.active {
+    background: #2A5E41;
   }
 
   /* View All button styling */
@@ -274,6 +304,10 @@
       display: none !important;
     }
 
+    .slider-pagination {
+      display: none !important;
+    }
+
     .desktop-only {
       display: block;
     }
@@ -324,29 +358,25 @@
       padding: 0;
     }
 
-    /* Use the enhanced, non-circular styling on mobile */
-    .slider-button {
-      padding: 8px;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .slider-button svg {
-      width: 24px;
-      height: 24px;
+    .slider-pagination {
+      display: flex;
     }
   }
 
   /* Remove highlight/focus outline on slider buttons */
   .slider-button:focus,
   .slider-button:active,
-  .slider-button:focus-visible {
+  .slider-button:focus-visible,
+  .slider-dot:focus,
+  .slider-dot:active,
+  .slider-dot:focus-visible {
     outline: none !important;
     box-shadow: none !important;
   }
 
   /* For Firefox to remove the dotted line */
-  .slider-button::-moz-focus-inner {
+  .slider-button::-moz-focus-inner,
+  .slider-dot::-moz-focus-inner {
     border: 0 !important;
   }
 </style>
@@ -367,6 +397,34 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    // Create pagination dots
+    const slides = slider.querySelectorAll('.product-slide');
+    const paginationContainer = document.createElement('div');
+    paginationContainer.className = 'slider-pagination';
+    
+    // Add pagination dots based on number of slides
+    for (let i = 0; i < slides.length; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      paginationContainer.appendChild(dot);
+    }
+    
+    wrapper.appendChild(paginationContainer);
+    
+    // Add click events to dots
+    const dots = paginationContainer.querySelectorAll('.slider-dot');
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const slideWidth = getSlideWidth();
+        slider.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+      });
+    });
+
     // Function to update arrow visibility based on window width
     const updateArrowVisibility = () => {
       if (window.innerWidth <= mobileBreakpoint) {
@@ -383,6 +441,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const slide = slider.querySelector('.product-slide');
       return slide ? slide.offsetWidth : 300;
     };
+
+    // Update active dot based on scroll position
+    slider.addEventListener('scroll', () => {
+      if (dots.length === 0) return;
+      
+      const scrollPosition = slider.scrollLeft;
+      const slideWidth = getSlideWidth();
+      const activeIndex = Math.round(scrollPosition / slideWidth);
+      
+      dots.forEach((dot, index) => {
+        if (index === activeIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    });
 
     // Bind click events to scroll slider by one slide width
     prevBtn.addEventListener('click', () => {

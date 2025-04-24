@@ -55,7 +55,7 @@
   width: 100%;
   overflow: hidden;
   padding: 0;
-  margin-top: 0; /* Remove gap between header and hero */
+  margin-top: 0;
   margin-bottom: 2rem;
   font-family: 'Montserrat', sans-serif;
 }
@@ -125,6 +125,10 @@
 
 /* Mobile responsive adjustments */
 @media (max-width: 767px) {
+  .hero-banner {
+    margin-top: -1px; /* Fix gap with header */
+  }
+  
   .hero-container {
     min-height: 100vh;
     height: 100vh;
