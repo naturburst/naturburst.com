@@ -1,4 +1,3 @@
-<!-- Updated product-benefits.liquid code -->
 <div class="product-benefits section">
   <div class="page-width">
     <div class="header-container">
@@ -6,46 +5,23 @@
       <p>{{ section.settings.description }}</p>
     </div>
 
-    <!-- New quadrant layout for product benefits -->
-    <div class="benefits-quadrant">
-      <div class="benefit-quadrant natural">
-        <div class="quadrant-content">
-          <div class="quadrant-icon">
-            <img src="{{ 'icon-natural.png' | asset_url }}" alt="100% Natural" 
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2225%22%20fill%3D%22%23E8F5E9%22%20%2F%3E%3Cpath%20d%3D%22M30%2015C23%2020%2020%2032%2015%2042C28%2036%2040%2035%2045%2018C40%2022%2035%2022%2030%2015Z%22%20fill%3D%22%232A5E41%22%20%2F%3E%3C%2Fsvg%3E';">
-          </div>
-          <h3>100% Natural</h3>
-        </div>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon natural"></div>
+        <h3>{{ section.settings.benefit_1_title }}</h3>
+        <p>{{ section.settings.benefit_1_text }}</p>
       </div>
-      
-      <div class="benefit-quadrant sugar-free">
-        <div class="quadrant-content">
-          <div class="quadrant-icon">
-            <img src="{{ 'icon-sugar-free.png' | asset_url }}" alt="Zero Sugar" 
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2225%22%20fill%3D%22%23FFF8E1%22%20%2F%3E%3Cpath%20d%3D%22M24%2020L30%2015L36%2020L40%2026L36%2030L36%2040L24%2040L24%2030L20%2026L24%2020Z%22%20fill%3D%22%232A5E41%22%20%2F%3E%3Cline%20x1%3D%2215%22%20y1%3D%2215%22%20x2%3D%2245%22%20y2%3D%2245%22%20stroke%3D%22%232A5E41%22%20stroke-width%3D%224%22%20%2F%3E%3C%2Fsvg%3E';">
-          </div>
-          <h3>Zero Sugar</h3>
-        </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon nutrients"></div>
+        <h3>{{ section.settings.benefit_2_title }}</h3>
+        <p>{{ section.settings.benefit_2_text }}</p>
       </div>
-      
-      <div class="benefit-quadrant preservatives">
-        <div class="quadrant-content">
-          <div class="quadrant-icon">
-            <img src="{{ 'icon-preservatives.png' | asset_url }}" alt="Zero Preservatives" 
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2225%22%20fill%3D%22%23F3E5F5%22%20%2F%3E%3Cpath%20d%3D%22M25%2020H35V40H25V20Z%22%20fill%3D%22%232A5E41%22%20%2F%3E%3Cpath%20d%3D%22M27%2015L33%2015L33%2020H27V15Z%22%20fill%3D%22%232A5E41%22%20%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22%20fill%3D%22white%22%20%2F%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2235%22%20r%3D%222%22%20fill%3D%22white%22%20%2F%3E%3Cline%20x1%3D%2215%22%20y1%3D%2215%22%20x2%3D%2245%22%20y2%3D%2245%22%20stroke%3D%22%232A5E41%22%20stroke-width%3D%224%22%20%2F%3E%3C%2Fsvg%3E';">
-          </div>
-          <h3>Zero Preservatives</h3>
-        </div>
-      </div>
-      
-      <div class="benefit-quadrant nutrition">
-        <div class="quadrant-content">
-          <div class="quadrant-icon">
-            <img src="{{ 'icon-nutrition.png' | asset_url }}" alt="Maximum Nutrition" 
-                 onerror="this.onerror=null; this.src='data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%2225%22%20fill%3D%22%23E0F7FA%22%20%2F%3E%3Cpath%20d%3D%22M30%2015L45%2030L30%2045L15%2030L30%2015Z%22%20fill%3D%22%232A5E41%22%20%2F%3E%3Cpath%20d%3D%22M25%2025L35%2035%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%20%2F%3E%3Cpath%20d%3D%22M35%2025L25%2035%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%20%2F%3E%3C%2Fsvg%3E';">
-          </div>
-          <h3>Maximum Nutrition</h3>
-        </div>
+
+      <div class="benefit-card">
+        <div class="benefit-icon lifestyle"></div>
+        <h3>{{ section.settings.benefit_3_title }}</h3>
+        <p>{{ section.settings.benefit_3_text }}</p>
       </div>
     </div>
 
@@ -82,6 +58,120 @@
   </div>
 </div>
 
+{% schema %}
+{
+  "name": "Product Benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Why NatureBurst Is Different"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives. Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect for snacking or adding to your favorite recipes."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 1"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_title",
+      "label": "Title",
+      "default": "100% Natural"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_1_text",
+      "label": "Text",
+      "default": "Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 2"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_title",
+      "label": "Title",
+      "default": "Nutrient-Rich"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_2_text",
+      "label": "Text",
+      "default": "Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants."
+    },
+    {
+      "type": "header",
+      "content": "Benefit Card 3"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_title",
+      "label": "Title",
+      "default": "Lifestyle Friendly"
+    },
+    {
+      "type": "textarea",
+      "id": "benefit_3_text",
+      "label": "Text",
+      "default": "Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_point",
+      "name": "Benefit Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Benefit Text",
+          "default": "Benefit point"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Benefits",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "100% Natural Ingredients"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "No Added Sugar"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "Rich in Vitamins"
+          }
+        },
+        {
+          "type": "benefit_point",
+          "settings": {
+            "text": "Extended Shelf Life"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
 <style>
 .product-benefits {
   padding: 3rem 0;
@@ -111,82 +201,55 @@
   margin-bottom: 1.5rem;
 }
 
-/* New quadrant layout */
-.benefits-quadrant {
+.benefits-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   gap: 1.5rem;
-  max-width: 600px;
-  aspect-ratio: 1/1; /* Creates a perfect square layout */
-  margin: 0 auto 2.5rem;
+  margin-bottom: 2rem;
 }
 
-.benefit-quadrant {
-  border-radius: 12px;
+.benefit-card {
+  background: white;
   padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  text-align: center;
 }
 
-.benefit-quadrant:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-}
-
-/* Quadrant content styling */
-.quadrant-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-.quadrant-icon {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.quadrant-icon img {
-  width: 100%;
-  height: auto;
-  max-height: 80px;
-  object-fit: contain;
-}
-
-.benefit-quadrant h3 {
+.benefit-card h3 {
   font-size: 1.2rem;
   font-weight: 700;
-  margin: 0;
+  margin: 1rem 0;
   color: #1a2e37;
 }
 
-/* Quadrant background colors */
-.benefit-quadrant.natural {
-  background-color: #E8F5E9; /* Light green */
+.benefit-card p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
 }
 
-.benefit-quadrant.sugar-free {
-  background-color: #FFF8E1; /* Light yellow */
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-position: center;
+  background-size: 30px;
+  background-repeat: no-repeat;
 }
 
-.benefit-quadrant.preservatives {
-  background-color: #F3E5F5; /* Light purple */
+.natural {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20a4.67,4.67,0,0,0,1.76-.35,4.65,4.65,0,0,0,6.41-2A4.74,4.74,0,0,0,19.73,12.9a4.64,4.64,0,0,0,.55-2.64,4.47,4.47,0,0,0-1.92-3.11A4.47,4.47,0,0,0,17,8Z'/%3E%3C/svg%3E");
 }
 
-.benefit-quadrant.nutrition {
-  background-color: #E0F7FA; /* Light blue */
+.nutrients {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M11,2a8.002,8.002,0,0,1,7.91,6.7,8,8,0,1,1-7.91-6.7ZM14,15h2v2H14ZM9,15h2v2H9ZM14,10h2v2H14ZM9,10h2v2H9Z'/%3E%3C/svg%3E");
+}
+
+.lifestyle {
+  background-color: rgba(64, 206, 181, 0.15);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M20.5,6A3.5,3.5,0,0,0,17,9.5a3.45,3.45,0,0,0,.55,1.81L14.73,14.1a3.45,3.45,0,0,0-1.81-.55,3.5,3.5,0,0,0-3.5,3.5,3.45,3.45,0,0,0,.55,1.81L7.16,21.56l1.41,1.41,2.71-2.71a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,3.5-3.5,3.45,3.45,0,0,0-.55-1.81l2.82-2.82a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,0-7Z'/%3E%3C/svg%3E");
 }
 
 .key-benefits {
@@ -217,27 +280,15 @@
   font-size: 0.9rem;
 }
 
-/* Responsive adjustments */
+@media (min-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 767px) {
   .header-container h2 {
     font-size: 1.8rem;
-  }
-  
-  /* Stack quadrants on mobile */
-  .benefits-quadrant {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-    aspect-ratio: auto;
-    max-width: 100%;
-  }
-  
-  .quadrant-icon {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .benefit-quadrant h3 {
-    font-size: 1rem;
   }
 
   .key-benefits {
@@ -250,21 +301,4 @@
     max-width: 250px;
   }
 }
-
-/* For smaller mobile screens */
-@media (max-width: 480px) {
-  .benefits-quadrant {
-    gap: 1rem;
-  }
-  
-  .benefit-quadrant {
-    padding: 1rem;
-  }
-}
-
-/* For medium-sized screens/tablets */
-@media (min-width: 768px) and (max-width: 991px) {
-  .benefits-quadrant {
-    max-width: 500px;
-  }
-}
+</style>
