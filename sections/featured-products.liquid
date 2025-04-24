@@ -25,15 +25,6 @@
             {%- endfor -%}
           {% endfor %}
         </div>
-
-        <!-- Enhanced Navigation arrows with refined styling -->
-        <button type="button" class="slider-button slider-button--prev" aria-label="Previous slide">
-          {% render 'icon-arrow-left' %}
-        </button>
-
-        <button type="button" class="slider-button slider-button--next" aria-label="Next slide">
-          {% render 'icon-arrow-right' %}
-        </button>
       </div>
     </div>
 
@@ -172,46 +163,6 @@
     background-color: white; /* Ensure slide background is white */
   }
 
-  /* Enhanced slider button styling for improved appearance */
-  .slider-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    padding: 12px;
-    background: rgba(42, 94, 65, 0.8);
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, background 0.3s ease;
-    color: white;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-  }
-
-  .slider-button:hover {
-    transform: translateY(-50%) scale(1.1);
-    background: rgba(42, 94, 65, 1);
-  }
-
-  .slider-button--prev {
-    left: 10px;
-  }
-
-  .slider-button--next {
-    right: 10px;
-  }
-
-  .slider-button svg {
-    width: 24px;
-    height: 24px;
-    display: block;
-    fill: white;
-    stroke: white;
-  }
-
   /* Pagination dots */
   .slider-pagination {
     display: flex;
@@ -299,15 +250,6 @@
       padding: 0;
     }
 
-    /* Hide navigation arrows on desktop */
-    .slider-button {
-      display: none !important;
-    }
-
-    .slider-pagination {
-      display: none !important;
-    }
-
     .desktop-only {
       display: block;
     }
@@ -383,19 +325,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const mobileBreakpoint = 480;
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach((slider) => {
     const wrapper = slider.closest('.product-slider__wrapper');
     if (!wrapper) return;
-
-    const prevBtn = wrapper.querySelector('.slider-button--prev');
-    const nextBtn = wrapper.querySelector('.slider-button--next');
-    if (!prevBtn || !nextBtn) {
-      console.error('Navigation buttons not found for slider');
-      return;
-    }
 
     // Create pagination dots
     const slides = slider.querySelectorAll('.product-slide');
@@ -425,17 +359,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Function to update arrow visibility based on window width
-    const updateArrowVisibility = () => {
-      if (window.innerWidth <= mobileBreakpoint) {
-        prevBtn.style.display = 'flex';
-        nextBtn.style.display = 'flex';
-      } else {
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-      }
-    };
-
     // Get the width of the first slide (fallback to 300 if not found)
     const getSlideWidth = () => {
       const slide = slider.querySelector('.product-slide');
@@ -459,15 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Bind click events to scroll slider by one slide width
-    prevBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
-    });
-
-    nextBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
-    });
-
     // Touch event handling for swipe gestures
     let touchStartX = 0;
     let touchEndX = 0;
@@ -480,15 +394,27 @@ document.addEventListener('DOMContentLoaded', () => {
       touchEndX = e.changedTouches[0].screenX;
       const swipeThreshold = 50;
       if (touchEndX < touchStartX - swipeThreshold) {
-        nextBtn.click();
+        // Scroll to next slide
+        const slideWidth = getSlideWidth();
+        const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+        const nextIndex = Math.min(currentIndex + 1, slides.length - 1);
+        slider.scrollTo({ left: slideWidth * nextIndex, behavior: 'smooth' });
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[nextIndex]) dots[nextIndex].classList.add('active');
       } else if (touchEndX > touchStartX + swipeThreshold) {
-        prevBtn.click();
+        // Scroll to previous slide
+        const slideWidth = getSlideWidth();
+        const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+        const prevIndex = Math.max(currentIndex - 1, 0);
+        slider.scrollTo({ left: slideWidth * prevIndex, behavior: 'smooth' });
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[prevIndex]) dots[prevIndex].classList.add('active');
       }
     });
-
-    // Set arrow visibility on load and update on window resize
-    updateArrowVisibility();
-    window.addEventListener('resize', updateArrowVisibility);
   });
 });
 </script>
