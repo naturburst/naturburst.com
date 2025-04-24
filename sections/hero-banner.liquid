@@ -1,3 +1,4 @@
+<!-- Updated hero-banner.liquid code -->
 <div class="hero-banner">
   <div class="hero-container{% if template.name == 'index' %} hero-container--home{% endif %}">
     <div class="hero-content">
@@ -13,49 +14,13 @@
   </div>
 </div>
 
-{% schema %}
-{
-  "name": "Hero Banner",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Desktop Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile Image"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_buttons",
-      "label": "Show buttons",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "shop_button_text",
-      "label": "Shop Button Text",
-      "default": "SHOP NOW"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Hero Banner",
-      "category": "Image"
-    }
-  ]
-}
-{% endschema %}
-
 <style>
 .hero-banner {
   position: relative;
   width: 100%;
   overflow: hidden;
   padding: 0;
-  margin-top: 0; /* Remove gap between header and hero */
+  margin: 0; /* Remove top margin to eliminate gap */
   margin-bottom: 2rem;
   font-family: 'Montserrat', sans-serif;
 }
@@ -126,9 +91,9 @@
 /* Mobile responsive adjustments */
 @media (max-width: 767px) {
   .hero-container {
-    min-height: 100vh;
-    height: 100vh;
-    padding-bottom: 0;
+    min-height: auto; /* Remove fixed height */
+    height: 80vh; /* Use viewport percentage */
+    padding: 0;
     background-position: center;
     /* Apply mobile image and force contain so the full image shows */
     background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
@@ -136,7 +101,7 @@
   }
 
   .hero-container--home {
-    height: 100vh;
+    height: 80vh; /* Use viewport percentage */
   }
 
   .hero-content {
@@ -166,6 +131,10 @@
 @media (max-width: 480px) {
   .hero-content {
     bottom: 40px;
+  }
+  
+  .hero-container {
+    height: 70vh; /* Slightly smaller for very small screens */
   }
 }
 </style>

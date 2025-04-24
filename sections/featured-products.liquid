@@ -1,3 +1,4 @@
+<!-- Updated featured-products.liquid code -->
 <div class="featured-products section">
   <div class="section-header">
     <h2>{{ section.settings.title | escape }}</h2>
@@ -26,7 +27,7 @@
           {% endfor %}
         </div>
 
-        <!-- Enhanced Navigation arrows with refined styling -->
+        <!-- Navigation arrows with improved visibility -->
         <button type="button" class="slider-button slider-button--prev" aria-label="Previous slide">
           {% render 'icon-arrow-left' %}
         </button>
@@ -37,7 +38,14 @@
       </div>
     </div>
 
-    {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank and request.design_mode %}
+    <!-- Pagination dots for mobile -->
+    <div class="slider-pagination">
+      {% for product in collection.products limit: section.settings.products_to_show %}
+        <button type="button" class="slider-dot" data-index="{{ forloop.index0 }}"></button>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.view_all_text != blank and section.settings.view_all_url != blank %}
       <div class="view-all-container desktop-only">
         <a href="{{ section.settings.view_all_url }}" class="view-all-btn">
           {{ section.settings.view_all_text }}
@@ -51,67 +59,10 @@
   </div>
 </div>
 
-{% schema %}
-{
-  "name": "Featured products",
-  "settings": [
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "EXPLORE OUR PRODUCTS"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 2,
-      "max": 12,
-      "step": 1,
-      "default": 4,
-      "label": "Products to show"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": true,
-      "label": "Show product rating"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_quick_add",
-      "default": true,
-      "label": "Enable quick add"
-    },
-    {
-      "type": "text",
-      "id": "view_all_text",
-      "label": "View all text",
-      "default": "VIEW ALL PRODUCTS"
-    },
-    {
-      "type": "url",
-      "id": "view_all_url",
-      "label": "View all URL"
-    }
-  ],
-  "presets": [
-    {
-      "name": "Featured products",
-      "category": "Products"
-    }
-  ]
-}
-{% endschema %}
-
 <style>
   .featured-products {
     padding: 4rem 0 5rem;
-    background: white;
+    background: white; /* Changed from blue to white */
     width: 100%;
     max-width: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -170,25 +121,29 @@
     padding: 0.5rem;
   }
 
-  /* Enhanced slider button styling for improved appearance */
+  /* Enhanced slider button styling for improved visibility */
   .slider-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    padding: 8px;
-    background: transparent;
+    width: 40px;
+    height: 40px;
+    background: rgba(42, 94, 65, 0.9); /* Darker background for visibility */
     border: none;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    color: #2A5E41;
+    transition: all 0.3s ease;
+    color: white; /* White icon color for contrast */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
   .slider-button:hover {
     transform: translateY(-50%) scale(1.1);
+    background: #2A5E41;
   }
 
   .slider-button--prev {
@@ -203,6 +158,30 @@
     width: 24px;
     height: 24px;
     display: block;
+  }
+  
+  /* Pagination dots for mobile */
+  .slider-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1.5rem;
+  }
+  
+  .slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .slider-dot.active {
+    background: #2A5E41;
+    transform: scale(1.2);
   }
 
   /* View All button styling */
@@ -269,6 +248,11 @@
       padding: 0;
     }
 
+    /* Hide pagination on desktop */
+    .slider-pagination {
+      display: none;
+    }
+
     /* Hide navigation arrows on desktop */
     .slider-button {
       display: none !important;
@@ -323,18 +307,6 @@
       scroll-snap-align: center;
       padding: 0;
     }
-
-    /* Use the enhanced, non-circular styling on mobile */
-    .slider-button {
-      padding: 8px;
-      background: transparent;
-      box-shadow: none;
-    }
-
-    .slider-button svg {
-      width: 24px;
-      height: 24px;
-    }
   }
 
   /* Remove highlight/focus outline on slider buttons */
@@ -353,7 +325,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const mobileBreakpoint = 480;
+  const mobileBreakpoint = 767;
   const sliders = document.querySelectorAll('[data-products-slider]');
 
   sliders.forEach((slider) => {
@@ -362,58 +334,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const prevBtn = wrapper.querySelector('.slider-button--prev');
     const nextBtn = wrapper.querySelector('.slider-button--next');
-    if (!prevBtn || !nextBtn) {
-      console.error('Navigation buttons not found for slider');
-      return;
+    const dots = document.querySelectorAll('.slider-dot');
+    let currentSlide = 0;
+    
+    // Function to activate the correct dot for the current slide
+    const updateDots = (index) => {
+      if (!dots.length) return;
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    };
+    
+    // Initialize first dot as active
+    updateDots(0);
+    
+    // Add click handlers to dots
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        const slideWidth = slider.querySelector('.product-slide').offsetWidth;
+        const scrollPosition = slideWidth * index;
+        slider.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        currentSlide = index;
+        updateDots(index);
+      });
+    });
+
+    if (prevBtn && nextBtn) {
+      // Function to update arrow visibility based on window width
+      const updateArrowVisibility = () => {
+        const shouldShow = window.innerWidth <= mobileBreakpoint;
+        prevBtn.style.display = shouldShow ? 'flex' : 'none';
+        nextBtn.style.display = shouldShow ? 'flex' : 'none';
+      };
+
+      // Get the width of the first slide (fallback to 300 if not found)
+      const getSlideWidth = () => {
+        const slide = slider.querySelector('.product-slide');
+        return slide ? slide.offsetWidth : 300;
+      };
+
+      // Bind click events to scroll slider by one slide width
+      prevBtn.addEventListener('click', () => {
+        currentSlide = Math.max(0, currentSlide - 1);
+        const slideWidth = getSlideWidth();
+        slider.scrollTo({ left: slideWidth * currentSlide, behavior: 'smooth' });
+        updateDots(currentSlide);
+      });
+
+      nextBtn.addEventListener('click', () => {
+        const slideWidth = getSlideWidth();
+        const maxSlide = slider.querySelectorAll('.product-slide').length - 1;
+        currentSlide = Math.min(maxSlide, currentSlide + 1);
+        slider.scrollTo({ left: slideWidth * currentSlide, behavior: 'smooth' });
+        updateDots(currentSlide);
+      });
+
+      // Track scroll position to update dots
+      slider.addEventListener('scroll', () => {
+        if (window.innerWidth <= mobileBreakpoint) {
+          const slideWidth = getSlideWidth();
+          currentSlide = Math.round(slider.scrollLeft / slideWidth);
+          updateDots(currentSlide);
+        }
+      });
+
+      // Touch event handling for swipe gestures
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          nextBtn.click();
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+          prevBtn.click();
+        }
+      });
+
+      // Set arrow visibility on load and update on window resize
+      updateArrowVisibility();
+      window.addEventListener('resize', updateArrowVisibility);
     }
-
-    // Function to update arrow visibility based on window width
-    const updateArrowVisibility = () => {
-      if (window.innerWidth <= mobileBreakpoint) {
-        prevBtn.style.display = 'flex';
-        nextBtn.style.display = 'flex';
-      } else {
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-      }
-    };
-
-    // Get the width of the first slide (fallback to 300 if not found)
-    const getSlideWidth = () => {
-      const slide = slider.querySelector('.product-slide');
-      return slide ? slide.offsetWidth : 300;
-    };
-
-    // Bind click events to scroll slider by one slide width
-    prevBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
-    });
-
-    nextBtn.addEventListener('click', () => {
-      slider.scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
-    });
-
-    // Touch event handling for swipe gestures
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    slider.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    slider.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      const swipeThreshold = 50;
-      if (touchEndX < touchStartX - swipeThreshold) {
-        nextBtn.click();
-      } else if (touchEndX > touchStartX + swipeThreshold) {
-        prevBtn.click();
-      }
-    });
-
-    // Set arrow visibility on load and update on window resize
-    updateArrowVisibility();
-    window.addEventListener('resize', updateArrowVisibility);
   });
 });
 </script>
