@@ -162,22 +162,15 @@
   padding: 1rem;
   position: relative;
   width: 100%;
+  background: white; /* Change background to white instead of colored backgrounds */
 }
 
-.product-card__image-container.custard-apple {
-  background: var(--color-custard-apple, #E8F5E9);
-}
-
-.product-card__image-container.jackfruit {
-  background: var(--color-jackfruit, #FFF8E1);
-}
-
-.product-card__image-container.jamun {
-  background: var(--color-jamun, #F3E5F5);
-}
-
+/* Replace the colored background classes with white */
+.product-card__image-container.custard-apple,
+.product-card__image-container.jackfruit,
+.product-card__image-container.jamun,
 .product-card__image-container.default {
-  background: #E0F7FA;
+  background: white;
 }
 
 .product-card__image-wrapper {
@@ -193,7 +186,7 @@
   width: 100%; /* Full width */
   height: auto;
   max-height: none; /* Remove max-height */
-  object-fit: contain;
+  object-fit: cover; /* Change from contain to cover to fill the box */
   transition: transform 0.4s ease;
 }
 
