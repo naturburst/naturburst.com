@@ -9,81 +9,42 @@
       <div class="benefit-card">
         {% if section.settings.benefit_1_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_1_image | img_url: '120x120', crop: 'center' }}" alt="{{ section.settings.benefit_1_title }}">
+            <img src="{{ section.settings.benefit_1_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_1_title }}">
           </div>
         {% else %}
           <div class="benefit-icon natural"></div>
         {% endif %}
-        <h3>{{ section.settings.benefit_1_title }}</h3>
-        <p>{{ section.settings.benefit_1_text }}</p>
       </div>
 
       <div class="benefit-card">
         {% if section.settings.benefit_2_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_2_image | img_url: '120x120', crop: 'center' }}" alt="{{ section.settings.benefit_2_title }}">
+            <img src="{{ section.settings.benefit_2_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_2_title }}">
           </div>
         {% else %}
           <div class="benefit-icon nutrients"></div>
         {% endif %}
-        <h3>{{ section.settings.benefit_2_title }}</h3>
-        <p>{{ section.settings.benefit_2_text }}</p>
       </div>
 
       <div class="benefit-card">
         {% if section.settings.benefit_3_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_3_image | img_url: '120x120', crop: 'center' }}" alt="{{ section.settings.benefit_3_title }}">
+            <img src="{{ section.settings.benefit_3_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_3_title }}">
           </div>
         {% else %}
           <div class="benefit-icon lifestyle"></div>
         {% endif %}
-        <h3>{{ section.settings.benefit_3_title }}</h3>
-        <p>{{ section.settings.benefit_3_text }}</p>
       </div>
       
       <div class="benefit-card">
         {% if section.settings.benefit_4_image != blank %}
           <div class="benefit-image">
-            <img src="{{ section.settings.benefit_4_image | img_url: '120x120', crop: 'center' }}" alt="{{ section.settings.benefit_4_title }}">
+            <img src="{{ section.settings.benefit_4_image | img_url: '220x220', crop: 'center' }}" alt="{{ section.settings.benefit_4_title }}">
           </div>
         {% else %}
           <div class="benefit-icon shelf-life"></div>
         {% endif %}
-        <h3>{{ section.settings.benefit_4_title }}</h3>
-        <p>{{ section.settings.benefit_4_text }}</p>
       </div>
-    </div>
-
-    <div class="key-benefits">
-      {% for block in section.blocks %}
-        {% if block.type == 'benefit_point' %}
-          <div class="benefit">
-            <span class="check-icon">{% render 'icon-check' %}</span>
-            <span>{{ block.settings.text }}</span>
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      <!-- Default benefits if no blocks are added -->
-      {% if section.blocks.size == 0 %}
-        <div class="benefit">
-          <span class="check-icon">{% render 'icon-check' %}</span>
-          <span>100% Natural Ingredients</span>
-        </div>
-        <div class="benefit">
-          <span class="check-icon">{% render 'icon-check' %}</span>
-          <span>No Added Sugar</span>
-        </div>
-        <div class="benefit">
-          <span class="check-icon">{% render 'icon-check' %}</span>
-          <span>Rich in Vitamins</span>
-        </div>
-        <div class="benefit">
-          <span class="check-icon">{% render 'icon-check' %}</span>
-          <span>Extended Shelf Life</span>
-        </div>
-      {% endif %}
     </div>
   </div>
 </div>
@@ -96,7 +57,7 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Why Tropi Treats Is Different"
+      "default": "Why NatureBurst Is Different"
     },
     {
       "type": "textarea",
@@ -116,7 +77,7 @@
     {
       "type": "text",
       "id": "benefit_1_title",
-      "label": "Title",
+      "label": "Title (for ALT text)",
       "default": "100% Natural"
     },
     {
@@ -137,7 +98,7 @@
     {
       "type": "text",
       "id": "benefit_2_title",
-      "label": "Title",
+      "label": "Title (for ALT text)",
       "default": "Nutrient-Rich"
     },
     {
@@ -158,7 +119,7 @@
     {
       "type": "text",
       "id": "benefit_3_title",
-      "label": "Title",
+      "label": "Title (for ALT text)",
       "default": "Lifestyle Friendly"
     },
     {
@@ -179,7 +140,7 @@
     {
       "type": "text",
       "id": "benefit_4_title",
-      "label": "Title",
+      "label": "Title (for ALT text)",
       "default": "Extended Shelf Life"
     },
     {
@@ -189,50 +150,10 @@
       "default": "Enjoy the convenience of a long shelf life without sacrificing quality or taste. Perfect for stocking up and having healthy snacks always available."
     }
   ],
-  "blocks": [
-    {
-      "type": "benefit_point",
-      "name": "Benefit Point",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Benefit Text",
-          "default": "Benefit point"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
       "name": "Product Benefits",
-      "category": "Text",
-      "blocks": [
-        {
-          "type": "benefit_point",
-          "settings": {
-            "text": "100% Natural Ingredients"
-          }
-        },
-        {
-          "type": "benefit_point",
-          "settings": {
-            "text": "No Added Sugar"
-          }
-        },
-        {
-          "type": "benefit_point",
-          "settings": {
-            "text": "Rich in Vitamins"
-          }
-        },
-        {
-          "type": "benefit_point",
-          "settings": {
-            "text": "Extended Shelf Life"
-          }
-        }
-      ]
+      "category": "Text"
     }
   ]
 }
@@ -240,175 +161,152 @@
 
 <style>
 .product-benefits {
-  padding: 3rem 0;
+  padding: 4rem 0;
   background: #f7f7f7;
 }
 
 .header-container {
   text-align: center;
   max-width: 800px;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto 3rem;
 }
 
 .header-container h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #1a2e37;
-  margin-bottom: 1rem;
-}
-
-.header-container h2 span {
-  color: var(--color-primary);
+  margin-bottom: 1.5rem;
 }
 
 .header-container p {
-  line-height: 1.6;
-  color: #666;
-  margin-bottom: 1.5rem;
+  line-height: 1.8;
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 0;
 }
 
 .benefits-grid {
   display: grid;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 2rem;
   grid-template-columns: repeat(2, 1fr);
-  max-width: 900px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .benefit-card {
   background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
   text-align: center;
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .benefit-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
-.benefit-card h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 1rem 0;
-  color: #1a2e37;
-}
-
-.benefit-card p {
-  margin-bottom: 0;
-  font-size: 0.95rem;
-}
+/* Removed text styling as we no longer have paragraph text */
 
 .benefit-icon {
-  width: 60px;
-  height: 60px;
+  width: 220px;
+  height: 220px;
   margin: 0 auto;
   border-radius: 50%;
   background-position: center;
-  background-size: 30px;
+  background-size: 80px;
   background-repeat: no-repeat;
 }
 
 .benefit-image {
-  width: 120px;
-  height: 120px;
+  width: 220px;
+  height: 220px;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f7f7f7;
+  background-color: #f3f9f8;
+  box-shadow: 0 5px 15px rgba(42, 157, 143, 0.15);
 }
 
 .benefit-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .benefit-card:hover .benefit-image img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .natural {
-  background-color: rgba(64, 206, 181, 0.15);
+  background-color: rgba(42, 157, 143, 0.1);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20a4.67,4.67,0,0,0,1.76-.35,4.65,4.65,0,0,0,6.41-2A4.74,4.74,0,0,0,19.73,12.9a4.64,4.64,0,0,0,.55-2.64,4.47,4.47,0,0,0-1.92-3.11A4.47,4.47,0,0,0,17,8Z'/%3E%3C/svg%3E");
 }
 
 .nutrients {
-  background-color: rgba(64, 206, 181, 0.15);
+  background-color: rgba(42, 157, 143, 0.1);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M11,2a8.002,8.002,0,0,1,7.91,6.7,8,8,0,1,1-7.91-6.7ZM14,15h2v2H14ZM9,15h2v2H9ZM14,10h2v2H14ZM9,10h2v2H9Z'/%3E%3C/svg%3E");
 }
 
 .lifestyle {
-  background-color: rgba(64, 206, 181, 0.15);
+  background-color: rgba(42, 157, 143, 0.1);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M20.5,6A3.5,3.5,0,0,0,17,9.5a3.45,3.45,0,0,0,.55,1.81L14.73,14.1a3.45,3.45,0,0,0-1.81-.55,3.5,3.5,0,0,0-3.5,3.5,3.45,3.45,0,0,0,.55,1.81L7.16,21.56l1.41,1.41,2.71-2.71a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,3.5-3.5,3.45,3.45,0,0,0-.55-1.81l2.82-2.82a3.45,3.45,0,0,0,1.81.55,3.5,3.5,0,0,0,0-7Z'/%3E%3C/svg%3E");
 }
 
 .shelf-life {
-  background-color: rgba(64, 206, 181, 0.15);
+  background-color: rgba(42, 157, 143, 0.1);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20ZM12.5,7H11v6l5.2,3.2.8-1.3-4.5-2.7Z'/%3E%3C/svg%3E");
 }
 
-.key-benefits {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0 auto;
-  max-width: 900px;
-}
-
-.benefit {
-  display: flex;
-  align-items: center;
-  background: white;
-  padding: 0.5rem 1rem;
-  border-radius: 30px;
-}
-
-.check-icon {
-  color: var(--color-primary);
-  margin-right: 0.5rem;
-}
-
-.benefit span:not(.check-icon) {
-  font-weight: 600;
-  color: #1a2e37;
-  font-size: 0.9rem;
-}
-
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .benefits-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .benefit-card {
+    padding: 1.5rem;
+  }
+  
+  .benefit-image, .benefit-icon {
+    width: 150px;
+    height: 150px;
+  }
+}
+
 @media (max-width: 767px) {
   .header-container h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+  }
+  
+  .header-container p {
+    font-size: 1rem;
   }
   
   .benefits-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-
-  .key-benefits {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .benefit {
-    width: 100%;
-    max-width: 250px;
+  
+  .benefit-card {
+    padding: 1.5rem;
   }
 }
 </style>
