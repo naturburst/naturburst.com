@@ -62,6 +62,25 @@
     header + main {
       margin-top: 0;
     }
+    
+    /* Mobile-specific fixes for header-content gap */
+    @media (max-width: 767px) {
+      main {
+        margin-top: 0 !important;
+      }
+      
+      .content-for-layout {
+        margin-top: 0;
+      }
+      
+      .header-wrapper {
+        margin-bottom: 0;
+      }
+      
+      .hero-banner {
+        margin-top: -1px;
+      }
+    }
   </style>
 </head>
 

@@ -126,17 +126,23 @@
 /* Mobile responsive adjustments */
 @media (max-width: 767px) {
   .hero-banner {
-    margin-top: 0; /* Fix gap with header - changed from -1px */
+    margin-top: 0; 
+    background-color: #C5FF5C; /* Matching the light green background color of the banner */
+    position: relative;
+    top: -1px; /* Fix any potential 1px gap */
   }
   
   .hero-container {
     min-height: 100vh;
     height: 100vh;
     padding-bottom: 0;
+    padding-top: 0;
+    margin-top: 0;
     background-position: center;
     /* Apply mobile image and force contain so the full image shows */
     background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
     background-size: contain !important;
+    background-color: #C5FF5C; /* Ensure background color is the same */
   }
 
   .hero-container--home {

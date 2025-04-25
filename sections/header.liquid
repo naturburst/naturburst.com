@@ -371,4 +371,57 @@
     max-height: 40px;
   }
 }
+
+/* Mobile and responsive styles */
+@media (max-width: 767px) {
+  .header-wrapper {
+    padding: 0;
+    margin-bottom: 0; /* Ensure no margin at bottom of header */
+  }
+
+  .site-header {
+    padding: 0.75rem 0;
+    margin-bottom: 0; /* Ensure no margin at bottom of header */
+  }
+
+  /* Mobile menu button */
+  .mobile-nav-toggle {
+    padding: 0.5rem;
+    margin-left: -0.5rem;
+    background: transparent;
+    border: none;
+    color: #1a2e37;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .icon-hamburger {
+    height: 24px;
+    width: 24px;
+  }
+
+  .header__logo-image {
+    max-height: 50px;
+  }
+
+  .header-actions {
+    gap: 1rem;
+  }
+
+  .header-account-link, 
+  .header-cart-link {
+    padding: 0.5rem;
+  }
+
+  /* Hide nav on mobile */
+  .header-nav {
+    display: none;
+  }
+
+  /* Hide currency selector on mobile if setting is enabled */
+  .hide-on-mobile {
+    display: none;
+  }
+}
 </style>
