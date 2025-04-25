@@ -23,7 +23,7 @@
       var announcements = document.querySelectorAll('.announcement-bar__message');
       var currentIndex = 0;
       var totalAnnouncements = {{ settings.announcements.size }};
-      var rotationSpeed = {{ settings.announcement_rotation_speed | default: 5 }} * 1000;
+      var rotationSpeed = {{ settings.announcement_rotation_speed | default: 3 }} * 1000;
       
       setInterval(function() {
         announcements[currentIndex].classList.add('hidden');
