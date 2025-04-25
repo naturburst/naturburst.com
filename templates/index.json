@@ -15,9 +15,7 @@
         "image": "shopify://shop_images/tropi-treats-banner.png",
         "mobile_image": "shopify://shop_images/PHOTO-2025-03-18-11-43-58.jpg",
         "show_buttons": true,
-        "shop_button_text": "SHOP NOW",
-        "secondary_button_text": "HOW TO USE",
-        "secondary_button_url": "/pages/how-to-use"
+        "shop_button_text": "SHOP NOW"
       }
     },
     "featured_products": {
@@ -37,12 +35,18 @@
       "settings": {
         "title": "Why NatureBurst Is Different",
         "description": "Our special freeze-drying process locks in nutrition, flavor, and crunch without additives or preservatives. Unlike traditional methods, we preserve up to 97% of nutrients while creating a satisfying crunch that's perfect for snacking or adding to your favorite recipes.",
+        "benefit_1_image": "shopify://shop_images/Natural_20250405_130824_0000.png",
         "benefit_1_title": "100% Natural",
         "benefit_1_text": "Our freeze-dried fruits contain absolutely no additives, preservatives, or added sugars. Just pure fruit, exactly as nature intended.",
+        "benefit_2_image": "shopify://shop_images/Maximum_Nutrition_20250405_130901_0000.png",
         "benefit_2_title": "Nutrient-Rich",
         "benefit_2_text": "Our gentle freeze-drying process preserves up to 97% of the nutrients found in fresh fruit, ensuring you get all the vitamins and antioxidants.",
+        "benefit_3_image": "shopify://shop_images/No_preservatives_20250405_130919_0000.png",
         "benefit_3_title": "Lifestyle Friendly",
-        "benefit_3_text": "Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices."
+        "benefit_3_text": "Whether you follow a vegan, paleo, keto, or gluten-free diet, our products fit perfectly into your healthy lifestyle choices.",
+        "benefit_4_image": "shopify://shop_images/Sugar_Free_20250405_130846_0000.png",
+        "benefit_4_title": "Extended Shelf Life",
+        "benefit_4_text": "Enjoy the convenience of a long shelf life without sacrificing quality or taste. Perfect for stocking up and having healthy snacks always available."
       }
     }
   },
