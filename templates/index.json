@@ -9,6 +9,14 @@
  */
 {
   "sections": {
+    "announcement_bar_FW9HCQ": {
+      "type": "announcement-bar",
+      "name": "Announcement bar",
+      "settings": {
+        "show_announcement": true,
+        "announcement_text": "Buy any 3 items and get at Rs. 149 each"
+      }
+    },
     "hero": {
       "type": "hero-banner",
       "settings": {
@@ -51,6 +59,7 @@
     }
   },
   "order": [
+    "announcement_bar_FW9HCQ",
     "hero",
     "featured_products",
     "benefits"
