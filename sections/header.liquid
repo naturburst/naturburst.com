@@ -11,7 +11,9 @@
             aria-expanded="false"
             aria-label="Toggle menu">
             <span class="icon-hamburger icon">
-              {% render 'icon-hamburger' %}
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
             </span>
           </button>
         </div>
@@ -311,14 +313,71 @@
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 101;
+  width: 40px;
+  height: 40px;
+}
+
+.mobile-nav-toggle:hover {
+  color: {{ settings.color_accent | default: '#FFD166' }};
+  transform: scale(1.05);
+}
+
+/* Animated hamburger icon */
+.icon-hamburger {
+  position: relative;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.mobile-nav-toggle:hover {
-  color: {{ settings.color_accent | default: '#FFD166' }};
+.icon-hamburger svg {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Create animated hamburger effect with spans */
+.hamburger-line {
+  display: block;
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease;
+}
+
+.hamburger-line:nth-child(1) {
+  top: 6px;
+}
+
+.hamburger-line:nth-child(2) {
+  top: 12px;
+}
+
+.hamburger-line:nth-child(3) {
+  top: 18px;
+}
+
+/* Animate to X when menu is open */
+body.mobile-menu-open .hamburger-line:nth-child(1) {
+  transform: rotate(45deg);
+  top: 12px;
+}
+
+body.mobile-menu-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+body.mobile-menu-open .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 12px;
 }
 
 /* Hide on mobile utility class */

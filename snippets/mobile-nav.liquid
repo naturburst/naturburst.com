@@ -3,6 +3,7 @@
   - Fixed close button functionality
   - Improved overlay management
   - Fixed lingering sign-in/register buttons
+  - Added beautiful animations for sliding in/out
 {%- endcomment -%}
 
 <div id="MobileNav" class="mobile-nav" aria-hidden="true">
@@ -26,7 +27,7 @@
 
     <div class="mobile-nav__content">
       <!-- Account section -->
-      <div class="mobile-nav__section">
+      <div class="mobile-nav__section mobile-nav__animate-item">
         <h3 class="mobile-nav__section-title">
           {% render 'icon-account' %} My Account
         </h3>
@@ -41,10 +42,10 @@
         </div>
       </div>
 
-      <div class="mobile-nav__divider"></div>
+      <div class="mobile-nav__divider mobile-nav__animate-item"></div>
 
       <!-- Currency selector -->
-      <div class="mobile-nav__section">
+      <div class="mobile-nav__section mobile-nav__animate-item">
         <h3 class="mobile-nav__section-title">
           {% render 'icon-globe' %} Select Currency
         </h3>
@@ -63,12 +64,12 @@
         </div>
       </div>
 
-      <div class="mobile-nav__divider"></div>
+      <div class="mobile-nav__divider mobile-nav__animate-item"></div>
 
       <!-- Main navigation -->
       <ul class="mobile-nav__menu">
         {% for link in linklists.main-menu.links %}
-          <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %}">
+          <li class="mobile-nav__item{% if link.active %} mobile-nav__item--active{% endif %} mobile-nav__animate-item" style="--item-delay: {{ forloop.index | times: 0.05 }}s">
             <a href="{{ link.url }}" class="mobile-nav__link" data-nav-link>
               {% case link.title %}
                 {% when 'Home' %}
@@ -88,10 +89,10 @@
         {% endfor %}
       </ul>
 
-      <div class="mobile-nav__divider"></div>
+      <div class="mobile-nav__divider mobile-nav__animate-item"></div>
 
       <!-- Contact information -->
-      <div class="mobile-nav__contact">
+      <div class="mobile-nav__contact mobile-nav__animate-item">
         <h3>Contact Us</h3>
         <p>Need help? We're just a click away!</p>
         <a href="{{ routes.page_url | append: 'contact' }}" class="contact-btn" data-nav-link>
@@ -116,20 +117,22 @@
   height: 100vh;
   background-color: #ffffff;
   z-index: 9999; /* Higher than overlay */
-  transform: translateX(-100%);
-  transition: transform 0.3s ease, visibility 0.3s ease; /* Added visibility transition */
+  transform: translateX(-105%); /* Move slightly further for better animation */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   visibility: hidden;
   -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  opacity: 0;
 }
 
 .mobile-nav.is-active {
   transform: translateX(0);
   visibility: visible;
+  opacity: 1;
 }
 
-/* Overlay element */
+/* Overlay element with enhanced animation */
 .mobile-nav-overlay {
   position: fixed;
   top: 0;
@@ -140,14 +143,35 @@
   z-index: 9998; /* Lower than nav but higher than content */
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Added visibility transition */
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              -webkit-backdrop-filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mobile-nav-overlay.is-active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto; /* Enable interaction when active */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* Enhanced animation for inner elements */
+.mobile-nav__animate-item {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: calc(0.1s + var(--item-delay, 0s));
+}
+
+.mobile-nav.is-active .mobile-nav__animate-item {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Prevent body scrolling when menu is open */
@@ -178,6 +202,15 @@ body.mobile-menu-open {
 .mobile-nav__logo {
   height: 60px;
   width: auto;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: 0.2s;
+}
+
+.mobile-nav.is-active .mobile-nav__logo {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .mobile-nav__header span {
@@ -185,31 +218,57 @@ body.mobile-menu-open {
   font-weight: 800;
   font-family: var(--font-heading);
   color: #1a2e37;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: 0.2s;
+}
+
+.mobile-nav.is-active .mobile-nav__header span {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .mobile-nav__header span span {
   color: #2A5E41;
 }
 
-/* Fixed close button styling */
+/* Enhanced close button styling */
 .mobile-nav__close {
   background: transparent;
   border: none;
   color: #1a2e37;
   font-size: 1.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   padding: 0.5rem;
   z-index: 10001; /* Make sure it's above other elements */
   position: relative; /* Needed for z-index to work */
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transform: scale(0.8) rotate(-90deg);
+  transition: opacity 0.5s ease, transform 0.5s ease, background-color 0.3s ease, color 0.3s ease;
+  transition-delay: 0.3s;
+}
+
+.mobile-nav.is-active .mobile-nav__close {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
 }
 
 .mobile-nav__close:hover {
-  color: #2A5E41;
-  transform: scale(1.1);
+  color: white;
+  background-color: #2A5E41;
+  transform: scale(1.1) rotate(0deg);
+}
+
+.mobile-nav.is-active .mobile-nav__close:hover {
+  transform: scale(1.1) rotate(0deg);
 }
 
 /* Main content area */
@@ -249,22 +308,19 @@ body.mobile-menu-open {
   background-color: #f7f7f7;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
-  padding: 0.75rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #1a2e37;
+  padding: 0.75rem 1rem;
   text-align: center;
+  color: #1a2e37;
+  font-weight: 500;
   transition: all 0.3s ease;
-  text-decoration: none;
-  cursor: pointer;
-  position: relative; /* For z-index */
-  z-index: 10000; /* High z-index */
 }
 
 .account-link:hover {
   background-color: #2A5E41;
-  color: #ffffff;
   border-color: #2A5E41;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 /* Currency selector */
@@ -311,36 +367,45 @@ body.mobile-menu-open {
   gap: 0.5rem;
 }
 
+/* Animated links & menu items */
 .mobile-nav__link {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1rem;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  padding: 1rem 0;
   color: #1a2e37;
   font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
   position: relative;
-  z-index: 10000; /* High z-index */
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.mobile-nav__link:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #2A5E41;
+  transition: width 0.3s ease;
+}
+
+.mobile-nav__link:hover {
+  color: #2A5E41;
+  transform: translateX(5px);
+}
+
+.mobile-nav__link:hover:after {
+  width: 100%;
 }
 
 .mobile-nav__link svg {
   margin-right: 1rem;
-  font-size: 1.2rem;
-  color: #1a2e37;
-  transition: all 0.3s ease;
+  color: #2A5E41;
+  transition: transform 0.3s ease;
 }
 
-.mobile-nav__link:hover,
-.mobile-nav__item--active .mobile-nav__link {
-  background-color: rgba(42, 157, 143, 0.1);
-  color: #2A5E41;
-}
-
-.mobile-nav__link:hover svg,
-.mobile-nav__item--active .mobile-nav__link svg {
-  color: #2A5E41;
+.mobile-nav__link:hover svg {
+  transform: scale(1.2);
 }
 
 .mobile-nav__item--active .mobile-nav__link {
@@ -406,3 +471,18 @@ body.mobile-menu-open {
   -webkit-font-smoothing: antialiased;
 }
 </style>
+
+<script>
+// Additional animation enhancements
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileNav = document.getElementById('MobileNav');
+  
+  // Add staggered animations for menu items
+  if (mobileNav) {
+    const menuItems = mobileNav.querySelectorAll('.mobile-nav__animate-item');
+    menuItems.forEach((item, index) => {
+      item.style.setProperty('--item-delay', `${0.1 + (index * 0.05)}s`);
+    });
+  }
+});
+</script>

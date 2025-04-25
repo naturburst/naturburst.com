@@ -46,45 +46,91 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  function animateNavItems() {
+    // Get all animatable items
+    const animateItems = document.querySelectorAll('.mobile-nav__animate-item');
+    
+    // Reset all animations first
+    animateItems.forEach((item, index) => {
+      // Set staggered delay based on item position
+      const delay = 0.1 + (index * 0.05);
+      item.style.setProperty('--item-delay', `${delay}s`);
+      
+      // Reset the animation
+      item.style.opacity = '0';
+      item.style.transform = 'translateX(-20px)';
+    });
+    
+    // Force reflow to ensure animations restart
+    void mobileNav.offsetWidth;
+    
+    // Start animations
+    requestAnimationFrame(() => {
+      animateItems.forEach(item => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateX(0)';
+      });
+    });
+  }
+
   function openMobileNav() {
-    mobileNav.classList.add('is-active');
-    mobileNav.setAttribute('aria-hidden', 'false');
+    // Show the nav first (display block) then animate in
     mobileNav.style.display = 'block';
-
-    mobileNavOverlay.classList.add('is-active');
-    mobileNavOverlay.style.pointerEvents = 'auto';
-
-    body.classList.add('mobile-menu-open');
-    body.style.overflow = 'hidden';
-
-    if (mobileNavToggle) {
-      mobileNavToggle.setAttribute('aria-expanded', 'true');
-    }
-
-    // Call fixCurrencySelector after a short delay
-    setTimeout(fixCurrencySelector, 50);
+    
+    // Force a reflow before adding the active class for smooth animation
+    void mobileNav.offsetWidth;
+    
+    // Start the animations
+    requestAnimationFrame(() => {
+      mobileNav.classList.add('is-active');
+      mobileNav.setAttribute('aria-hidden', 'false');
+      mobileNavOverlay.classList.add('is-active');
+      mobileNavOverlay.style.pointerEvents = 'auto';
+      
+      // Add the body class to prevent scrolling
+      body.classList.add('mobile-menu-open');
+      body.style.overflow = 'hidden';
+      
+      if (mobileNavToggle) {
+        mobileNavToggle.setAttribute('aria-expanded', 'true');
+      }
+      
+      // Animate individual items with a small delay
+      setTimeout(animateNavItems, 100);
+      
+      // Call fixCurrencySelector after animation completes
+      setTimeout(fixCurrencySelector, 300);
+    });
   }
 
   function closeMobileNav() {
+    // First reset individual item animations
+    const animateItems = document.querySelectorAll('.mobile-nav__animate-item');
+    animateItems.forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateX(-20px)';
+    });
+    
+    // Then start container animation out
     mobileNav.classList.remove('is-active');
     mobileNav.setAttribute('aria-hidden', 'true');
-
+    
     mobileNavOverlay.classList.remove('is-active');
     mobileNavOverlay.style.pointerEvents = 'none';
-
+    
     body.classList.remove('mobile-menu-open');
     body.style.overflow = '';
-
+    
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'false');
     }
-
+    
     // Let the transition finish
     setTimeout(() => {
       if (!mobileNav.classList.contains('is-active')) {
         mobileNav.style.display = 'none';
       }
-    }, 150);
+    }, 500); // Match this with the transition duration
   }
 
   // Event listeners
@@ -112,11 +158,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Close nav on link clicks
+  // Close nav on link clicks with nice animation
   const navLinks = document.querySelectorAll('[data-nav-link]');
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      closeMobileNav();
+      // Add active state to the clicked link for visual feedback
+      link.classList.add('active-link');
+      
+      // Animate out with delay to show the active state
+      setTimeout(closeMobileNav, 150);
     });
   });
 
