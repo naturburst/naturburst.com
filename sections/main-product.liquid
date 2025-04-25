@@ -699,10 +699,17 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: #2A5E41; /* Set icon color to brand green */
+}
+
+.quantity-btn svg {
+  width: 18px; /* Increase icon size */
+  height: 18px;
+  stroke-width: 2.5; /* Make the icon strokes thicker */
 }
 
 .quantity-btn:hover {
-  background: var(--color-background-light);
+  background: rgba(42, 94, 65, 0.1); /* Softer highlight on hover */
 }
 
 .quantity-input {
