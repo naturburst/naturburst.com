@@ -1,11 +1,38 @@
 {% if settings.show_announcement %}
 <div class="announcement-bar">
   <div class="page-width">
-    <p class="announcement-bar__message">
-      {{ settings.announcement_text }}
-    </p>
+    {% if settings.announcements.size > 0 %}
+      <div class="announcement-carousel">
+        {% for announcement in settings.announcements %}
+          <p class="announcement-bar__message {% unless forloop.first %}hidden{% endunless %}" data-index="{{ forloop.index0 }}">
+            {{ announcement.text }}
+          </p>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="announcement-bar__message">
+        {{ settings.announcement_text }}
+      </p>
+    {% endif %}
   </div>
 </div>
+
+{% if settings.announcements.size > 1 %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var announcements = document.querySelectorAll('.announcement-bar__message');
+      var currentIndex = 0;
+      var totalAnnouncements = {{ settings.announcements.size }};
+      var rotationSpeed = {{ settings.announcement_rotation_speed | default: 5 }} * 1000;
+      
+      setInterval(function() {
+        announcements[currentIndex].classList.add('hidden');
+        currentIndex = (currentIndex + 1) % totalAnnouncements;
+        announcements[currentIndex].classList.remove('hidden');
+      }, rotationSpeed);
+    });
+  </script>
+{% endif %}
 {% endif %}
 
 {% schema %}
@@ -22,7 +49,7 @@
       "type": "text",
       "id": "announcement_text",
       "label": "Announcement text",
-      "default": "FREE SHIPPING ON ORDERS ABOVE $25"
+      "default": "Buy any 3 or more items and get at Rs. 149 each + Free shipping"
     }
   ],
   "presets": [
@@ -51,6 +78,17 @@
   display: inline-block;
   margin: 0;
   padding: 0.25rem 0;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.announcement-bar__message.hidden {
+  display: none;
+}
+
+.announcement-carousel {
+  position: relative;
+  min-height: 1.5rem;
 }
 
 @media screen and (max-width: 380px) {

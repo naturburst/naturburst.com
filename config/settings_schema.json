@@ -124,8 +124,34 @@
       {
         "type": "text",
         "id": "announcement_text",
-        "label": "Announcement text",
-        "default": "FREE SHIPPING ON ORDERS ABOVE $25"
+        "label": "Announcement text (Legacy - use announcements instead)",
+        "info": "This will be used as fallback if no announcements are added below",
+        "default": "Buy any 3 or more items and get at Rs. 149 each + Free shipping"
+      },
+      {
+        "type": "header",
+        "content": "Multiple Announcements"
+      },
+      {
+        "type": "number",
+        "id": "announcement_rotation_speed",
+        "label": "Rotation speed (in seconds)",
+        "default": 5
+      },
+      {
+        "type": "array",
+        "id": "announcements",
+        "label": "Announcements",
+        "info": "Add multiple announcements to rotate through",
+        "max_count": 5,
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Announcement text",
+            "default": "Buy any 2 items and get at Rs. 175 each"
+          }
+        ]
       },
       {
         "type": "checkbox",
