@@ -321,6 +321,64 @@
   .slider-dot::-moz-focus-inner {
     border: 0 !important;
   }
+
+  /* Navigation button styles */
+  .slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    color: #2A5E41;
+    transition: all 0.3s ease;
+  }
+  
+  .slider-button-prev {
+    left: 10px;
+  }
+  
+  .slider-button-next {
+    right: 10px;
+  }
+  
+  .slider-button:hover {
+    background-color: #2A5E41;
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Hide buttons on desktop grid layout */
+  @media (min-width: 992px) {
+    .slider-button {
+      display: none;
+    }
+  }
+  
+  /* Adjust buttons for mobile */
+  @media (max-width: 767px) {
+    .slider-button {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .slider-button-prev {
+      left: 5px;
+    }
+    
+    .slider-button-next {
+      right: 5px;
+    }
+  }
 </style>
 
 <script>
@@ -397,7 +455,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Scroll to next slide
         const slideWidth = getSlideWidth();
         const currentIndex = Math.round(slider.scrollLeft / slideWidth);
-        const nextIndex = Math.min(currentIndex + 1, slides.length - 1);
+        let nextIndex = currentIndex + 1;
+        
+        // If at the last slide, loop back to the first
+        if (nextIndex >= slides.length) {
+          nextIndex = 0;
+        }
+        
         slider.scrollTo({ left: slideWidth * nextIndex, behavior: 'smooth' });
         
         // Update active dot
@@ -407,13 +471,112 @@ document.addEventListener('DOMContentLoaded', () => {
         // Scroll to previous slide
         const slideWidth = getSlideWidth();
         const currentIndex = Math.round(slider.scrollLeft / slideWidth);
-        const prevIndex = Math.max(currentIndex - 1, 0);
+        let prevIndex = currentIndex - 1;
+        
+        // If at the first slide, loop to the last
+        if (prevIndex < 0) {
+          prevIndex = slides.length - 1;
+        }
+        
         slider.scrollTo({ left: slideWidth * prevIndex, behavior: 'smooth' });
         
         // Update active dot
         dots.forEach(d => d.classList.remove('active'));
         if (dots[prevIndex]) dots[prevIndex].classList.add('active');
       }
+    });
+    
+    // Add auto-rotate functionality to cycle through products
+    let autoRotateInterval;
+    
+    const startAutoRotate = () => {
+      if (autoRotateInterval) clearInterval(autoRotateInterval);
+      
+      autoRotateInterval = setInterval(() => {
+        const slideWidth = getSlideWidth();
+        const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+        let nextIndex = currentIndex + 1;
+        
+        // Loop back to first slide if we're at the end
+        if (nextIndex >= slides.length) {
+          nextIndex = 0;
+        }
+        
+        slider.scrollTo({ left: slideWidth * nextIndex, behavior: 'smooth' });
+        
+        // Update active dot
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[nextIndex]) dots[nextIndex].classList.add('active');
+      }, 5000); // Rotate every 5 seconds
+    };
+    
+    // Start auto-rotation
+    startAutoRotate();
+    
+    // Pause auto-rotation when user interacts with the slider
+    slider.addEventListener('mouseenter', () => {
+      if (autoRotateInterval) clearInterval(autoRotateInterval);
+    });
+    
+    slider.addEventListener('mouseleave', () => {
+      startAutoRotate();
+    });
+    
+    slider.addEventListener('touchstart', () => {
+      if (autoRotateInterval) clearInterval(autoRotateInterval);
+    });
+    
+    slider.addEventListener('touchend', () => {
+      startAutoRotate();
+    });
+    
+    // Add navigation buttons
+    const prevButton = document.createElement('button');
+    prevButton.className = 'slider-button slider-button-prev';
+    prevButton.setAttribute('aria-label', 'Previous product');
+    prevButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+    
+    const nextButton = document.createElement('button');
+    nextButton.className = 'slider-button slider-button-next';
+    nextButton.setAttribute('aria-label', 'Next product');
+    nextButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+    
+    wrapper.appendChild(prevButton);
+    wrapper.appendChild(nextButton);
+    
+    // Navigation button events
+    prevButton.addEventListener('click', () => {
+      const slideWidth = getSlideWidth();
+      const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+      let prevIndex = currentIndex - 1;
+      
+      // If at the first slide, loop to the last
+      if (prevIndex < 0) {
+        prevIndex = slides.length - 1;
+      }
+      
+      slider.scrollTo({ left: slideWidth * prevIndex, behavior: 'smooth' });
+      
+      // Update active dot
+      dots.forEach(d => d.classList.remove('active'));
+      if (dots[prevIndex]) dots[prevIndex].classList.add('active');
+    });
+    
+    nextButton.addEventListener('click', () => {
+      const slideWidth = getSlideWidth();
+      const currentIndex = Math.round(slider.scrollLeft / slideWidth);
+      let nextIndex = currentIndex + 1;
+      
+      // If at the last slide, loop to the first
+      if (nextIndex >= slides.length) {
+        nextIndex = 0;
+      }
+      
+      slider.scrollTo({ left: slideWidth * nextIndex, behavior: 'smooth' });
+      
+      // Update active dot
+      dots.forEach(d => d.classList.remove('active'));
+      if (dots[nextIndex]) dots[nextIndex].classList.add('active');
     });
   });
 });
