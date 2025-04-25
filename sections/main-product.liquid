@@ -145,7 +145,7 @@
                 <label for="Quantity" class="product__quantity-label">Quantity:</label>
                 <div class="quantity-selector js-qty">
                   <button type="button" class="quantity-btn js-qty__dec" aria-label="Decrease quantity">
-                    {% render 'icon-minus' %}
+                    <span class="qty-text">−</span>
                   </button>
                   <input
                     type="number"
@@ -158,7 +158,7 @@
                     data-quantity-input
                   >
                   <button type="button" class="quantity-btn js-qty__inc" aria-label="Increase quantity">
-                    {% render 'icon-plus' %}
+                    <span class="qty-text">+</span>
                   </button>
                 </div>
               </div>
@@ -702,10 +702,10 @@
   color: #2A5E41; /* Set icon color to brand green */
 }
 
-.quantity-btn svg {
-  width: 18px; /* Increase icon size */
-  height: 18px;
-  stroke-width: 2.5; /* Make the icon strokes thicker */
+.qty-text {
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .quantity-btn:hover {
