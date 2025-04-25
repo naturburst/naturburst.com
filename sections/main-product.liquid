@@ -25,9 +25,6 @@
               id="ProductImage-{{ featured_image.id }}"
               data-media-id="{{ featured_image.id }}"
             >
-            <button class="expand-btn" data-image-expand>
-              {% render 'icon-expand' %}
-            </button>
           </div>
 
           {% if product.images.size > 1 %}
@@ -1030,24 +1027,6 @@ details:not([open]) .icon-minus {
 
   .product-featured-image {
     max-height: 350px;
-  }
-
-  .image-modal__control {
-    width: 40px;
-    height: 40px;
-  }
-
-  .image-modal__image-container {
-    height: 60vh;
-  }
-
-  .image-modal__thumbnails {
-    justify-content: center;
-  }
-
-  .image-modal__thumbnail img {
-    width: 50px;
-    height: 50px;
   }
 }
 
