@@ -30,14 +30,6 @@
         "view_all_url": "/collections/all"
       }
     },
-    "announcement_bar_UGrBje": {
-      "type": "announcement-bar",
-      "name": "Announcement bar",
-      "settings": {
-        "show_announcement": true,
-        "announcement_text": "Buy 3 get Rs. 149 each"
-      }
-    },
     "benefits": {
       "type": "product-benefits",
       "settings": {
@@ -61,7 +53,6 @@
   "order": [
     "hero",
     "featured_products",
-    "announcement_bar_UGrBje",
     "benefits"
   ]
 }
