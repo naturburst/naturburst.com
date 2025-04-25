@@ -14,7 +14,7 @@
       "name": "Announcement bar",
       "settings": {
         "show_announcement": true,
-        "announcement_text": "Buy any 3 items and get at Rs. 149 each"
+        "announcement_text": "Buy any 3 items and get at Rs. 149 each + Free shipping"
       }
     },
     "hero": {
