@@ -1,14 +1,9 @@
 {% if settings.show_announcement %}
 <div class="announcement-bar">
   <div class="page-width">
-    <div class="announcement-bar__carousel">
-      <p class="announcement-bar__message announcement-bar__message--1 active">
-        Buy any 3 or more items and get at Rs. 149 each + Free shipping
-      </p>
-      <p class="announcement-bar__message announcement-bar__message--2">
-        Buy 2 items and get at Rs. 175
-      </p>
-    </div>
+    <p class="announcement-bar__message">
+      {{ settings.announcement_text }}
+    </p>
   </div>
 </div>
 {% endif %}
@@ -25,25 +20,9 @@
     },
     {
       "type": "text",
-      "id": "announcement_text_1",
-      "label": "Announcement text 1",
-      "default": "Buy any 3 or more items and get at Rs. 149 each + Free shipping"
-    },
-    {
-      "type": "text",
-      "id": "announcement_text_2",
-      "label": "Announcement text 2",
-      "default": "Buy 2 items and get at Rs. 175"
-    },
-    {
-      "type": "range",
-      "id": "announcement_speed",
-      "min": 3,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "label": "Rotation speed",
-      "default": 5
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "FREE SHIPPING ON ORDERS ABOVE $25"
     }
   ],
   "presets": [
@@ -66,34 +45,12 @@
   letter-spacing: 1px;
   padding: 0.25rem 0;
   z-index: 9;
-  min-height: 32px;
-  position: relative;
-}
-
-.announcement-bar__carousel {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
 }
 
 .announcement-bar__message {
-  display: block;
+  display: inline-block;
   margin: 0;
   padding: 0.25rem 0;
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-}
-
-.announcement-bar__message.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 @media screen and (max-width: 380px) {
@@ -102,27 +59,3 @@
   }
 }
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const messages = document.querySelectorAll('.announcement-bar__message');
-  if (messages.length <= 1) return;
-  
-  let activeIndex = 0;
-  const rotationSpeed = {{ settings.announcement_speed | default: 5 }} * 1000;
-  
-  function rotateAnnouncement() {
-    // Hide current message
-    messages[activeIndex].classList.remove('active');
-    
-    // Calculate next index
-    activeIndex = (activeIndex + 1) % messages.length;
-    
-    // Show next message
-    messages[activeIndex].classList.add('active');
-  }
-  
-  // Start rotation
-  setInterval(rotateAnnouncement, rotationSpeed);
-});
-</script>
