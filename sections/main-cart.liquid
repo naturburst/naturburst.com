@@ -689,69 +689,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartContainer = document.querySelector('.section-cart');
   if (!cartContainer) return;
 
-  function updateCartUI(cart) {
-    // Update quantities and prices without full refresh
-    cart.items.forEach(item => {
-      const cartItem = document.querySelector(`#CartItem-${item.key}`);
-      if (cartItem) {
-        // Update quantity
-        const quantityInput = cartItem.querySelector('.cart-quantity-input');
-        if (quantityInput) {
-          quantityInput.value = item.quantity;
-        }
-
-        // Update price
-        const priceElement = cartItem.querySelector('.cart-item__price');
-        if (priceElement) {
-          priceElement.innerHTML = formatMoney(item.final_price);
-        }
-
-        // Update subtotal
-        const subtotalElement = cartItem.querySelector('.cart-item__subtotal');
-        if (subtotalElement) {
-          subtotalElement.innerHTML = formatMoney(item.final_line_price);
-        }
-
-        // Update decrease button state
-        const decreaseBtn = cartItem.querySelector('.cart-quantity-btn--dec');
-        if (decreaseBtn) {
-          decreaseBtn.disabled = item.quantity <= 1;
-        }
-      }
-    });
-
-    // Update cart totals
-    const subtotalElement = document.querySelector('.cart__subtotal');
-    const totalElement = document.querySelector('.cart__total');
-    const discountElement = document.querySelector('.cart__summary-row--discount .cart__discount-amount');
-
-    if (subtotalElement) {
-      subtotalElement.innerHTML = formatMoney(cart.total_price);
-    }
-    if (totalElement) {
-      totalElement.innerHTML = formatMoney(cart.total_price);
-    }
-    if (discountElement && cart.total_discount > 0) {
-      discountElement.innerHTML = `-${formatMoney(cart.total_discount)}`;
-    }
-
-    // Update cart count in header
-    const cartCountElements = document.querySelectorAll('[data-cart-count]');
-    cartCountElements.forEach(el => {
-      el.textContent = cart.item_count;
-      const countContainer = el.closest('.cart-count');
-      if (countContainer) {
-        countContainer.style.display = cart.item_count > 0 ? 'flex' : 'none';
-      }
-    });
-
-    cartContainer.classList.remove('cart--loading');
-  }
-
-  function formatMoney(cents) {
-    return 'Rs. ' + (cents / 100).toFixed(2).replace(/\.00$/, '');
-  }
-
   function initializeCartFunctionality() {
     const quantityInputs = document.querySelectorAll('.cart-quantity-input');
     const increaseButtons = document.querySelectorAll('.cart-quantity-btn--inc');
@@ -773,11 +710,20 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(response => response.json())
       .then(cart => {
+        // Update cart count in header
+        const cartCountElements = document.querySelectorAll('[data-cart-count]');
+        cartCountElements.forEach(el => {
+          el.textContent = cart.item_count;
+        });
+
+        // Reload the page if cart is empty
         if (cart.item_count === 0) {
           window.location.reload();
           return;
         }
-        updateCartUI(cart);
+
+        // Reload the page to refresh cart contents
+        window.location.reload();
       })
       .catch(error => {
         console.error('Error updating cart:', error);
@@ -802,8 +748,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const input = this.closest('.cart-quantity-selector').querySelector('.cart-quantity-input');
         if (input) {
           const itemKey = input.dataset.key;
-          const newValue = parseInt(input.value, 10) + 1;
-          updateCart(itemKey, newValue);
+          const currentValue = parseInt(input.value, 10);
+          updateCart(itemKey, currentValue + 1);
         }
       });
     });
@@ -817,8 +763,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const itemKey = input.dataset.key;
           const currentValue = parseInt(input.value, 10);
           if (currentValue > 1) {
-            const newValue = currentValue - 1;
-            updateCart(itemKey, newValue);
+            updateCart(itemKey, currentValue - 1);
           }
         }
       });
