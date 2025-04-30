@@ -20,13 +20,13 @@
 
         {%- comment -%} Site logo with improved visibility {%- endcomment -%}
         <div class="header__logo">
-         {% if settings.logo != blank %}
+         {% if section.settings.logo != blank %}
           <a href="{{ routes.root_url }}" class="header__logo-link">
             <img
-              src="{{ settings.logo | img_url: 'master' }}"
-              alt="{{ settings.logo.alt | default: shop.name | escape }}"
+              src="{{ section.settings.logo | img_url: 'master' }}"
+              alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
               class="header__logo-image"
-              width="{{ settings.logo_width | default: 140 }}"
+              width="{{ section.settings.logo_width | default: 140 }}"
               height="auto"
               loading="eager"
             >
