@@ -47,7 +47,12 @@
       },
       "header": {
         "type": "header",
-        "settings": {}
+        "settings": {
+          "logo": "shopify://shop_images/natureburst_logo_20250405_131713_0000.png",
+          "logo_width": 140,
+          "show_currency_selector": true,
+          "hide_currency_selector_on_mobile": true
+        }
       }
     },
     "content_for_index": [],
