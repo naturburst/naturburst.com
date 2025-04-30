@@ -689,136 +689,132 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartContainer = document.querySelector('.section-cart');
   if (!cartContainer) return;
 
-  // Listen for cart updates
-  document.addEventListener('cart:updated', function(event) {
+  function refreshCart() {
     if (cartContainer.dataset.sectionId) {
-      window.Shopify.section.render(cartContainer.dataset.sectionId);
+      fetch(`?section_id=${cartContainer.dataset.sectionId}`)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newCartContent = doc.querySelector('.section-cart');
+          
+          if (newCartContent) {
+            cartContainer.innerHTML = newCartContent.innerHTML;
+            // Reinitialize cart functionality after content update
+            initializeCartFunctionality();
+          }
+        })
+        .catch(error => console.error('Error refreshing cart section:', error));
     }
-  });
-
-  // Rest of the cart functionality
-  const quantityInputs = document.querySelectorAll('.cart-quantity-input');
-  const increaseButtons = document.querySelectorAll('.cart-quantity-btn--inc');
-  const decreaseButtons = document.querySelectorAll('.cart-quantity-btn--dec');
-  const removeButtons = document.querySelectorAll('.cart-item__remove');
-
-  function updateCart(itemKey, quantity) {
-    cartContainer.classList.add('cart--loading');
-
-    const data = {
-      id: itemKey,
-      quantity: quantity
-    };
-
-    fetch('/cart/change.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(cart => {
-      if (cart.item_count === 0 || quantity === 0) {
-        window.location.reload();
-        return;
-      }
-      
-      // Update cart count and trigger cart update event
-      updateCartCount(cart.item_count);
-      document.dispatchEvent(new CustomEvent('cart:updated', {
-        detail: { cart }
-      }));
-      
-      cartContainer.classList.remove('cart--loading');
-    })
-    .catch(error => {
-      console.error('Error updating cart:', error);
-      cartContainer.classList.remove('cart--loading');
-    });
   }
 
-  function updateCartCount(count) {
-    const cartCountElements = document.querySelectorAll('[data-cart-count]');
-    cartCountElements.forEach(el => {
-      el.textContent = count;
-    });
-  }
+  function initializeCartFunctionality() {
+    const quantityInputs = document.querySelectorAll('.cart-quantity-input');
+    const increaseButtons = document.querySelectorAll('.cart-quantity-btn--inc');
+    const decreaseButtons = document.querySelectorAll('.cart-quantity-btn--dec');
+    const removeButtons = document.querySelectorAll('.cart-item__remove');
 
-  function updateCartSubtotal(price) {
-    const subtotalElements = document.querySelectorAll('.cart__subtotal, .cart__total');
-    const formattedPrice = formatMoney(price);
-    subtotalElements.forEach(el => {
-      el.textContent = formattedPrice;
-    });
-  }
+    function updateCart(itemKey, quantity) {
+      cartContainer.classList.add('cart--loading');
 
-  function formatMoney(cents) {
-    const formatter = new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 2
-    });
-    return formatter.format(cents / 100);
-  }
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: itemKey,
+          quantity: quantity
+        })
+      })
+      .then(response => response.json())
+      .then(cart => {
+        if (cart.item_count === 0 || quantity === 0) {
+          window.location.reload();
+          return;
+        }
 
-  function updateDecreaseButtons() {
+        // Update cart count in header
+        const cartCountElements = document.querySelectorAll('[data-cart-count]');
+        cartCountElements.forEach(el => {
+          el.textContent = cart.item_count;
+          const countContainer = el.closest('.cart-count');
+          if (countContainer) {
+            countContainer.style.display = cart.item_count > 0 ? 'flex' : 'none';
+          }
+        });
+
+        // Refresh the entire cart section
+        refreshCart();
+      })
+      .catch(error => {
+        console.error('Error updating cart:', error);
+        cartContainer.classList.remove('cart--loading');
+      });
+    }
+
+    // Quantity input change handler
+    quantityInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        const itemKey = this.dataset.key;
+        const quantity = parseInt(this.value, 10);
+        if (quantity >= 0) {
+          updateCart(itemKey, quantity);
+        }
+      });
+    });
+
+    // Increase button handler
+    increaseButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+        const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
+        if (input) {
+          const newValue = parseInt(input.value, 10) + 1;
+          input.value = newValue;
+          updateCart(itemKey, newValue);
+        }
+      });
+    });
+
+    // Decrease button handler
+    decreaseButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        if (this.disabled) return;
+        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+        const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
+        if (input) {
+          const currentValue = parseInt(input.value, 10);
+          if (currentValue > 1) {
+            const newValue = currentValue - 1;
+            input.value = newValue;
+            updateCart(itemKey, newValue);
+          }
+        }
+      });
+    });
+
+    // Remove button handler
+    removeButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
+        updateCart(itemKey, 0);
+      });
+    });
+
+    // Update decrease buttons state
     quantityInputs.forEach(input => {
       const value = parseInt(input.value, 10);
       const itemKey = input.dataset.key;
-      const decreaseBtn = document.querySelector(`.cart-quantity-btn--dec[data-key="${itemKey}"]`);
+      const decreaseBtn = input.closest('.cart-quantity-selector').querySelector('.cart-quantity-btn--dec');
       if (decreaseBtn) {
         decreaseBtn.disabled = value <= 1;
       }
     });
   }
 
-  quantityInputs.forEach(input => {
-    input.addEventListener('change', function() {
-      const itemKey = this.dataset.key;
-      const quantity = parseInt(this.value, 10);
-      if (quantity >= 0) {
-        updateCart(itemKey, quantity);
-      }
-    });
-  });
-
-  increaseButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-      const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
-      if (input) {
-        const newValue = parseInt(input.value, 10) + 1;
-        input.value = newValue;
-        updateCart(itemKey, newValue);
-      }
-    });
-  });
-
-  decreaseButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      if (this.disabled) return;
-      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-      const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
-      if (input) {
-        const currentValue = parseInt(input.value, 10);
-        if (currentValue > 1) {
-          const newValue = currentValue - 1;
-          input.value = newValue;
-          updateCart(itemKey, newValue);
-        }
-      }
-    });
-  });
-
-  removeButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-      updateCart(itemKey, 0);
-    });
-  });
-
-  updateDecreaseButtons();
+  // Initialize cart functionality on page load
+  initializeCartFunctionality();
 });
 </script>
 

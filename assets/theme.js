@@ -83,11 +83,6 @@
           countContainer.style.display = count > 0 ? 'flex' : 'none';
         }
       });
-
-      // Trigger custom event for cart update
-      document.dispatchEvent(new CustomEvent('cart:updated', {
-        detail: { count }
-      }));
     },
 
     /**
@@ -116,7 +111,12 @@
         // Update mini-cart and cart count
         this.getCartData().then(cart => {
           this.updateCartCount(cart.item_count);
-          this.updateCartPromotions(cart);
+          
+          // Refresh cart section if it exists
+          const cartSection = document.querySelector('[data-section-type="cart-items"]');
+          if (cartSection && cartSection.dataset.sectionId) {
+            this.refreshCartSection(cartSection.dataset.sectionId);
+          }
 
           if (typeof callback === 'function') {
             callback(data);
@@ -137,6 +137,30 @@
           callback({ error: error.message });
         }
       });
+    },
+
+    /**
+     * Refresh cart section
+     * @param {String} sectionId - Section ID to refresh
+     */
+    refreshCartSection(sectionId) {
+      fetch(`?section_id=${sectionId}`)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newCartContent = doc.querySelector('.section-cart');
+          const currentCart = document.querySelector('.section-cart');
+          
+          if (newCartContent && currentCart) {
+            currentCart.innerHTML = newCartContent.innerHTML;
+            // Re-initialize cart functionality
+            if (typeof theme.cart.initializeCartFunctionality === 'function') {
+              theme.cart.initializeCartFunctionality();
+            }
+          }
+        })
+        .catch(error => console.error('Error refreshing cart section:', error));
     },
 
     /**
