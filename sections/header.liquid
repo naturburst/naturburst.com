@@ -20,22 +20,22 @@
 
         {%- comment -%} Site logo with improved visibility {%- endcomment -%}
         <div class="header__logo">
-          {% if settings.logo != blank %}
-            <a href="{{ routes.root_url }}" class="header__logo-link">
-              <img
-                src="{{ settings.logo | img_url: 'master' }}"
-                alt="{{ settings.logo.alt | default: shop.name | escape }}"
-                class="header__logo-image"
-                width="{{ section.settings.logo_width | default: 140 }}"
-                height="auto"
-                loading="eager"
-              >
-            </a>
-          {% else %}
-            <a href="{{ routes.root_url }}" class="header__logo-link">
-              <span class="h2">Nature<span>Burst</span></span>
-            </a>
-          {% endif %}
+         {% if settings.logo != blank %}
+          <a href="{{ routes.root_url }}" class="header__logo-link">
+            <img
+              src="{{ settings.logo | img_url: 'master' }}"
+              alt="{{ settings.logo.alt | default: shop.name | escape }}"
+              class="header__logo-image"
+              width="{{ settings.logo_width | default: 140 }}"
+              height="auto"
+              loading="eager"
+            >
+          </a>
+        {% else %}
+          <a href="{{ routes.root_url }}" class="header__logo-link">
+            <span class="h2">Nature<span>Burst</span></span>
+          </a>
+{% endif %}
         </div>
 
         {%- comment -%} Desktop navigation with "Shop" instead of "Catalog" {%- endcomment -%}
