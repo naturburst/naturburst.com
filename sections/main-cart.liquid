@@ -689,23 +689,67 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartContainer = document.querySelector('.section-cart');
   if (!cartContainer) return;
 
-  function refreshCart() {
-    if (cartContainer.dataset.sectionId) {
-      fetch(`?section_id=${cartContainer.dataset.sectionId}`)
-        .then(response => response.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const newCartContent = doc.querySelector('.section-cart');
-          
-          if (newCartContent) {
-            cartContainer.innerHTML = newCartContent.innerHTML;
-            // Reinitialize cart functionality after content update
-            initializeCartFunctionality();
-          }
-        })
-        .catch(error => console.error('Error refreshing cart section:', error));
+  function updateCartUI(cart) {
+    // Update quantities and prices without full refresh
+    cart.items.forEach(item => {
+      const cartItem = document.querySelector(`#CartItem-${item.key}`);
+      if (cartItem) {
+        // Update quantity
+        const quantityInput = cartItem.querySelector('.cart-quantity-input');
+        if (quantityInput) {
+          quantityInput.value = item.quantity;
+        }
+
+        // Update price
+        const priceElement = cartItem.querySelector('.cart-item__price');
+        if (priceElement) {
+          priceElement.innerHTML = formatMoney(item.final_price);
+        }
+
+        // Update subtotal
+        const subtotalElement = cartItem.querySelector('.cart-item__subtotal');
+        if (subtotalElement) {
+          subtotalElement.innerHTML = formatMoney(item.final_line_price);
+        }
+
+        // Update decrease button state
+        const decreaseBtn = cartItem.querySelector('.cart-quantity-btn--dec');
+        if (decreaseBtn) {
+          decreaseBtn.disabled = item.quantity <= 1;
+        }
+      }
+    });
+
+    // Update cart totals
+    const subtotalElement = document.querySelector('.cart__subtotal');
+    const totalElement = document.querySelector('.cart__total');
+    const discountElement = document.querySelector('.cart__summary-row--discount .cart__discount-amount');
+
+    if (subtotalElement) {
+      subtotalElement.innerHTML = formatMoney(cart.total_price);
     }
+    if (totalElement) {
+      totalElement.innerHTML = formatMoney(cart.total_price);
+    }
+    if (discountElement && cart.total_discount > 0) {
+      discountElement.innerHTML = `-${formatMoney(cart.total_discount)}`;
+    }
+
+    // Update cart count in header
+    const cartCountElements = document.querySelectorAll('[data-cart-count]');
+    cartCountElements.forEach(el => {
+      el.textContent = cart.item_count;
+      const countContainer = el.closest('.cart-count');
+      if (countContainer) {
+        countContainer.style.display = cart.item_count > 0 ? 'flex' : 'none';
+      }
+    });
+
+    cartContainer.classList.remove('cart--loading');
+  }
+
+  function formatMoney(cents) {
+    return 'Rs. ' + (cents / 100).toFixed(2).replace(/\.00$/, '');
   }
 
   function initializeCartFunctionality() {
@@ -729,23 +773,11 @@ document.addEventListener('DOMContentLoaded', function() {
       })
       .then(response => response.json())
       .then(cart => {
-        if (cart.item_count === 0 || quantity === 0) {
+        if (cart.item_count === 0) {
           window.location.reload();
           return;
         }
-
-        // Update cart count in header
-        const cartCountElements = document.querySelectorAll('[data-cart-count]');
-        cartCountElements.forEach(el => {
-          el.textContent = cart.item_count;
-          const countContainer = el.closest('.cart-count');
-          if (countContainer) {
-            countContainer.style.display = cart.item_count > 0 ? 'flex' : 'none';
-          }
-        });
-
-        // Refresh the entire cart section
-        refreshCart();
+        updateCartUI(cart);
       })
       .catch(error => {
         console.error('Error updating cart:', error);
@@ -767,11 +799,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Increase button handler
     increaseButtons.forEach(button => {
       button.addEventListener('click', function() {
-        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-        const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
+        const input = this.closest('.cart-quantity-selector').querySelector('.cart-quantity-input');
         if (input) {
+          const itemKey = input.dataset.key;
           const newValue = parseInt(input.value, 10) + 1;
-          input.value = newValue;
           updateCart(itemKey, newValue);
         }
       });
@@ -781,13 +812,12 @@ document.addEventListener('DOMContentLoaded', function() {
     decreaseButtons.forEach(button => {
       button.addEventListener('click', function() {
         if (this.disabled) return;
-        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-        const input = document.querySelector(`.cart-quantity-input[data-key="${itemKey}"]`);
+        const input = this.closest('.cart-quantity-selector').querySelector('.cart-quantity-input');
         if (input) {
+          const itemKey = input.dataset.key;
           const currentValue = parseInt(input.value, 10);
           if (currentValue > 1) {
             const newValue = currentValue - 1;
-            input.value = newValue;
             updateCart(itemKey, newValue);
           }
         }
@@ -797,15 +827,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove button handler
     removeButtons.forEach(button => {
       button.addEventListener('click', function() {
-        const itemKey = this.closest('.cart-item').querySelector('.cart-quantity-input').dataset.key;
-        updateCart(itemKey, 0);
+        const input = this.closest('.cart-item').querySelector('.cart-quantity-input');
+        if (input) {
+          const itemKey = input.dataset.key;
+          updateCart(itemKey, 0);
+        }
       });
     });
 
     // Update decrease buttons state
     quantityInputs.forEach(input => {
       const value = parseInt(input.value, 10);
-      const itemKey = input.dataset.key;
       const decreaseBtn = input.closest('.cart-quantity-selector').querySelector('.cart-quantity-btn--dec');
       if (decreaseBtn) {
         decreaseBtn.disabled = value <= 1;
