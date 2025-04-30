@@ -6,6 +6,7 @@
     </div>
 
     <div class="benefits-grid">
+      <!-- Benefit card 1 -->
       <div class="benefit-card">
         {% if section.settings.benefit_1_image != blank %}
           <div class="benefit-image">
@@ -16,6 +17,7 @@
         {% endif %}
       </div>
 
+      <!-- Benefit card 2 -->
       <div class="benefit-card">
         {% if section.settings.benefit_2_image != blank %}
           <div class="benefit-image">
@@ -26,6 +28,7 @@
         {% endif %}
       </div>
 
+      <!-- Benefit card 3 -->
       <div class="benefit-card">
         {% if section.settings.benefit_3_image != blank %}
           <div class="benefit-image">
@@ -36,6 +39,7 @@
         {% endif %}
       </div>
 
+      <!-- Benefit card 4 -->
       <div class="benefit-card">
         {% if section.settings.benefit_4_image != blank %}
           <div class="benefit-image">
@@ -160,11 +164,13 @@
 {% endschema %}
 
 <style>
+/* Section base styling */
 .product-benefits {
   padding: 4rem 0;
   background: #f7f7f7;
 }
 
+/* Header styling */
 .header-container {
   text-align: center;
   max-width: 800px;
@@ -185,7 +191,7 @@
   margin-bottom: 0;
 }
 
-/* Main grid layout - 2x2 grid for all device sizes */
+/* 2x2 grid for all device sizes */
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -194,6 +200,7 @@
   margin: 0 auto;
 }
 
+/* Benefit card styling */
 .benefit-card {
   background: #ebf7f5;
   padding: 3rem;
@@ -213,6 +220,7 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
+/* Default icon styling for SVG fallbacks */
 .benefit-icon {
   width: 100%;
   max-width: 280px;
@@ -226,6 +234,7 @@
   background-color: #ebf7f5;
 }
 
+/* Custom image container styling */
 .benefit-image {
   width: 100%;
   max-width: 280px;
@@ -252,7 +261,7 @@
   transform: scale(1.08);
 }
 
-/* Icon background images */
+/* SVG icon background images */
 .natural {
   background-color: rgba(42, 157, 143, 0.1);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232A9D8F'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3A4.49,4.49,0,0,0,8,20a4.67,4.67,0,0,0,1.76-.35,4.65,4.65,0,0,0,6.41-2A4.74,4.74,0,0,0,19.73,12.9a4.64,4.64,0,0,0,.55-2.64,4.47,4.47,0,0,0-1.92-3.11A4.47,4.47,0,0,0,17,8Z'/%3E%3C/svg%3E");
@@ -284,7 +293,7 @@
   }
 }
 
-/* Mobile adjustments */
+/* Mobile adjustments - optimized for filled circles */
 @media (max-width: 767px) {
   .header-container h2 {
     font-size: 2rem;
@@ -298,24 +307,47 @@
     gap: 1rem; /* Tighter spacing on mobile */
   }
 
+  /* Make cards square with minimal padding to maximize icon space */
   .benefit-card {
-    padding: 1.5rem;
-    min-height: 150px; /* Ensure consistent height */
+    padding: 1rem;
+    aspect-ratio: 1/1;
   }
 
+  /* Remove max-width constraint to allow icons to fill the space */
   .benefit-image, .benefit-icon {
-    max-width: 100px; /* Smaller icons on mobile */
+    max-width: none;
+    width: 85%; /* Fill most of the card */
+  }
+
+  /* Enlarge the SVG icons */
+  .benefit-icon {
+    background-size: 70%;
+  }
+
+  /* Make images fill more of their container */
+  .benefit-image img {
+    width: 90%;
+    height: 90%;
   }
 }
 
 /* Extra small devices */
 @media (max-width: 480px) {
-  .benefit-card {
-    padding: 1rem;
+  .benefits-grid {
+    gap: 0.75rem;
   }
 
+  .benefit-card {
+    padding: 0.75rem;
+  }
+
+  /* Make icons even larger on tiny screens */
   .benefit-image, .benefit-icon {
-    max-width: 80px;
+    width: 95%;
+  }
+
+  .benefit-icon {
+    background-size: 75%;
   }
 }
 </style>
