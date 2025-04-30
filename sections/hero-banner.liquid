@@ -58,6 +58,7 @@
   margin-top: 0;
   margin-bottom: 0;
   font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
 }
 
 .hero-container {
@@ -70,6 +71,7 @@
   align-items: flex-end;
   justify-content: center;
   border-bottom: none;
+  background-color: transparent;
 }
 
 .hero-content {
@@ -127,9 +129,9 @@
 @media (max-width: 767px) {
   .hero-banner {
     margin-top: 0; 
-    background-color: #C5FF5C; /* Matching the light green background color of the banner */
+    background-color: transparent;
     position: relative;
-    top: 0; /* Remove the -1px offset */
+    top: 0;
   }
   
   .hero-container {
@@ -142,11 +144,12 @@
     /* Apply mobile image and force contain so the full image shows */
     background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
     background-size: contain !important;
-    background-color: #C5FF5C; /* Ensure background color is the same */
+    background-color: transparent;
   }
 
   .hero-container--home {
     height: 100vh;
+    background-color: transparent;
   }
 
   .hero-content {
