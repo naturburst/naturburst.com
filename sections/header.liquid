@@ -490,3 +490,38 @@ body.mobile-menu-open .hamburger-line:nth-child(3) {
   }
 }
 </style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 140
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_currency_selector_on_mobile",
+      "label": "Hide currency selector on mobile",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
