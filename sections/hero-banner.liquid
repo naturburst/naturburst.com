@@ -55,23 +55,25 @@
   width: 100%;
   overflow: hidden;
   padding: 0;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0;
   font-family: 'Montserrat', sans-serif;
   background-color: transparent;
+  line-height: 0; /* Remove any line height gaps */
 }
 
 .hero-container {
-  /* Using contain to ensure the whole image is visible */
-  background-size: contain;
+  /* Using cover to ensure no white space */
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top center;
   min-height: 600px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  border-bottom: none;
-  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  line-height: 0; /* Remove any line height gaps */
 }
 
 .hero-content {
@@ -81,6 +83,7 @@
   position: relative;
   z-index: 2;
   padding-bottom: 2rem;
+  line-height: 1.5; /* Reset line height for content */
 }
 
 .hero-buttons {
@@ -128,28 +131,26 @@
 /* Mobile responsive adjustments */
 @media (max-width: 767px) {
   .hero-banner {
-    margin-top: 0; 
-    background-color: transparent;
+    margin: 0;
     position: relative;
     top: 0;
+    line-height: 0;
   }
   
   .hero-container {
     min-height: 100vh;
     height: 100vh;
-    padding-bottom: 0;
-    padding-top: 0;
-    margin-top: 0;
-    background-position: center;
-    /* Apply mobile image and force contain so the full image shows */
+    padding: 0;
+    margin: 0;
+    background-position: top center;
     background-image: url("{{ section.settings.mobile_image | img_url: 'master' }}") !important;
-    background-size: contain !important;
-    background-color: transparent;
+    background-size: cover !important;
   }
 
   .hero-container--home {
     height: 100vh;
-    background-color: transparent;
+    margin: 0;
+    padding: 0;
   }
 
   .hero-content {
