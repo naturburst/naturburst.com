@@ -9,12 +9,12 @@
 <div id="MobileNav" class="mobile-nav" aria-hidden="true">
   <div class="mobile-nav__inner">
     <div class="mobile-nav__header">
-      {% if settings.logo != blank %}
+      {% if section.settings.logo != blank %}
         <img
           class="mobile-nav__logo"
-          src="{{ settings.logo | img_url: 'master' }}"
+          src="{{ section.settings.logo | img_url: 'master' }}"
           alt="{{ shop.name | escape }}"
-          width="{{ settings.logo_width | default: 140 }}"
+          width="{{ section.settings.logo_width | default: 140 }}"
           loading="lazy">
       {% else %}
         <span class="h1">Nature<span>Burst</span></span>

@@ -70,8 +70,8 @@
             </div>
           {% endif %}
 
-          <!-- Customer account icon -->
-          <a href="{{ routes.account_url }}" class="header-account-link" aria-label="Account">
+          <!-- Customer account icon - desktop only -->
+          <a href="{{ routes.account_url }}" class="header-account-link desktop-only" aria-label="Account">
             {% render 'icon-account' %}
           </a>
 
@@ -261,7 +261,7 @@
 }
 
 .header-account-link:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(42, 94, 65, 0.1);
   transform: translateY(-2px);
 }
 
@@ -408,6 +408,10 @@ body.mobile-menu-open .hamburger-line:nth-child(3) {
   .header__logo {
     margin-right: 2rem;
   }
+
+  .desktop-only {
+    display: flex;
+  }
 }
 
 @media screen and (max-width: 991px) {
@@ -428,6 +432,10 @@ body.mobile-menu-open .hamburger-line:nth-child(3) {
 
   .header-actions {
     margin-left: auto;
+  }
+
+  .desktop-only {
+    display: none;
   }
 }
 
@@ -474,7 +482,6 @@ body.mobile-menu-open .hamburger-line:nth-child(3) {
     gap: 1rem;
   }
 
-  .header-account-link, 
   .header-cart-link {
     padding: 0.5rem;
   }
@@ -486,6 +493,23 @@ body.mobile-menu-open .hamburger-line:nth-child(3) {
 
   /* Hide currency selector on mobile if setting is enabled */
   .hide-on-mobile {
+    display: none;
+  }
+}
+
+/* Desktop/Mobile visibility classes */
+.desktop-only {
+  display: none;
+}
+
+@media screen and (min-width: 992px) {
+  .desktop-only {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .desktop-only {
     display: none;
   }
 }
