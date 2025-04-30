@@ -22,7 +22,7 @@
       "settings": {
         "image": "shopify://shop_images/tropi-treats-banner.png",
         "mobile_image": "shopify://shop_images/Copy_of_Mobile_FD_Banner_2_800_x_1000_px__20250330_023943_0000.svg",
-        "show_buttons": true,
+        "show_buttons": false,
         "shop_button_text": "SHOP NOW"
       }
     },
