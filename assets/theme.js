@@ -77,13 +77,22 @@
 
       cartCountElements.forEach(el => {
         el.textContent = count;
+        // Toggle visibility of cart count
+        const countContainer = el.closest('.cart-count');
+        if (countContainer) {
+          countContainer.style.display = count > 0 ? 'flex' : 'none';
+        }
       });
+
+      // Trigger custom event for cart update
+      document.dispatchEvent(new CustomEvent('cart:updated', {
+        detail: { count }
+      }));
     },
 
     /**
      * Add a product to cart via AJAX
-     * @param {Number} id - Product variant ID
-     * @param {Number} quantity - Quantity to add
+     * @param {FormData} formData - Form data from the add to cart form
      * @param {Function} callback - Optional callback function
      */
     addItemFromForm(formData, callback) {
@@ -97,7 +106,7 @@
             {
               id: formData.get('id'),
               quantity: parseInt(formData.get('quantity'), 10) || 1,
-              properties: theme.cart._getFormProperties(formData)
+              properties: this._getFormProperties(formData)
             }
           ]
         })
@@ -107,6 +116,7 @@
         // Update mini-cart and cart count
         this.getCartData().then(cart => {
           this.updateCartCount(cart.item_count);
+          this.updateCartPromotions(cart);
 
           if (typeof callback === 'function') {
             callback(data);
@@ -115,7 +125,8 @@
           // Fire added_to_cart event
           document.dispatchEvent(new CustomEvent('added_to_cart', {
             detail: {
-              product: data
+              product: data,
+              cart: cart
             }
           }));
         });
@@ -154,6 +165,25 @@
       return fetch('/cart.js')
         .then(response => response.json())
         .catch(error => console.error('Error fetching cart:', error));
+    },
+
+    /**
+     * Update cart promotions
+     * @param {Object} cart - Cart data
+     */
+    updateCartPromotions(cart) {
+      // Refresh cart promotions section
+      if (window.Shopify && window.Shopify.section) {
+        const cartSections = document.querySelectorAll('[data-section-type="cart-items"]');
+        if (cartSections.length) {
+          cartSections.forEach(section => {
+            const sectionId = section.dataset.sectionId;
+            if (sectionId) {
+              window.Shopify.section.render(sectionId);
+            }
+          });
+        }
+      }
     }
   };
 

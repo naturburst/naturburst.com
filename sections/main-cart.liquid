@@ -1,4 +1,4 @@
-<div class="section-cart">
+<div class="section-cart" data-section-type="cart-items" data-section-id="{{ section.id }}">
   <div class="page-width">
     <h1 class="cart__title">Your cart</h1>
 
@@ -689,6 +689,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartContainer = document.querySelector('.section-cart');
   if (!cartContainer) return;
 
+  // Listen for cart updates
+  document.addEventListener('cart:updated', function(event) {
+    if (cartContainer.dataset.sectionId) {
+      window.Shopify.section.render(cartContainer.dataset.sectionId);
+    }
+  });
+
+  // Rest of the cart functionality
   const quantityInputs = document.querySelectorAll('.cart-quantity-input');
   const increaseButtons = document.querySelectorAll('.cart-quantity-btn--inc');
   const decreaseButtons = document.querySelectorAll('.cart-quantity-btn--dec');
@@ -715,9 +723,13 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.reload();
         return;
       }
+      
+      // Update cart count and trigger cart update event
       updateCartCount(cart.item_count);
-      updateCartSubtotal(cart.total_price);
-      updateDecreaseButtons();
+      document.dispatchEvent(new CustomEvent('cart:updated', {
+        detail: { cart }
+      }));
+      
       cartContainer.classList.remove('cart--loading');
     })
     .catch(error => {
