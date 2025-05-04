@@ -199,6 +199,31 @@
 
           <!-- SKU and product details area -->
           <div class="product__details">
+            <!-- Description collapsible section -->
+            <details class="product__collapsible-section">
+              <summary class="product__collapsible-heading">
+                <span>Description</span>
+                <span class="icon-plus">{% render 'icon-plus' %}</span>
+                <span class="icon-minus">{% render 'icon-minus' %}</span>
+              </summary>
+              <div class="product__collapsible-content rte">
+                {{ product.description }}
+              </div>
+            </details>
+            <!-- Nutrition collapsible section -->
+            {% if product.metafields.product.nutritional_info %}
+              <details class="product__collapsible-section">
+                <summary class="product__collapsible-heading">
+                  <span>Nutrition</span>
+                  <span class="icon-plus">{% render 'icon-plus' %}</span>
+                  <span class="icon-minus">{% render 'icon-minus' %}</span>
+                </summary>
+                <div class="product__collapsible-content rte">
+                  {{ product.metafields.product.nutritional_info }}
+                </div>
+              </details>
+            {% endif %}
+
             {% if section.settings.show_sku and current_variant.sku != blank %}
               <div class="product__sku">
                 <span>SKU:</span> {{ current_variant.sku }}
@@ -218,20 +243,6 @@
                       </summary>
                       <div class="product__collapsible-content rte">
                         {{ product.metafields.product.ingredients }}
-                      </div>
-                    </details>
-                  {% endif %}
-
-                {% when 'nutritional_info' %}
-                  {% if product.metafields.product.nutritional_info %}
-                    <details class="product__collapsible-section">
-                      <summary class="product__collapsible-heading">
-                        <span>{{ block.settings.title | default: 'Nutritional Information' }}</span>
-                        <span class="icon-plus">{% render 'icon-plus' %}</span>
-                        <span class="icon-minus">{% render 'icon-minus' %}</span>
-                      </summary>
-                      <div class="product__collapsible-content rte">
-                        {{ product.metafields.product.nutritional_info }}
                       </div>
                     </details>
                   {% endif %}
@@ -281,6 +292,14 @@
               <div class="trust-badge__text">
                 <span class="trust-badge__title">Fast Delivery</span>
                 <span class="trust-badge__info">5-7 business days</span>
+              </div>
+            </div>
+            <!-- Best Quality trust badge -->
+            <div class="trust-badge">
+              <span class="trust-badge__icon">{% render 'icon-star' %}</span>
+              <div class="trust-badge__text">
+                <span class="trust-badge__title">Best Quality</span>
+                <span class="trust-badge__info">Guaranteed</span>
               </div>
             </div>
           </div>
