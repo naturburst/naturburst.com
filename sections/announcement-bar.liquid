@@ -1,24 +1,49 @@
 {% if settings.show_announcement %}
 <div class="announcement-bar">
-  <div class="ticker-wrapper">
-    <div class="ticker">
-      {% if settings.announcements.size > 0 %}
-        <div class="ticker-content">
+  <!-- Desktop Version - Static display -->
+  <div class="desktop-announcements">
+    <div class="page-width">
+      <div class="announcements-container">
+        {% if settings.announcements.size > 0 %}
           {% for announcement in settings.announcements %}
-            <span class="ticker-item">{{ announcement.text }}</span>
-            <span class="bullet-point">•</span>
+            <div class="announcement-item">
+              <span>{{ announcement.text }}</span>
+            </div>
+            {% unless forloop.last %}
+              <span class="bullet-point desktop-bullet">•</span>
+            {% endunless %}
           {% endfor %}
-          <!-- Repeat for seamless loop -->
-          {% for announcement in settings.announcements %}
-            <span class="ticker-item">{{ announcement.text }}</span>
-            <span class="bullet-point">•</span>
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="ticker-content">
-          <span class="ticker-item">{{ settings.announcement_text }}</span>
-        </div>
-      {% endif %}
+        {% else %}
+          <div class="announcement-item">
+            <span>{{ settings.announcement_text }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Version - Ticker -->
+  <div class="mobile-announcements">
+    <div class="ticker-wrapper">
+      <div class="ticker">
+        {% if settings.announcements.size > 0 %}
+          <div class="ticker-content">
+            {% for announcement in settings.announcements %}
+              <span class="ticker-item">{{ announcement.text }}</span>
+              <span class="bullet-point">•</span>
+            {% endfor %}
+            <!-- Repeat for seamless loop -->
+            {% for announcement in settings.announcements %}
+              <span class="ticker-item">{{ announcement.text }}</span>
+              <span class="bullet-point">•</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="ticker-content">
+            <span class="ticker-item">{{ settings.announcement_text }}</span>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
@@ -60,6 +85,37 @@
   letter-spacing: 1px;
   padding: 0.25rem 0;
   z-index: 9;
+}
+
+/* Desktop Version Styles */
+.desktop-announcements {
+  display: block;
+}
+
+.announcements-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.announcement-item {
+  text-align: center;
+  padding: 0.25rem 0.3rem;
+}
+
+.desktop-bullet {
+  display: inline-block;
+  color: #FFD166;
+  font-size: 1.5rem;
+  line-height: 0;
+  vertical-align: middle;
+  margin: 0 0.4rem;
+}
+
+/* Mobile Version Styles */
+.mobile-announcements {
+  display: none;
   overflow: hidden;
 }
 
@@ -100,6 +156,17 @@
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .desktop-announcements {
+    display: none;
+  }
+  
+  .mobile-announcements {
+    display: block;
   }
 }
 
