@@ -482,5 +482,61 @@
         });
       });
     });
+
+    // Enhanced dropdown functionality for desktop navigation
+    const dropdownItems = document.querySelectorAll('.site-nav__item--has-dropdown');
+    let touchDevice = false;
+    
+    // Detect touch device
+    window.addEventListener('touchstart', function onFirstTouch() {
+      touchDevice = true;
+      // Remove this listener as it's no longer needed
+      window.removeEventListener('touchstart', onFirstTouch);
+    }, false);
+    
+    // Add click handler for touch devices and mouse click dropdown toggling
+    dropdownItems.forEach(item => {
+      const link = item.querySelector('.site-nav__link--has-dropdown');
+      const dropdown = item.querySelector('.site-nav__dropdown');
+      
+      if (!link || !dropdown) return;
+      
+      // For touch devices or click to open
+      link.addEventListener('click', function(e) {
+        // If we're on a desktop (not a touch device), hover will handle it
+        // Only prevent default and handle on touch devices
+        if (touchDevice || window.innerWidth < 990) {
+          e.preventDefault();
+          
+          const isOpen = item.classList.contains('dropdown-active');
+          
+          // Close all dropdowns first
+          dropdownItems.forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.classList.remove('dropdown-active');
+            }
+          });
+          
+          // Toggle current dropdown
+          item.classList.toggle('dropdown-active', !isOpen);
+        }
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.site-nav__item--has-dropdown')) {
+        dropdownItems.forEach(item => {
+          item.classList.remove('dropdown-active');
+        });
+      }
+    });
+    
+    // Allow clicking on dropdown links
+    document.querySelectorAll('.site-nav__dropdown-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
   });
 })();
