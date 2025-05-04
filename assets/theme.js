@@ -517,7 +517,7 @@
             }
           });
           
-          // Toggle current dropdown
+          // Toggle current dropdown - instant toggle with no animation
           item.classList.toggle('dropdown-active', !isOpen);
         }
       });
