@@ -7,9 +7,17 @@ button.btn,
 .shopify-payment-button .shopify-payment-button__button,
 .checkout-btn,
 .contact-form__submit {
-  background-color: #2A5E41 !important; /* Dark green header color */
-  border-color: #2A5E41 !important;
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
   color: white !important;
+  border-radius: 30px !important;
+  padding: 0.85rem 1.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 6px rgba(42, 94, 65, 0.25) !important;
 }
 
 .btn:hover,
@@ -20,68 +28,152 @@ button.btn:hover,
 .shopify-payment-button .shopify-payment-button__button:hover,
 .checkout-btn:hover,
 .contact-form__submit:hover {
-  background-color: #234C36 !important; /* Slightly darker on hover */
-  border-color: #234C36 !important;
+  background-color: var(--color-primary-darker) !important;
+  border-color: var(--color-primary-darker) !important;
   color: white !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(42, 94, 65, 0.3) !important;
+}
+
+.btn:focus,
+button.btn:focus,
+.button:focus,
+.btn--primary:focus,
+.product-form__submit:focus,
+.shopify-payment-button .shopify-payment-button__button:focus,
+.checkout-btn:focus,
+.contact-form__submit:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--color-primary-lighter), 0 4px 6px rgba(42, 94, 65, 0.2) !important;
 }
 
 /* Product card buttons */
 .product-card__add-to-cart-btn,
 .product-card__quick-view-btn {
-  background-color: #2A5E41 !important;
-  border-color: #2A5E41 !important;
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: white !important;
+  border-radius: 30px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.05em !important;
+  box-shadow: 0 4px 6px rgba(42, 94, 65, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .product-card__add-to-cart-btn:hover,
 .product-card__quick-view-btn:hover {
-  background-color: #234C36 !important;
-  border-color: #234C36 !important;
+  background-color: var(--color-primary-darker) !important;
+  border-color: var(--color-primary-darker) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 12px rgba(42, 94, 65, 0.25) !important;
 }
 
 /* Contact form buttons */
 .contact-btn,
 .get-in-touch,
 .directions-btn .map-indicator:hover {
-  background-color: #2A5E41 !important;
+  background-color: var(--color-primary) !important;
   color: white !important;
+  border-radius: 30px !important;
+  padding: 0.85rem 1.75rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 4px 6px rgba(42, 94, 65, 0.2) !important;
+}
+
+.contact-btn:hover,
+.get-in-touch:hover,
+.directions-btn .map-indicator:hover {
+  background-color: var(--color-primary-darker) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(42, 94, 65, 0.3) !important;
 }
 
 /* Mobile navigation buttons */
 .currency-option.active,
 .mobile-nav__link:hover,
 .mobile-nav__item--active .mobile-nav__link {
-  color: #2A5E41 !important;
+  color: var(--color-primary) !important;
+  background-color: var(--color-background-primary-light) !important;
 }
 
 /* Social icons hover */
+.social-icons a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
 .social-icons a:hover {
-  background: #2A5E41 !important;
+  background: var(--color-primary) !important;
   color: white !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(42, 94, 65, 0.2) !important;
 }
 
 /* Newsletter button */
 .newsletter__button {
-  background-color: #2A5E41 !important;
+  background-color: var(--color-primary) !important;
   color: white !important;
+  border-radius: 30px !important;
+  padding: 0.85rem 1.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 6px rgba(42, 94, 65, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .newsletter__button:hover {
-  background-color: #234C36 !important;
+  background-color: var(--color-primary-darker) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 6px 12px rgba(42, 94, 65, 0.3) !important;
 }
 
-/* Fix for secondary buttons */
-.btn--secondary:not(:hover) {
-  color: #2A5E41 !important;
-  border-color: #2A5E41 !important;
+/* Secondary buttons */
+.btn--secondary,
+button.btn--secondary {
   background-color: transparent !important;
+  color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary) !important;
+  padding: calc(0.85rem - 2px) calc(1.75rem - 2px) !important;
 }
 
-/* Make sure disabled buttons don't use the active color */
+.btn--secondary:hover,
+button.btn--secondary:hover {
+  background-color: var(--color-primary-lighter) !important;
+  color: var(--color-primary-darker) !important;
+  border-color: var(--color-primary) !important;
+  transform: translateY(-3px) !important;
+}
+
+/* Disabled buttons */
 button[disabled],
 .btn[disabled],
 .btn.disabled {
-  background-color: #cccccc !important;
-  border-color: #cccccc !important;
-  cursor: not-allowed;
-  opacity: 0.65;
+  background-color: #E2E8F0 !important;
+  border-color: #E2E8F0 !important;
+  color: #A0AEC0 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  opacity: 0.6 !important;
+}
+
+button[disabled]:hover,
+.btn[disabled]:hover,
+.btn.disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Small buttons variant */
+.btn--small,
+button.btn--small,
+.button--small {
+  padding: 0.6rem 1.2rem !important;
+  font-size: 0.75rem !important;
 }
