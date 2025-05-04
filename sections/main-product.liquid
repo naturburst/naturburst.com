@@ -211,85 +211,34 @@
               </div>
             </details>
             <!-- Combined Additional Information collapsible section -->
-            {% assign storage = product.metafields.product.storage_instructions %}
-            {% assign tasting = product.metafields.product.tasting_notes %}
-            {% if product.metafields.product.ingredients or product.metafields.product.nutritional_info or storage or tasting %}
-              <details class="product__collapsible-section">
-                <summary class="product__collapsible-heading">
-                  <span>Additional Information</span>
-                  <span class="icon-plus">{% render 'icon-plus' %}</span>
-                  <span class="icon-minus">{% render 'icon-minus' %}</span>
-                </summary>
-                <div class="product__collapsible-content rte">
-                  {% if product.metafields.product.ingredients %}
-                    <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients.value }}</p>
-                  {% endif %}
-                  {% if product.metafields.product.nutritional_info %}
-                    <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info.value }}</p>
-                  {% endif %}
-                  {% if storage %}
-                    <p><strong>Storage Instructions:</strong> {{ storage.value }}</p>
-                  {% endif %}
-                  {% if tasting %}
-                    <p><strong>Tasting Notes:</strong> {{ tasting.value }}</p>
-                  {% endif %}
-                </div>
-              </details>
-            {% endif %}
+
+            <details class="product__collapsible-section">
+              <summary class="product__collapsible-heading">
+                <span>Additional Information</span>
+                <span class="icon-plus">{% render 'icon-plus' %}</span>
+                <span class="icon-minus">{% render 'icon-minus' %}</span>
+              </summary>
+              <div class="product__collapsible-content rte">
+                {% if product.metafields.product.ingredients %}
+                  <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients.value }}</p>
+                {% endif %}
+                {% if product.metafields.product.nutritional_info %}
+                  <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info.value }}</p>
+                {% endif %}
+                {% if storage %}
+                  <p><strong>Storage Instructions:</strong> {{ storage.value }}</p>
+                {% endif %}
+                {% if tasting %}
+                  <p><strong>Tasting Notes:</strong> {{ tasting.value }}</p>
+                {% endif %}
+              </div>
+            </details>
 
             {% if section.settings.show_sku and current_variant.sku != blank %}
               <div class="product__sku">
                 <span>SKU:</span> {{ current_variant.sku }}
               </div>
             {% endif %}
-
-            <!-- Blocks for additional product information -->
-            {% for block in section.blocks %}
-              {% case block.type %}
-                {% when 'ingredients' %}
-                  {% if product.metafields.product.ingredients %}
-                    <details class="product__collapsible-section">
-                      <summary class="product__collapsible-heading">
-                        <span>{{ block.settings.title | default: 'Ingredients' }}</span>
-                        <span class="icon-plus">{% render 'icon-plus' %}</span>
-                        <span class="icon-minus">{% render 'icon-minus' %}</span>
-                      </summary>
-                      <div class="product__collapsible-content rte">
-                        {{ product.metafields.product.ingredients }}
-                      </div>
-                    </details>
-                  {% endif %}
-
-                {% when 'how_to_use' %}
-                  {% if product.metafields.product.how_to_use %}
-                    <details class="product__collapsible-section">
-                      <summary class="product__collapsible-heading">
-                        <span>{{ block.settings.title | default: 'How to Use' }}</span>
-                        <span class="icon-plus">{% render 'icon-plus' %}</span>
-                        <span class="icon-minus">{% render 'icon-minus' %}</span>
-                      </summary>
-                      <div class="product__collapsible-content rte">
-                        {{ product.metafields.product.how_to_use }}
-                      </div>
-                    </details>
-                  {% endif %}
-
-                {% when 'custom' %}
-                  {% if block.settings.content != blank %}
-                    <details class="product__collapsible-section">
-                      <summary class="product__collapsible-heading">
-                        <span>{{ block.settings.title }}</span>
-                        <span class="icon-plus">{% render 'icon-plus' %}</span>
-                        <span class="icon-minus">{% render 'icon-minus' %}</span>
-                      </summary>
-                      <div class="product__collapsible-content rte">
-                        {{ block.settings.content }}
-                      </div>
-                    </details>
-                  {% endif %}
-              {% endcase %}
-            {% endfor %}
-          </div>
 
           <!-- Free shipping, guarantee and delivery time info -->
           <div class="product__trust-badges">
