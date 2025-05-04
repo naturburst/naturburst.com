@@ -11,7 +11,7 @@
   assign current_product_id = product.id
 
   # Create an array to store related products
-  assign related_products = []
+  assign related_products = '' | split: ','
 
   # First pass: gather all potential related products
   for related_product in related_collection.products limit: section.settings.products_to_show

@@ -139,21 +139,6 @@
         "default": 5
       },
       {
-        "type": "array",
-        "id": "announcements",
-        "label": "Announcements",
-        "info": "Add multiple announcements to rotate through",
-        "max_count": 5,
-        "settings": [
-          {
-            "type": "text",
-            "id": "text",
-            "label": "Announcement text",
-            "default": "Buy any 2 items at Rs. 175 each"
-          }
-        ]
-      },
-      {
         "type": "checkbox",
         "id": "hide_on_mobile",
         "label": "Hide currency selector on mobile",
