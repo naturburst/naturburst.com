@@ -126,7 +126,7 @@
         "id": "announcement_text",
         "label": "Announcement text (Legacy - use announcements instead)",
         "info": "This will be used as fallback if no announcements are added below",
-        "default": "Buy any 3 or more items at Rs. 149 each + Free shipping"
+        "default": "Buy any 3 or more items at Rs. 149 each"
       },
       {
         "type": "header",
