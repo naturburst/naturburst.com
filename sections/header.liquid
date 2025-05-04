@@ -52,12 +52,12 @@
             {% endfor %}
             <li class="site-nav__item site-nav__item--has-dropdown">
               <a href="#" class="site-nav__link site-nav__link--has-dropdown">Business Orders</a>
-              <ul class="site-nav__dropdown">
+              <ul class="site-nav__dropdown list-unstyled">
                 <li class="site-nav__item">
-                  <a href="{{ routes.root_url }}pages/bulk-ordering" class="site-nav__link site-nav__dropdown-link">Bulk Ordering</a>
+                  <a href="{{ routes.root_url }}pages/bulk-ordering" class="site-nav__dropdown-link">Bulk Ordering</a>
                 </li>
                 <li class="site-nav__item">
-                  <a href="{{ routes.root_url }}pages/corporate-ordering" class="site-nav__link site-nav__dropdown-link">Corporate Ordering</a>
+                  <a href="{{ routes.root_url }}pages/corporate-ordering" class="site-nav__dropdown-link">Corporate Ordering</a>
                 </li>
               </ul>
             </li>
@@ -243,10 +243,8 @@
   border-radius: var(--radius-base);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(15px);
-  transition: opacity 0.25s ease,
-              visibility 0.25s ease,
-              transform 0.25s ease;
+  transform: none;
+  transition: opacity 0.1s ease, visibility 0.1s ease;
   padding: 0.75rem 0;
   z-index: 10;
   margin-top: 5px;
@@ -258,9 +256,9 @@
 .site-nav__item--has-dropdown.dropdown-active .site-nav__dropdown {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
+  transform: none;
   pointer-events: auto;
-  transition-delay: 0.1s; /* Small delay to prevent accidental triggering */
+  transition-delay: 0;
 }
 
 .site-nav__dropdown-link {
@@ -271,35 +269,48 @@
   font-size: 0.9rem;
   text-transform: none;
   letter-spacing: normal;
-  transition: all 0.2s ease;
-  opacity: 0;
-  transform: translateX(-10px);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  opacity: 1;
+  transform: none;
 }
 
 .site-nav__item--has-dropdown:hover .site-nav__dropdown .site-nav__dropdown-link,
 .site-nav__item--has-dropdown.dropdown-active .site-nav__dropdown .site-nav__dropdown-link {
   opacity: 1;
-  transform: translateX(0);
-  transition: opacity 0.25s ease 0.1s,
-              transform 0.25s ease 0.1s,
-              color 0.2s ease,
-              background-color 0.2s ease;
+  transform: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Remove staggered animation styles */
 /* Apply staggered animation to dropdown items */
 .site-nav__item--has-dropdown:hover .site-nav__dropdown li:nth-child(1) .site-nav__dropdown-link,
 .site-nav__item--has-dropdown.dropdown-active .site-nav__dropdown li:nth-child(1) .site-nav__dropdown-link {
-  transition-delay: 0.15s;
+  transition-delay: 0;
 }
 
 .site-nav__item--has-dropdown:hover .site-nav__dropdown li:nth-child(2) .site-nav__dropdown-link,
 .site-nav__item--has-dropdown.dropdown-active .site-nav__dropdown li:nth-child(2) .site-nav__dropdown-link {
-  transition-delay: 0.2s;
+  transition-delay: 0;
 }
 
 .site-nav__dropdown-link:hover {
   color: var(--color-primary);
   background-color: var(--color-background-primary-light);
+}
+
+/* Remove bullet points from dropdown items */
+.site-nav__dropdown {
+  list-style: none;
+}
+
+.site-nav__dropdown li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-nav__dropdown li::before {
+  display: none;
 }
 
 /* Special styles for touch devices - prevent hover issues */
