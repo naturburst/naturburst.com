@@ -124,6 +124,15 @@
           <p class="product-card__price-item">{{ price | money }}</p>
         {% endif %}
       </div>
+      <form action="/cart/add" method="post" class="product-card__form" data-product-card-form>
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <div class="quantity-selector js-qty">
+          <button type="button" class="quantity-btn js-qty__dec" aria-label="Decrease quantity">−</button>
+          <input type="number" name="quantity" class="quantity-input js-qty__input" value="1" min="1" aria-label="Quantity">
+          <button type="button" class="quantity-btn js-qty__inc" aria-label="Increase quantity">+</button>
+        </div>
+        <button type="submit" class="product-card__add-btn btn btn--primary" {% unless product_available %}disabled{% endunless %}>Add to Cart</button>
+      </form>
     </div>
   </div>
 </div>
@@ -431,6 +440,48 @@
   .product-card__quick-view-btn {
     padding: 0.8rem;
   }
+}
+
+/* Product Card AJAX form styles */
+.product-card__form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.quantity-btn {
+  background: #f5f5f5;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.quantity-input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.product-card__add-btn {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  border: none;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 30px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.product-card__add-btn[disabled] {
+  background: #ccc;
+  cursor: not-allowed;
 }
 </style>
 
