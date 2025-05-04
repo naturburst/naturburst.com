@@ -213,59 +213,16 @@
             <!-- Combined Additional Information collapsible section -->
 
             <details class="product__collapsible-section">
-            <div class="product__collapsible-section">
               <summary class="product__collapsible-heading">
                 <span>Additional Information</span>
                 <span class="icon-plus">{% render 'icon-plus' %}</span>
                 <span class="icon-minus">{% render 'icon-minus' %}</span>
               </summary>
               <div class="product__collapsible-content rte">
-                {% if product.metafields.product.ingredients != blank %}
-                  <div class="product-metafield">
-                    <strong>Ingredients:</strong> 
-                    <span class="product-metafield__content">{{ product.metafields.product.ingredients }}</span>
-                  </div>
-                {% endif %}
-                
-                {% if product.metafields.product.nutritional_info != blank %}
-                  <div class="product-metafield">
-                    <strong>Nutritional Info:</strong>
-                    <div class="nutritional-info-container">
-                      {% assign nutritional_string = product.metafields.product.nutritional_info %}
-                      {% if nutritional_string contains "{" and nutritional_string contains "}" %}
-                        {% assign json_start = nutritional_string | split: '{' | last %}
-                        {% assign json_end = json_start | split: '}' | first %}
-                        {% assign nutritional_pairs = json_end | split: ',' %}
-                        
-                        <ul class="nutritional-list">
-                          {% for pair in nutritional_pairs %}
-                            {% assign key_value = pair | split: ':' %}
-                            {% assign key = key_value[0] | remove: '"' | capitalize %}
-                            {% assign value = key_value[1] %}
-                            
-                            <li><strong>{{ key }}</strong>: {{ value }}{% if key == 'Calories' %}cal{% elsif key == 'Fat' or key == 'Carbs' or key == 'Protein' %}g{% endif %}</li>
-                          {% endfor %}
-                        </ul>
-                      {% else %}
-                        {{ product.metafields.product.nutritional_info }}
-                      {% endif %}
-                    </div>
-                  </div>
-                {% endif %}
-                
-                {% if product.metafields.product.storage != blank %}
-                  <div class="product-metafield">
-                    <strong>Storage Instructions:</strong> 
-                    <span class="product-metafield__content">{{ product.metafields.product.storage }}</span>
-                  </div>
-                {% endif %}
-                
-                {% if product.metafields.product.tasting != blank %}
-                  <div class="product-metafield">
-                    <strong>Tasting Notes:</strong> 
-                    <span class="product-metafield__content">{{ product.metafields.product.tasting }}</span>
-                  </div>
-                {% endif %}
+                <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients }}</p>
+                <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info }}</p>
+                <p><strong>Storage Instructions:</strong> {{ product.metafields.product.storage }}</p>
+                <p><strong>Tasting Notes:</strong> {{ product.metafields.product.tasting }}</p>
               </div>
             </details>
 
@@ -955,54 +912,6 @@
   .quantity-input {
     flex: 1;
   }
-}
-
-.nutritional-info-container {
-  margin: 0.5rem 0 1rem;
-}
-
-.nutritional-list {
-  list-style: none;
-  padding-left: 0.5rem;
-  margin: 0.5rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.nutritional-list li {
-  background-color: #f7f8fa;
-  padding: 0.4rem 0.75rem;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.product-metafield {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.product-metafield:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.product-metafield strong {
-  font-weight: 600;
-  color: var(--color-headings);
-  display: block;
-  margin-bottom: 0.35rem;
-}
-
-.product-metafield__content {
-  word-break: normal;
-  word-wrap: break-word;
-  white-space: normal;
-  overflow: visible;
-  display: block;
-  line-height: 1.6;
 }
 </style>
 
