@@ -219,18 +219,10 @@
                 <span class="icon-minus">{% render 'icon-minus' %}</span>
               </summary>
               <div class="product__collapsible-content rte">
-                {% if product.metafields.product.ingredients %}
-                  <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients.value }}</p>
-                {% endif %}
-                {% if product.metafields.product.nutritional_info %}
-                  <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info.value }}</p>
-                {% endif %}
-                {% if storage %}
-                  <p><strong>Storage Instructions:</strong> {{ storage.value }}</p>
-                {% endif %}
-                {% if tasting %}
-                  <p><strong>Tasting Notes:</strong> {{ tasting.value }}</p>
-                {% endif %}
+                <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients.value }}</p>
+                <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info.value }}</p>
+                <p><strong>Storage Instructions:</strong> {{ storage.value }}</p>
+                <p><strong>Tasting Notes:</strong> {{ tasting.value }}</p>
               </div>
             </details>
 
