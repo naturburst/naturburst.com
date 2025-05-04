@@ -210,16 +210,29 @@
                 {{ product.description }}
               </div>
             </details>
-            <!-- Nutrition collapsible section -->
-            {% if product.metafields.product.nutritional_info %}
+            <!-- Combined Additional Information collapsible section -->
+            {% assign storage = product.metafields.product.storage_instructions %}
+            {% assign tasting = product.metafields.product.tasting_notes %}
+            {% if product.metafields.product.ingredients or product.metafields.product.nutritional_info or storage or tasting %}
               <details class="product__collapsible-section">
                 <summary class="product__collapsible-heading">
-                  <span>Nutrition</span>
+                  <span>Additional Information</span>
                   <span class="icon-plus">{% render 'icon-plus' %}</span>
                   <span class="icon-minus">{% render 'icon-minus' %}</span>
                 </summary>
                 <div class="product__collapsible-content rte">
-                  {{ product.metafields.product.nutritional_info }}
+                  {% if product.metafields.product.ingredients %}
+                    <p><strong>Ingredients:</strong> {{ product.metafields.product.ingredients }}</p>
+                  {% endif %}
+                  {% if product.metafields.product.nutritional_info %}
+                    <p><strong>Nutritional Info:</strong> {{ product.metafields.product.nutritional_info }}</p>
+                  {% endif %}
+                  {% if storage %}
+                    <p><strong>Storage Instructions:</strong> {{ storage }}</p>
+                  {% endif %}
+                  {% if tasting %}
+                    <p><strong>Tasting Notes:</strong> {{ tasting }}</p>
+                  {% endif %}
                 </div>
               </details>
             {% endif %}
@@ -280,6 +293,14 @@
 
           <!-- Free shipping, guarantee and delivery time info -->
           <div class="product__trust-badges">
+            <!-- Best Quality trust badge -->
+            <div class="trust-badge">
+              <span class="trust-badge__icon">{% render 'icon-star' %}</span>
+              <div class="trust-badge__text">
+                <span class="trust-badge__title">Best Quality</span>
+                <span class="trust-badge__info">Guaranteed</span>
+              </div>
+            </div>
             <div class="trust-badge">
               <span class="trust-badge__icon">{% render 'icon-truck' %}</span>
               <div class="trust-badge__text">
@@ -294,14 +315,7 @@
                 <span class="trust-badge__info">5-7 business days</span>
               </div>
             </div>
-            <!-- Best Quality trust badge -->
-            <div class="trust-badge">
-              <span class="trust-badge__icon">{% render 'icon-star' %}</span>
-              <div class="trust-badge__text">
-                <span class="trust-badge__title">Best Quality</span>
-                <span class="trust-badge__info">Guaranteed</span>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
