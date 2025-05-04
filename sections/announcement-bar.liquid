@@ -1,38 +1,27 @@
 {% if settings.show_announcement %}
 <div class="announcement-bar">
-  <div class="page-width">
-    {% if settings.announcements.size > 0 %}
-      <div class="announcement-carousel">
-        {% for announcement in settings.announcements %}
-          <p class="announcement-bar__message {% unless forloop.first %}hidden{% endunless %}" data-index="{{ forloop.index0 }}">
-            {{ announcement.text | replace: '+', '<span class="bullet-point">•</span>' }}
-          </p>
-        {% endfor %}
-      </div>
-    {% else %}
-      <p class="announcement-bar__message">
-        {{ settings.announcement_text | replace: '+', '<span class="bullet-point">•</span>' }}
-      </p>
-    {% endif %}
+  <div class="ticker-wrapper">
+    <div class="ticker">
+      {% if settings.announcements.size > 0 %}
+        <div class="ticker-content">
+          {% for announcement in settings.announcements %}
+            <span class="ticker-item">{{ announcement.text }}</span>
+            {% unless forloop.last %}<span class="bullet-point">•</span>{% endunless %}
+          {% endfor %}
+          <!-- Repeat the content for seamless looping -->
+          {% for announcement in settings.announcements %}
+            <span class="ticker-item">{{ announcement.text }}</span>
+            {% unless forloop.last %}<span class="bullet-point">•</span>{% endunless %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="ticker-content">
+          <span class="ticker-item">{{ settings.announcement_text }}</span>
+        </div>
+      {% endif %}
+    </div>
   </div>
 </div>
-
-{% if settings.announcements.size > 1 %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var announcements = document.querySelectorAll('.announcement-bar__message');
-      var currentIndex = 0;
-      var totalAnnouncements = {{ settings.announcements.size }};
-      var rotationSpeed = {{ settings.announcement_rotation_speed | default: 3 }} * 1000;
-      
-      setInterval(function() {
-        announcements[currentIndex].classList.add('hidden');
-        currentIndex = (currentIndex + 1) % totalAnnouncements;
-        announcements[currentIndex].classList.remove('hidden');
-      }, rotationSpeed);
-    });
-  </script>
-{% endif %}
 {% endif %}
 
 {% schema %}
@@ -66,38 +55,51 @@
   width: 100%;
   background: #1a2e37;
   color: white;
-  text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 1px;
   padding: 0.25rem 0;
   z-index: 9;
+  overflow: hidden;
 }
 
-.announcement-bar__message {
-  display: inline-block;
-  margin: 0;
+.ticker-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.ticker {
+  width: 100%;
   padding: 0.25rem 0;
-  opacity: 1;
-  transition: opacity 0.5s ease;
 }
 
-.announcement-bar__message.hidden {
-  display: none;
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 100%;
+  animation: ticker 30s linear infinite;
 }
 
-.announcement-carousel {
-  position: relative;
-  min-height: 1.5rem;
+.ticker-item {
+  display: inline-block;
 }
 
 .bullet-point {
   display: inline-block;
-  margin: 0 0.5rem;
+  margin: 0 1rem;
   color: #FFD166;
   font-size: 1.2rem;
   line-height: 0;
   vertical-align: middle;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @media screen and (max-width: 380px) {
@@ -106,7 +108,7 @@
   }
   
   .bullet-point {
-    margin: 0 0.3rem;
+    margin: 0 0.5rem;
     font-size: 1rem;
   }
 }
