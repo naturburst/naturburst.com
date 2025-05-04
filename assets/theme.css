@@ -259,7 +259,49 @@ input:focus, textarea:focus, select:focus {
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  transition: transform 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 101;
+}
+
+.icon-hamburger {
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-nav-toggle:hover .hamburger-line {
+  background-color: var(--color-primary);
+}
+
+/* Animate to X when menu is open */
+body.mobile-menu-open .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+body.mobile-menu-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+body.mobile-menu-open .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* IMPROVED MOBILE NAVIGATION */
@@ -296,8 +338,8 @@ input:focus, textarea:focus, select:focus {
   backdrop-filter: blur(3px) !important;
 }
 
-.mobile-nav-overlay.active,
-.mobile-nav.active {
+.mobile-nav-overlay.is-active,
+.mobile-nav.is-active {
   opacity: 1 !important;
   visibility: visible !important;
   transform: translateX(0) !important;

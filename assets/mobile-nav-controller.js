@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (mobileNavToggle) {
         mobileNavToggle.setAttribute('aria-expanded', 'true');
+        mobileNavToggle.classList.add('is-active');
       }
       
       // Animate individual items with a small delay
@@ -123,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (mobileNavToggle) {
       mobileNavToggle.setAttribute('aria-expanded', 'false');
+      mobileNavToggle.classList.remove('is-active');
     }
     
     // Let the transition finish
