@@ -69,6 +69,13 @@
                   </div>
                   <span>Follow us on Instagram</span>
                 </a>
+                
+                <a href="https://wa.me/917999839922" target="_blank" rel="noopener noreferrer" class="social-icon whatsapp">
+                  <div class="social-icon-inner">
+                    {% render 'icon-whatsapp' %}
+                  </div>
+                  <span>Chat with us on WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
@@ -547,13 +554,18 @@ transition: all 0.3s ease;
 }
 
 .social-icon.facebook:hover .social-icon-inner {
-background: #4267B2;
-color: white;
+  background: #3b5999;
+  color: white;
 }
 
 .social-icon.instagram:hover .social-icon-inner {
-background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-color: white;
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+  color: white;
+}
+
+.social-icon.whatsapp:hover .social-icon-inner {
+  background: #25D366;
+  color: white;
 }
 
 @media (max-width: 767px) {
