@@ -826,6 +826,7 @@
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 1px solid var(--color-border);
+  margin-bottom: 1rem;
 }
 
 .trust-badge {
@@ -861,6 +862,21 @@
   color: var(--color-text-light);
 }
 
+/* Modal styles - keeping the image modal at the correct z-index and position */
+#ProductImageModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: none;
+}
+
+#ProductImageModal.active {
+  display: block;
+}
+
 /* Responsive styles */
 @media screen and (min-width: 768px) {
   .product__container {
@@ -877,6 +893,7 @@
   .product__trust-badges {
     grid-template-columns: 1fr;
     gap: 1.25rem;
+    margin-bottom: 0;
   }
   
   .product__title {
@@ -885,6 +902,25 @@
   
   .product-form__buttons {
     flex-direction: column;
+  }
+  
+  .product__container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product__media-wrapper {
+    order: 1;
+  }
+  
+  .product__info-wrapper {
+    order: 2;
+  }
+  
+  /* Hide any images that might appear below the trust badges */
+  .product__info-wrapper + .product-images-slider,
+  .product__trust-badges + .product-images-slider {
+    display: none;
   }
 }
 
