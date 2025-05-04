@@ -5,13 +5,13 @@
       <div class="announcement-carousel">
         {% for announcement in settings.announcements %}
           <p class="announcement-bar__message {% unless forloop.first %}hidden{% endunless %}" data-index="{{ forloop.index0 }}">
-            {{ announcement.text }}
+            {{ announcement.text | replace: '+', '<span class="bullet-point">•</span>' }}
           </p>
         {% endfor %}
       </div>
     {% else %}
       <p class="announcement-bar__message">
-        {{ settings.announcement_text }}
+        {{ settings.announcement_text | replace: '+', '<span class="bullet-point">•</span>' }}
       </p>
     {% endif %}
   </div>
@@ -91,9 +91,23 @@
   min-height: 1.5rem;
 }
 
+.bullet-point {
+  display: inline-block;
+  margin: 0 0.5rem;
+  color: #FFD166;
+  font-size: 1.2rem;
+  line-height: 0;
+  vertical-align: middle;
+}
+
 @media screen and (max-width: 380px) {
   .announcement-bar {
     font-size: 0.7rem;
+  }
+  
+  .bullet-point {
+    margin: 0 0.3rem;
+    font-size: 1rem;
   }
 }
 </style>
