@@ -7,7 +7,7 @@ button.btn,
 .shopify-payment-button .shopify-payment-button__button,
 .checkout-btn,
 .contact-form__submit {
-  background-color: var(--color-primary) !important;
+  background: var(--gradient-primary) !important;
   border-color: var(--color-primary) !important;
   color: white !important;
   border-radius: 30px !important;
@@ -28,7 +28,7 @@ button.btn:hover,
 .shopify-payment-button .shopify-payment-button__button:hover,
 .checkout-btn:hover,
 .contact-form__submit:hover {
-  background-color: var(--color-primary-darker) !important;
+  background: var(--color-primary-darker) !important;
   border-color: var(--color-primary-darker) !important;
   color: white !important;
   transform: translateY(-3px) !important;
@@ -50,7 +50,7 @@ button.btn:focus,
 /* Product card buttons */
 .product-card__add-to-cart-btn,
 .product-card__quick-view-btn {
-  background-color: var(--color-primary) !important;
+  background: var(--gradient-primary) !important;
   border-color: var(--color-primary) !important;
   color: white !important;
   border-radius: 30px !important;
@@ -63,7 +63,7 @@ button.btn:focus,
 
 .product-card__add-to-cart-btn:hover,
 .product-card__quick-view-btn:hover {
-  background-color: var(--color-primary-darker) !important;
+  background: var(--color-primary-darker) !important;
   border-color: var(--color-primary-darker) !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 12px rgba(42, 94, 65, 0.25) !important;
@@ -73,7 +73,7 @@ button.btn:focus,
 .contact-btn,
 .get-in-touch,
 .directions-btn .map-indicator:hover {
-  background-color: var(--color-primary) !important;
+  background: var(--gradient-primary) !important;
   color: white !important;
   border-radius: 30px !important;
   padding: 0.85rem 1.75rem !important;
@@ -84,7 +84,7 @@ button.btn:focus,
 .contact-btn:hover,
 .get-in-touch:hover,
 .directions-btn .map-indicator:hover {
-  background-color: var(--color-primary-darker) !important;
+  background: var(--color-primary-darker) !important;
   transform: translateY(-3px) !important;
   box-shadow: 0 6px 12px rgba(42, 94, 65, 0.3) !important;
 }
@@ -117,7 +117,7 @@ button.btn:focus,
 
 /* Newsletter button */
 .newsletter__button {
-  background-color: var(--color-primary) !important;
+  background: var(--gradient-primary) !important;
   color: white !important;
   border-radius: 30px !important;
   padding: 0.85rem 1.75rem !important;
@@ -129,7 +129,7 @@ button.btn:focus,
 }
 
 .newsletter__button:hover {
-  background-color: var(--color-primary-darker) !important;
+  background: var(--color-primary-darker) !important;
   transform: translateY(-3px) !important;
   box-shadow: 0 6px 12px rgba(42, 94, 65, 0.3) !important;
 }
